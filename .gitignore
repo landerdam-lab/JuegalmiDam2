@@ -1,0 +1,31 @@
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+
+# Symfony (api/)
+api/vendor/
+api/var/
+api/.env.local
+api/.env.*.local
+api/public/bundles/
+
+# Ionic / Angular (ionic/)
+ionic/node_modules/
+ionic/www/
+ionic/.angular/
+ionic/dist/
+
+# Android (android/)
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/captures/
+*.apk
+*.aab
+*.jks
+*.keystore
