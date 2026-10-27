@@ -29,3 +29,6 @@ android/captures/
 *.aab
 *.jks
 *.keystore
+
+# Claude Code (instrucciones personales de cada integrante)
+CLAUDE.local.md
