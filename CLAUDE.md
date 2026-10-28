@@ -176,3 +176,14 @@ Firma mis entradas en la bóveda como "<nombre>".
 ```
 
 Usa ese nombre para firmar las entradas de `Registro de cambios` y `Registro de uso de IA`, y ten en cuenta su área para avisar cuando una tarea toque la de otra persona.
+
+---
+
+## 10. Design System (sistema «Cartucho») · ⚠️ propuesta
+
+**Regla:** toda UI (Android e Ionic) debe seguir `design/DESIGN.md` y consumir `design/tokens.json`; **prohibidos los colores, fuentes y espaciados hardcodeados**.
+- Fuente única: `design/tokens.json` → `cd design && npm run tokens:build` genera `design/generated/ionic/theme/*.scss` y `design/generated/android/res/**` (no se editan a mano). `npm run tokens:check` comprueba el contraste WCAG AA.
+- En código: Ionic `var(--ja-<token>)` / `--ion-color-*` · Android `@color/ja_<token>`, `@dimen/ja_*`, `TextAppearance.JuegAlmi.*`, `Widget.JuegAlmi.*`.
+- Firma visual: **muesca** (esquina superior derecha cortada a 45°) en tarjetas, hojas, drawer y miniaturas; **barra de vida** segmentada para el progreso. Un solo botón amarillo por pantalla.
+- Cada pantalla `PT-xx` tiene su diseño en `design/screens/` y su receta en `design/SCREEN-MAP.md`. Proyecto de Stitch: `design/STITCH.md`.
+- No mostrar datos que no existen en el modelo (valoraciones, favoritos, "Exclusivo": A-08).
