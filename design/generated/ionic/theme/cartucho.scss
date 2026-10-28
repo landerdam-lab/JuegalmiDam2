@@ -24,8 +24,7 @@
 }
 .ja-muesca { @include muesca(); }
 .ja-muesca--destacada { @include muesca(var(--ja-muesca-destacada), var(--ja-radio-l)); }
-.ja-sombra { filter: drop-shadow(0 2px 6px rgba(28, 21, 48, .10)); }
-.ion-palette-dark .ja-sombra { filter: none; }
+.ja-sombra { filter: var(--ja-elevacion-muesca); }
 
 // ion-card con muesca (equivale a MaterialCardView con ShapeAppearance.JuegAlmi.Muesca)
 ion-card.ja-tarjeta {
@@ -45,7 +44,7 @@ ion-card.ja-tarjeta {
 }
 .ja-chip-alquiler {
   display: inline-flex; align-items: center; gap: var(--ja-espacio-1);
-  padding: 2px var(--ja-espacio-2);
+  padding: calc(var(--ja-espacio-1) / 2) var(--ja-espacio-2);
   border-radius: var(--ja-radio-completo);
   font: var(--ja-tipo-etiqueta-s);
   color: var(--ja-alquiler); background: var(--ja-alquiler-suave);
@@ -64,20 +63,20 @@ ion-card.ja-tarjeta {
 .ja-vida > span {
   flex: 1;
   height: var(--ja-tamano-segmento-vida);
-  border-radius: 2px;
+  border-radius: var(--ja-radio-segmento);
   background: var(--ja-superficie-3);
   transition: background-color var(--ja-duracion-base) var(--ja-curva-estandar);
 }
 .ja-vida > span.lleno { background: var(--color); }
 // Se rellenan uno detrás de otro, a saltos (como una barra de vida)
 @for $i from 2 through 5 {
-  .ja-vida > span:nth-child(#{$i}) { transition-delay: calc(#{$i - 1} * 80ms); }
+  .ja-vida > span:nth-child(#{$i}) { transition-delay: calc(#{$i - 1} * var(--ja-duracion-escalonado)); }
 }
 
 // ── Pastillas de estado (color + icono + texto; nunca solo color) ──
 .ja-estado {
   display: inline-flex; align-items: center; gap: var(--ja-espacio-1);
-  min-height: 24px; padding: 2px var(--ja-espacio-2);
+  min-height: var(--ja-espacio-6); padding: calc(var(--ja-espacio-1) / 2) var(--ja-espacio-2);
   border-radius: var(--ja-radio-completo);
   font: var(--ja-tipo-etiqueta-s);
 }
@@ -107,12 +106,12 @@ ion-button {
 }
 
 // ── Foco visible ──
-:focus-visible { outline: var(--ja-borde-foco) solid var(--ja-foco); outline-offset: 2px; }
+:focus-visible { outline: var(--ja-borde-foco) solid var(--ja-foco); outline-offset: var(--ja-borde-grueso); }
 
 // ── Movimiento: «insertar» al añadir al carrito ──
 @keyframes ja-insertar {
   0% { transform: translateY(0); }
-  40% { transform: translateY(4px) scale(.98); }
+  40% { transform: translateY(var(--ja-espacio-1)) scale(.98); }
   100% { transform: translateY(0) scale(1); }
 }
 .ja-insertar { animation: ja-insertar var(--ja-duracion-lenta) var(--ja-curva-insertar); }
