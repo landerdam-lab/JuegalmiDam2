@@ -1,0 +1,12 @@
+{
+  "name": "juegalmi-design",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sistema de diseño «Cartucho» de JuegAlmi: tokens y generadores para Ionic y Android",
+  "type": "module",
+  "scripts": {
+    "tokens:build": "node scripts/build-tokens.mjs",
+    "tokens:check": "node scripts/check-contrast.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
