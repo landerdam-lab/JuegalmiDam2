@@ -1,6 +1,6 @@
 # JuegAlmi · Sistema de diseño «Cartucho»
 
-> **Estado: PROPUESTA** (v0.1.0, 2026-10-28, Oier con Claude Code + Stitch). Hasta que el grupo lo apruebe y se cree el ADR, es una sugerencia. Ver `08-Diseno-UI/Sistema de diseno.md` en la bóveda.
+> **Estado: APROBADO** (v1.0.0, 2026-10-28) → ADR-022 en la bóveda (`10-Decisiones/ADR-022 Sistema de diseno Cartucho.md`). Se irá ajustando al desarrollar cada sección: ver §14 «Cómo se ajusta».
 >
 > **Regla:** toda la interfaz de Android y de Ionic sigue este documento y consume `design/tokens.json` (a través de los ficheros generados). **Prohibido** poner colores, fuentes o espaciados a mano en el código.
 
@@ -260,3 +260,19 @@ Las hojas de componentes de Stitch (`screens/c1-componentes-*.png`, `c2-componen
 - **Mapa** (P-23 abierto): el diseño sirve tanto para OSMDroid/Leaflet como para Google Maps (solo cambian las teselas).
 - **Alcance** (P-02): se diseñan las 29 pantallas para las dos apps; si se decide que Ionic no lleva «La tienda», PT-24…PT-28 son solo para Android.
 - **Java o Kotlin** (P-01) y **XML o Compose** (P-03): los recursos generados son XML de `res/values`, que valen para Java y Kotlin. Si se elige Compose, habría que añadir un generador de `Color.kt`/`Theme.kt`.
+
+## 14. Cómo se ajusta durante el desarrollo (ADR-022)
+
+| Tipo de cambio | Dónde se hace | Requisitos |
+|---|---|---|
+| **Detalle de una pantalla** (orden, espaciado puntual, textos, un estado que falta) | Código de **las dos** apps (Android e Ionic) | Si cambia la receta, actualizar su fila en `SCREEN-MAP.md` y la columna AN/IO del Mapa de pantallas en la bóveda |
+| **Valor del sistema** (color, tamaño, radio, fuente, duración) | **Solo** en `tokens.json` → `npm run tokens:check` → `npm run tokens:build` → copiar `generated/` a las dos apps | Apuntarlo en el registro de abajo (subir la versión menor: 1.1.0…) |
+| **Componente nuevo** | `DESIGN.md` §9 (anatomía + estados) y, si hace falta, `cartucho.scss` / `ja_formas.xml` desde el generador | Igual en las dos apps |
+| **Cambio estructural** (navegación, quitar la muesca, nueva paleta o tipografía) | ADR nuevo que sustituya a ADR-022 | Decisión del grupo |
+
+Las imágenes de `screens/` son la **referencia del aprobado v1.0.0**: no se regeneran por cada ajuste. Si el código y la imagen difieren, mandan los tokens y este documento.
+
+## 15. Registro de cambios del sistema
+| Versión | Fecha | Quién | Cambio |
+|---|---|---|---|
+| 1.0.0 | 2026-10-28 | Oier (con Claude Code + Stitch) | Versión aprobada por el grupo (ADR-022) |
