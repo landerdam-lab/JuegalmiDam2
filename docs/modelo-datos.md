@@ -17,7 +17,7 @@ Paso a tablas: `paso-a-tablas.md`. **v3: el E-R no tiene ciclos** (es un árbol)
 | `servicio` (1:N con `departamento`) | Contenido de las pestañas de "Servicios" de la tienda. |
 | `plataforma` como catálogo (una por videojuego) | Filtro principal sin valores repetidos escritos de formas distintas. |
 | Ubicación **solo** en `registro_ubicacion` | El enunciado exige la ubicación del usuario en **cualquier consulta**: las apps envían `X-Latitud`/`X-Longitud` y la API registra cada petición (también pedidos y reparaciones). Guardarla además en pedido o reparación sería redundante. |
-| `producto.activo` (baja lógica) | No se puede borrar un producto con pedidos (RESTRICT), pero sí retirarlo del catálogo. |
+| `activo` (baja lógica) en `producto` y `usuario` | No se puede borrar un producto o un usuario con historial (RESTRICT), pero sí desactivarlo: con `false` desaparece y con `true` vuelve a aparecer. Videojuego, móvil y consola lo heredan de `producto` (no se repite). |
 | `tienda` + `foto_tienda` | Datos de la parte Android: ubicación, galería e historia. |
 | `token` guardado como hash SHA-256 | Autenticación por token (nivel 5 de la rúbrica); si se filtra la BBDD, los tokens no sirven. |
 | Pedidos con recogida en tienda | No hay dirección de envío: estados `pendiente → preparado → entregado` o `cancelado`. |
