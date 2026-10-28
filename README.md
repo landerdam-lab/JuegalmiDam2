@@ -1,12 +1,14 @@
 # JuegalmiDam2
 
-Reto 2 DAM2 (curso 25-26): app para la tienda de videojuegos JuegAlmi.
+Reto 2 DAM2 (curso 25-26): apps y web para la tienda de videojuegos JuegAlmi.
 
 | Carpeta | Contenido |
 |---|---|
-| `api/` | Servicio web REST en Symfony (MySQL + Doctrine) |
-| `ionic/` | App híbrida en Ionic + Angular (iOS / Windows Phone) |
-| `android/` | App Android nativa (Android Studio) |
+| `api/` | Servicio web REST en Symfony (MariaDB + Doctrine) |
+| `android/` | App Android nativa (Android Studio), solo para clientes |
+| `ionic/` | App híbrida en Ionic + Angular, compilada como APK de Android, solo para clientes |
+| `web/` | Web en Angular: publicidad, catálogo y gestión administrativa de la empresa |
+| `design/` | Sistema de diseño «Cartucho» (tokens y pantallas) |
 | `docs/` | Propuesta (Hito 1), diagrama E-R, dossier y presentación |
 
 Copias de la base de datos: `api/backups/*.sql` (`mysqldump`).

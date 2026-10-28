@@ -44,14 +44,16 @@ Al empezar **cada** sesión o tarea, lee en este orden:
 ## 1. El proyecto en 10 líneas
 
 - **Cliente ficticio:** JuegAlmi, tienda que **vende y alquila videojuegos**, **vende y repara consolas** y **vende y repara móviles/tablets**.
-- **Entregamos una demo** con tres piezas en un monorepo (`github.com/landerdam-lab/JuegalmiDam2`):
-  - `api/`: **API REST en Symfony + MySQL + Doctrine**, con **tokens** y **HTTPS**
-  - `android/`: **app Android nativa** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
-  - `ionic/`: **app híbrida Ionic + Angular** (iOS / "Windows Phone"), **con el mismo diseño** que la de Android
+- **Entregamos una demo** con cuatro piezas en un monorepo (`github.com/landerdam-lab/JuegalmiDam2`):
+  - `api/`: **API REST en Symfony + MariaDB + Doctrine**, con **tokens** y **HTTPS**
+  - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
+  - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
+  - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, usuarios, técnicos, pedidos, reparaciones, tienda). Bóveda: `12-Web/`
+- ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
   - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
-- **Modelo de datos:** 14 tablas (ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola`.
+- **Modelo de datos (v3, ADR-023):** 17 tablas en **MariaDB**, E-R sin ciclos (ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` (total y disjunta). Reglas de negocio también en la BBDD (CHECK + triggers).
 
 ---
 
@@ -72,9 +74,9 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 1. **No cierres pendientes por tu cuenta.** Si la tarea depende de un P-xx abierto (lenguaje de Android, formato de las imágenes, nombre de `movil.tipo`…), dilo, da tu recomendación argumentada y **pregunta** antes de seguir.
 2. **Respeta los estados.** Lo marcado como `propuesta` (endpoints, pantallas, librerías, plan) es una sugerencia: antes de implementarlo, avisa de que es una propuesta. Si el usuario lo aprueba, cambia la nota a `decidido` y crea un ADR.
-3. **Las dos apps deben ser iguales** (la rúbrica lo exige). Toda pantalla tiene un ID `PT-xx` en `08-Diseno-UI/Mapa de pantallas.md`. Si cambias una pantalla en una app, indica qué hay que cambiar en la otra.
-4. **La API es el contrato.** Las apps nunca acceden a MySQL directamente. Si cambias un endpoint o el JSON, actualiza `05-API/Endpoints.md` y avisa del impacto en Android **y** en Ionic.
-5. **Todo con token**, salvo `POST /api/login` y `POST /api/registro` (nivel 5 de la rúbrica). Comprueba también el rol y que el recurso sea del usuario.
+3. **Las dos apps deben ser iguales** (la rúbrica lo exige) y **solo para clientes**. Toda pantalla tiene un ID `PT-xx` (apps) o `PW-xx` (web) en `08-Diseno-UI/Mapa de pantallas.md`. Si cambias una pantalla en una app, indica qué hay que cambiar en la otra. Si alguien pide una función de gestión en una app, recuerda que va en la web (ADR-024).
+4. **La API es el contrato.** Ni las apps ni la web acceden a MariaDB directamente. Si cambias un endpoint o el JSON, actualiza `05-API/Endpoints.md` y avisa del impacto en Android, en Ionic **y** en la web.
+5. **Todo con token**, salvo `POST /api/login` y `POST /api/registro` (nivel 5 de la rúbrica). Comprueba también el rol y que el recurso sea del usuario. **Excepción (ADR-028, confirmada por el profesor):** los `GET` de catálogo y tienda son públicos para la **web**; las apps lo hacen todo con token, también el catálogo.
 6. **Nada bloquea el hilo principal**: red, imágenes y procesado siempre en segundo plano.
 7. **Separa la vista de los datos**: vista → repositorio/servicio → cliente HTTP.
 8. **La lógica de negocio vive en la API** (stock, copias disponibles, precios, permisos). Las apps validan para avisar antes, pero quien decide es la API.
@@ -87,7 +89,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 4. Git (resumen; detalle en `02-Equipo/Flujo de trabajo Git.md`)
 
-- Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
+- Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `web` (aún no existe: crearla desde `main`) · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
 - ⚠️ Las ramas `api`, `android` e `ionic` se crearon antes que los docs: **la primera vez, haz `git merge origin/main`**.
 - **No hagas commit, push ni PR si el usuario no lo pide.** Nunca push directo a `main`. Nunca `--force` sobre ramas compartidas.
 - Commits en **español**, cortos y descriptivos, con los IDs de requisito cuando los haya: `Añade login con token (RT-04)`.
@@ -100,8 +102,8 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 ## 5. Convenciones clave (detalle en `02-Equipo/Convenciones.md`)
 
 - Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `linea_pedido`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
-- BBDD `snake_case` · PHP y JSON `camelCase` (JSON pendiente de confirmar: P-13) · rutas `/api/<recurso-en-plural-kebab>`.
-- Enumerados **idénticos** en BBDD, API y apps: `rol` ∈ {cliente, tecnico, admin} · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
+- BBDD `snake_case` · PHP y JSON `camelCase` (✅ ADR-027) · rutas `/api/<recurso-en-plural-kebab>`.
+- Enumerados **idénticos** en BBDD, API y apps: `rol` ∈ {cliente, admin} (los técnicos son la tabla `tecnico`, sin login: ADR-023) · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
 - Errores de la API: `{"error": {"codigo", "mensaje", "campos"}}` con 400/401/403/404/409/422 (ver `05-API/Formato JSON y errores.md`). Ante un **401**, las apps cierran la sesión y vuelven al login.
 - Fechas ISO 8601 · dinero `DECIMAL(10,2)` · coordenadas `DECIMAL(10,7)`.
 - Textos visibles al usuario en español; en Android, en `strings.xml`.
@@ -111,12 +113,18 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 6. Avisos que más errores van a evitar
 
-- **A-03:** `producto.tipo` (discriminador de Doctrine) y `movil.tipo` chocan. No crees la entidad `Movil` con una propiedad `tipo` hasta que se decida P-12.
-- **A-01:** `linea_pedido` usa `id` + `UNIQUE(pedido_id, producto_id)` según `paso-a-tablas.md`, pero el diagrama muestra la PK compuesta. Pendiente: P-09.
-- **A-11:** Windows Phone ya no existe; iOS necesita un Mac. La app Ionic se compilará previsiblemente como APK (P-08).
+- **A-03 ✅ (ADR-012):** el campo móvil/tablet se llama `movil.formato`; `tipo` es solo el discriminador de `producto`.
+- **A-01 ✅ (ADR-013):** `linea_pedido` usa `id` + `UNIQUE(pedido_id, producto_id)`, igual en el diagrama y en el código.
+- **A-09:** Doctrine **no genera los CHECK ni los triggers**: van a mano en una migración (`04-Datos/Diseno fisico MariaDB.md`). Nunca `doctrine:schema:create`/`update`.
+- **A-11 ✅ (ADR-024):** las dos apps son de Android; la de Ionic se compila como APK con Capacitor.
+- **A-27 ✅ (ADR-026):** los técnicos no tienen login (ADR-023); en la web solo entra el admin.
+- **A-28 ✅ (ADR-028):** el catálogo y la tienda de la web son públicos (solo `GET`, sin token) y el profesor lo confirmó. Las apps lo hacen todo con token.
+- **Stack decidido (ADR-027 y ADR-031):** Android en **Java** con layouts **XML** · **PHP 8.3** y **Symfony 7.4** · Angular, Ionic y Capacitor en su **última versión estable**, fijada al crear cada proyecto.
+- **Permisos (ADR-029):** el admin solo administra (no compra ni alquila; para comprar usa otra cuenta `cliente`) y solo se alquilan videojuegos.
+- **Servicios (ADR-030):** 3 pestañas (Videojuegos · Consolas · Telefonía) con `servicio.linea`, sin relación con `departamento`.
 - **A-12:** AsyncTask está obsoleta. Usar Executors/Handler o corrutinas y justificarlo.
-- **A-13:** "Ubicación en cualquier consulta": pendiente de decidir el alcance (P-04).
-- Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve`. Más en `11-Calidad/Problemas comunes.md`.
+- **A-13 ✅ (ADR-014):** las apps envían `X-Latitud`/`X-Longitud` en cada petición y la API lo guarda en `registro_ubicacion`.
+- Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve` y para la web. Más en `11-Calidad/Problemas comunes.md`.
 
 ---
 
@@ -162,6 +170,10 @@ ionic build && npx cap sync android            # APK vía Android Studio
 
 # Android (android/)
 ./gradlew assembleDebug
+
+# Web (web/, Angular)
+npm install && ng serve                        # http://localhost:4200 (la API necesita CORS para este origen)
+ng build
 ```
 
 ---
@@ -171,7 +183,7 @@ ionic build && npx cap sync android            # APK vía Android Studio
 Cada integrante tiene en su **carpeta raíz** (la que contiene `JuegalmiDam2/`, desde donde abre Claude Code) un **`CLAUDE.local.md`** personal, que no se comparte, con:
 
 ```markdown
-Soy <nombre> (GitHub: <usuario>). Mi área principal es <api | android | ionic | docs>.
+Soy <nombre> (GitHub: <usuario>). Mi área principal es <api | android | ionic | web | docs>.
 Firma mis entradas en la bóveda como "<nombre>".
 ```
 
@@ -181,9 +193,9 @@ Usa ese nombre para firmar las entradas de `Registro de cambios` y `Registro de 
 
 ## 10. Design System (sistema «Cartucho») · ✅ aprobado (ADR-022)
 
-**Regla:** toda UI (Android e Ionic) debe seguir `design/DESIGN.md` y consumir `design/tokens.json`; **prohibidos los colores, fuentes y espaciados hardcodeados**.
+**Regla:** toda UI (Android, Ionic y la web) debe seguir `design/DESIGN.md` y consumir `design/tokens.json`; **prohibidos los colores, fuentes y espaciados hardcodeados**.
 - Fuente única: `design/tokens.json` → `cd design && npm run tokens:build` genera `design/generated/ionic/theme/*.scss` y `design/generated/android/res/**` (no se editan a mano). `npm run tokens:check` comprueba el contraste WCAG AA.
-- En código: Ionic `var(--ja-<token>)` / `--ion-color-*` · Android `@color/ja_<token>`, `@dimen/ja_*`, `TextAppearance.JuegAlmi.*`, `Widget.JuegAlmi.*`.
+- En código: Ionic y web `var(--ja-<token>)` (la web reutiliza las variables CSS del tema de Ionic; propuesta) / `--ion-color-*` · Android `@color/ja_<token>`, `@dimen/ja_*`, `TextAppearance.JuegAlmi.*`, `Widget.JuegAlmi.*`.
 - Firma visual: **muesca** (esquina superior derecha cortada a 45°) en tarjetas, hojas, drawer y miniaturas; **barra de vida** segmentada para el progreso. Un solo botón amarillo por pantalla.
 - Cada pantalla `PT-xx` tiene su diseño en `design/screens/` y su receta en `design/SCREEN-MAP.md`. Proyecto de Stitch: `design/STITCH.md`.
 - No mostrar datos que no existen en el modelo (valoraciones, favoritos, "Exclusivo": A-08).
