@@ -44,10 +44,12 @@ Al empezar **cada** sesión o tarea, lee en este orden:
 ## 1. El proyecto en 10 líneas
 
 - **Cliente ficticio:** JuegAlmi, tienda que **vende y alquila videojuegos**, **vende y repara consolas** y **vende y repara móviles/tablets**.
-- **Entregamos una demo** con tres piezas en un monorepo (`github.com/landerdam-lab/JuegalmiDam2`):
-  - `api/`: **API REST en Symfony + MySQL + Doctrine**, con **tokens** y **HTTPS**
-  - `android/`: **app Android nativa** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
-  - `ionic/`: **app híbrida Ionic + Angular** (iOS / "Windows Phone"), **con el mismo diseño** que la de Android
+- **Entregamos una demo** con cuatro piezas en un monorepo (`github.com/landerdam-lab/JuegalmiDam2`):
+  - `api/`: **API REST en Symfony + MariaDB + Doctrine**, con **tokens** y **HTTPS**
+  - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
+  - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
+  - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, usuarios, técnicos, pedidos, reparaciones, tienda). Bóveda: `12-Web/`
+- ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
   - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
@@ -72,9 +74,9 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 1. **No cierres pendientes por tu cuenta.** Si la tarea depende de un P-xx abierto (lenguaje de Android, formato de las imágenes, nombre de `movil.tipo`…), dilo, da tu recomendación argumentada y **pregunta** antes de seguir.
 2. **Respeta los estados.** Lo marcado como `propuesta` (endpoints, pantallas, librerías, plan) es una sugerencia: antes de implementarlo, avisa de que es una propuesta. Si el usuario lo aprueba, cambia la nota a `decidido` y crea un ADR.
-3. **Las dos apps deben ser iguales** (la rúbrica lo exige). Toda pantalla tiene un ID `PT-xx` en `08-Diseno-UI/Mapa de pantallas.md`. Si cambias una pantalla en una app, indica qué hay que cambiar en la otra.
-4. **La API es el contrato.** Las apps nunca acceden a MySQL directamente. Si cambias un endpoint o el JSON, actualiza `05-API/Endpoints.md` y avisa del impacto en Android **y** en Ionic.
-5. **Todo con token**, salvo `POST /api/login` y `POST /api/registro` (nivel 5 de la rúbrica). Comprueba también el rol y que el recurso sea del usuario.
+3. **Las dos apps deben ser iguales** (la rúbrica lo exige) y **solo para clientes**. Toda pantalla tiene un ID `PT-xx` (apps) o `PW-xx` (web) en `08-Diseno-UI/Mapa de pantallas.md`. Si cambias una pantalla en una app, indica qué hay que cambiar en la otra. Si alguien pide una función de gestión en una app, recuerda que va en la web (ADR-024).
+4. **La API es el contrato.** Ni las apps ni la web acceden a MariaDB directamente. Si cambias un endpoint o el JSON, actualiza `05-API/Endpoints.md` y avisa del impacto en Android, en Ionic **y** en la web.
+5. **Todo con token**, salvo `POST /api/login` y `POST /api/registro` (nivel 5 de la rúbrica). Comprueba también el rol y que el recurso sea del usuario. (El catálogo público de la web está pendiente del profesor: P-35.)
 6. **Nada bloquea el hilo principal**: red, imágenes y procesado siempre en segundo plano.
 7. **Separa la vista de los datos**: vista → repositorio/servicio → cliente HTTP.
 8. **La lógica de negocio vive en la API** (stock, copias disponibles, precios, permisos). Las apps validan para avisar antes, pero quien decide es la API.
@@ -87,7 +89,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 4. Git (resumen; detalle en `02-Equipo/Flujo de trabajo Git.md`)
 
-- Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
+- Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `web` (aún no existe: crearla desde `main`) · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
 - ⚠️ Las ramas `api`, `android` e `ionic` se crearon antes que los docs: **la primera vez, haz `git merge origin/main`**.
 - **No hagas commit, push ni PR si el usuario no lo pide.** Nunca push directo a `main`. Nunca `--force` sobre ramas compartidas.
 - Commits en **español**, cortos y descriptivos, con los IDs de requisito cuando los haya: `Añade login con token (RT-04)`.
@@ -111,12 +113,15 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 6. Avisos que más errores van a evitar
 
-- **A-03:** `producto.tipo` (discriminador de Doctrine) y `movil.tipo` chocan. No crees la entidad `Movil` con una propiedad `tipo` hasta que se decida P-12.
-- **A-01:** `linea_pedido` usa `id` + `UNIQUE(pedido_id, producto_id)` según `paso-a-tablas.md`, pero el diagrama muestra la PK compuesta. Pendiente: P-09.
-- **A-11:** Windows Phone ya no existe; iOS necesita un Mac. La app Ionic se compilará previsiblemente como APK (P-08).
+- **A-03 ✅ (ADR-012):** el campo móvil/tablet se llama `movil.formato`; `tipo` es solo el discriminador de `producto`.
+- **A-01 ✅ (ADR-013, ADR-023):** `linea_pedido` usa un `id` propio + UNIQUE (detalle en `04-Datos/Tablas/linea_pedido.md`), igual en el diagrama y en el código.
+- **A-09:** Doctrine **no genera los CHECK ni los triggers**: van a mano en una migración (`04-Datos/Diseno fisico MariaDB.md`). Nunca `doctrine:schema:create`/`update`.
+- **A-11 ✅ (ADR-024):** las dos apps son de Android; la de Ionic se compila como APK con Capacitor.
 - **A-12:** AsyncTask está obsoleta. Usar Executors/Handler o corrutinas y justificarlo.
-- **A-13:** "Ubicación en cualquier consulta": pendiente de decidir el alcance (P-04).
-- Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve`. Más en `11-Calidad/Problemas comunes.md`.
+- **A-13 ✅ (ADR-014):** las apps envían `X-Latitud`/`X-Longitud` en cada petición y la API lo guarda en `registro_ubicacion`.
+- **A-27:** se quiere que los técnicos entren en la web, pero en el modelo v3 no tienen login (ADR-023). Pendiente P-36: hasta decidirlo, la web es solo para el admin.
+- **A-28:** el catálogo público de la web choca con "todo con token". Pendiente del profesor (P-35).
+- Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve` y para la web. Más en `11-Calidad/Problemas comunes.md`.
 
 ---
 
@@ -162,6 +167,10 @@ ionic build && npx cap sync android            # APK vía Android Studio
 
 # Android (android/)
 ./gradlew assembleDebug
+
+# Web (web/, Angular)
+npm install && ng serve                        # http://localhost:4200 (la API necesita CORS para este origen)
+ng build
 ```
 
 ---
@@ -171,7 +180,7 @@ ionic build && npx cap sync android            # APK vía Android Studio
 Cada integrante tiene en su **carpeta raíz** (la que contiene `JuegalmiDam2/`, desde donde abre Claude Code) un **`CLAUDE.local.md`** personal, que no se comparte, con:
 
 ```markdown
-Soy <nombre> (GitHub: <usuario>). Mi área principal es <api | android | ionic | docs>.
+Soy <nombre> (GitHub: <usuario>). Mi área principal es <api | android | ionic | web | docs>.
 Firma mis entradas en la bóveda como "<nombre>".
 ```
 
