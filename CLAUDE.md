@@ -179,7 +179,7 @@ Usa ese nombre para firmar las entradas de `Registro de cambios` y `Registro de 
 
 ---
 
-## 10. Design System (sistema «Cartucho») · ⚠️ propuesta
+## 10. Design System (sistema «Cartucho») · ✅ aprobado (ADR-022)
 
 **Regla:** toda UI (Android e Ionic) debe seguir `design/DESIGN.md` y consumir `design/tokens.json`; **prohibidos los colores, fuentes y espaciados hardcodeados**.
 - Fuente única: `design/tokens.json` → `cd design && npm run tokens:build` genera `design/generated/ionic/theme/*.scss` y `design/generated/android/res/**` (no se editan a mano). `npm run tokens:check` comprueba el contraste WCAG AA.

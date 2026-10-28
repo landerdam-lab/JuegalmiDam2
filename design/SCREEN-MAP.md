@@ -1,6 +1,6 @@
 # Mapa de pantallas → implementación (Ionic + Android)
 
-> **Estado: PROPUESTA.** Complementa a la lista maestra `08-Diseno-UI/Mapa de pantallas.md` de la bóveda: allí está **qué** muestra cada pantalla; aquí, **cómo** se construye con el sistema «Cartucho».
+> **Estado: APROBADO** el diseño (ADR-022). Las rutas de Ionic y los nombres de Android siguen siendo una sugerencia para quien implemente. Complementa a la lista maestra `08-Diseno-UI/Mapa de pantallas.md` de la bóveda: allí está **qué** muestra cada pantalla; aquí, **cómo** se construye con el sistema «Cartucho».
 > Diseños: `screens/<nn>-<nombre>-light.png` y `-dark.png` (+ `.html` de referencia de Stitch). Las rutas de Ionic y los nombres de Android son una **propuesta** que sigue `07-Ionic/Ionic - vision general.md` y `06-Android/Android - vision general.md`.
 
 **Comunes a todas las pantallas:**
