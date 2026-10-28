@@ -51,7 +51,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
-- **Modelo de datos:** 14 tablas (ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola`.
+- **Modelo de datos:** 17 tablas, E-R sin ciclos (v3, ADR-023; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola`.
 
 ---
 
@@ -101,7 +101,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 - Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `linea_pedido`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
 - BBDD `snake_case` · PHP y JSON `camelCase` (JSON pendiente de confirmar: P-13) · rutas `/api/<recurso-en-plural-kebab>`.
-- Enumerados **idénticos** en BBDD, API y apps: `rol` ∈ {cliente, tecnico, admin} · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
+- Enumerados **idénticos** en BBDD, API y apps: `rol` ∈ {cliente, admin} (los técnicos están en la tabla `tecnico` y no inician sesión) · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
 - Errores de la API: `{"error": {"codigo", "mensaje", "campos"}}` con 400/401/403/404/409/422 (ver `05-API/Formato JSON y errores.md`). Ante un **401**, las apps cierran la sesión y vuelven al login.
 - Fechas ISO 8601 · dinero `DECIMAL(10,2)` · coordenadas `DECIMAL(10,7)`.
 - Textos visibles al usuario en español; en Android, en `strings.xml`.
