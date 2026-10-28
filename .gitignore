@@ -17,6 +17,11 @@ ionic/www/
 ionic/.angular/
 ionic/dist/
 
+# Web Angular (web/)
+web/node_modules/
+web/.angular/
+web/dist/
+
 # Android (android/)
 android/.gradle/
 android/build/
