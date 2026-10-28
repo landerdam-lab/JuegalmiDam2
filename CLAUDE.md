@@ -53,7 +53,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
-- **Modelo de datos:** 17 tablas, E-R sin ciclos (v3, ADR-023; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola`.
+- **Modelo de datos:** 20 tablas, sin redundancia (v5, ADR-023, ADR-032 y ADR-033; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador` · `linea_pedido` → `compra` / `alquiler`.
 
 ---
 
@@ -103,7 +103,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 - Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `linea_pedido`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
 - BBDD `snake_case` · PHP y JSON `camelCase` (JSON pendiente de confirmar: P-13) · rutas `/api/<recurso-en-plural-kebab>`.
-- Enumerados **idénticos** en BBDD, API y apps: `rol` ∈ {cliente, admin} (los técnicos están en la tabla `tecnico` y no inician sesión) · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
+- Enumerados **idénticos** en BBDD, API y apps: `usuario.tipo` ∈ {cliente, trabajador} · `trabajador.puesto` ∈ {tecnico, admin} (roles `ROLE_CLIENTE`, `ROLE_TECNICO`, `ROLE_ADMIN`) · `servicio.linea` ∈ {videojuegos, consolas, telefonia} · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
 - Errores de la API: `{"error": {"codigo", "mensaje", "campos"}}` con 400/401/403/404/409/422 (ver `05-API/Formato JSON y errores.md`). Ante un **401**, las apps cierran la sesión y vuelven al login.
 - Fechas ISO 8601 · dinero `DECIMAL(10,2)` · coordenadas `DECIMAL(10,7)`.
 - Textos visibles al usuario en español; en Android, en `strings.xml`.
@@ -114,12 +114,12 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 ## 6. Avisos que más errores van a evitar
 
 - **A-03 ✅ (ADR-012):** el campo móvil/tablet se llama `movil.formato`; `tipo` es solo el discriminador de `producto`.
-- **A-01 ✅ (ADR-013, ADR-023):** `linea_pedido` usa un `id` propio + UNIQUE (detalle en `04-Datos/Tablas/linea_pedido.md`), igual en el diagrama y en el código.
+- **A-01 ✅ (ADR-013, ADR-033):** `linea_pedido` es una entidad con `id` propio + UNIQUE(pedido_id, producto_id, tipo), especializada en `compra` y `alquiler` (detalle en `04-Datos/Tablas/linea_pedido.md`).
 - **A-09:** Doctrine **no genera los CHECK ni los triggers**: van a mano en una migración (`04-Datos/Diseno fisico MariaDB.md`). Nunca `doctrine:schema:create`/`update`.
 - **A-11 ✅ (ADR-024):** las dos apps son de Android; la de Ionic se compila como APK con Capacitor.
 - **A-12:** AsyncTask está obsoleta. Usar Executors/Handler o corrutinas y justificarlo.
 - **A-13 ✅ (ADR-014):** las apps envían `X-Latitud`/`X-Longitud` en cada petición y la API lo guarda en `registro_ubicacion`.
-- **A-27:** se quiere que los técnicos entren en la web, pero en el modelo v3 no tienen login (ADR-023). Pendiente P-36: hasta decidirlo, la web es solo para el admin.
+- **A-27 ✅ (ADR-032):** los técnicos son `trabajador` con `puesto = tecnico` e inician sesión en la web (solo ven las reparaciones de su departamento).
 - **A-28:** el catálogo público de la web choca con "todo con token". Pendiente del profesor (P-35).
 - Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve` y para la web. Más en `11-Calidad/Problemas comunes.md`.
 
