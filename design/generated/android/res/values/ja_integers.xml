@@ -5,4 +5,5 @@
     <integer name="ja_duracion_base">200</integer>
     <integer name="ja_duracion_lenta">320</integer>
     <integer name="ja_duracion_enfasis">450</integer>
+    <integer name="ja_duracion_escalonado">80</integer>
 </resources>

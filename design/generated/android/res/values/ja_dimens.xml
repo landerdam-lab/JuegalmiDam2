@@ -18,6 +18,7 @@
     <dimen name="ja_radio_l">16dp</dimen>
     <dimen name="ja_radio_xl">24dp</dimen>
     <dimen name="ja_radio_completo">999dp</dimen>
+    <dimen name="ja_radio_segmento">2dp</dimen>
     <dimen name="ja_muesca_tarjeta">16dp</dimen>
     <dimen name="ja_muesca_destacada">24dp</dimen>
     <dimen name="ja_muesca_chip_precio">6dp</dimen>
@@ -26,6 +27,7 @@
     <dimen name="ja_elevacion_1">1dp</dimen>
     <dimen name="ja_elevacion_2">3dp</dimen>
     <dimen name="ja_elevacion_3">8dp</dimen>
+    <dimen name="ja_elevacion_muesca">3dp</dimen>
     <dimen name="ja_borde_fino">1dp</dimen>
     <dimen name="ja_borde_grueso">2dp</dimen>
     <dimen name="ja_borde_foco">3dp</dimen>

@@ -163,6 +163,7 @@
   --ja-radio-l: 16px;
   --ja-radio-xl: 24px;
   --ja-radio-completo: 999px;
+  --ja-radio-segmento: 2px;
   --ja-muesca-tarjeta: 16px;
   --ja-muesca-destacada: 24px;
   --ja-muesca-chip-precio: 6px;
@@ -171,6 +172,7 @@
   --ja-elevacion-1: 0 1px 2px rgba(28,21,48,.08), 0 1px 3px rgba(28,21,48,.06);
   --ja-elevacion-2: 0 2px 6px rgba(28,21,48,.10), 0 4px 12px rgba(28,21,48,.06);
   --ja-elevacion-3: 0 8px 24px rgba(28,21,48,.16);
+  --ja-elevacion-muesca: drop-shadow(0 2px 6px rgba(28,21,48,.10));
   --ja-borde-fino: 1px;
   --ja-borde-grueso: 2px;
   --ja-borde-foco: 3px;
@@ -178,6 +180,7 @@
   --ja-duracion-base: 200ms;
   --ja-duracion-lenta: 320ms;
   --ja-duracion-enfasis: 450ms;
+  --ja-duracion-escalonado: 80ms;
   --ja-curva-estandar: cubic-bezier(0.2, 0, 0, 1);
   --ja-curva-entrada: cubic-bezier(0, 0, 0, 1);
   --ja-curva-salida: cubic-bezier(0.3, 0, 1, 1);
@@ -363,4 +366,5 @@
   --ja-elevacion-1: none;
   --ja-elevacion-2: none;
   --ja-elevacion-3: none;
+  --ja-elevacion-muesca: none;
 }
