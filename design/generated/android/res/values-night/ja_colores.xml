@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano. -->
+<resources>
+    <color name="ja_fondo">#120D20</color>
+    <color name="ja_superficie">#1C1630</color>
+    <color name="ja_superficie_2">#272042</color>
+    <color name="ja_superficie_3">#352C55</color>
+    <color name="ja_borde">#3E355E</color>
+    <color name="ja_borde_campo">#7D73A3</color>
+    <color name="ja_texto">#F4F0FB</color>
+    <color name="ja_texto_2">#BDB4D2</color>
+    <color name="ja_texto_3">#A097B8</color>
+    <color name="ja_primario">#FFC629</color>
+    <color name="ja_primario_pulsado">#FFD45E</color>
+    <color name="ja_sobre_primario">#1C1530</color>
+    <color name="ja_marca">#B9A0FF</color>
+    <color name="ja_marca_suave">#2E2552</color>
+    <color name="ja_sobre_marca">#1C1530</color>
+    <color name="ja_alquiler">#5BD5DE</color>
+    <color name="ja_alquiler_suave">#103A40</color>
+    <color name="ja_exito">#5BD594</color>
+    <color name="ja_exito_suave">#123A26</color>
+    <color name="ja_aviso">#FFBE5C</color>
+    <color name="ja_aviso_suave">#40300F</color>
+    <color name="ja_error">#FF7A86</color>
+    <color name="ja_error_suave">#45161D</color>
+    <color name="ja_info">#8AAEFF</color>
+    <color name="ja_info_suave">#1B2A55</color>
+    <color name="ja_neutro_estado">#B4ADC7</color>
+    <color name="ja_neutro_estado_suave">#2C2640</color>
+    <color name="ja_velo">#A3000000</color>
+    <color name="ja_foco">#FFC629</color>
+</resources>
