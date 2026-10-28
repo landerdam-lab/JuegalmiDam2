@@ -1,0 +1,122 @@
+// GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano.
+// Firma del sistema «Cartucho». Importar en src/global.scss: @use './theme/cartucho';
+
+// ── Tipografía ──
+.ja-display { font: var(--ja-tipo-display); letter-spacing: var(--ja-tipo-display-espaciado); }
+.ja-titular-l { font: var(--ja-tipo-titular-l); letter-spacing: var(--ja-tipo-titular-l-espaciado); }
+.ja-titular-m { font: var(--ja-tipo-titular-m); letter-spacing: var(--ja-tipo-titular-m-espaciado); }
+.ja-titulo { font: var(--ja-tipo-titulo); letter-spacing: var(--ja-tipo-titulo-espaciado); }
+.ja-subtitulo { font: var(--ja-tipo-subtitulo); letter-spacing: var(--ja-tipo-subtitulo-espaciado); }
+.ja-cuerpo-l { font: var(--ja-tipo-cuerpo-l); letter-spacing: var(--ja-tipo-cuerpo-l-espaciado); }
+.ja-cuerpo { font: var(--ja-tipo-cuerpo); letter-spacing: var(--ja-tipo-cuerpo-espaciado); }
+.ja-etiqueta { font: var(--ja-tipo-etiqueta); letter-spacing: var(--ja-tipo-etiqueta-espaciado); }
+.ja-etiqueta-s { font: var(--ja-tipo-etiqueta-s); letter-spacing: var(--ja-tipo-etiqueta-s-espaciado); }
+.ja-precio { font: var(--ja-tipo-precio); letter-spacing: var(--ja-tipo-precio-espaciado); }
+.ja-precio-s { font: var(--ja-tipo-precio-s); letter-spacing: var(--ja-tipo-precio-s-espaciado); }
+.ja-codigo { font: var(--ja-tipo-codigo); letter-spacing: var(--ja-tipo-codigo-espaciado); }
+
+// ── Muesca: esquina superior derecha cortada a 45° ──
+// clip-path recorta también la sombra: si la tarjeta lleva sombra, pon la sombra en un
+// contenedor exterior con filter: drop-shadow(...) (la sigue la forma recortada).
+@mixin muesca($corte: var(--ja-muesca-tarjeta), $radio: var(--ja-radio-l)) {
+  border-radius: $radio;
+  clip-path: polygon(0 0, calc(100% - #{$corte}) 0, 100% #{$corte}, 100% 100%, 0 100%);
+}
+.ja-muesca { @include muesca(); }
+.ja-muesca--destacada { @include muesca(var(--ja-muesca-destacada), var(--ja-radio-l)); }
+.ja-sombra { filter: drop-shadow(0 2px 6px rgba(28, 21, 48, .10)); }
+.ion-palette-dark .ja-sombra { filter: none; }
+
+// ion-card con muesca (equivale a MaterialCardView con ShapeAppearance.JuegAlmi.Muesca)
+ion-card.ja-tarjeta {
+  @include muesca();
+  margin: 0;
+  box-shadow: none;
+  border: var(--ja-borde-fino) solid var(--ja-borde);
+  background: var(--ja-superficie);
+}
+
+// ── Etiqueta de precio (ticket) ──
+.ja-precio {
+  font: var(--ja-tipo-precio);
+  letter-spacing: var(--ja-tipo-precio-espaciado);
+  font-variant-numeric: tabular-nums;
+  color: var(--ja-texto);
+}
+.ja-chip-alquiler {
+  display: inline-flex; align-items: center; gap: var(--ja-espacio-1);
+  padding: 2px var(--ja-espacio-2);
+  border-radius: var(--ja-radio-completo);
+  font: var(--ja-tipo-etiqueta-s);
+  color: var(--ja-alquiler); background: var(--ja-alquiler-suave);
+}
+
+// ── Barra de vida (progreso por segmentos) ──
+// <div class="ja-vida" style="--color: var(--ja-aviso)" role="progressbar" aria-valuenow="2" aria-valuemax="4">
+//   <span class="lleno"></span><span class="lleno"></span><span></span><span></span>
+// </div>
+// Android: un LinearLayout horizontal con N View de peso 1 (o una vista propia que dibuje N rectángulos).
+.ja-vida {
+  --color: var(--ja-marca);
+  display: flex;
+  gap: var(--ja-espacio-1);
+}
+.ja-vida > span {
+  flex: 1;
+  height: var(--ja-tamano-segmento-vida);
+  border-radius: 2px;
+  background: var(--ja-superficie-3);
+  transition: background-color var(--ja-duracion-base) var(--ja-curva-estandar);
+}
+.ja-vida > span.lleno { background: var(--color); }
+// Se rellenan uno detrás de otro, a saltos (como una barra de vida)
+@for $i from 2 through 5 {
+  .ja-vida > span:nth-child(#{$i}) { transition-delay: calc(#{$i - 1} * 80ms); }
+}
+
+// ── Pastillas de estado (color + icono + texto; nunca solo color) ──
+.ja-estado {
+  display: inline-flex; align-items: center; gap: var(--ja-espacio-1);
+  min-height: 24px; padding: 2px var(--ja-espacio-2);
+  border-radius: var(--ja-radio-completo);
+  font: var(--ja-tipo-etiqueta-s);
+}
+.ja-estado--reparacion-recibida { color: var(--ja-neutro-estado); background: var(--ja-neutro-estado-suave); }
+.ja-estado--reparacion-en_reparacion { color: var(--ja-aviso); background: var(--ja-aviso-suave); }
+.ja-estado--reparacion-lista { color: var(--ja-info); background: var(--ja-info-suave); }
+.ja-estado--reparacion-entregada { color: var(--ja-exito); background: var(--ja-exito-suave); }
+.ja-estado--reparacion-cancelada { color: var(--ja-error); background: var(--ja-error-suave); }
+.ja-estado--pedido-pendiente { color: var(--ja-aviso); background: var(--ja-aviso-suave); }
+.ja-estado--pedido-preparado { color: var(--ja-info); background: var(--ja-info-suave); }
+.ja-estado--pedido-entregado { color: var(--ja-exito); background: var(--ja-exito-suave); }
+.ja-estado--pedido-cancelado { color: var(--ja-neutro-estado); background: var(--ja-neutro-estado-suave); }
+.ja-estado--alquiler-activo { color: var(--ja-alquiler); background: var(--ja-alquiler-suave); }
+.ja-estado--alquiler-retrasado { color: var(--ja-error); background: var(--ja-error-suave); }
+.ja-estado--alquiler-devuelto { color: var(--ja-neutro-estado); background: var(--ja-neutro-estado-suave); }
+.ja-estado--stock-disponible { color: var(--ja-exito); background: var(--ja-exito-suave); }
+.ja-estado--stock-pocas-unidades { color: var(--ja-aviso); background: var(--ja-aviso-suave); }
+.ja-estado--stock-agotado { color: var(--ja-neutro-estado); background: var(--ja-neutro-estado-suave); }
+
+// ── Botones ──
+ion-button {
+  --border-radius: var(--ja-radio-m);
+  min-height: var(--ja-tamano-boton-alto);
+  font: var(--ja-tipo-etiqueta);
+  text-transform: none;
+  letter-spacing: var(--ja-tipo-etiqueta-espaciado);
+}
+
+// ── Foco visible ──
+:focus-visible { outline: var(--ja-borde-foco) solid var(--ja-foco); outline-offset: 2px; }
+
+// ── Movimiento: «insertar» al añadir al carrito ──
+@keyframes ja-insertar {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(4px) scale(.98); }
+  100% { transform: translateY(0) scale(1); }
+}
+.ja-insertar { animation: ja-insertar var(--ja-duracion-lenta) var(--ja-curva-insertar); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
