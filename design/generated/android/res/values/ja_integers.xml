@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano. -->
+<resources>
+    <integer name="ja_duracion_rapida">120</integer>
+    <integer name="ja_duracion_base">200</integer>
+    <integer name="ja_duracion_lenta">320</integer>
+    <integer name="ja_duracion_enfasis">450</integer>
+    <integer name="ja_duracion_escalonado">80</integer>
+</resources>

@@ -122,6 +122,9 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 - **A-27 ✅ (ADR-032):** los técnicos son `trabajador` con `puesto = tecnico` e inician sesión en la web (solo ven las reparaciones de su departamento).
 - **A-28 ✅ (ADR-028):** el catálogo y la tienda de la web son públicos (sin token), confirmado por el profesor; las apps, todo con token.
 - **A-30:** `docs/entrega/dossier-especificacion-tecnica.pdf` describe el modelo v2: no lo uses como referencia del modelo (manda `04-Datos/` de la bóveda).
+- **Stack decidido (ADR-027 y ADR-031):** Android en **Java** con layouts **XML** · **PHP 8.3** y **Symfony 7.4** · Angular, Ionic y Capacitor en su **última versión estable**, fijada al crear cada proyecto.
+- **Permisos (ADR-029):** el admin solo administra (no compra ni alquila; para comprar usa otra cuenta `cliente`) y solo se alquilan videojuegos.
+- **Servicios (ADR-030):** 3 pestañas (Videojuegos · Consolas · Telefonía) con `servicio.linea`, sin relación con `departamento`.
 - Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve` y para la web. Más en `11-Calidad/Problemas comunes.md`.
 
 ---
@@ -186,3 +189,14 @@ Firma mis entradas en la bóveda como "<nombre>".
 ```
 
 Usa ese nombre para firmar las entradas de `Registro de cambios` y `Registro de uso de IA`, y ten en cuenta su área para avisar cuando una tarea toque la de otra persona.
+
+---
+
+## 10. Design System (sistema «Cartucho») · ✅ aprobado (ADR-022)
+
+**Regla:** toda UI (Android, Ionic y la web) debe seguir `design/DESIGN.md` y consumir `design/tokens.json`; **prohibidos los colores, fuentes y espaciados hardcodeados**.
+- Fuente única: `design/tokens.json` → `cd design && npm run tokens:build` genera `design/generated/ionic/theme/*.scss` y `design/generated/android/res/**` (no se editan a mano). `npm run tokens:check` comprueba el contraste WCAG AA.
+- En código: Ionic y web `var(--ja-<token>)` (la web reutiliza las variables CSS del tema de Ionic; propuesta) / `--ion-color-*` · Android `@color/ja_<token>`, `@dimen/ja_*`, `TextAppearance.JuegAlmi.*`, `Widget.JuegAlmi.*`.
+- Firma visual: **muesca** (esquina superior derecha cortada a 45°) en tarjetas, hojas, drawer y miniaturas; **barra de vida** segmentada para el progreso. Un solo botón amarillo por pantalla.
+- Cada pantalla `PT-xx` tiene su diseño en `design/screens/` y su receta en `design/SCREEN-MAP.md`. Proyecto de Stitch: `design/STITCH.md`.
+- No mostrar datos que no existen en el modelo (valoraciones, favoritos, "Exclusivo": A-08).
