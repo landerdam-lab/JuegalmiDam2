@@ -4,7 +4,7 @@
 <root>
 <mxCell id="0" />
 <mxCell id="1" parent="0" />
-<mxCell id="n2" value="&lt;b&gt;JuegAlmi – Diagrama Entidad-Relación&lt;/b&gt; (v3, 2026-10-28) · &lt;b&gt;sin ciclos&lt;/b&gt;: el diagrama es un árbol, cada dato se guarda en un solo sitio&lt;br&gt;Subrayado = identificador · elipse discontinua = atributo derivado (no se guarda) · rombo = relación · triángulo = especialización ES UN&lt;br&gt;Cardinalidad &lt;b&gt;(mín,máx)&lt;/b&gt; junto a cada entidad = cuántas ocurrencias de ESA entidad se relacionan con UNA de la otra&lt;br&gt;Verde = entidad nueva respecto a la v1 · morado = subtipo" style="text;html=1;align=left;verticalAlign=top;fontSize=14;" vertex="1" parent="1">
+<mxCell id="n2" value="&lt;b&gt;JuegAlmi – Diagrama Entidad-Relación&lt;/b&gt; (v6, 2026-10-29) · &lt;b&gt;sin redundancia&lt;/b&gt;: cada dato se guarda en un solo sitio&lt;br&gt;Subrayado = identificador · elipse discontinua = atributo derivado (no se guarda) · rombo = relación · triángulo = especialización ES UN&lt;br&gt;Cardinalidad &lt;b&gt;(mín,máx)&lt;/b&gt; junto a cada entidad = cuántas ocurrencias de ESA entidad se relacionan con UNA de la otra&lt;br&gt;Verde = entidad nueva respecto a la v1 · morado = subtipo" style="text;html=1;align=left;verticalAlign=top;fontSize=14;" vertex="1" parent="1">
 <mxGeometry x="-200" y="-120" width="1500" height="90" as="geometry" />
 </mxCell>
 <mxCell id="n3" value="USUARIO" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
@@ -88,30 +88,6 @@
 <mxGeometry x="1035" y="133.0" width="115" height="34" as="geometry" />
 </mxCell>
 <mxCell id="n28" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n27">
-<mxGeometry x="-0.6" relative="1" as="geometry">
-<mxPoint as="offset" />
-</mxGeometry>
-</mxCell>
-<mxCell id="n29" value="dni" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="1155" y="133.0" width="115" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n30" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n29">
-<mxGeometry x="-0.6" relative="1" as="geometry">
-<mxPoint as="offset" />
-</mxGeometry>
-</mxCell>
-<mxCell id="n31" value="rol" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="1275" y="133.0" width="115" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n32" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n31">
-<mxGeometry x="-0.6" relative="1" as="geometry">
-<mxPoint as="offset" />
-</mxGeometry>
-</mxCell>
-<mxCell id="n33" value="foto" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="1395" y="133.0" width="115" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n34" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n33">
 <mxGeometry x="-0.6" relative="1" as="geometry">
 <mxPoint as="offset" />
 </mxGeometry>
@@ -638,23 +614,10 @@
 <mxPoint as="offset" />
 </mxGeometry>
 </mxCell>
-<mxCell id="n198" value="ofrece&lt;br&gt;&lt;font style='font-size:10px'&gt;1:N&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-<mxGeometry x="2060.0" y="295.0" width="130" height="70" as="geometry" />
-</mxCell>
-<mxCell id="n199" value="(1,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n6" target="n198">
-<mxGeometry x="-0.6" relative="1" as="geometry">
-<mxPoint as="offset" />
-</mxGeometry>
-</mxCell>
-<mxCell id="n200" value="(1,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n7" target="n198">
-<mxGeometry x="-0.6" relative="1" as="geometry">
-<mxPoint as="offset" />
-</mxGeometry>
-</mxCell>
 <mxCell id="n201" value="realiza&lt;br&gt;&lt;font style='font-size:10px'&gt;1:N&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-<mxGeometry x="585.0" y="605.0" width="130" height="70" as="geometry" />
+<mxGeometry x="492" y="732" width="130" height="70" as="geometry" />
 </mxCell>
-<mxCell id="n202" value="(1,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n201">
+<mxCell id="n202" value="(1,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n403" target="n201">
 <mxGeometry x="-0.6" relative="1" as="geometry">
 <mxPoint as="offset" />
 </mxGeometry>
@@ -665,9 +628,9 @@
 </mxGeometry>
 </mxCell>
 <mxCell id="n207" value="solicita&lt;br&gt;&lt;font style='font-size:10px'&gt;1:N&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-<mxGeometry x="1275.0" y="605.0" width="130" height="70" as="geometry" />
+<mxGeometry x="1227" y="732" width="130" height="70" as="geometry" />
 </mxCell>
-<mxCell id="n208" value="(1,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n207">
+<mxCell id="n208" value="(1,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n403" target="n207">
 <mxGeometry x="-0.6" relative="1" as="geometry">
 <mxPoint as="offset" />
 </mxGeometry>
@@ -690,7 +653,7 @@
 <mxPoint as="offset" />
 </mxGeometry>
 </mxCell>
-<mxCell id="n216" value="contiene&lt;br&gt;&lt;font style='font-size:10px'&gt;N:M&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+<mxCell id="n216" value="compra&lt;br&gt;&lt;font style='font-size:10px'&gt;N:M&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
 <mxGeometry x="495.0" y="1215.0" width="130" height="70" as="geometry" />
 </mxCell>
 <mxCell id="n217" value="(1,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n8" target="n216">
@@ -698,7 +661,7 @@
 <mxPoint as="offset" />
 </mxGeometry>
 </mxCell>
-<mxCell id="n218" value="(1,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n12" target="n216">
+<mxCell id="n218" value="(0,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n12" target="n216">
 <mxGeometry x="-0.6" relative="1" as="geometry">
 <mxPoint as="offset" />
 </mxGeometry>
@@ -784,61 +747,19 @@
 <mxPoint as="offset" />
 </mxGeometry>
 </mxCell>
-<mxCell id="n241" value="&lt;b&gt;contiene&lt;/b&gt;: cada línea del pedido es una &lt;b&gt;compra&lt;/b&gt; o un &lt;b&gt;alquiler&lt;/b&gt; (modalidad). Solo los videojuegos se alquilan; fecha_fin y fecha_devolucion solo existen en los alquileres. El alquiler empieza en la fecha del pedido.&lt;br&gt;&lt;b&gt;asignada&lt;/b&gt;: al crear la reparación, la API asigna un técnico del departamento elegido (Telefonía o Consolas). El departamento de la reparación se obtiene del técnico: no se guarda dos veces.&lt;br&gt;La ubicación del usuario solo se guarda en REGISTRO_UBICACION (cada petición a la API, también pedidos y reparaciones).&lt;br&gt;TOKEN, REGISTRO_UBICACION y FOTO_TIENDA son débiles por existencia (se borran en cascada con su dueño).&lt;br&gt;Derivados: total = Σ cantidad × precio_unitario (en alquiler, × días) · estado_alquiler según fechas · copias_disponibles = copias_alquiler − alquileres sin devolver." style="text;html=1;align=left;verticalAlign=top;fontSize=12;" vertex="1" parent="1">
-<mxGeometry x="1700" y="2250" width="1000" height="110" as="geometry" />
+<mxCell id="n241" value="&lt;b&gt;USUARIO ES UN&lt;/b&gt; CLIENTE o TRABAJADOR (total y disjunta): todos inician sesión. Solo los clientes hacen pedidos y piden reparaciones; un TRABAJADOR es técnico (con departamento) o admin (sin departamento).&lt;br&gt;&lt;b&gt;compra&lt;/b&gt; (PEDIDO–PRODUCTO) y &lt;b&gt;alquila&lt;/b&gt; (PEDIDO–VIDEOJUEGO): un pedido puede comprar y alquilar a la vez. Solo los videojuegos se alquilan porque &lt;b&gt;alquila&lt;/b&gt; va a VIDEOJUEGO; cada alquiler es de una copia y empieza en la fecha del pedido. Los alquileres de un pedido cancelado no ocupan copias.&lt;br&gt;&lt;b&gt;asignada&lt;/b&gt;: al crear la reparación, la API asigna un técnico del departamento elegido (Telefonía o Consolas). El departamento de la reparación se obtiene del técnico: no se guarda dos veces.&lt;br&gt;&lt;b&gt;SERVICIO&lt;/b&gt; no se relaciona con nada: su linea (videojuegos, consolas, telefonia) es la pestaña de la tienda.&lt;br&gt;La ubicación del usuario solo se guarda en REGISTRO_UBICACION (cada petición a la API, también pedidos y reparaciones).&lt;br&gt;TOKEN, REGISTRO_UBICACION y FOTO_TIENDA son débiles por existencia (se borran en cascada con su dueño).&lt;br&gt;Derivados: total = Σ cantidad × precio_unitario + Σ precio_dia × días · estado_alquiler según fechas · copias_disponibles = copias_alquiler − alquileres sin devolver." style="text;html=1;align=left;verticalAlign=top;fontSize=12;whiteSpace=wrap;" vertex="1" parent="1">
+<mxGeometry x="1700" y="2250" width="1150" height="190" as="geometry" />
 </mxCell>
-<mxCell id="n301" value="TECNICO" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+<mxCell id="n301" value="TRABAJADOR" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
 <mxGeometry x="1715" y="615" width="170" height="50" as="geometry" />
-</mxCell>
-<mxCell id="n302" value="id" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fontStyle=4;" vertex="1" parent="1">
-<mxGeometry x="2015" y="560" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n303" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n301" target="n302">
-<mxGeometry relative="1" as="geometry" />
-</mxCell>
-<mxCell id="n304" value="nombre" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="2015" y="604" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n305" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n301" target="n304">
-<mxGeometry relative="1" as="geometry" />
-</mxCell>
-<mxCell id="n306" value="telefono" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="2015" y="648" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n307" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n301" target="n306">
-<mxGeometry relative="1" as="geometry" />
 </mxCell>
 <mxCell id="n308" value="pertenece&lt;br&gt;&lt;b&gt;1:N&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
 <mxGeometry x="1735" y="440" width="130" height="70" as="geometry" />
 </mxCell>
-<mxCell id="n309" value="(1,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n6" target="n308">
+<mxCell id="n309" value="(0,1)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n6" target="n308">
 <mxGeometry relative="1" as="geometry" />
 </mxCell>
 <mxCell id="n310" value="(1,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n301" target="n308">
-<mxGeometry relative="1" as="geometry" />
-</mxCell>
-<mxCell id="n311" value="modalidad" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="265" y="1305" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n312" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n216" target="n311">
-<mxGeometry relative="1" as="geometry" />
-</mxCell>
-<mxCell id="n313" value="fecha_fin" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="265" y="1351" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n314" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n216" target="n313">
-<mxGeometry relative="1" as="geometry" />
-</mxCell>
-<mxCell id="n315" value="fecha_devolucion" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="265" y="1397" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n316" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n216" target="n315">
-<mxGeometry relative="1" as="geometry" />
-</mxCell>
-<mxCell id="n317" value="estado_alquiler" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;dashed=1;fontStyle=2;" vertex="1" parent="1">
-<mxGeometry x="265" y="1443" width="130" height="34" as="geometry" />
-</mxCell>
-<mxCell id="n318" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n216" target="n317">
 <mxGeometry relative="1" as="geometry" />
 </mxCell>
 <mxCell id="n319" value="apellidos" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
@@ -848,9 +769,91 @@
 <mxGeometry relative="1" as="geometry" />
 </mxCell>
 <mxCell id="n321" value="activo" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
-<mxGeometry x="1515" y="133.0" width="115" height="34" as="geometry" />
+<mxGeometry x="1155" y="133.0" width="115" height="34" as="geometry" />
 </mxCell>
 <mxCell id="n322" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n321">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n401" value="" style="triangle;whiteSpace=wrap;html=1;direction=south;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+<mxGeometry x="965" y="400" width="70" height="60" as="geometry" />
+</mxCell>
+<mxCell id="n402" value="&lt;b&gt;ES UN&lt;/b&gt;&lt;br&gt;(total, disjunta)" style="text;html=1;align=left;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="1045" y="405" width="120" height="40" as="geometry" />
+</mxCell>
+<mxCell id="n403" value="CLIENTE" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+<mxGeometry x="700" y="560" width="170" height="50" as="geometry" />
+</mxCell>
+<mxCell id="n404" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#000000;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n3" target="n401">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n405" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#000000;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n401" target="n403">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n406" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#000000;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n401" target="n301">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n407" value="dni" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="520" y="505" width="115" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n408" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n403" target="n407">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n409" value="foto" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="520" y="555" width="115" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n410" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n403" target="n409">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n411" value="puesto" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="2015" y="620" width="115" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n412" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n301" target="n411">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n413" value="linea" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="2765" y="163" width="115" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n414" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n7" target="n413">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n601" value="alquila&lt;br&gt;&lt;font style='font-size:10px'&gt;N:M&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+<mxGeometry x="1135" y="1300" width="130" height="70" as="geometry" />
+</mxCell>
+<mxCell id="n602" value="(1,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n8" target="n601">
+<mxGeometry relative="1" as="geometry" x="-0.7">
+<mxPoint as="offset" />
+<Array as="points">
+<mxPoint x="1200" y="950" />
+</Array>
+</mxGeometry>
+</mxCell>
+<mxCell id="n603" value="(0,N)" style="endArrow=none;html=1;rounded=0;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n15" target="n601">
+<mxGeometry relative="1" as="geometry" x="-0.7">
+<mxPoint as="offset" />
+</mxGeometry>
+</mxCell>
+<mxCell id="n604" value="precio_dia" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="1300" y="1240" width="130" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n605" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n601" target="n604">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n606" value="fecha_fin" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="1300" y="1284" width="130" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n607" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n601" target="n606">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n608" value="fecha_devolucion" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+<mxGeometry x="1300" y="1328" width="130" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n609" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n601" target="n608">
+<mxGeometry relative="1" as="geometry" />
+</mxCell>
+<mxCell id="n610" value="estado_alquiler" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;dashed=1;fontStyle=2;" vertex="1" parent="1">
+<mxGeometry x="1300" y="1372" width="130" height="34" as="geometry" />
+</mxCell>
+<mxCell id="n611" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;fontStyle=1;fontSize=12;fontColor=#C00000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="n601" target="n610">
 <mxGeometry relative="1" as="geometry" />
 </mxCell>
 </root>
@@ -861,23 +864,23 @@
 <root>
 <mxCell id="0" />
 <mxCell id="1" parent="0" />
-<mxCell id="n242" value="&lt;b&gt;JuegAlmi – Modelo relacional&lt;/b&gt; (v3, 2026-10-28, sin ciclos) · MariaDB · 17 tablas&lt;br&gt;&lt;u&gt;PK&lt;/u&gt; · FK → tabla (acción ON DELETE; ON UPDATE siempre RESTRICT) · UQ = único · ? = admite NULL · CHECK = regla en la BBDD · TRG = regla con trigger · Verde = tabla nueva" style="text;html=1;align=left;verticalAlign=top;fontSize=14;" vertex="1" parent="1">
+<mxCell id="n242" value="&lt;b&gt;JuegAlmi – Modelo relacional&lt;/b&gt; (v6, 2026-10-29) · MariaDB · 19 tablas&lt;br&gt;&lt;u&gt;PK&lt;/u&gt; · FK → tabla (acción ON DELETE; ON UPDATE siempre RESTRICT) · UQ = único · ? = admite NULL · CHECK = regla en la BBDD · TRG = regla con trigger · Verde = tabla nueva" style="text;html=1;align=left;verticalAlign=top;fontSize=14;" vertex="1" parent="1">
 <mxGeometry x="0" y="0" width="1700" height="50" as="geometry" />
 </mxCell>
 <mxCell id="n243" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;departamento&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre UQ: Telefonía | Consolas&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
 <mxGeometry x="0" y="80" width="241" height="74" as="geometry" />
 </mxCell>
-<mxCell id="n244" value="&lt;div style='background:#d5e8d4;padding:4px;font-weight:bold;border-bottom:1px solid #82b366'&gt;servicio&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre&lt;br&gt;descripcion&lt;br&gt;precio_orientativo ? (CHECK ≥ 0)&lt;br&gt;FK departamento_id → departamento (RESTRICT)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#82b366;" vertex="1" parent="1">
-<mxGeometry x="0" y="184" width="332" height="125" as="geometry" />
+<mxCell id="n244" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;servicio&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre&lt;br&gt;descripcion&lt;br&gt;precio_orientativo ? (CHECK ≥ 0)&lt;br&gt;linea CHECK: videojuegos | consolas | telefonia&lt;br&gt;UQ (linea, nombre)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#82b366;" vertex="1" parent="1">
+<mxGeometry x="0" y="184" width="332" height="142" as="geometry" />
 </mxCell>
-<mxCell id="n245" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;usuario&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre&lt;br&gt;apellidos&lt;br&gt;email UQ&lt;br&gt;password (hash)&lt;br&gt;telefono&lt;br&gt;dni UQ (DNI o NIE, CHECK formato)&lt;br&gt;rol CHECK: cliente | admin&lt;br&gt;foto ? (ruta)&lt;br&gt;activo (baja lógica, por defecto 1)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
-<mxGeometry x="0" y="339" width="353" height="210.0" as="geometry" />
+<mxCell id="n245" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;usuario&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre&lt;br&gt;apellidos&lt;br&gt;email UQ&lt;br&gt;password (hash)&lt;br&gt;telefono&lt;br&gt;activo (baja lógica, por defecto 1)&lt;br&gt;tipo CHECK: cliente | trabajador (discriminador)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxGeometry x="0" y="356" width="353" height="176" as="geometry" />
 </mxCell>
 <mxCell id="n246" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;token&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;token_hash UQ (SHA-256)&lt;br&gt;fecha_creacion&lt;br&gt;fecha_expira (CHECK &amp;gt; fecha_creacion)&lt;br&gt;FK usuario_id → usuario (CASCADE)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
-<mxGeometry x="0" y="579" width="283" height="125" as="geometry" />
+<mxGeometry x="0" y="562" width="283" height="125" as="geometry" />
 </mxCell>
 <mxCell id="n247" value="&lt;div style='background:#d5e8d4;padding:4px;font-weight:bold;border-bottom:1px solid #82b366'&gt;registro_ubicacion&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;fecha&lt;br&gt;latitud, longitud (CHECK rango)&lt;br&gt;metodo&lt;br&gt;ruta&lt;br&gt;FK usuario_id → usuario (CASCADE)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#82b366;" vertex="1" parent="1">
-<mxGeometry x="0" y="734" width="255" height="142" as="geometry" />
+<mxGeometry x="0" y="717" width="255" height="142" as="geometry" />
 </mxCell>
 <mxCell id="n248" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;tienda&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre&lt;br&gt;direccion&lt;br&gt;latitud, longitud (CHECK rango)&lt;br&gt;historia&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
 <mxGeometry x="900" y="80" width="241" height="125" as="geometry" />
@@ -885,17 +888,17 @@
 <mxCell id="n249" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;foto_tienda&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;imagen (ruta)&lt;br&gt;descripcion&lt;br&gt;FK tienda_id → tienda (CASCADE)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
 <mxGeometry x="900" y="235" width="241" height="108" as="geometry" />
 </mxCell>
-<mxCell id="n250" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;pedido&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;fecha&lt;br&gt;estado CHECK: pendiente | preparado | entregado | cancelado&lt;br&gt;metodo_pago CHECK: tarjeta | bizum | paypal | en_tienda&lt;br&gt;FK usuario_id → usuario (RESTRICT)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxCell id="n250" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;pedido&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;fecha&lt;br&gt;estado CHECK: pendiente | preparado | entregado | cancelado&lt;br&gt;metodo_pago CHECK: tarjeta | bizum | paypal | en_tienda&lt;br&gt;FK cliente_id → cliente (RESTRICT)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
 <mxGeometry x="420" y="80" width="437" height="125" as="geometry" />
 </mxCell>
-<mxCell id="n251" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;linea_pedido&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;FK pedido_id → pedido (CASCADE)&lt;br&gt;FK producto_id → producto (RESTRICT)&lt;br&gt;UQ (pedido_id, producto_id, modalidad)&lt;br&gt;modalidad CHECK: compra | alquiler&lt;br&gt;cantidad (CHECK ≥ 1)&lt;br&gt;precio_unitario (CHECK ≥ 0; en alquiler, por día)&lt;br&gt;fecha_fin ? (CHECK: no nulo ⇔ alquiler, ≥ fecha del pedido)&lt;br&gt;fecha_devolucion ? (solo alquiler; NULL = no devuelto)&lt;br&gt;TRG: alquiler solo de videojuegos y sin superar copias_alquiler&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
-<mxGeometry x="420" y="235" width="437" height="210" as="geometry" />
+<mxCell id="n251" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;compra&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;FK pedido_id → pedido (CASCADE)&lt;br&gt;FK producto_id → producto (RESTRICT)&lt;br&gt;UQ (pedido_id, producto_id)&lt;br&gt;cantidad (CHECK ≥ 1)&lt;br&gt;precio_unitario (CHECK ≥ 0; precio del día)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxGeometry x="420" y="235" width="437" height="142" as="geometry" />
 </mxCell>
-<mxCell id="n252" value="&lt;div style='background:#d5e8d4;padding:4px;font-weight:bold;border-bottom:1px solid #82b366'&gt;tecnico&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre&lt;br&gt;telefono&lt;br&gt;FK departamento_id → departamento (RESTRICT)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
-<mxGeometry x="420" y="475" width="330" height="108" as="geometry" />
+<mxCell id="n252" value="&lt;div style='background:#d5e8d4;padding:4px;font-weight:bold;border-bottom:1px solid #82b366'&gt;trabajador&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK, FK id → usuario (CASCADE)&lt;/u&gt;&lt;br&gt;puesto CHECK: tecnico | admin&lt;br&gt;FK departamento_id ? → departamento (RESTRICT)&lt;br&gt;CHECK: departamento_id no nulo ⇔ puesto = tecnico&lt;br&gt;TRG: usuario.tipo = trabajador&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxGeometry x="420" y="613" width="380" height="125" as="geometry" />
 </mxCell>
-<mxCell id="n253" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;reparacion&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;dispositivo&lt;br&gt;problema&lt;br&gt;estado CHECK: recibida | en_reparacion | lista | entregada | cancelada&lt;br&gt;fecha_entrada&lt;br&gt;fecha_salida ? (CHECK ⇔ entregada)&lt;br&gt;presupuesto ? (CHECK ≥ 0)&lt;br&gt;foto ? (ruta)&lt;br&gt;FK cliente_id → usuario (RESTRICT)&lt;br&gt;FK tecnico_id → tecnico (RESTRICT)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
-<mxGeometry x="900" y="373" width="514" height="210" as="geometry" />
+<mxCell id="n253" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;reparacion&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;dispositivo&lt;br&gt;problema&lt;br&gt;estado CHECK: recibida | en_reparacion | lista | entregada | cancelada&lt;br&gt;fecha_entrada&lt;br&gt;fecha_salida ? (CHECK ⇔ entregada)&lt;br&gt;presupuesto ? (CHECK ≥ 0)&lt;br&gt;foto ? (ruta)&lt;br&gt;FK cliente_id → cliente (RESTRICT)&lt;br&gt;FK tecnico_id → trabajador (RESTRICT)&lt;br&gt;TRG: tecnico_id tiene puesto = tecnico&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxGeometry x="900" y="373" width="514" height="227" as="geometry" />
 </mxCell>
 <mxCell id="n254" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;marca&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;nombre UQ&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
 <mxGeometry x="1440" y="80" width="108" height="74" as="geometry" />
@@ -914,6 +917,12 @@
 </mxCell>
 <mxCell id="n259" value="&lt;div style='background:#dae8fc;padding:4px;font-weight:bold;border-bottom:1px solid #6c8ebf'&gt;consola&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK, FK id → producto (CASCADE)&lt;/u&gt;&lt;br&gt;modelo&lt;br&gt;almacenamiento_gb (CHECK &amp;gt; 0)&lt;br&gt;TRG: producto.tipo = consola&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
 <mxGeometry x="1900" y="441" width="283" height="108" as="geometry" />
+</mxCell>
+<mxCell id="n415" value="&lt;div style='background:#d5e8d4;padding:4px;font-weight:bold;border-bottom:1px solid #82b366'&gt;cliente&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK, FK id → usuario (CASCADE)&lt;/u&gt;&lt;br&gt;dni UQ (DNI o NIE, CHECK formato)&lt;br&gt;foto ? (ruta)&lt;br&gt;TRG: usuario.tipo = cliente&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxGeometry x="420" y="768.0" width="330" height="108" as="geometry" />
+</mxCell>
+<mxCell id="n612" value="&lt;div style='background:#d5e8d4;padding:4px;font-weight:bold;border-bottom:1px solid #82b366'&gt;alquiler&lt;/div&gt;&lt;div style='padding:4px'&gt;&lt;u&gt;PK id&lt;/u&gt;&lt;br&gt;FK pedido_id → pedido (CASCADE)&lt;br&gt;FK videojuego_id → videojuego (RESTRICT)&lt;br&gt;UQ (pedido_id, videojuego_id)&lt;br&gt;precio_dia (CHECK ≥ 0; precio del día)&lt;br&gt;fecha_fin (TRG: ≥ fecha del pedido)&lt;br&gt;fecha_devolucion ? (NULL = no devuelto)&lt;br&gt;TRG: sin superar copias_alquiler (no cuentan los pedidos cancelados)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=0;fontSize=12;strokeColor=#6c8ebf;" vertex="1" parent="1">
+<mxGeometry x="420" y="407" width="437" height="176" as="geometry" />
 </mxCell>
 </root>
 </mxGraphModel>
