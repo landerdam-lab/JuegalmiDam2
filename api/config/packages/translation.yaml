@@ -1,0 +1,8 @@
+# Todo en español: así los mensajes del Validator ("Este valor no debería estar vacío.")
+# llegan traducidos a las apps sin escribirlos a mano en cada regla.
+framework:
+    default_locale: es
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks: ['es']
+        providers:

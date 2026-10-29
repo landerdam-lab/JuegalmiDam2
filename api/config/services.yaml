@@ -1,0 +1,23 @@
+# Servicios de la aplicación (autowiring: Symfony inyecta las dependencias por tipo).
+parameters:
+    # Horas que dura un token (P-18). Se cambia en .env / .env.local con TOKEN_TTL_HORAS.
+    app.token_ttl_horas: '%env(int:TOKEN_TTL_HORAS)%'
+    # Carpeta pública donde se guardan las imágenes subidas (ADR-019).
+    app.uploads_dir: '%kernel.project_dir%/public/uploads'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            int $tokenTtlHoras: '%app.token_ttl_horas%'
+            string $uploadsDir: '%app.uploads_dir%'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Entity/'
+            - '../src/Enum/'
+            - '../src/Util/'
+            - '../src/Http/'
