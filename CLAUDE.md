@@ -48,12 +48,12 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `api/`: **API REST en Symfony + MariaDB + Doctrine**, con **tokens** y **HTTPS**
   - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
   - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
-  - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, usuarios, técnicos, pedidos, reparaciones, tienda). Bóveda: `12-Web/`
+  - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, clientes, trabajadores, pedidos, reparaciones, tienda) para el admin, y las reparaciones de su departamento para los técnicos (ADR-032). Bóveda: `12-Web/`
+  - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png/.svg`, `relacional-juegalmi.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
 - ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
-  - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
-- **Modelo de datos:** 20 tablas, sin redundancia (v5, ADR-023, ADR-032 y ADR-033; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador` · `linea_pedido` → `compra` / `alquiler`.
+- **Modelo de datos:** 19 tablas, sin redundancia (v6, ADR-023, ADR-032 y ADR-034; SQL probado en MariaDB 11.4; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador`. El pedido tiene `compra` (N:M con `producto`) y `alquiler` (N:M con `videojuego`).
 
 ---
 
@@ -76,7 +76,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 2. **Respeta los estados.** Lo marcado como `propuesta` (endpoints, pantallas, librerías, plan) es una sugerencia: antes de implementarlo, avisa de que es una propuesta. Si el usuario lo aprueba, cambia la nota a `decidido` y crea un ADR.
 3. **Las dos apps deben ser iguales** (la rúbrica lo exige) y **solo para clientes**. Toda pantalla tiene un ID `PT-xx` (apps) o `PW-xx` (web) en `08-Diseno-UI/Mapa de pantallas.md`. Si cambias una pantalla en una app, indica qué hay que cambiar en la otra. Si alguien pide una función de gestión en una app, recuerda que va en la web (ADR-024).
 4. **La API es el contrato.** Ni las apps ni la web acceden a MariaDB directamente. Si cambias un endpoint o el JSON, actualiza `05-API/Endpoints.md` y avisa del impacto en Android, en Ionic **y** en la web.
-5. **Todo con token**, salvo `POST /api/login` y `POST /api/registro` (nivel 5 de la rúbrica). Comprueba también el rol y que el recurso sea del usuario. (El catálogo público de la web está pendiente del profesor: P-35.)
+5. **Todo con token**, salvo `POST /api/login` y `POST /api/registro` (nivel 5 de la rúbrica). Comprueba también el rol y que el recurso sea del usuario. Excepción confirmada por el profesor: los `GET` de catálogo y tienda de la **web** son públicos (P-35, ADR-028); las apps, todo con token.
 6. **Nada bloquea el hilo principal**: red, imágenes y procesado siempre en segundo plano.
 7. **Separa la vista de los datos**: vista → repositorio/servicio → cliente HTTP.
 8. **La lógica de negocio vive en la API** (stock, copias disponibles, precios, permisos). Las apps validan para avisar antes, pero quien decide es la API.
@@ -101,8 +101,8 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 5. Convenciones clave (detalle en `02-Equipo/Convenciones.md`)
 
-- Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `linea_pedido`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
-- BBDD `snake_case` · PHP y JSON `camelCase` (JSON pendiente de confirmar: P-13) · rutas `/api/<recurso-en-plural-kebab>`.
+- Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `registro_ubicacion`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
+- BBDD `snake_case` · PHP y JSON `camelCase` (✅ P-13, ADR-027) · rutas `/api/<recurso-en-plural-kebab>`.
 - Enumerados **idénticos** en BBDD, API y apps: `usuario.tipo` ∈ {cliente, trabajador} · `trabajador.puesto` ∈ {tecnico, admin} (roles `ROLE_CLIENTE`, `ROLE_TECNICO`, `ROLE_ADMIN`) · `servicio.linea` ∈ {videojuegos, consolas, telefonia} · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
 - Errores de la API: `{"error": {"codigo", "mensaje", "campos"}}` con 400/401/403/404/409/422 (ver `05-API/Formato JSON y errores.md`). Ante un **401**, las apps cierran la sesión y vuelven al login.
 - Fechas ISO 8601 · dinero `DECIMAL(10,2)` · coordenadas `DECIMAL(10,7)`.
@@ -114,13 +114,14 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 ## 6. Avisos que más errores van a evitar
 
 - **A-03 ✅ (ADR-012):** el campo móvil/tablet se llama `movil.formato`; `tipo` es solo el discriminador de `producto`.
-- **A-01 ✅ (ADR-013, ADR-033):** `linea_pedido` es una entidad con `id` propio + UNIQUE(pedido_id, producto_id, tipo), especializada en `compra` y `alquiler` (detalle en `04-Datos/Tablas/linea_pedido.md`).
+- **A-01 ✅ (ADR-013, ADR-034):** `compra` y `alquiler` usan `id` propio + UNIQUE de la pareja (`pedido_id, producto_id` / `pedido_id, videojuego_id`). Ya no existe `linea_pedido`.
 - **A-09:** Doctrine **no genera los CHECK ni los triggers**: van a mano en una migración (`04-Datos/Diseno fisico MariaDB.md`). Nunca `doctrine:schema:create`/`update`.
 - **A-11 ✅ (ADR-024):** las dos apps son de Android; la de Ionic se compila como APK con Capacitor.
 - **A-12:** AsyncTask está obsoleta. Usar Executors/Handler o corrutinas y justificarlo.
 - **A-13 ✅ (ADR-014):** las apps envían `X-Latitud`/`X-Longitud` en cada petición y la API lo guarda en `registro_ubicacion`.
 - **A-27 ✅ (ADR-032):** los técnicos son `trabajador` con `puesto = tecnico` e inician sesión en la web (solo ven las reparaciones de su departamento).
-- **A-28:** el catálogo público de la web choca con "todo con token". Pendiente del profesor (P-35).
+- **A-28 ✅ (ADR-028):** el catálogo y la tienda de la web son públicos (sin token), confirmado por el profesor; las apps, todo con token.
+- **A-30:** `docs/Dossier de Especificacion Tecnica JuegAlmi.pdf` describe el modelo v2: no lo uses como referencia del modelo (manda `04-Datos/` de la bóveda).
 - Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve` y para la web. Más en `11-Calidad/Problemas comunes.md`.
 
 ---
@@ -139,7 +140,7 @@ Mantener la bóveda al día **es parte de la tarea**. Antes de cerrar, propón (
 | Tomado una decisión con el grupo | Nuevo ADR en `10-Decisiones/` + marcar el P-xx como ✅ |
 | Encontrado una contradicción o un riesgo | `00-Inicio/Avisos e inconsistencias.md` |
 | Resuelto un problema que costó tiempo | `11-Calidad/Problemas comunes.md` |
-| Usado IA de forma relevante (código, pruebas, revisión) | `09-Transversal/Registro de uso de IA.md` (es una evidencia para la nota de Digitalización) |
+| Usado IA de forma relevante (código, pruebas, revisión) | `09-Transversal/Registro de uso de IA.md` (Digitalización ya no se evalúa, A-17, pero sirve para el dossier y la defensa) |
 | Cambiado algo respecto a la propuesta del Hito 1 | `docs/anexo-desviaciones.md` |
 
 **Normas para editar la bóveda** (es una carpeta de red sin historial; varias personas la editan):

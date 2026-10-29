@@ -1,9 +1,9 @@
-# Modelo de datos JuegAlmi (v5, 2026-10-28)
+# Modelo de datos JuegAlmi (v6, 2026-10-29)
 
 Diagrama: `er-juegalmi.drawio` (abrir en https://app.diagrams.net → *Abrir desde dispositivo*).
 Página 1 = diagrama E-R; página 2 = modelo relacional (las tablas que creará Doctrine en **MariaDB**).
 `er-juegalmi.png` es la vista previa de la página 1 y `relacional-juegalmi.png` la de la página 2.
-Paso a tablas: `paso-a-tablas.md`. Ningún dato se guarda dos veces. **v4:** `usuario` se especializa en `cliente` y `trabajador` (ADR-032) y `servicio` pasa a tener `linea` (ADR-030). **v5:** `linea_pedido` se especializa en `compra` y `alquiler` (ADR-033). 20 tablas. Detalle completo (tipos, CHECK, triggers, índices): bóveda `04-Datos/`.
+Paso a tablas: `paso-a-tablas.md`. Ningún dato se guarda dos veces. **v4:** `usuario` se especializa en `cliente` y `trabajador` (ADR-032) y `servicio` pasa a tener `linea` (ADR-030). **v6:** `compra` y `alquiler` cuelgan directamente del pedido (ADR-034). **19 tablas**, SQL probado en MariaDB 11.4. Detalle completo (tipos, CHECK, triggers, índices): bóveda `04-Datos/`.
 
 ## Decisiones
 
@@ -11,8 +11,8 @@ Paso a tablas: `paso-a-tablas.md`. Ningún dato se guarda dos veces. **v4:** `us
 |---|---|
 | `usuario` + especialización **total y disjunta** `cliente` / `trabajador` (JOINED) | Un único login para todos. Solo un **cliente** hace pedidos y pide reparaciones (`dni`, `foto`); un **trabajador** es técnico (con departamento) o admin (`puesto`). El rol sale del subtipo: ya no hay columna `rol`. |
 | `producto` + especialización **total y disjunta** `videojuego` / `movil` / `consola` (JOINED) | Un solo carrito y un solo pedido valen para todo. `movil.formato` distingue móvil y tablet (no `tipo`, que es el discriminador). |
-| `linea_pedido` (entidad: pedido 1:N línea N:1 producto) + especialización **total y disjunta** `compra` / `alquiler` (JOINED) | Cada tipo de línea tiene solo sus datos: la compra `cantidad` y `precio_unitario`; el alquiler `precio_dia`, `fecha_fin` y `fecha_devolucion`. Sin columnas vacías ni CHECK de "solo si es alquiler". Se guarda el precio de ese día; el total **no** se guarda. |
-| El **alquiler es una línea del pedido** (subtipo `alquiler`, de una copia) | Con una entidad `alquiler` aparte había un ciclo usuario–pedido–producto–videojuego–alquiler–usuario. Así un carrito puede comprar y alquilar a la vez; el alquiler empieza en la fecha del pedido y `precio_dia` es el precio por día. Un trigger impide alquilar algo que no sea videojuego o superar las copias. |
+| `compra` (N:M `pedido`–`producto`: `cantidad`, `precio_unitario`) y `alquiler` (N:M `pedido`–`videojuego`: `precio_dia`, `fecha_fin`, `fecha_devolucion`), con `id` + UNIQUE | Un carrito puede comprar y alquilar a la vez. Cada tabla tiene solo sus datos (sin columnas vacías) y la **FK a `videojuego`** garantiza que solo se alquilan videojuegos. Se guarda el precio de ese día; el total **no** se guarda. Los alquileres de un pedido **cancelado** no ocupan copia. |
+| El **alquiler cuelga del pedido** (una copia por fila) | Con una entidad `alquiler` aparte había un ciclo usuario–pedido–producto–videojuego–alquiler–usuario. Así un carrito puede comprar y alquilar a la vez; el alquiler empieza en la fecha del pedido y `precio_dia` es el precio por día. Un trigger impide alquilar algo que no sea videojuego o superar las copias. |
 | `reparacion` N:1 `trabajador` (obligatoria, solo técnicos); `trabajador` N:1 `departamento` (nulo en el admin) | Al crear la reparación la API asigna un técnico del departamento elegido. El departamento de la reparación se saca del técnico: no se guarda dos veces. Los técnicos entran en la web y ven las reparaciones de su departamento. |
 | `servicio` con `linea` (videojuegos / consolas / telefonia), sin relación con `departamento` | Contenido de las 3 pestañas de "Servicios" de la tienda (ADR-030). |
 | `plataforma` como catálogo (una por videojuego) | Filtro principal sin valores repetidos escritos de formas distintas. |
