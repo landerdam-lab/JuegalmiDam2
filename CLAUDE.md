@@ -49,7 +49,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
   - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
   - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, clientes, trabajadores, pedidos, reparaciones, tienda) para el admin, y las reparaciones de su departamento para los técnicos (ADR-032). Bóveda: `12-Web/`
-  - `docs/`: `reto/` (enunciado, rúbrica), `datos/` (modelo, E-R, paso a tablas y `sql/` con el esquema completo), `diseno/`, `entrega/` (propuesta, anexo, dossier, presentación) y `equipo/`. Índice en `docs/README.md`
+  - `docs/`: `reto/` (enunciado, rúbrica), `datos/` (modelo, E-R, paso a tablas y `sql/` con el esquema completo), `infraestructura/` (guía de AWS y de las copias de seguridad), `diseno/`, `entrega/` (propuesta, anexo, dossier, presentación) y `equipo/`. Índice en `docs/README.md`
 - ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
