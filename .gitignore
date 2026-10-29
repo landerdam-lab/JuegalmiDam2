@@ -35,11 +35,5 @@ android/captures/
 *.jks
 *.keystore
 
-# Claves y despliegue (AWS / Terraform): nunca al repo
-*.pem
-*.tfstate
-*.tfstate.*
-.terraform/
-
 # Claude Code (instrucciones personales de cada integrante)
 CLAUDE.local.md
