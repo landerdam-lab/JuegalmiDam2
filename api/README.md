@@ -10,9 +10,9 @@ Requisitos: PHP 8.3 o superior (con `pdo_mysql`, `intl`, `mbstring`), Composer, 
 ```bash
 composer install
 # 1) Crea api/.env.local (NO se sube a Git) con tu conexión:
-#    DATABASE_URL="mysql://USUARIO:CONTRASEÑA@127.0.0.1:3306/juegalmi?serverVersion=11.4.0-MariaDB&charset=utf8mb4"
+#    DATABASE_URL="mysql://USUARIO:CONTRASEÑA@127.0.0.1:3306/almi_companion?serverVersion=11.4.0-MariaDB&charset=utf8mb4"
 #    APP_SECRET=<cadena aleatoria>
-php bin/console doctrine:database:create --if-not-exists
+php bin/console doctrine:database:create --if-not-exists   # BBDD almi_companion
 php bin/console doctrine:migrations:migrate      # esquema v6: 19 tablas + 35 CHECK + 10 triggers
 php bin/console doctrine:fixtures:load           # datos de ejemplo (borra lo que haya)
 symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/api
@@ -25,7 +25,7 @@ Para HTTPS en local, una vez: `symfony server:ca:install`. Sin ella, la Symfony 
 
 ### Pruebas automáticas
 
-Usan otra BBDD, `juegalmi_test`, configurada en `api/.env.test.local` (mismo formato de `DATABASE_URL`;
+Usan otra BBDD, `almi_companion_test`, configurada en `api/.env.test.local` (mismo formato de `DATABASE_URL`;
 Doctrine añade `_test` al nombre). Las migraciones y los datos de ejemplo se cargan solos.
 
 ```bash
