@@ -54,6 +54,7 @@ final class PedidoService
             $pedido = new Pedido($cliente, $metodoPago, $ahora);
             $comprados = [];
             $alquilados = [];
+            $bloqueados = []; // productos ya bloqueados en este pedido (ver bloquear())
 
             foreach ($lineas as $i => $valores) {
                 $linea = new Datos($valores);
@@ -69,7 +70,7 @@ final class PedidoService
                     if (isset($comprados[$productoId])) {
                         throw ApiException::validacion([$campo('productoId') => 'Este producto ya está en el pedido.']);
                     }
-                    $producto = $this->em->find(Producto::class, $productoId, LockMode::PESSIMISTIC_WRITE);
+                    $producto = $this->bloquear($productoId, $bloqueados);
                     if ($producto === null || !$producto->isActivo()) {
                         throw ApiException::validacion([$campo('productoId') => 'El producto no existe o ya no está a la venta.']);
                     }
@@ -90,7 +91,7 @@ final class PedidoService
                     if (isset($alquilados[$productoId])) {
                         throw ApiException::validacion([$campo('productoId') => 'Este videojuego ya está alquilado en el pedido.']);
                     }
-                    $videojuego = $this->em->find(Producto::class, $productoId, LockMode::PESSIMISTIC_WRITE);
+                    $videojuego = $this->bloquear($productoId, $bloqueados);
                     if (!$videojuego instanceof Videojuego || !$videojuego->isActivo()) {
                         throw ApiException::validacion([$campo('productoId') => 'Solo se pueden alquilar videojuegos del catálogo.']);
                     }
@@ -164,6 +165,23 @@ final class PedidoService
         // null = deshacer una devolución marcada por error
         $alquiler->setFechaDevolucion($fecha);
         $this->em->flush();
+    }
+
+    /**
+     * Carga el producto con SELECT … FOR UPDATE, UNA sola vez por pedido.
+     * Ojo: si se vuelve a pedir a Doctrine con bloqueo un producto que ya está cargado, lo RECARGA
+     * desde la BBDD y se pierde la resta de stock hecha en memoria (pasaba al comprar y alquilar el
+     * mismo juego en el mismo pedido). Por eso se guarda en $bloqueados y se reutiliza.
+     *
+     * @param array<int, Producto|null> $bloqueados
+     */
+    private function bloquear(int $id, array &$bloqueados): ?Producto
+    {
+        if (!array_key_exists($id, $bloqueados)) {
+            $bloqueados[$id] = $this->em->find(Producto::class, $id, LockMode::PESSIMISTIC_WRITE);
+        }
+
+        return $bloqueados[$id];
     }
 
     private function entero(Datos $linea, string $clave, string $campo): int
