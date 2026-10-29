@@ -53,7 +53,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
 - ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
-- **Modelo de datos:** 20 tablas, sin redundancia (v5, ADR-023, ADR-032 y ADR-033; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador` · `linea_pedido` → `compra` / `alquiler`.
+- **Modelo de datos:** 19 tablas, sin redundancia (v6, ADR-023, ADR-032 y ADR-034; SQL probado en MariaDB 11.4; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador`. El pedido tiene `compra` (N:M con `producto`) y `alquiler` (N:M con `videojuego`).
 
 ---
 
@@ -101,7 +101,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 5. Convenciones clave (detalle en `02-Equipo/Convenciones.md`)
 
-- Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `linea_pedido`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
+- Dominio en **español sin tildes** en el código y la BBDD (`Usuario`, `precioAlquiler`, `registro_ubicacion`); términos técnicos del framework en inglés (`Controller`, `Repository`, `Adapter`).
 - BBDD `snake_case` · PHP y JSON `camelCase` (✅ P-13, ADR-027) · rutas `/api/<recurso-en-plural-kebab>`.
 - Enumerados **idénticos** en BBDD, API y apps: `usuario.tipo` ∈ {cliente, trabajador} · `trabajador.puesto` ∈ {tecnico, admin} (roles `ROLE_CLIENTE`, `ROLE_TECNICO`, `ROLE_ADMIN`) · `servicio.linea` ∈ {videojuegos, consolas, telefonia} · `producto.tipo` ∈ {videojuego, movil, consola} · departamentos `Telefonía`, `Consolas`.
 - Errores de la API: `{"error": {"codigo", "mensaje", "campos"}}` con 400/401/403/404/409/422 (ver `05-API/Formato JSON y errores.md`). Ante un **401**, las apps cierran la sesión y vuelven al login.
@@ -114,7 +114,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 ## 6. Avisos que más errores van a evitar
 
 - **A-03 ✅ (ADR-012):** el campo móvil/tablet se llama `movil.formato`; `tipo` es solo el discriminador de `producto`.
-- **A-01 ✅ (ADR-013, ADR-033):** `linea_pedido` es una entidad con `id` propio + UNIQUE(pedido_id, producto_id, tipo), especializada en `compra` y `alquiler` (detalle en `04-Datos/Tablas/linea_pedido.md`).
+- **A-01 ✅ (ADR-013, ADR-034):** `compra` y `alquiler` usan `id` propio + UNIQUE de la pareja (`pedido_id, producto_id` / `pedido_id, videojuego_id`). Ya no existe `linea_pedido`.
 - **A-09:** Doctrine **no genera los CHECK ni los triggers**: van a mano en una migración (`04-Datos/Diseno fisico MariaDB.md`). Nunca `doctrine:schema:create`/`update`.
 - **A-11 ✅ (ADR-024):** las dos apps son de Android; la de Ionic se compila como APK con Capacitor.
 - **A-12:** AsyncTask está obsoleta. Usar Executors/Handler o corrutinas y justificarlo.
