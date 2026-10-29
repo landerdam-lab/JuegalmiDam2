@@ -270,7 +270,8 @@ function integersXml() {
 
 // Curvas de movimiento como interpoladores (res/anim no admite cubic-bezier directo: pathInterpolator sí)
 function interpolador(nombre) {
-  const m = t.movimiento.curva[nombre].match(/[-\d.]+/g);
+  // Solo números (con signo opcional): /[-\d.]+/ también cogía el guion de «cubic-bezier»
+  const m = t.movimiento.curva[nombre].match(/-?\d*\.?\d+/g);
   return `<?xml version="1.0" encoding="utf-8"?>
 <!-- ${CABECERA} -->
 <pathInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
