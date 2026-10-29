@@ -156,14 +156,15 @@ Mantener la bóveda al día **es parte de la tarea**. Antes de cerrar, propón (
 
 ## 8. Comandos
 
-> Los proyectos aún no están creados (2026-10-27). Cuando se creen, sustituye esta sección por los comandos reales y actualiza `03-Arquitectura/Entorno de desarrollo.md`.
+> La API ya existe (2026-10-29, guía completa en `api/README.md`); el resto, cuando se cree cada proyecto, sustituye su parte por los comandos reales y actualiza `03-Arquitectura/Entorno de desarrollo.md`.
 
 ```bash
-# API (api/)
+# API (api/) · BBDD almi_companion · conexión en api/.env.local (no se sube)
 composer install
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load        # datos de ejemplo
-symfony server:start                           # HTTPS local
+php bin/console doctrine:migrations:migrate   # esquema v6 + CHECK + triggers (nunca schema:update)
+php bin/console doctrine:fixtures:load        # datos de ejemplo (usuarios *@juegalmi.test, contraseña demo1234)
+php bin/phpunit                               # 33 pruebas (BBDD almi_companion_test, en api/.env.test.local)
+symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/api
 
 # Ionic (ionic/)
 npm install && ionic serve
