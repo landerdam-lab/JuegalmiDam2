@@ -1,0 +1,49 @@
+# Seguridad de la API (ADR-008, ADR-021, ADR-028)
+# - Login propio (POST /api/login) que devuelve un token aleatorio; en la BBDD solo se guarda su SHA-256.
+# - El resto de peticiones llevan "Authorization: Bearer <token>" y las valida App\Security\TokenHandler.
+# - Sin sesión ni cookies (stateless): cada petición se autentica sola.
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        # Carga el usuario (cliente o trabajador) por su email.
+        usuarios:
+            entity:
+                class: App\Entity\Usuario
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler(/|$)|(_wdt|assets|build)/)
+            security: false
+        api:
+            pattern: ^/api/
+            stateless: true
+            provider: usuarios
+            access_token:
+                token_handler: App\Security\TokenHandler
+                failure_handler: App\Security\FalloAutenticacionHandler
+            # Sin token en una ruta protegida → 401 en JSON (no una página HTML)
+            entry_point: App\Security\FalloAutenticacionHandler
+            # Con token pero sin permiso → 403 en JSON
+            access_denied_handler: App\Security\AccesoDenegadoHandler
+
+    # Solo se aplica la PRIMERA regla que coincide. Los permisos finos (rol y "solo lo suyo")
+    # se comprueban en cada controlador.
+    access_control:
+        - { path: ^/api/(login|registro)$, roles: PUBLIC_ACCESS }
+        # ADR-028: catálogo y tienda en solo lectura, sin token, para la web pública.
+        # Las apps mandan el token igualmente (y así se registra su ubicación).
+        - { path: ^/api/(productos|videojuegos|moviles|consolas|marcas|plataformas|departamentos|servicios|tiendas|fotos-tienda)(/|$), methods: [GET], roles: PUBLIC_ACCESS }
+        - { path: ^/api/, roles: IS_AUTHENTICATED }
+
+when@test:
+    security:
+        password_hashers:
+            # En las pruebas, hash rápido (en producción se usa el coste normal).
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

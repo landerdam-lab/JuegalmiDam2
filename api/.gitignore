@@ -1,0 +1,21 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
+
+###> juegalmi ###
+# Imágenes que suben los usuarios (ADR-019): no se suben a Git. Las de ejemplo sí (datos de ejemplo).
+/public/uploads/*
+!/public/uploads/ejemplo/
+###< juegalmi ###
