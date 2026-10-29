@@ -5,7 +5,7 @@ Instrucciones para Claude Code, compartidas por los **3 integrantes** del grupo.
 **Estructura de trabajo de cada integrante** (Claude Code se abre desde la carpeta raíz, que **no** es un repo):
 ```
 <carpeta raíz>/                 ← aquí se abre Claude Code
-├── CLAUDE.md                   ← mínimo: importa este archivo (plantilla en docs/CLAUDE-raiz.md)
+├── CLAUDE.md                   ← mínimo: importa este archivo (plantilla en docs/equipo/CLAUDE-raiz.md)
 ├── CLAUDE.local.md             ← personal, no se comparte (ver sección 9)
 ├── contexto (…) - Acceso directo.lnk   ← acceso directo a la bóveda (usa la ruta UNC, no el .lnk)
 └── JuegalmiDam2/               ← ESTE repo git. Las rutas api/, docs/… de este archivo son relativas a él
@@ -49,7 +49,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
   - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
   - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, clientes, trabajadores, pedidos, reparaciones, tienda) para el admin, y las reparaciones de su departamento para los técnicos (ADR-032). Bóveda: `12-Web/`
-  - `docs/`: enunciado, E-R (`er-juegalmi.drawio/.png/.svg`, `relacional-juegalmi.png`), modelo de datos, propuesta del Hito 1, dossier y presentación
+  - `docs/`: `reto/` (enunciado, rúbrica), `datos/` (modelo, E-R, paso a tablas y `sql/` con el esquema completo), `infraestructura/` (guía de AWS y de las copias de seguridad), `diseno/`, `entrega/` (propuesta, anexo, dossier, presentación) y `equipo/`. Índice en `docs/README.md`
 - ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
@@ -59,7 +59,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
 
 ## 2. Jerarquía de fuentes (si algo se contradice)
 
-1. Enunciado y rúbrica (`docs/enunciado-retoJuegAlmi.pdf` · bóveda `01-Reto/`) y lo que diga el profesorado
+1. Enunciado y rúbrica (`docs/reto/enunciado-retoJuegAlmi.pdf` · bóveda `01-Reto/`) y lo que diga el profesorado
 2. ADR de `10-Decisiones/`
 3. Notas de la bóveda con `estado: decidido`
 4. `docs/` del repo
@@ -121,7 +121,10 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 - **A-13 ✅ (ADR-014):** las apps envían `X-Latitud`/`X-Longitud` en cada petición y la API lo guarda en `registro_ubicacion`.
 - **A-27 ✅ (ADR-032):** los técnicos son `trabajador` con `puesto = tecnico` e inician sesión en la web (solo ven las reparaciones de su departamento).
 - **A-28 ✅ (ADR-028):** el catálogo y la tienda de la web son públicos (sin token), confirmado por el profesor; las apps, todo con token.
-- **A-30:** `docs/Dossier de Especificacion Tecnica JuegAlmi.pdf` describe el modelo v2: no lo uses como referencia del modelo (manda `04-Datos/` de la bóveda).
+- **A-30:** `docs/entrega/dossier-especificacion-tecnica.pdf` describe el modelo v2: no lo uses como referencia del modelo (manda `04-Datos/` de la bóveda).
+- **Stack decidido (ADR-027 y ADR-031):** Android en **Java** con layouts **XML** · **PHP 8.3** y **Symfony 7.4** · Angular, Ionic y Capacitor en su **última versión estable**, fijada al crear cada proyecto.
+- **Permisos (ADR-029):** el admin solo administra (no compra ni alquila; para comprar usa otra cuenta `cliente`) y solo se alquilan videojuegos.
+- **Servicios (ADR-030):** 3 pestañas (Videojuegos · Consolas · Telefonía) con `servicio.linea`, sin relación con `departamento`.
 - Emulador → API local en `10.0.2.2`. HTTP en claro bloqueado en Android 9+. CORS necesario para `ionic serve` y para la web. Más en `11-Calidad/Problemas comunes.md`.
 
 ---
@@ -135,13 +138,13 @@ Mantener la bóveda al día **es parte de la tarea**. Antes de cerrar, propón (
 | Terminado o empezado algo | `00-Inicio/Estado actual.md` |
 | Cambiado código, una decisión o el contexto | Añadir una entrada **al final** de `00-Inicio/Registro de cambios.md` (`### AAAA-MM-DD — Autor`) |
 | Creado o modificado un endpoint | `05-API/Endpoints.md` (estado ⚪/🟡/✅) |
-| Cambiado una entidad o tabla | `04-Datos/Tablas/<tabla>.md` (+ el `.drawio` y `docs/paso-a-tablas.md` si cambia el modelo) |
+| Cambiado una entidad o tabla | `04-Datos/Tablas/<tabla>.md` (+ `docs/datos/`: el `.drawio`, `paso-a-tablas.md` y `sql/` si cambia el modelo) |
 | Creado o cambiado una pantalla | `08-Diseno-UI/Mapa de pantallas.md` (columnas AN/IO) |
 | Tomado una decisión con el grupo | Nuevo ADR en `10-Decisiones/` + marcar el P-xx como ✅ |
 | Encontrado una contradicción o un riesgo | `00-Inicio/Avisos e inconsistencias.md` |
 | Resuelto un problema que costó tiempo | `11-Calidad/Problemas comunes.md` |
 | Usado IA de forma relevante (código, pruebas, revisión) | `09-Transversal/Registro de uso de IA.md` (Digitalización ya no se evalúa, A-17, pero sirve para el dossier y la defensa) |
-| Cambiado algo respecto a la propuesta del Hito 1 | `docs/anexo-desviaciones.md` |
+| Cambiado algo respecto a la propuesta del Hito 1 | `docs/entrega/anexo-desviaciones.md` |
 
 **Normas para editar la bóveda** (es una carpeta de red sin historial; varias personas la editan):
 - **Vuelve a leer la nota justo antes de editarla** y haz **cambios pequeños y localizados**. No reescribas notas enteras.
@@ -186,3 +189,14 @@ Firma mis entradas en la bóveda como "<nombre>".
 ```
 
 Usa ese nombre para firmar las entradas de `Registro de cambios` y `Registro de uso de IA`, y ten en cuenta su área para avisar cuando una tarea toque la de otra persona.
+
+---
+
+## 10. Design System (sistema «Cartucho») · ✅ aprobado (ADR-022)
+
+**Regla:** toda UI (Android, Ionic y la web) debe seguir `design/DESIGN.md` y consumir `design/tokens.json`; **prohibidos los colores, fuentes y espaciados hardcodeados**.
+- Fuente única: `design/tokens.json` → `cd design && npm run tokens:build` genera `design/generated/ionic/theme/*.scss` y `design/generated/android/res/**` (no se editan a mano). `npm run tokens:check` comprueba el contraste WCAG AA.
+- En código: Ionic y web `var(--ja-<token>)` (la web reutiliza las variables CSS del tema de Ionic; propuesta) / `--ion-color-*` · Android `@color/ja_<token>`, `@dimen/ja_*`, `TextAppearance.JuegAlmi.*`, `Widget.JuegAlmi.*`.
+- Firma visual: **muesca** (esquina superior derecha cortada a 45°) en tarjetas, hojas, drawer y miniaturas; **barra de vida** segmentada para el progreso. Un solo botón amarillo por pantalla.
+- Cada pantalla `PT-xx` tiene su diseño en `design/screens/` y su receta en `design/SCREEN-MAP.md`. Proyecto de Stitch: `design/STITCH.md`.
+- No mostrar datos que no existen en el modelo (valoraciones, favoritos, "Exclusivo": A-08).

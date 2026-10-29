@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano. -->
+<!-- Tema Material 3 de JuegAlmi (oscuro: values-night). En el Manifest: android:theme="@style/Theme.JuegAlmi" -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.JuegAlmi" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Colores Material 3 ← tokens -->
+        <item name="colorPrimary">@color/ja_primario</item>
+        <item name="colorOnPrimary">@color/ja_sobre_primario</item>
+        <item name="colorPrimaryContainer">@color/ja_primario</item>
+        <item name="colorOnPrimaryContainer">@color/ja_sobre_primario</item>
+        <item name="colorSecondary">@color/ja_marca</item>
+        <item name="colorOnSecondary">@color/ja_sobre_marca</item>
+        <item name="colorSecondaryContainer">@color/ja_marca_suave</item>
+        <item name="colorOnSecondaryContainer">@color/ja_marca</item>
+        <item name="colorTertiary">@color/ja_alquiler</item>
+        <item name="colorTertiaryContainer">@color/ja_alquiler_suave</item>
+        <item name="colorOnTertiaryContainer">@color/ja_alquiler</item>
+        <item name="colorError">@color/ja_error</item>
+        <item name="colorErrorContainer">@color/ja_error_suave</item>
+        <item name="colorOnErrorContainer">@color/ja_error</item>
+        <item name="android:colorBackground">@color/ja_fondo</item>
+        <item name="colorOnBackground">@color/ja_texto</item>
+        <item name="colorSurface">@color/ja_superficie</item>
+        <item name="colorOnSurface">@color/ja_texto</item>
+        <item name="colorSurfaceVariant">@color/ja_superficie_2</item>
+        <item name="colorOnSurfaceVariant">@color/ja_texto_2</item>
+        <item name="colorSurfaceContainerLowest">@color/ja_superficie</item>
+        <item name="colorSurfaceContainerLow">@color/ja_superficie</item>
+        <item name="colorSurfaceContainer">@color/ja_superficie_2</item>
+        <item name="colorSurfaceContainerHigh">@color/ja_superficie_2</item>
+        <item name="colorSurfaceContainerHighest">@color/ja_superficie_3</item>
+        <item name="colorOutline">@color/ja_borde_campo</item>
+        <item name="colorOutlineVariant">@color/ja_borde</item>
+
+        <!-- Edge-to-edge: barras transparentes; el contenido aplica los insets (WindowInsetsCompat) -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+
+        <!-- Fuentes y formas -->
+        <item name="fontFamily">@font/dm_sans</item>
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.JuegAlmi.Pequena</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.JuegAlmi.Media</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.JuegAlmi.Muesca</item>
+        <item name="materialCardViewStyle">@style/Widget.JuegAlmi.Tarjeta</item>
+        <item name="materialButtonStyle">@style/Widget.JuegAlmi.Boton</item>
+        <item name="textInputStyle">@style/Widget.JuegAlmi.Campo</item>
+        <item name="chipStyle">@style/Widget.JuegAlmi.Chip</item>
+    </style>
+
+    <!-- Splash (API de SplashScreen, androidx.core:core-splashscreen) -->
+    <style name="Theme.JuegAlmi.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ja_fondo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.JuegAlmi</item>
+    </style>
+</resources>
