@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano. -->
+<resources>
+    <color name="ja_primario_fijo">#FFC629</color>
+    <color name="ja_tinta_fija">#1C1530</color>
+    <color name="ja_icono_fondo">#120D20</color>
+</resources>

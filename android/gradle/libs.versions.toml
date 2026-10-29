@@ -1,0 +1,28 @@
+# Versiones fijadas al crear el proyecto (ADR-031). Cada librería nueva se añade aquí
+# y en la tabla de 06-Android/Librerias Android.md de la bóveda.
+[versions]
+agp = "9.3.3"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+appcompat = "1.8.0"
+material = "1.14.0"
+activity = "1.13.0"
+constraintlayout = "2.2.2"
+coreSplashscreen = "1.2.0"
+
+[libraries]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+# Material 3: el tema «Cartucho» (Theme.JuegAlmi) hereda de Theme.Material3
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+# EdgeToEdge.enable(): la app se dibuja detrás de las barras del sistema
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+# Splash de PT-01 (Theme.JuegAlmi.Splash)
+core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
