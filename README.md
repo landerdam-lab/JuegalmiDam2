@@ -4,7 +4,7 @@ Reto 2 DAM2 (curso 25-26): apps y web para la tienda de videojuegos JuegAlmi.
 
 | Carpeta | Contenido |
 |---|---|
-| `api/` | Servicio web REST en Symfony (MariaDB + Doctrine) |
+| `api/` | Servicio web REST en Symfony (MariaDB + Doctrine). Puesta en marcha y uso: `api/README.md` |
 | `android/` | App Android nativa (Android Studio), solo para clientes |
 | `ionic/` | App híbrida en Ionic + Angular, compilada como APK de Android, solo para clientes |
 | `web/` | Web en Angular: publicidad, catálogo y gestión administrativa de la empresa |

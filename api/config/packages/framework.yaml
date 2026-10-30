@@ -1,0 +1,16 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+
+    # API sin estado: la sesión se identifica con el token, no con cookies.
+    session: false
+
+    # En AWS el HTTPS lo pone Nginx Proxy Manager (ADR-010). Confiar en sus cabeceras
+    # X-Forwarded-* hace que Symfony sepa que la petición original era HTTPS
+    # (y que las URL de las imágenes salgan con https://).
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
+
+when@test:
+    framework:
+        test: true
