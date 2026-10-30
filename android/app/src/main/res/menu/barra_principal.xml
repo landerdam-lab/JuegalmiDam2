@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Control por voz de toda la app (RF-15) -->
+    <item
+        android:id="@+id/accion_voz"
+        android:icon="@drawable/ic_mic"
+        android:title="@string/buscar_voz"
+        app:iconTint="@color/ja_texto"
+        app:showAsAction="always" />
     <item
         android:id="@+id/accion_carrito"
         android:icon="@drawable/ic_shopping_cart"

@@ -27,12 +27,16 @@ import com.juegalmi.app.data.api.Callback;
 import com.juegalmi.app.data.api.VolleyClient;
 import com.juegalmi.app.data.model.Pagina;
 import com.juegalmi.app.data.model.Producto;
+import com.juegalmi.app.data.model.Referencia;
 import com.juegalmi.app.data.repository.ProductoRepository;
 import com.juegalmi.app.ui.comun.EstadoVista;
 import com.juegalmi.app.ui.detalle.DetalleProductoActivity;
 import com.juegalmi.app.ui.inicio.BusquedaViewModel;
 import com.juegalmi.app.ui.inicio.CabeceraInicioAdapter;
 import com.juegalmi.app.util.AgitarDetector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Catálogo de un tipo de producto: PT-05 (videojuegos), PT-07 (móviles y tablets) y PT-09 (consolas).
@@ -48,6 +52,14 @@ public class CatalogoFragment extends Fragment {
     /** Solo en la pestaña de videojuegos: carrusel «Para alquilar» y tarjeta de reparaciones (PT-04) */
     @Nullable private CabeceraInicioAdapter cabecera;
     @Nullable private Chip chipAlquilables;
+    @Nullable private Chip quitarFiltros;
+    /**
+     * Etiqueta propia para las opciones de los filtros: cargar() cancela las peticiones de «this» al cambiar de
+     * filtro, y no debe cancelar también las de marcas, plataformas y géneros.
+     */
+    private final Object etiquetaOpciones = new Object();
+    /** Valores de videojuego.pegi (los mismos que el CHECK de la BBDD) */
+    private static final int[] PEGI = {3, 7, 12, 16, 18};
     private CircularProgressIndicator progreso;
     private TextView tvResultados;
     private EstadoVista estado;
@@ -137,8 +149,23 @@ public class CatalogoFragment extends Fragment {
         });
     }
 
-    /** Filtros del diseño: «Solo alquilables» en videojuegos; Todos / Móviles / Tablets en móviles. */
+    /**
+     * Filtros del catálogo (todos los aplica la API, que es quien sabe qué hay):
+     * - Videojuegos: Solo alquilables · Plataforma · Género · PEGI · Marca · Ordenar
+     * - Móviles y tablets: Todos / Móviles / Tablets · Marca · Ordenar
+     * - Consolas: Marca · Ordenar
+     * Las opciones de plataforma, marca y género vienen de la API; PEGI son los 5 valores de la BBDD (CHECK).
+     * Si hay algún filtro puesto aparece «Quitar filtros».
+     */
     private void prepararChips(ChipGroup chips) {
+        List<ChipDesplegable> desplegables = new ArrayList<>();
+        Chip quitar = nuevoChip(chips, R.string.filtro_quitar);
+        quitar.setCheckable(false);
+        quitar.setChipIconResource(R.drawable.ic_close);
+        quitar.setChipIconVisible(true);
+        quitar.setVisibility(View.GONE);
+        quitarFiltros = quitar;
+
         if (filtro.tipo.equals(Producto.VIDEOJUEGO)) {
             Chip alquilables = nuevoChip(chips, R.string.filtro_solo_alquilables);
             chipAlquilables = alquilables;
@@ -146,6 +173,44 @@ public class CatalogoFragment extends Fragment {
                 filtro.soloAlquilables = marcado;
                 cargar(1);
             });
+
+            ChipDesplegable plataforma = new ChipDesplegable(chips, getString(R.string.filtro_plataforma),
+                    getString(R.string.filtro_todas), valor -> {
+                filtro.plataformaId = (Integer) valor;
+                cargar(1);
+            });
+            repositorio.plataformas(etiquetaOpciones, opcionesDe(plataforma));
+            desplegables.add(plataforma);
+
+            ChipDesplegable genero = new ChipDesplegable(chips, getString(R.string.filtro_genero),
+                    getString(R.string.filtro_todos), valor -> {
+                filtro.genero = (String) valor;
+                cargar(1);
+            });
+            repositorio.generos(etiquetaOpciones, new Callback<List<String>>() {
+                @Override
+                public void onExito(List<String> lista) {
+                    List<ChipDesplegable.Opcion> o = new ArrayList<>();
+                    for (String g : lista) o.add(new ChipDesplegable.Opcion(g, g));
+                    genero.opciones(o);
+                }
+
+                @Override
+                public void onError(ApiError error) {
+                    // Sin opciones el chip no se abre; el resto del catálogo sigue funcionando
+                }
+            });
+            desplegables.add(genero);
+
+            ChipDesplegable pegi = new ChipDesplegable(chips, getString(R.string.filtro_pegi),
+                    getString(R.string.filtro_todos), valor -> {
+                filtro.pegi = (Integer) valor;
+                cargar(1);
+            });
+            List<ChipDesplegable.Opcion> edades = new ArrayList<>();
+            for (int edad : PEGI) edades.add(new ChipDesplegable.Opcion(String.valueOf(edad), edad));
+            pegi.opciones(edades);
+            desplegables.add(pegi);
         } else if (filtro.tipo.equals(Producto.MOVIL)) {
             chips.setSingleSelection(true);
             chips.setSelectionRequired(true);
@@ -158,9 +223,52 @@ public class CatalogoFragment extends Fragment {
                 filtro.formato = id == moviles.getId() ? Producto.MOVIL : id == tablets.getId() ? "tablet" : null;
                 cargar(1);
             });
-        } else {
-            chips.setVisibility(View.GONE);
         }
+
+        ChipDesplegable marca = new ChipDesplegable(chips, getString(R.string.filtro_marca),
+                getString(R.string.filtro_todas), valor -> {
+            filtro.marcaId = (Integer) valor;
+            cargar(1);
+        });
+        repositorio.marcas(etiquetaOpciones, opcionesDe(marca));
+        desplegables.add(marca);
+
+        // Ordenar no tiene opción vacía: siempre hay un orden (nombre por defecto)
+        ChipDesplegable orden = new ChipDesplegable(chips, getString(R.string.filtro_ordenar), null, valor -> {
+            filtro.orden = (String) valor;
+            cargar(1);
+        });
+        List<ChipDesplegable.Opcion> ordenes = new ArrayList<>();
+        ordenes.add(new ChipDesplegable.Opcion(getString(R.string.orden_nombre), ProductoRepository.ORDEN_NOMBRE));
+        ordenes.add(new ChipDesplegable.Opcion(getString(R.string.orden_precio_asc), ProductoRepository.ORDEN_PRECIO_ASC));
+        ordenes.add(new ChipDesplegable.Opcion(getString(R.string.orden_precio_desc), ProductoRepository.ORDEN_PRECIO_DESC));
+        orden.opciones(ordenes);
+        orden.mostrar(getString(R.string.orden_nombre), false);
+
+        quitar.setOnClickListener(v -> {
+            filtro.quitarFiltros();
+            for (ChipDesplegable d : desplegables) d.reiniciar();
+            orden.mostrar(getString(R.string.orden_nombre), false);
+            if (chipAlquilables != null) chipAlquilables.setChecked(false);
+            cargar(1);
+        });
+    }
+
+    /** Callback que convierte una lista {id, nombre} de la API en las opciones de un desplegable. */
+    private Callback<List<Referencia>> opcionesDe(ChipDesplegable chip) {
+        return new Callback<List<Referencia>>() {
+            @Override
+            public void onExito(List<Referencia> lista) {
+                List<ChipDesplegable.Opcion> o = new ArrayList<>();
+                for (Referencia r : lista) o.add(new ChipDesplegable.Opcion(r.nombre, r.id));
+                chip.opciones(o);
+            }
+
+            @Override
+            public void onError(ApiError error) {
+                // Sin opciones el chip no se abre; el resto del catálogo sigue funcionando
+            }
+        };
     }
 
     private Chip nuevoChip(ChipGroup grupo, int texto) {
@@ -179,9 +287,12 @@ public class CatalogoFragment extends Fragment {
         VolleyClient.get(requireContext()).cancelar(this);
         cargando = true;
         estado.ocultar();
+        if (quitarFiltros != null) {
+            quitarFiltros.setVisibility(filtro.hayFiltros() ? View.VISIBLE : View.GONE);
+        }
         if (cabecera != null) {
             // Al buscar o filtrar, solo la lista de resultados
-            cabecera.mostrar((filtro.texto == null || filtro.texto.isEmpty()) && !filtro.soloAlquilables);
+            cabecera.mostrar((filtro.texto == null || filtro.texto.isEmpty()) && !filtro.hayFiltros());
         }
         if (numero == 1) {
             progreso.setVisibility(View.VISIBLE);
@@ -230,6 +341,7 @@ public class CatalogoFragment extends Fragment {
     @Override
     public void onDestroyView() {
         VolleyClient.get(requireContext()).cancelar(this);
+        VolleyClient.get(requireContext()).cancelar(etiquetaOpciones);
         if (cabecera != null) {
             VolleyClient.get(requireContext()).cancelar(cabecera);
         }

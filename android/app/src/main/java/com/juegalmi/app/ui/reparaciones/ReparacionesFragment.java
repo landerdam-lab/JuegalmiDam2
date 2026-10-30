@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.juegalmi.app.R;
+import com.juegalmi.app.ui.comun.Dialogos;
 import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.Callback;
 import com.juegalmi.app.data.model.Pagina;
@@ -104,7 +105,7 @@ public class ReparacionesFragment extends ListaBaseFragment {
     }
 
     private void confirmarCancelacion(Reparacion r) {
-        new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_JuegAlmi_Dialogo)
+        Dialogos.destructivo(new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_JuegAlmi_Dialogo)
                 .setTitle(getString(R.string.cancelar_reparacion_titulo, r.referencia()))
                 .setMessage(R.string.cancelar_reparacion_texto)
                 .setNegativeButton(R.string.volver, null)
@@ -120,7 +121,7 @@ public class ReparacionesFragment extends ListaBaseFragment {
                                 if (isAdded()) Snackbar.make(requireView(), error.mensaje, Snackbar.LENGTH_LONG).show();
                             }
                         }))
-                .show();
+                .show());
     }
 
     /** Paso de la barra de 4. Cancelada = 0 (con el contorno rojo de la pastilla). */

@@ -29,7 +29,7 @@ import java.util.Locale;
 
 /**
  * La caja «Entrega» (layout caja_entrega, ADR-038) en dos modos:
- * - elegir (PT-12 Confirmar pedido): recoger en la tienda → mapa de la tienda; envío a domicilio → el cliente
+ * - elegir (PT-12 Confirmar pedido): recoger en la tienda → mapa interactivo de la tienda; envío a domicilio → el cliente
  *   escribe la dirección y toca el mapa para marcar su casa (empieza en su ubicación del GPS).
  * - ver (PT-14 Detalle de pedido): muestra cómo se entrega y el mapa de la tienda o de la casa.
  */
@@ -58,7 +58,9 @@ public class EntregaVista {
         tvTexto = raiz.findViewById(R.id.tvEntregaTexto);
         tvPunto = raiz.findViewById(R.id.tvPunto);
         tilDireccion = raiz.findViewById(R.id.tilDireccion);
-        Mapa.preparar(mapa, false);
+        // Interactivo siempre (mover y hacer zoom), también el de la tienda. Tocar solo mueve el marcador
+        // cuando es a domicilio (ver singleTapConfirmedHelper): el de la tienda es un punto fijo.
+        Mapa.preparar(mapa, true);
 
         // La tienda hace falta en los dos modos (recogida, o centro del mapa si no hay GPS)
         new TiendaRepository(context).tienda(etiqueta, new Callback<Tienda>() {
@@ -108,7 +110,6 @@ public class EntregaVista {
 
     private void pintar() {
         tilDireccion.setVisibility(domicilio ? View.VISIBLE : View.GONE);
-        Mapa.preparar(mapa, domicilio);
         if (!domicilio) {
             tvTexto.setVisibility(View.VISIBLE);
             tvPunto.setText(R.string.entrega_tienda_gratis);

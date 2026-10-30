@@ -36,4 +36,7 @@
     <dimen name="carrusel_imagen">120dp</dimen>
     <!-- Mapa de la entrega en Confirmar pedido y en el detalle (ADR-038) -->
     <dimen name="mapa_pedido">200dp</dimen>
+    <!-- Placeholder de las imágenes: fondo de 160 con un icono de 40 (se escala con la miniatura) -->
+    <dimen name="placeholder_lado">160dp</dimen>
+    <dimen name="placeholder_icono">40dp</dimen>
 </resources>
