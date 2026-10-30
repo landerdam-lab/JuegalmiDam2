@@ -294,6 +294,10 @@ function tiposXml() {
       `        <item name="android:letterSpacing">${tp.espaciado}</item>`,
       `        <item name="lineHeight">${tp.altoLinea}sp</item>`,
       `        <item name="android:textFontWeight">${tp.peso}</item>`,
+      // Las tres fuentes son VARIABLES (un solo .ttf con todos los pesos): Android solo aplica el peso
+      // con el eje 'wght'. Sin esta línea todo sale con el peso por defecto del archivo.
+      // La comilla va escapada (\') porque en los recursos de Android ' es un carácter especial.
+      `        <item name="android:fontVariationSettings">\\'wght\\' ${tp.peso}</item>`,
       '    </style>');
   }
   l.push('</resources>', '');
@@ -343,9 +347,24 @@ function temaXml(modo) {
         <item name="android:windowLightNavigationBar" tools:targetApi="27">${!oscuro}</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
 
-        <!-- Fuentes y formas -->
-        <item name="fontFamily">@font/dm_sans</item>
-        <item name="android:fontFamily">@font/dm_sans</item>
+        <!-- Fuentes: SIN android:fontFamily en el tema. Un fontFamily de tema pisa la fuente de cada
+             TextAppearance.JuegAlmi.* (Android lo trata como atributo de la vista), y los titulares y precios
+             salían en DM Sans. En su lugar, el texto por defecto y los estilos de Material 3 usan los nuestros. -->
+        <item name="android:textViewStyle">@style/Widget.JuegAlmi.Texto</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.JuegAlmi.Display</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.JuegAlmi.TitularL</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.JuegAlmi.Titulo</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.JuegAlmi.Subtitulo</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.JuegAlmi.CuerpoL</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.JuegAlmi.Cuerpo</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.JuegAlmi.Etiqueta</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+
+        <!-- Formas y componentes -->
         <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.JuegAlmi.Pequena</item>
         <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.JuegAlmi.Media</item>
         <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.JuegAlmi.Muesca</item>
@@ -458,6 +477,12 @@ function formasXml() {
         <item name="tabTextColor">@color/ja_texto_2</item>
         <item name="tabTextAppearance">@style/TextAppearance.JuegAlmi.Etiqueta</item>
         <item name="android:background">@color/ja_fondo</item>
+    </style>
+
+    <!-- Texto por defecto (android:textViewStyle del tema): DM Sans 14 en color texto.
+         Va como textAppearance para que el android:textAppearance de cada vista pueda cambiarlo. -->
+    <style name="Widget.JuegAlmi.Texto" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.Cuerpo</item>
     </style>
 </resources>
 `;

@@ -9,6 +9,7 @@
         <item name="android:letterSpacing">-0.02</item>
         <item name="lineHeight">40sp</item>
         <item name="android:textFontWeight">800</item>
+        <item name="android:fontVariationSettings">\'wght\' 800</item>
     </style>
     <style name="TextAppearance.JuegAlmi.TitularL" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/bricolage_grotesque</item>
@@ -17,6 +18,7 @@
         <item name="android:letterSpacing">-0.015</item>
         <item name="lineHeight">34sp</item>
         <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
     </style>
     <style name="TextAppearance.JuegAlmi.TitularM" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/bricolage_grotesque</item>
@@ -25,6 +27,7 @@
         <item name="android:letterSpacing">-0.01</item>
         <item name="lineHeight">28sp</item>
         <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
     </style>
     <style name="TextAppearance.JuegAlmi.Titulo" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/bricolage_grotesque</item>
@@ -33,6 +36,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="lineHeight">24sp</item>
         <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
     </style>
     <style name="TextAppearance.JuegAlmi.Subtitulo" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/dm_sans</item>
@@ -41,6 +45,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="lineHeight">22sp</item>
         <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
     </style>
     <style name="TextAppearance.JuegAlmi.CuerpoL" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/dm_sans</item>
@@ -49,6 +54,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="lineHeight">24sp</item>
         <item name="android:textFontWeight">400</item>
+        <item name="android:fontVariationSettings">\'wght\' 400</item>
     </style>
     <style name="TextAppearance.JuegAlmi.Cuerpo" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/dm_sans</item>
@@ -57,6 +63,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="lineHeight">20sp</item>
         <item name="android:textFontWeight">400</item>
+        <item name="android:fontVariationSettings">\'wght\' 400</item>
     </style>
     <style name="TextAppearance.JuegAlmi.Etiqueta" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/dm_sans</item>
@@ -65,6 +72,7 @@
         <item name="android:letterSpacing">0.01</item>
         <item name="lineHeight">20sp</item>
         <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
     </style>
     <style name="TextAppearance.JuegAlmi.EtiquetaS" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/dm_sans</item>
@@ -73,6 +81,7 @@
         <item name="android:letterSpacing">0.02</item>
         <item name="lineHeight">16sp</item>
         <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
     </style>
     <style name="TextAppearance.JuegAlmi.Precio" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/jetbrains_mono</item>
@@ -81,6 +90,7 @@
         <item name="android:letterSpacing">-0.01</item>
         <item name="lineHeight">24sp</item>
         <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
     </style>
     <style name="TextAppearance.JuegAlmi.PrecioS" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/jetbrains_mono</item>
@@ -89,6 +99,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="lineHeight">20sp</item>
         <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
     </style>
     <style name="TextAppearance.JuegAlmi.Codigo" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:fontFamily">@font/jetbrains_mono</item>
@@ -97,5 +108,6 @@
         <item name="android:letterSpacing">0.02</item>
         <item name="lineHeight">16sp</item>
         <item name="android:textFontWeight">500</item>
+        <item name="android:fontVariationSettings">\'wght\' 500</item>
     </style>
 </resources>
