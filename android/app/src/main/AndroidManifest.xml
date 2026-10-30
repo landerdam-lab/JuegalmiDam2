@@ -5,6 +5,9 @@
     <!-- Ubicación aproximada (wifi/red móvil) y precisa (GPS): cabeceras X-Latitud / X-Longitud (ADR-014) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Android 17: conectar con una API en la red local (emulador o VM del aula). Se pide solo si
+         la URL de la API es local (util/RedLocal). Con la API en AWS no hace falta -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 
     <!-- El tema de la app es el splash (PT-01, con el logo de Almi Companion): MainActivity pasa a Theme.JuegAlmi al arrancar.
          networkSecurityConfig: HTTP solo para la API de desarrollo, mientras no haya HTTPS (A-32) -->
@@ -83,6 +86,13 @@
             android:name=".ui.tienda.HistoriaActivity"
             android:exported="false"
             android:theme="@style/Theme.JuegAlmi" />
+
+        <!-- Reduce las fotos de la cámara en un PROCESO APARTE (":fotos"): ejemplo de varios procesos
+             (PSP, ADR-039). No se exporta: solo lo puede arrancar esta app -->
+        <service
+            android:name=".data.FotoService"
+            android:exported="false"
+            android:process=":fotos" />
 
         <!-- Comparte con la app de cámara el fichero donde guardar la foto (util/Camara) -->
         <provider

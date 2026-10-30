@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/columna_margen"
             android:paddingHorizontal="@dimen/ja_espacio_4"
             android:paddingBottom="@dimen/ja_espacio_6">
 
@@ -188,7 +189,7 @@
         android:id="@+id/pie"
         style="@style/JuegAlmi.PieBoton">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEnviar"
             style="@style/Widget.JuegAlmi.Boton"
             android:layout_width="match_parent"

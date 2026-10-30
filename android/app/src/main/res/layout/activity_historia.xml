@@ -45,7 +45,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/ja_espacio_4"
+            android:layout_marginHorizontal="@dimen/columna_margen_con_borde"
+            android:layout_marginVertical="@dimen/ja_espacio_4"
             app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.MuescaDestacada">
 
             <LinearLayout

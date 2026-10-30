@@ -108,4 +108,5 @@
     <string name="permiso_ubicacion_texto">La tienda registra desde dónde haces cada consulta, pedido o reparación. Sin ella no podrás confirmar pedidos ni pedir reparaciones.</string>
     <string name="permiso_continuar">Continuar</string>
     <string name="permiso_ahora_no">Ahora no</string>
+    <string name="permiso_red_local_denegado">Sin el permiso de dispositivos cercanos la app no puede conectar con el servidor de la tienda en tu red. Actívalo en Ajustes › Apps › Almi Companion › Permisos.</string>
 </resources>
