@@ -12,6 +12,7 @@ use App\Entity\Usuario;
 use App\Entity\Videojuego;
 use App\Enum\EstadoPedido;
 use App\Enum\MetodoPago;
+use App\Enum\TipoEntrega;
 use App\Http\ApiException;
 use App\Http\Datos;
 use App\Repository\AlquilerRepository;
@@ -35,7 +36,9 @@ final class PedidoService
     /**
      * POST /api/pedidos
      * {"metodoPago": "tarjeta", "lineas": [{"productoId": 30, "tipo": "compra", "cantidad": 1},
-     *                                      {"productoId": 12, "tipo": "alquiler", "dias": 7}]}
+     *                                      {"productoId": 12, "tipo": "alquiler", "dias": 7}],
+     *  "entrega": "domicilio", "direccionEntrega": "Calle…", "latitudEntrega": 43.26, "longitudEntrega": -2.93}
+     * entrega es opcional («tienda» por defecto); a domicilio, dirección y punto del mapa obligatorios (ADR-038).
      *
      * Todo en UNA transacción: si una línea falla (sin stock, sin copias…) no se guarda nada.
      * Se bloquea la fila de cada producto (SELECT … FOR UPDATE) para que dos pedidos a la vez
@@ -48,10 +51,14 @@ final class PedidoService
         if ($lineas === []) {
             throw ApiException::validacion(['lineas' => 'El pedido tiene que tener al menos un producto.']);
         }
+        $domicilio = $this->datosDomicilio($datos);
 
-        return $this->em->wrapInTransaction(function () use ($cliente, $metodoPago, $lineas): Pedido {
+        return $this->em->wrapInTransaction(function () use ($cliente, $metodoPago, $lineas, $domicilio): Pedido {
             $ahora = new \DateTimeImmutable();
             $pedido = new Pedido($cliente, $metodoPago, $ahora);
+            if ($domicilio !== null) {
+                $pedido->enviarA(...$domicilio);
+            }
             $comprados = [];
             $alquilados = [];
             $bloqueados = []; // productos ya bloqueados en este pedido (ver bloquear())
@@ -112,6 +119,36 @@ final class PedidoService
 
             return $pedido;
         });
+    }
+
+    /**
+     * Envío a domicilio (ADR-038): devuelve [dirección, latitud, longitud] o null si se recoge en la tienda.
+     * Se valida antes de la transacción: si faltan datos no se toca el stock.
+     *
+     * @return array{0: string, 1: string, 2: string}|null
+     */
+    private function datosDomicilio(Datos $datos): ?array
+    {
+        $entrega = $datos->enum('entrega', TipoEntrega::class) ?? TipoEntrega::Tienda;
+        if ($entrega === TipoEntrega::Tienda) {
+            return null;
+        }
+        $direccion = trim((string) $datos->texto('direccionEntrega'));
+        $latitud = $datos->decimal('latitudEntrega', false, 7);
+        $longitud = $datos->decimal('longitudEntrega', false, 7);
+
+        $errores = [];
+        if (mb_strlen($direccion) < 5 || mb_strlen($direccion) > 255) {
+            $errores['direccionEntrega'] = 'Escribe la dirección de entrega (calle, número, código postal y ciudad).';
+        }
+        if ($latitud === null || $longitud === null || abs((float) $latitud) > 90 || abs((float) $longitud) > 180) {
+            $errores['ubicacionEntrega'] = 'Marca en el mapa dónde quieres recibir el pedido.';
+        }
+        if ($errores !== []) {
+            throw ApiException::validacion($errores);
+        }
+
+        return [$direccion, $latitud, $longitud];
     }
 
     /**

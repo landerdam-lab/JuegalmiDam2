@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enum\EstadoPedido;
 use App\Enum\MetodoPago;
+use App\Enum\TipoEntrega;
 use App\Repository\PedidoRepository;
 use App\Util\Dinero;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Pedido de un cliente, con recogida en tienda (ADR-015).
+ * Pedido de un cliente. Se recoge en la tienda o se envía gratis a domicilio (ADR-038, cambia ADR-015).
+ * Si es a domicilio guarda la dirección que escribe el cliente y el punto del mapa (CHECK en la migración).
  * Tiene compras (N:M con producto) y/o alquileres (N:M con videojuego) colgando de él (ADR-034).
  * El total NO se guarda: se calcula (getTotal).
  */
@@ -34,6 +36,20 @@ class Pedido
 
     #[ORM\Column(length: 20, enumType: MetodoPago::class)]
     private MetodoPago $metodoPago;
+
+    #[ORM\Column(length: 20, enumType: TipoEntrega::class, options: ['default' => 'tienda'])]
+    private TipoEntrega $entrega = TipoEntrega::Tienda;
+
+    /** Solo a domicilio: la dirección que escribe el cliente */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $direccionEntrega = null;
+
+    /** Solo a domicilio: el punto que marca en el mapa (DECIMAL(10,7), como el resto de coordenadas) */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 7, nullable: true)]
+    private ?string $latitudEntrega = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 7, nullable: true)]
+    private ?string $longitudEntrega = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'cliente_id', nullable: false)]
@@ -83,6 +99,37 @@ class Pedido
     public function getMetodoPago(): MetodoPago
     {
         return $this->metodoPago;
+    }
+
+    public function getEntrega(): TipoEntrega
+    {
+        return $this->entrega;
+    }
+
+    public function getDireccionEntrega(): ?string
+    {
+        return $this->direccionEntrega;
+    }
+
+    public function getLatitudEntrega(): ?string
+    {
+        return $this->latitudEntrega;
+    }
+
+    public function getLongitudEntrega(): ?string
+    {
+        return $this->longitudEntrega;
+    }
+
+    /** Envío a domicilio: los tres datos van juntos (lo exige también un CHECK de la BBDD). */
+    public function enviarA(string $direccion, string $latitud, string $longitud): static
+    {
+        $this->entrega = TipoEntrega::Domicilio;
+        $this->direccionEntrega = $direccion;
+        $this->latitudEntrega = $latitud;
+        $this->longitudEntrega = $longitud;
+
+        return $this;
     }
 
     public function getCliente(): Cliente
