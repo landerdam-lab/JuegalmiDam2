@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chip de filtro: seleccionado = marca-suave, normal = superficie-2 (DESIGN.md §9) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/ja_marca_suave" android:state_checked="true" />
+    <item android:color="@color/ja_superficie_2" />
+</selector>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-24 La tienda · diseño 24-la-tienda: portada con muesca de 24 + 4 tarjetas grandes con tinte -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/ja_espacio_4"
+            android:paddingBottom="@dimen/ja_espacio_6">
+
+            <TextView
+                style="@style/JuegAlmi.TituloPantalla"
+                android:layout_marginTop="0dp"
+                android:text="@string/menu_tienda" />
+
+            <!-- Portada: primera foto de la galería, nombre y dirección (placeholder mientras carga) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/portada_tienda"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                app:cardPreventCornerOverlap="false"
+                app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.MuescaDestacada"
+                app:strokeWidth="0dp">
+
+                <ImageView
+                    android:id="@+id/ivPortada"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/ja_superficie_2"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/ja_velo" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ja_espacio_4">
+
+                    <TextView
+                        android:id="@+id/tvNombreTienda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.TitularL"
+                        android:textColor="@color/ja_primario_fijo" />
+
+                    <TextView
+                        android:id="@+id/tvDireccion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                        android:textColor="@color/ja_primario_fijo" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/tienda_explora" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/opServicios"
+                    layout="@layout/item_opcion_tienda" />
+
+                <Space
+                    android:layout_width="@dimen/ja_espacio_3"
+                    android:layout_height="0dp" />
+
+                <include
+                    android:id="@+id/opUbicacion"
+                    layout="@layout/item_opcion_tienda" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/opGaleria"
+                    layout="@layout/item_opcion_tienda" />
+
+                <Space
+                    android:layout_width="@dimen/ja_espacio_3"
+                    android:layout_height="0dp" />
+
+                <include
+                    android:id="@+id/opHistoria"
+                    layout="@layout/item_opcion_tienda" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        layout="@layout/estado_vacio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</FrameLayout>

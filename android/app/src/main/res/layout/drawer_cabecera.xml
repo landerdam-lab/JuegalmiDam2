@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cabecera del Drawer: datos del cliente (de la sesión) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cabecera"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/ja_espacio_5">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="@dimen/ja_tamano_avatar"
+        android:layout_height="@dimen/ja_tamano_avatar"
+        android:background="@color/ja_marca_suave"
+        android:contentDescription="@string/menu_perfil"
+        android:padding="@dimen/ja_espacio_2"
+        android:src="@drawable/ic_person"
+        app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Pastilla"
+        app:tint="@color/ja_marca" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ja_espacio_3"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+            android:textColor="@color/ja_texto" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+            android:textColor="@color/ja_texto_2" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tamaños de componentes concretos que fija design/DESIGN.md §6 y §9 y que no son tokens.
+     Los colores, fuentes, espacios y radios van SIEMPRE con los tokens (ja_*). -->
+<resources>
+    <!-- Estado vacío / error: baldosa de 96 con icono de 40 -->
+    <dimen name="estado_baldosa">96dp</dimen>
+    <dimen name="estado_icono_relleno">28dp</dimen>
+    <!-- Tarjeta horizontal de la lista: miniatura 88 × 116 -->
+    <dimen name="miniatura_ancho">88dp</dimen>
+    <dimen name="miniatura_alto">116dp</dimen>
+    <!-- Portada en la ficha (3:4) -->
+    <dimen name="portada_ancho">120dp</dimen>
+    <dimen name="portada_alto">160dp</dimen>
+    <!-- Logo en el login y en la barra superior -->
+    <dimen name="logo_grande">96dp</dimen>
+    <dimen name="logo_barra">32dp</dimen>
+    <!-- Drawer: 300 de ancho -->
+    <dimen name="drawer_ancho">300dp</dimen>
+    <!-- Miniatura cuadrada de líneas de pedido y carrito -->
+    <dimen name="miniatura_cuadrada">56dp</dimen>
+    <!-- Barra de vida bajo la baldosa de éxito (PT-12b) -->
+    <dimen name="estado_baldosa_ancha">160dp</dimen>
+    <!-- Hueco bajo las listas para que el FAB no tape la última tarjeta -->
+    <dimen name="lista_hueco_fab">96dp</dimen>
+    <!-- Perfil: avatar grande -->
+    <dimen name="avatar_grande">104dp</dimen>
+    <!-- La tienda: portada y tarjetas grandes -->
+    <dimen name="portada_tienda">200dp</dimen>
+    <dimen name="opcion_tienda_alto">168dp</dimen>
+    <!-- Historia: cabecera con foto -->
+    <dimen name="historia_cabecera">260dp</dimen>
+    <!-- Ubicación: botón «centrar» debajo de la barra superior -->
+    <dimen name="ubicacion_fab_arriba">112dp</dimen>
+    <!-- Carrusel de Inicio: tarjeta vertical con imagen 4:3 -->
+    <dimen name="carrusel_ancho">160dp</dimen>
+    <dimen name="carrusel_imagen">120dp</dimen>
+</resources>

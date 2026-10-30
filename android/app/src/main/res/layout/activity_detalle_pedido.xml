@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-14 Detalle de pedido · diseño 14-detalle-pedido -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/JuegAlmi.BarraSecundaria" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/ja_espacio_4"
+                android:paddingBottom="@dimen/ja_espacio_6">
+
+                <!-- Estado con barra de vida etiquetada: Pendiente · Preparado · Entregado -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cajaEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_4">
+
+                        <TextView
+                            android:id="@+id/tvEstado"
+                            style="@style/JuegAlmi.Pastilla" />
+
+                        <TextView
+                            android:id="@+id/tvEstadoTitulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_2"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                            android:textColor="@color/ja_texto" />
+
+                        <com.juegalmi.app.ui.comun.BarraVida
+                            android:id="@+id/barra"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_3" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/JuegAlmi.EtiquetaPaso"
+                                android:gravity="start"
+                                android:text="@string/estado_pendiente" />
+
+                            <TextView
+                                style="@style/JuegAlmi.EtiquetaPaso"
+                                android:gravity="center"
+                                android:text="@string/estado_preparado" />
+
+                            <TextView
+                                style="@style/JuegAlmi.EtiquetaPaso"
+                                android:gravity="end"
+                                android:text="@string/estado_entregado" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    style="@style/JuegAlmi.TituloSeccion"
+                    android:text="@string/detalle_pedido_productos" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/lineas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_3" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    style="@style/JuegAlmi.TituloSeccion"
+                    android:text="@string/detalle_pedido_resumen" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/resumen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_4" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <Button
+                    android:id="@+id/btnCancelar"
+                    style="@style/Widget.JuegAlmi.Boton.Secundario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_6"
+                    android:text="@string/detalle_pedido_cancelar"
+                    android:textColor="@color/ja_error"
+                    app:icon="@drawable/ic_cancel"
+                    app:iconTint="@color/ja_error"
+                    app:strokeColor="@color/ja_error" />
+
+                <TextView
+                    android:id="@+id/tvMotivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/ja_espacio_2"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                    android:textColor="@color/ja_texto_3" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:indicatorColor="@color/ja_marca" />
+
+        <include
+            layout="@layout/estado_vacio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+</LinearLayout>

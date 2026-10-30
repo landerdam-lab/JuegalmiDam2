@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Color del logo de Almi Companion (docs/diseno/logos-juegalmi.jpg, ADR-036): el fondo azul noche del icono.
+     No es un token del sistema «Cartucho»: solo se usa detrás del logo (icono de la app). -->
+<resources>
+    <color name="logo_fondo">#071621</color>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Buscador de Inicio (PT-04): pastilla superficie-2 con borde -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/ja_radio_completo" />
+    <solid android:color="@color/ja_superficie_2" />
+    <stroke android:width="@dimen/ja_borde_fino" android:color="@color/ja_borde" />
+</shape>

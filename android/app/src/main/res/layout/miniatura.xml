@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Miniatura con muesca pequeña (la del contenedor, DESIGN.md §5) -->
+<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/miniatura_cuadrada"
+    android:layout_height="@dimen/miniatura_cuadrada"
+    android:background="@color/ja_superficie_2"
+    android:importantForAccessibility="no"
+    android:scaleType="centerCrop"
+    app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Pequena" />

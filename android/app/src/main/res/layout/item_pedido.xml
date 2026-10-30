@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta de Mis pedidos (PT-13): referencia, fecha, estado + barra de vida de 3, miniaturas y total -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ja_espacio_3"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_4">
+
+        <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+            <TextView
+                android:id="@+id/tvReferencia"
+                style="@style/JuegAlmi.Pastilla"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ja_espacio_2"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                android:textColor="@color/ja_texto_2" />
+
+            <ImageView
+                style="@style/JuegAlmi.IconoFila"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/ja_texto_2" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/JuegAlmi.FilaIcono"
+            android:layout_marginTop="@dimen/ja_espacio_3">
+
+            <TextView
+                android:id="@+id/tvEstado"
+                style="@style/JuegAlmi.Pastilla" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvPaso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                android:textColor="@color/ja_texto_2" />
+        </LinearLayout>
+
+        <com.juegalmi.app.ui.comun.BarraVida
+            android:id="@+id/barra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_2" />
+
+        <!-- Hasta 3 miniaturas de los productos del pedido -->
+        <LinearLayout
+            android:id="@+id/miniaturas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            style="@style/JuegAlmi.FilaIcono"
+            android:layout_marginTop="@dimen/ja_espacio_3">
+
+            <TextView
+                android:id="@+id/tvMetodo"
+                style="@style/JuegAlmi.Pastilla"
+                android:textColor="@color/ja_texto_2" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Precio"
+                android:textColor="@color/ja_texto" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

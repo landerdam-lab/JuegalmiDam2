@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-06 Detalle de videojuego · PT-08 Detalle de móvil/tablet · PT-10 Detalle de consola
+     (diseños 06-detalle-videojuego y 08-detalle-movil). Las partes que no aplican al tipo se ocultan. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/ja_tamano_barra_superior"
+        app:menu="@menu/barra_principal"
+        app:navigationContentDescription="@string/volver"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/ja_texto" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:id="@+id/contenido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/ja_espacio_4"
+                android:paddingBottom="@dimen/ja_espacio_6">
+
+                <!-- Portada + nombre + marca · plataforma + stock -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivImagen"
+                        android:layout_width="@dimen/portada_ancho"
+                        android:layout_height="@dimen/portada_alto"
+                        android:background="@color/ja_superficie_2"
+                        android:scaleType="centerCrop"
+                        android:transitionName="imagen_producto"
+                        app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Muesca" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ja_espacio_4"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvNombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+                            android:textColor="@color/ja_texto" />
+
+                        <TextView
+                            android:id="@+id/tvSubtitulo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_1"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Etiqueta"
+                            android:textColor="@color/ja_marca" />
+
+                        <TextView
+                            android:id="@+id/tvEstado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_3"
+                            android:background="@drawable/fondo_pastilla"
+                            android:paddingHorizontal="@dimen/ja_espacio_3"
+                            android:paddingVertical="@dimen/ja_espacio_1"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Caja de alquiler (solo videojuegos): precio por día + barra de vida de copias -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cajaAlquiler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_6"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/ja_alquiler_suave"
+                    app:strokeColor="@color/ja_alquiler">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_4">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/ja_tamano_icono"
+                                android:layout_height="@dimen/ja_tamano_icono"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_calendar_month"
+                                app:tint="@color/ja_alquiler" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/ja_espacio_2"
+                                android:layout_weight="1"
+                                android:text="@string/detalle_alquiler"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                                android:textColor="@color/ja_alquiler" />
+
+                            <TextView
+                                android:id="@+id/tvPrecioAlquiler"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.Precio"
+                                android:textColor="@color/ja_alquiler" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/detalle_por_dia"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                                android:textColor="@color/ja_alquiler" />
+                        </LinearLayout>
+
+                        <com.juegalmi.app.ui.comun.BarraVida
+                            android:id="@+id/barraCopias"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_3" />
+
+                        <TextView
+                            android:id="@+id/tvCopias"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_2"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                            android:textColor="@color/ja_alquiler" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Acciones: Comprar (el único botón amarillo) y Alquilar (contorno cian) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_5"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnComprar"
+                        style="@style/Widget.JuegAlmi.Boton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btnAlquilar"
+                        style="@style/Widget.JuegAlmi.Boton.Alquilar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ja_espacio_3"
+                        android:layout_weight="1"
+                        android:text="@string/detalle_alquilar"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_sync_alt"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/ja_alquiler" />
+                </LinearLayout>
+
+                <!-- Descripción -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_4">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detalle_descripcion"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                            android:textColor="@color/ja_texto" />
+
+                        <TextView
+                            android:id="@+id/tvDescripcion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_2"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.CuerpoL"
+                            android:textColor="@color/ja_texto_2" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Detalles: pares etiqueta / valor en dos columnas (los rellena el código según el tipo) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_3">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_4">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detalle_detalles"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                            android:textColor="@color/ja_texto" />
+
+                        <GridLayout
+                            android:id="@+id/gridDatos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_2"
+                            android:columnCount="2" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/ja_marca" />
+
+        <include
+            layout="@layout/estado_vacio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+</LinearLayout>

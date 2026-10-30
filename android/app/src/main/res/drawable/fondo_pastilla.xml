@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo de las pastillas de estado y del chip de alquiler. El color se pone con backgroundTint
+     (cada estado tiene su color -suave, DESIGN.md §3). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/ja_radio_completo" />
+    <solid android:color="@color/ja_superficie_2" />
+</shape>

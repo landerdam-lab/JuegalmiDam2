@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta vertical del carrusel de Inicio (PT-04): imagen 4:3 con muesca, nombre, marca · plataforma,
+     precio en mono y chip de alquiler (DESIGN.md §9, tarjeta de producto) -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/carrusel_ancho"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/ja_espacio_3"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardPreventCornerOverlap="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivImagen"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/carrusel_imagen"
+            android:background="@color/ja_superficie_2"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/ja_espacio_3">
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Subtitulo"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvSubtitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                android:textColor="@color/ja_texto_2" />
+
+            <TextView
+                android:id="@+id/tvPrecio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvAlquiler"
+                style="@style/JuegAlmi.Pastilla"
+                android:layout_marginTop="@dimen/ja_espacio_1"
+                android:backgroundTint="@color/ja_alquiler_suave"
+                android:textColor="@color/ja_alquiler" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

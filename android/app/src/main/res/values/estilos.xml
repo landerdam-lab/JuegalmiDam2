@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Estilos propios de la app que NO genera design/scripts/build-tokens.mjs (ese genera ja_*.xml y themes.xml).
+     Solo combinan tokens: ningún color ni tamaño escrito a mano. -->
+<resources>
+    <!-- Diálogo (DESIGN.md §9): fondo superficie, muesca de 24, título en Bricolage y botones en violeta.
+         Sin esto, Material pinta los botones con colorPrimary (amarillo), que no se lee sobre claro (§2). -->
+    <style name="ThemeOverlay.JuegAlmi.Dialogo" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/ja_marca</item>
+        <item name="colorSurface">@color/ja_superficie</item>
+        <item name="colorSurfaceContainerHigh">@color/ja_superficie</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.JuegAlmi.MuescaDestacada</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/JuegAlmi.Dialogo.Titulo</item>
+    </style>
+
+    <style name="JuegAlmi.Dialogo.Titulo" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="android:textColor">@color/ja_texto</item>
+    </style>
+
+    <!-- Hoja inferior (PT-15 Alquilar): radio superior xl + muesca de 24 (DESIGN.md §9) -->
+    <style name="ThemeOverlay.JuegAlmi.Hoja" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/JuegAlmi.Hoja</item>
+    </style>
+
+    <style name="JuegAlmi.Hoja" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/ja_superficie</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.JuegAlmi.Hoja</item>
+    </style>
+
+    <style name="ShapeAppearance.JuegAlmi.Hoja" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/ja_radio_xl</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopRight">@dimen/ja_muesca_destacada</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- Piezas que se repiten en muchas pantallas -->
+    <style name="JuegAlmi.TituloPantalla" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/ja_espacio_4</item>
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="android:textColor">@color/ja_texto</item>
+    </style>
+
+    <style name="JuegAlmi.TituloSeccion" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/ja_espacio_6</item>
+        <item name="android:layout_marginBottom">@dimen/ja_espacio_2</item>
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.Titulo</item>
+        <item name="android:textColor">@color/ja_texto</item>
+    </style>
+
+    <style name="JuegAlmi.FilaIcono" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="JuegAlmi.IconoFila" parent="">
+        <item name="android:layout_width">@dimen/ja_tamano_icono</item>
+        <item name="android:layout_height">@dimen/ja_tamano_icono</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <!-- Botón principal fijo abajo, por encima de la barra de gestos (DESIGN.md §8) -->
+    <style name="JuegAlmi.PieBoton" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/ja_fondo</item>
+        <item name="android:padding">@dimen/ja_espacio_4</item>
+    </style>
+
+    <style name="JuegAlmi.MiniaturaCuadrada" parent="">
+        <item name="android:layout_width">@dimen/miniatura_cuadrada</item>
+        <item name="android:layout_height">@dimen/miniatura_cuadrada</item>
+        <item name="android:background">@color/ja_superficie_2</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.JuegAlmi.Pequena</item>
+    </style>
+
+    <!-- Botón de solo icono con zona táctil de 48 (DESIGN.md §10) -->
+    <style name="JuegAlmi.BotonIcono" parent="">
+        <item name="android:layout_width">@dimen/ja_tamano_tactil_min</item>
+        <item name="android:layout_height">@dimen/ja_tamano_tactil_min</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <!-- Pastilla de estado: el color lo pone ui/comun/Pastilla -->
+    <style name="JuegAlmi.Pastilla" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/fondo_pastilla</item>
+        <item name="android:paddingStart">@dimen/ja_espacio_2</item>
+        <item name="android:paddingEnd">@dimen/ja_espacio_2</item>
+        <item name="android:paddingTop">@dimen/ja_espacio_1</item>
+        <item name="android:paddingBottom">@dimen/ja_espacio_1</item>
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+    </style>
+
+    <!-- Barra superior de las pantallas secundarias (flecha atrás + título) -->
+    <style name="JuegAlmi.BarraSecundaria" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/ja_tamano_barra_superior</item>
+        <item name="navigationIcon">@drawable/ic_arrow_back</item>
+        <item name="navigationIconTint">@color/ja_texto</item>
+        <item name="navigationContentDescription">@string/volver</item>
+        <item name="titleTextAppearance">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="titleTextColor">@color/ja_texto</item>
+    </style>
+
+    <!-- Etiqueta bajo cada segmento de una barra de vida etiquetada (pedido, reparación) -->
+    <style name="JuegAlmi.EtiquetaPaso" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="android:textColor">@color/ja_texto_2</item>
+    </style>
+
+    <!-- FAB extendido: muesca de 12 (DESIGN.md §9) -->
+    <style name="ShapeAppearance.JuegAlmi.MuescaFab" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/ja_radio_l</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopRight">@dimen/ja_espacio_3</item>
+    </style>
+
+    <!-- Foto de la galería: muesca de 8 (SCREEN-MAP, PT-27) -->
+    <style name="ShapeAppearance.JuegAlmi.MuescaFoto" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/ja_radio_s</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopRight">@dimen/ja_espacio_2</item>
+    </style>
+
+    <!-- Splash (PT-01) con el logo de Almi Companion (ADR-036). Hereda el fondo y el tema de después del generado -->
+    <style name="Theme.AlmiCompanion.Splash" parent="Theme.JuegAlmi.Splash">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+    </style>
+</resources>
