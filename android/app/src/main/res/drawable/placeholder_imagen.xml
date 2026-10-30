@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder mientras carga una imagen (DESIGN.md §6, requisito innegociable): fondo superficie-2 y el icono
+     «image» pequeño y centrado en borde-campo. El fondo mide 160 dp para que, al escalarlo a la miniatura
+     (centerCrop), el icono quede pequeño en vez de ocupar todo el hueco. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:width="@dimen/placeholder_lado" android:height="@dimen/placeholder_lado">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ja_superficie_2" />
+        </shape>
+    </item>
+    <item
+        android:width="@dimen/placeholder_icono"
+        android:height="@dimen/placeholder_icono"
+        android:drawable="@drawable/ic_image_gris"
+        android:gravity="center" />
+</layer-list>

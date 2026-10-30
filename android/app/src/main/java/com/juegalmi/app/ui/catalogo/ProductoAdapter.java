@@ -89,8 +89,8 @@ public class ProductoAdapter extends ListAdapter<Producto, ProductoAdapter.Tarje
         t.imagen.setContentDescription(t.itemView.getContext().getString(R.string.imagen_producto, p.nombre));
         Glide.with(t.imagen)
                 .load(p.imagen)
-                .placeholder(R.drawable.ic_image)
-                .error(R.drawable.ic_broken_image)
+                .placeholder(R.drawable.placeholder_imagen)
+                .error(R.drawable.placeholder_error)
                 .centerCrop()
                 .into(t.imagen);
 

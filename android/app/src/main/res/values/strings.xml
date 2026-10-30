@@ -57,8 +57,9 @@
 
     <!-- PT-04 Inicio y catálogo -->
     <string name="buscar_pista">Busca juegos, móviles o consolas</string>
-    <string name="buscar_voz">Buscar por voz</string>
-    <string name="voz_pista">Di lo que buscas, por ejemplo «Zelda»</string>
+    <string name="buscar_voz">Hablar con la app</string>
+    <string name="voz_pista">Di por ejemplo «abre el carrito», «mis pedidos», «llévame a la tienda» o «busca Zelda»</string>
+    <string name="voz_entendido">He entendido: «%s»</string>
     <string name="voz_no_disponible">Este móvil no tiene reconocimiento de voz</string>
     <string name="pestana_videojuegos">Videojuegos</string>
     <string name="pestana_moviles">Móviles y tablets</string>
@@ -67,6 +68,16 @@
     <string name="filtro_todos">Todos</string>
     <string name="filtro_moviles">Móviles</string>
     <string name="filtro_tablets">Tablets</string>
+    <string name="filtro_plataforma">Plataforma</string>
+    <string name="filtro_genero">Género</string>
+    <string name="filtro_pegi">PEGI</string>
+    <string name="filtro_marca">Marca</string>
+    <string name="filtro_ordenar">Ordenar</string>
+    <string name="filtro_quitar">Quitar filtros</string>
+    <string name="filtro_titulo_valor">%1$s: %2$s</string>
+    <string name="orden_nombre">Nombre</string>
+    <string name="orden_precio_asc">Precio: de menor a mayor</string>
+    <string name="orden_precio_desc">Precio: de mayor a menor</string>
     <plurals name="catalogo_encontrados">
         <item quantity="one">%d producto encontrado</item>
         <item quantity="other">%d productos encontrados</item>

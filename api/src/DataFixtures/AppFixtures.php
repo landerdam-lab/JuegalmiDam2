@@ -55,7 +55,7 @@ final class AppFixtures extends Fixture
 
         $marca = [];
         // "Nokia" no tiene productos: sirve para probar que una marca sin productos sí se puede borrar
-        foreach (['Sony', 'Microsoft', 'Nintendo', 'Apple', 'Samsung', 'Xiaomi', 'Ubisoft', 'EA', 'Capcom', 'Nokia'] as $nombre) {
+        foreach (['Sony', 'Microsoft', 'Nintendo', 'Apple', 'Samsung', 'Xiaomi', 'Ubisoft', 'EA', 'Capcom', 'Square Enix', 'Bandai Namco', 'Sega', 'Google', 'Valve', 'Nokia'] as $nombre) {
             $om->persist($marca[$nombre] = (new Marca())->setNombre($nombre));
         }
 
@@ -78,6 +78,12 @@ final class AppFixtures extends Fixture
             ['telefonia', 'Cambio de batería', 'Batería nueva cuando ya no dura el día.', '49.00'],
             ['telefonia', 'Reparación del conector de carga', 'Cuando el móvil o la tablet no cargan bien.', '39.00'],
             ['telefonia', 'Recuperación de datos', 'Intentamos recuperar fotos y contactos de dispositivos dañados.', null],
+            ['videojuegos', 'Torneos en la tienda', 'Torneos mensuales de Mario Kart, FC y Smash con premios.', '5.00'],
+            ['videojuegos', 'Copia de seguridad de partidas', 'Pasamos tus partidas guardadas a una consola nueva.', '10.00'],
+            ['consolas', 'Mantenimiento preventivo', 'Revisión completa, limpieza y prueba de mandos.', '29.00'],
+            ['consolas', 'Instalación de SSD', 'Ampliamos el almacenamiento de PS5 o Steam Deck.', '20.00'],
+            ['telefonia', 'Protector de pantalla y funda', 'Colocamos el protector de cristal sin burbujas.', '9.00'],
+            ['telefonia', 'Paso de datos al móvil nuevo', 'Contactos, fotos y apps de tu móvil viejo al nuevo.', '15.00'],
         ];
         foreach ($servicios as [$linea, $nombre, $descripcion, $precio]) {
             $om->persist((new Servicio())->setLinea(LineaServicio::from($linea))->setNombre($nombre)
@@ -118,6 +124,18 @@ final class AppFixtures extends Fixture
             'mhwilds' => ['Monster Hunter Wilds', 'Capcom', 'PC', 'Acción', 16, '69.99', 2, '2.50', 1],
             'sims' => ['Los Sims 4: Edición Deluxe', 'EA', 'PC', 'Simulación', 12, '29.99', 5, '1.00', 0], // no se alquila
             'tlou' => ['The Last of Us Parte II', 'Sony', 'PS4', 'Aventura', 18, '19.99', 6, '1.00', 2],
+            // Ampliación del catálogo (2026-10-30): más contenido y filtros con resultados
+            'ff7rebirth' => ['Final Fantasy VII Rebirth', 'Square Enix', 'PS5', 'Rol', 16, '59.99', 4, '2.50', 2],
+            'eldenring' => ['Elden Ring Nightreign', 'Bandai Namco', 'PS5', 'Rol', 16, '39.99', 5, '2.00', 2],
+            'tekken8' => ['Tekken 8', 'Bandai Namco', 'PS5', 'Lucha', 12, '49.99', 3, '2.00', 1],
+            'astrobot' => ['Astro Bot', 'Sony', 'PS5', 'Plataformas', 7, '59.99', 5, '2.50', 2],
+            'f125' => ['F1 25', 'EA', 'PS5', 'Conducción', 3, '59.99', 4, '2.00', 2],
+            'codbo7' => ['Call of Duty: Black Ops 7', 'Microsoft', 'Xbox Series', 'Disparos', 18, '79.99', 6, '3.00', 3],
+            'starfield' => ['Starfield', 'Microsoft', 'PC', 'Rol', 16, '29.99', 2, '1.50', 1],
+            'sonic' => ['Sonic X Shadow Generations', 'Sega', 'Switch 2', 'Plataformas', 7, '49.99', 6, '2.00', 2],
+            'metroid' => ['Metroid Prime 4: Beyond', 'Nintendo', 'Switch 2', 'Aventura', 12, '69.99', 4, '2.50', 2],
+            'pokemon' => ['Pokémon Leyendas Z-A', 'Nintendo', 'Switch 2', 'Rol', 7, '69.99', 9, '3.00', 3],
+            'minecraft' => ['Minecraft', 'Microsoft', 'Switch 2', 'Aventura', 7, '29.99', 10, '1.00', 0],
         ];
         $v = [];
         foreach ($juegos as $clave => [$nombre, $m, $p, $genero, $pegi, $precio, $stock, $precioAlquiler, $copias]) {
@@ -140,6 +158,11 @@ final class AppFixtures extends Fixture
             'ipad' => ['iPad 11ª generación', 'Apple', 'tablet', '10.9', 6, 128, '399.00', 5],
             'tabs10' => ['Samsung Galaxy Tab S10', 'Samsung', 'tablet', '11.0', 12, 256, '849.00', 2],
             'pad7' => ['Xiaomi Pad 7', 'Xiaomi', 'tablet', '11.2', 8, 256, '399.00', 6],
+            'iphone17pro' => ['iPhone 17 Pro', 'Apple', 'movil', '6.3', 12, 256, '1319.00', 3],
+            'pixel10' => ['Google Pixel 10', 'Google', 'movil', '6.3', 12, 128, '799.00', 4],
+            'galaxyzflip7' => ['Samsung Galaxy Z Flip7', 'Samsung', 'movil', '6.9', 12, 256, '1199.00', 2],
+            'pixeltablet' => ['Google Pixel Tablet', 'Google', 'tablet', '10.95', 8, 128, '499.00', 3],
+            'taba9' => ['Samsung Galaxy Tab A9+', 'Samsung', 'tablet', '11.0', 4, 64, '219.00', 8],
         ];
         $mv = [];
         foreach ($moviles as $clave => [$nombre, $m, $formato, $pulgadas, $ram, $gb, $precio, $stock]) {
@@ -156,6 +179,9 @@ final class AppFixtures extends Fixture
             'ps5pro' => ['PlayStation 5 Pro', 'Sony', 'CFI-7016', 2000, '799.99', 2, true],
             'xboxx' => ['Xbox Series X', 'Microsoft', 'Series X', 1000, '549.99', 3, true],
             'switch2' => ['Nintendo Switch 2', 'Nintendo', 'BEE-001', 256, '469.99', 6, true],
+            'ps5digital' => ['PlayStation 5 Digital', 'Sony', 'CFI-2016 B', 1000, '449.99', 3, true],
+            'switch2pack' => ['Nintendo Switch 2 + Mario Kart World', 'Nintendo', 'BEE-001', 256, '509.99', 3, true],
+            'steamdeck' => ['Steam Deck OLED', 'Valve', '1030', 512, '569.00', 2, true],
             'xboxs' => ['Xbox Series S', 'Microsoft', 'Series S', 512, '299.99', 0, false], // retirada: no sale en el catálogo
         ];
         $con = [];
