@@ -85,6 +85,20 @@ final class ProductoController extends ApiController
         return $this->listar($request, $qb);
     }
 
+    /**
+     * GET /api/generos: los géneros de los videojuegos del catálogo, para el filtro de las apps y la web.
+     * Salen de los datos (no hay tabla de géneros): así el filtro solo ofrece valores con resultados.
+     */
+    #[Route('/generos', methods: ['GET'])]
+    public function generos(): JsonResponse
+    {
+        $filas = $this->em->createQuery(
+            'SELECT DISTINCT v.genero FROM '.Videojuego::class.' v WHERE v.activo = true ORDER BY v.genero ASC'
+        )->getSingleColumnResult();
+
+        return $this->respuesta(array_values($filas));
+    }
+
     #[Route('/productos/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function verProducto(int $id): JsonResponse
     {
@@ -143,7 +157,17 @@ final class ProductoController extends ApiController
             $activo = $request->query->getBoolean('activo');
         }
 
-        return $this->productos->consultaCatalogo($clase, $activo, $this->enteroQuery($request, 'marca'), $request->query->get('q'));
+        $qb = $this->productos->consultaCatalogo($clase, $activo, $this->enteroQuery($request, 'marca'), $request->query->get('q'));
+
+        // ?orden=nombre (por defecto) | precio_asc | precio_desc. Lo ordena la BBDD, así funciona con la paginación
+        $orden = (string) $request->query->get('orden', 'nombre');
+        $porOrden = ['nombre' => ['p.nombre', 'ASC'], 'precio_asc' => ['p.precio', 'ASC'], 'precio_desc' => ['p.precio', 'DESC']];
+        if (!isset($porOrden[$orden])) {
+            throw ApiException::validacion(['orden' => 'Valor no válido. Valores posibles: '.implode(', ', array_keys($porOrden)).'.']);
+        }
+        [$campo, $sentido] = $porOrden[$orden];
+
+        return $qb->orderBy($campo, $sentido)->addOrderBy('p.nombre', 'ASC');
     }
 
     private function listar(Request $request, QueryBuilder $qb): JsonResponse
