@@ -37,3 +37,6 @@ android/captures/
 
 # Claude Code (instrucciones personales de cada integrante)
 CLAUDE.local.md
+
+# Accesos directos de Windows (no son del proyecto)
+*.lnk
