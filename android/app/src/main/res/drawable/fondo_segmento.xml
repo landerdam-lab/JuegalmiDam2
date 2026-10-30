@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Un segmento de la barra de vida (DESIGN.md §9). El color lo pone BarraVida con backgroundTint. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/ja_radio_segmento" />
+    <solid android:color="@color/ja_superficie_3" />
+</shape>

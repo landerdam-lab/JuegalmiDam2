@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Punto del cliente en el mapa: violeta (marca) con aro -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:width="24dp" android:height="24dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/ja_marca_suave" />
+        </shape>
+    </item>
+    <item android:width="14dp" android:height="14dp" android:gravity="center">
+        <shape android:shape="oval">
+            <solid android:color="@color/ja_marca" />
+            <stroke android:width="@dimen/ja_borde_grueso" android:color="@color/ja_superficie" />
+        </shape>
+    </item>
+</layer-list>
