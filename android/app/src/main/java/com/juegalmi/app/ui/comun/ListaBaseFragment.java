@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
@@ -45,7 +45,9 @@ public abstract class ListaBaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View vista, @Nullable Bundle savedInstanceState) {
         lista = vista.findViewById(R.id.lista);
-        lista.setLayoutManager(new LinearLayoutManager(requireContext()));
+        // 1 columna en el móvil y 2-4 en pantallas anchas (res/values-wNNNdp/adaptativo.xml)
+        lista.setLayoutManager(new GridLayoutManager(requireContext(),
+                getResources().getInteger(R.integer.columnas_lista)));
         tvResultados = vista.findViewById(R.id.tvResultados);
         progreso = vista.findViewById(R.id.progreso);
         estado = new EstadoVista(vista);

@@ -41,6 +41,7 @@ import com.juegalmi.app.ui.perfil.PerfilFragment;
 import com.juegalmi.app.ui.reparaciones.ReparacionesFragment;
 import com.juegalmi.app.ui.tienda.TiendaFragment;
 import com.juegalmi.app.util.Bordes;
+import com.juegalmi.app.util.RedLocal;
 import com.juegalmi.app.util.UbicacionHelper;
 
 /**
@@ -65,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<String> permisoUbicacion = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
             concedido -> UbicacionHelper.get(this).actualizar());
+
+    /** Android 17: sin este permiso no se llega a una API de la red local (util/RedLocal). Se comprueba la sesión igual:
+     *  si se niega, GET /api/me falla por red y se va al login, que lo explica */
+    private final ActivityResultLauncher<String> permisoRedLocal = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), concedido -> comprobarSesion());
 
     /** Intent para abrir la app en una sección del menú (R.id.nav_*). */
     public static Intent abrirSeccion(Context context, int seccion) {
@@ -93,7 +99,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             splash.setKeepOnScreenCondition(() -> comprobandoSesion);
-            comprobarSesion();
+            if (RedLocal.hayQuePedir(this)) {
+                permisoRedLocal.launch(RedLocal.permiso());
+            } else {
+                comprobarSesion();
+            }
             abrir(getIntent().getIntExtra(EXTRA_SECCION, R.id.nav_inicio));
         } else {
             comprobandoSesion = false;

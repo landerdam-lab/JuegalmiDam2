@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ConcatAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
@@ -82,7 +82,9 @@ public class CatalogoFragment extends Fragment {
 
         adaptador = new ProductoAdapter(this::abrirDetalle);
         RecyclerView lista = vista.findViewById(R.id.lista);
-        LinearLayoutManager gestor = new LinearLayoutManager(requireContext());
+        // Cuadrícula: 1 columna en el móvil y 2-4 en pantallas anchas (res/values-wNNNdp/adaptativo.xml)
+        GridLayoutManager gestor = new GridLayoutManager(requireContext(),
+                getResources().getInteger(R.integer.columnas_lista));
         lista.setLayoutManager(gestor);
         if (filtro.tipo.equals(Producto.VIDEOJUEGO)) {
             // ConcatAdapter: la cabecera de Inicio y el catálogo en una sola lista que se desplaza junta
@@ -100,6 +102,14 @@ public class CatalogoFragment extends Fragment {
             // Etiqueta propia: así, al recargar el catálogo (cancelar(this)) no se cancela el carrusel
             cabecera.cargar(repositorio, cabecera);
             lista.setAdapter(new ConcatAdapter(cabecera, adaptador));
+            // La cabecera ocupa toda la fila; los productos, una columna cada uno
+            final CabeceraInicioAdapter cab = cabecera;
+            gestor.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int posicion) {
+                    return posicion < cab.getItemCount() ? gestor.getSpanCount() : 1;
+                }
+            });
         } else {
             lista.setAdapter(adaptador);
         }
