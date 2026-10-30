@@ -1,6 +1,6 @@
 -- JuegAlmi · datos de ejemplo mínimos para probar (ejecutar DESPUÉS del esquema)
 -- Contraseñas: 'h' es un marcador; la API guardará hashes de verdad. Emails .test (no reales).
-USE juegalmi;
+USE almi_companion;
 INSERT INTO departamento (id,nombre) VALUES (1,'Telefonía'),(2,'Consolas');
 INSERT INTO marca (id,nombre) VALUES (1,'Sony'),(2,'Samsung'),(3,'Nintendo'),(4,'Sin productos');
 INSERT INTO plataforma (id,nombre) VALUES (1,'PS5'),(2,'Switch 2');

@@ -72,11 +72,11 @@ ssh -F ssh_config -o ClearAllForwardings=yes symfony   # igual, sin túneles
 | **Copias de seguridad** | `/usr/local/bin/backup-juegalmi.sh` + temporizador `backup-juegalmi.timer` | Ver [Copias de seguridad](copias-de-seguridad.md) |
 | **CLI de AWS** | `/snap/bin/aws` (con el perfil `LabInstanceProfile`, sin claves) | `aws s3 ls s3://juegalmi-copias-213482928914/diarias/` |
 
-**Base de datos `juegalmi`** (esquema v6, 19 tablas y 10 triggers, `docs/datos/sql/`):
+**Base de datos `almi_companion`** (esquema v6, 19 tablas y 10 triggers, `docs/datos/sql/`). ⚠️ Hasta terminar el aviso A-34, en AWS sigue llamándose `juegalmi`:
 | Usuario | Permisos | Para |
 |---|---|---|
-| `juegalmi_app` | SELECT, INSERT, UPDATE, DELETE en `juegalmi` | La API (`DATABASE_URL` del `.env.local`) |
-| `juegalmi_admin` | Todo en `juegalmi` | Migraciones de Doctrine, cargar datos |
+| `juegalmi_app` | SELECT, INSERT, UPDATE, DELETE en `almi_companion` | La API (`DATABASE_URL` del `.env.local`) |
+| `juegalmi_admin` | Todo en `almi_companion` | Migraciones de Doctrine, cargar datos |
 | `root` | Todo (contraseña cambiada; ya no es `root`) | Solo administración y copias |
 
 ## 5. Desplegar
