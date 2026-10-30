@@ -91,4 +91,10 @@
         <item name="tabTextAppearance">@style/TextAppearance.JuegAlmi.Etiqueta</item>
         <item name="android:background">@color/ja_fondo</item>
     </style>
+
+    <!-- Texto por defecto (android:textViewStyle del tema): DM Sans 14 en color texto.
+         Va como textAppearance para que el android:textAppearance de cada vista pueda cambiarlo. -->
+    <style name="Widget.JuegAlmi.Texto" parent="Widget.AppCompat.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.JuegAlmi.Cuerpo</item>
+    </style>
 </resources>
