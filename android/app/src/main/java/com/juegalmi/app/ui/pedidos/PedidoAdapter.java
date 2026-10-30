@@ -96,8 +96,8 @@ public class PedidoAdapter extends ListAdapter<Pedido, PedidoAdapter.Tarjeta> {
                     .inflate(R.layout.miniatura, t.miniaturas, false);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(tam, tam);
             lp.setMarginEnd(hueco);
-            Glide.with(iv).load(imagenes.get(i)).placeholder(R.drawable.ic_image)
-                    .error(R.drawable.ic_broken_image).centerCrop().into(iv);
+            Glide.with(iv).load(imagenes.get(i)).placeholder(R.drawable.placeholder_imagen)
+                    .error(R.drawable.placeholder_error).centerCrop().into(iv);
             t.miniaturas.addView(iv, lp);
         }
         if (imagenes.size() > MAX_MINIATURAS) {

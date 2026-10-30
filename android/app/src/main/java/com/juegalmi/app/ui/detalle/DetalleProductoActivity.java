@@ -207,8 +207,8 @@ public class DetalleProductoActivity extends AppCompatActivity implements Alquil
         ImageView imagen = findViewById(R.id.ivImagen);
         imagen.setContentDescription(getString(R.string.imagen_producto, nombre));
         Glide.with(this).load(url)
-                .placeholder(R.drawable.ic_image)
-                .error(R.drawable.ic_broken_image)
+                .placeholder(R.drawable.placeholder_imagen)
+                .error(R.drawable.placeholder_error)
                 .centerCrop()
                 .into(imagen);
     }

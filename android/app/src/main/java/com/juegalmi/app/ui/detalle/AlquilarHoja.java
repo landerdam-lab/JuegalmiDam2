@@ -66,7 +66,7 @@ public class AlquilarHoja extends BottomSheetDialogFragment {
         ((TextView) v.findViewById(R.id.tvNombre)).setText(producto.nombre);
         ((TextView) v.findViewById(R.id.tvPlataforma)).setText(producto.plataforma == null ? "" : producto.plataforma.nombre);
         ((TextView) v.findViewById(R.id.tvPrecioDia)).setText(getString(R.string.precio_por_dia, Formato.precio(producto.precioAlquiler)));
-        Glide.with(this).load(producto.imagen).placeholder(R.drawable.ic_image).centerCrop()
+        Glide.with(this).load(producto.imagen).placeholder(R.drawable.placeholder_imagen).centerCrop()
                 .into((android.widget.ImageView) v.findViewById(R.id.ivImagen));
 
         int total = producto.copiasAlquiler == null ? 0 : producto.copiasAlquiler;

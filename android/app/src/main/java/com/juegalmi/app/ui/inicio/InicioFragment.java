@@ -1,9 +1,6 @@
 package com.juegalmi.app.ui.inicio;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +8,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,19 +15,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.juegalmi.app.MainActivity;
 import com.juegalmi.app.R;
 import com.juegalmi.app.data.model.Producto;
 import com.juegalmi.app.ui.catalogo.CatalogoFragment;
 
-import java.util.ArrayList;
 
 /**
  * PT-04 Inicio: buscador + pestañas (TabLayout + ViewPager2, RT-08).
  * Cada pestaña es un CatalogoFragment de un tipo de producto.
- * El micro abre el reconocimiento de voz de Android (RF-15, PT-29) y busca lo que se dice.
+ * El micro abre el control por voz de la app (RF-15, PT-29): ver MainActivity.escucharVoz() y util/OrdenVoz.
  */
 public class InicioFragment extends Fragment {
 
@@ -43,19 +37,19 @@ public class InicioFragment extends Fragment {
     private BusquedaViewModel busqueda;
     private EditText etBuscar;
 
-    /** Resultado del reconocedor de voz: una lista de frases posibles; la primera es la más probable. */
-    private final ActivityResultLauncher<Intent> voz = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), resultado -> {
-                Intent datos = resultado.getData();
-                if (datos == null) {
-                    return;
-                }
-                ArrayList<String> frases = datos.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                if (frases != null && !frases.isEmpty()) {
-                    etBuscar.setText(frases.get(0));
-                    busqueda.buscar(frases.get(0));
-                }
-            });
+    private static final String ARG_BUSQUEDA = "busqueda";
+    private static final String ARG_PESTANA = "pestana";
+    private ViewPager2 paginas;
+
+    /** Inicio abierto desde una orden de voz: con un texto buscado y/o una pestaña (0, 1, 2). */
+    public static InicioFragment nuevo(@Nullable String busqueda, int pestana) {
+        InicioFragment f = new InicioFragment();
+        Bundle b = new Bundle();
+        b.putString(ARG_BUSQUEDA, busqueda);
+        b.putInt(ARG_PESTANA, pestana);
+        f.setArguments(b);
+        return f;
+    }
 
     @Nullable
     @Override
@@ -78,9 +72,10 @@ public class InicioFragment extends Fragment {
             }
             return false;
         });
-        vista.findViewById(R.id.btnVoz).setOnClickListener(v -> escuchar());
+        // El micro hace lo mismo que el de la barra superior: control por voz de toda la app (MainActivity)
+        vista.findViewById(R.id.btnVoz).setOnClickListener(v -> ((MainActivity) requireActivity()).escucharVoz());
 
-        ViewPager2 paginas = vista.findViewById(R.id.paginas);
+        paginas = vista.findViewById(R.id.paginas);
         TabLayout pestanas = vista.findViewById(R.id.pestanas);
         paginas.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
@@ -96,18 +91,23 @@ public class InicioFragment extends Fragment {
         });
         new TabLayoutMediator(pestanas, paginas,
                 (pestana, posicion) -> pestana.setText(TITULOS[posicion])).attach();
+
+        Bundle args = getArguments();
+        if (args != null && savedInstanceState == null) {
+            irAPestana(args.getInt(ARG_PESTANA, 0));
+            String texto = args.getString(ARG_BUSQUEDA);
+            if (texto != null) buscar(texto);
+        }
     }
 
-    private void escuchar() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-                .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                .putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES")
-                .putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.voz_pista));
-        try {
-            voz.launch(intent);
-        } catch (ActivityNotFoundException e) {
-            Snackbar.make(requireView(), R.string.voz_no_disponible, Snackbar.LENGTH_LONG).show();
-        }
+    /** Busca en el catálogo (lo usa también la voz): escribe el texto en el buscador y recarga las pestañas. */
+    public void buscar(String texto) {
+        etBuscar.setText(texto);
+        busqueda.buscar(texto);
+    }
+
+    public void irAPestana(int posicion) {
+        paginas.setCurrentItem(posicion, true);
     }
 
     private void ocultarTeclado() {

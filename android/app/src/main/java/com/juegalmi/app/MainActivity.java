@@ -1,17 +1,19 @@
 package com.juegalmi.app;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.View;
-import com.google.android.material.imageview.ShapeableImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -26,7 +28,9 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.badge.ExperimentalBadgeUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.juegalmi.app.data.Carrito;
 import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.Callback;
@@ -35,14 +39,23 @@ import com.juegalmi.app.data.repository.AuthRepository;
 import com.juegalmi.app.ui.alquileres.AlquileresFragment;
 import com.juegalmi.app.ui.auth.AuthActivity;
 import com.juegalmi.app.ui.carrito.CarritoFragment;
+import com.juegalmi.app.ui.comun.Dialogos;
 import com.juegalmi.app.ui.inicio.InicioFragment;
 import com.juegalmi.app.ui.pedidos.PedidosFragment;
 import com.juegalmi.app.ui.perfil.PerfilFragment;
+import com.juegalmi.app.ui.reparaciones.NuevaReparacionActivity;
 import com.juegalmi.app.ui.reparaciones.ReparacionesFragment;
+import com.juegalmi.app.ui.tienda.GaleriaActivity;
+import com.juegalmi.app.ui.tienda.HistoriaActivity;
+import com.juegalmi.app.ui.tienda.ServiciosActivity;
 import com.juegalmi.app.ui.tienda.TiendaFragment;
+import com.juegalmi.app.ui.tienda.UbicacionActivity;
 import com.juegalmi.app.util.Bordes;
+import com.juegalmi.app.util.OrdenVoz;
 import com.juegalmi.app.util.RedLocal;
 import com.juegalmi.app.util.UbicacionHelper;
+
+import java.util.ArrayList;
 
 /**
  * Entrada de la app.
@@ -62,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
     private BadgeDrawable insignia;
     /** Mientras sea true, el sistema sigue mostrando el splash. */
     private volatile boolean comprobandoSesion = true;
+
+    /**
+     * Control por voz (RF-15, rúbrica Móviles 5): el reconocedor de voz de Android devuelve las frases posibles
+     * (la primera es la más probable) y OrdenVoz decide qué hacer: abrir una sección, cambiar de pestaña o buscar.
+     */
+    private final ActivityResultLauncher<Intent> voz = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), resultado -> {
+                Intent datos = resultado.getData();
+                ArrayList<String> frases = datos == null ? null
+                        : datos.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (frases != null && !frases.isEmpty()) {
+                    ejecutar(OrdenVoz.interpretar(frases.get(0)), frases.get(0));
+                }
+            });
 
     private final ActivityResultLauncher<String> permisoUbicacion = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
@@ -148,7 +175,11 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar.setNavigationOnClickListener(v -> drawer.openDrawer(GravityCompat.START));
         toolbar.setOnMenuItemClickListener(item -> {
-            abrir(R.id.nav_carrito);
+            if (item.getItemId() == R.id.accion_voz) {
+                escucharVoz();
+            } else {
+                abrir(R.id.nav_carrito);
+            }
             return true;
         });
         ponerInsignia(toolbar);
@@ -218,6 +249,56 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    /** Abre el reconocedor de voz del sistema (micro de la barra superior y del buscador de Inicio). */
+    public void escucharVoz() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+                .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                .putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES")
+                .putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.voz_pista));
+        try {
+            voz.launch(intent);
+        } catch (ActivityNotFoundException e) {
+            Snackbar.make(findViewById(R.id.contenedor), R.string.voz_no_disponible, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    /** Ejecuta una orden de voz y enseña qué ha entendido la app. */
+    private void ejecutar(OrdenVoz orden, String frase) {
+        switch (orden.accion) {
+            case CARRITO: abrir(R.id.nav_carrito); break;
+            case PEDIDOS: abrir(R.id.nav_pedidos); break;
+            case ALQUILERES: abrir(R.id.nav_alquileres); break;
+            case REPARACIONES: abrir(R.id.nav_reparaciones); break;
+            case PERFIL: abrir(R.id.nav_perfil); break;
+            case TIENDA: abrir(R.id.nav_tienda); break;
+            case NUEVA_REPARACION: startActivity(new Intent(this, NuevaReparacionActivity.class)); break;
+            case SERVICIOS: startActivity(new Intent(this, ServiciosActivity.class)); break;
+            case UBICACION: startActivity(new Intent(this, UbicacionActivity.class)); break;
+            case GALERIA: startActivity(new Intent(this, GaleriaActivity.class)); break;
+            case HISTORIA: startActivity(new Intent(this, HistoriaActivity.class)); break;
+            case INICIO:
+            case VIDEOJUEGOS: abrirInicio(null, 0); break;
+            case MOVILES: abrirInicio(null, 1); break;
+            case CONSOLAS: abrirInicio(null, 2); break;
+            default: abrirInicio(orden.texto, -1); break;
+        }
+        Snackbar.make(findViewById(R.id.contenedor), getString(R.string.voz_entendido, frase), Snackbar.LENGTH_SHORT).show();
+    }
+
+    /** Inicio con una búsqueda y/o una pestaña (-1 = la que esté). Si ya está abierto, no se recrea. */
+    private void abrirInicio(@Nullable String busqueda, int pestana) {
+        Fragment actual = getSupportFragmentManager().findFragmentById(R.id.contenedor);
+        if (actual instanceof InicioFragment && actual.getView() != null) {
+            if (pestana >= 0) ((InicioFragment) actual).irAPestana(pestana);
+            if (busqueda != null) ((InicioFragment) actual).buscar(busqueda);
+            return;
+        }
+        navegacion.setCheckedItem(R.id.nav_inicio);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contenedor, InicioFragment.nuevo(busqueda, Math.max(pestana, 0)))
+                .commit();
+    }
+
     public void irAInicio() {
         abrir(R.id.nav_inicio);
     }
@@ -257,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void confirmarCierreSesion() {
-        new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_JuegAlmi_Dialogo)
+        Dialogos.destructivo(new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_JuegAlmi_Dialogo)
                 .setTitle(R.string.menu_cerrar_sesion)
                 .setMessage(R.string.cerrar_sesion_texto)
                 .setPositiveButton(R.string.menu_cerrar_sesion, (d, w) -> {
@@ -266,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
                     irAlLogin(false);
                 })
                 .setNegativeButton(R.string.volver, null)
-                .show();
+                .show());
     }
 
     private void irAlLogin(boolean sinRed) {

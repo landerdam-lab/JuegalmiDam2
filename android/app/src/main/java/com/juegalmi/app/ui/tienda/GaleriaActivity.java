@@ -53,7 +53,7 @@ public class GaleriaActivity extends TiendaBaseActivity {
     private void ver(Tienda.Foto foto) {
         Dialog visor = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         View v = LayoutInflater.from(this).inflate(R.layout.visor_foto, null);
-        Glide.with(this).load(foto.imagen).placeholder(R.drawable.ic_image).into((ImageView) v.findViewById(R.id.ivFoto));
+        Glide.with(this).load(foto.imagen).placeholder(R.drawable.placeholder_imagen).into((ImageView) v.findViewById(R.id.ivFoto));
         ((TextView) v.findViewById(R.id.tvDescripcion)).setText(foto.descripcion);
         v.findViewById(R.id.btnCerrar).setOnClickListener(b -> visor.dismiss());
         visor.setContentView(v);
@@ -79,7 +79,7 @@ public class GaleriaActivity extends TiendaBaseActivity {
             Tienda.Foto f = fotos.get(pos);
             ImageView iv = (ImageView) h.itemView;
             iv.setContentDescription(f.descripcion);
-            Glide.with(iv).load(f.imagen).placeholder(R.drawable.ic_image).error(R.drawable.ic_broken_image)
+            Glide.with(iv).load(f.imagen).placeholder(R.drawable.placeholder_imagen).error(R.drawable.placeholder_error)
                     .centerCrop().into(iv);
             iv.setOnClickListener(v -> ver(f));
         }
