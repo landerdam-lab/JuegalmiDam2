@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">Almi Companion</string>
+    <string name="inicio_lema">Videojuegos, consolas y móviles</string>
+    <!-- Logotipo: «Almi» en violeta (marca) + «Companion» en tinta -->
+    <string name="logo_almi" translatable="false">Almi</string>
+    <string name="logo_companion" translatable="false">" Companion"</string>
+
+    <!-- Errores generales -->
+    <string name="error_sin_red">No hay conexión con la tienda. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="error_generico">Algo ha fallado. Vuelve a intentarlo dentro de un momento.</string>
+    <string name="sesion_caducada">Tu sesión ha caducado. Vuelve a iniciar sesión.</string>
+    <string name="reintentar">Reintentar</string>
+    <string name="proximamente">Esta sección estará disponible pronto</string>
+
+    <!-- PT-02 Login -->
+    <string name="login_lema">Juega, alquila y repara en tu tienda de barrio</string>
+    <string name="login_titulo">Inicia sesión</string>
+    <string name="campo_email">Correo electrónico</string>
+    <string name="campo_password">Contraseña</string>
+    <string name="login_entrar">Entrar</string>
+    <string name="login_sin_cuenta">¿No tienes cuenta?</string>
+    <string name="login_registrate">Regístrate</string>
+    <string name="login_aviso_ubicacion">Usamos tu ubicación al hacer pedidos, alquileres y reparaciones</string>
+    <string name="login_solo_clientes">Esta app es para clientes. La gestión de la tienda se hace desde la web.</string>
+    <string name="error_email">Escribe un correo válido, por ejemplo laura@correo.es</string>
+    <string name="error_password_vacia">Escribe tu contraseña</string>
+
+    <!-- PT-03 Registro -->
+    <string name="registro_titulo">Crea tu cuenta</string>
+    <string name="registro_subtitulo">Solo te lo pedimos una vez</string>
+    <string name="campo_nombre">Nombre</string>
+    <string name="campo_apellidos">Apellidos</string>
+    <string name="campo_telefono">Teléfono</string>
+    <string name="campo_dni">DNI o NIE</string>
+    <string name="registro_crear">Crear cuenta</string>
+    <string name="registro_ya_cuenta">¿Ya tienes cuenta?</string>
+    <string name="registro_hecho">Cuenta creada. Ya puedes iniciar sesión.</string>
+    <string name="error_obligatorio">Este campo es obligatorio</string>
+    <string name="error_password_corta">La contraseña debe tener al menos 8 caracteres</string>
+    <string name="error_telefono">Escribe 9 cifras, por ejemplo 612345678</string>
+    <string name="error_dni">Escribe tu DNI (12345678Z) o NIE (X1234567L)</string>
+    <string name="volver">Volver</string>
+
+    <!-- Navegación (Drawer) -->
+    <string name="menu_abrir">Abrir el menú</string>
+    <string name="menu_cerrar">Cerrar el menú</string>
+    <string name="menu_grupo_tienda">Comprar</string>
+    <string name="menu_grupo_cuenta">Mi cuenta</string>
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_carrito">Carrito</string>
+    <string name="menu_pedidos">Mis pedidos</string>
+    <string name="menu_alquileres">Mis alquileres</string>
+    <string name="menu_reparaciones">Mis reparaciones</string>
+    <string name="menu_tienda">La tienda</string>
+    <string name="menu_perfil">Perfil</string>
+    <string name="menu_cerrar_sesion">Cerrar sesión</string>
+
+    <!-- PT-04 Inicio y catálogo -->
+    <string name="buscar_pista">Busca juegos, móviles o consolas</string>
+    <string name="buscar_voz">Buscar por voz</string>
+    <string name="voz_pista">Di lo que buscas, por ejemplo «Zelda»</string>
+    <string name="voz_no_disponible">Este móvil no tiene reconocimiento de voz</string>
+    <string name="pestana_videojuegos">Videojuegos</string>
+    <string name="pestana_moviles">Móviles y tablets</string>
+    <string name="pestana_consolas">Consolas</string>
+    <string name="filtro_solo_alquilables">Solo alquilables</string>
+    <string name="filtro_todos">Todos</string>
+    <string name="filtro_moviles">Móviles</string>
+    <string name="filtro_tablets">Tablets</string>
+    <plurals name="catalogo_encontrados">
+        <item quantity="one">%d producto encontrado</item>
+        <item quantity="other">%d productos encontrados</item>
+    </plurals>
+    <string name="catalogo_vacio_titulo">No hay nada por aquí</string>
+    <string name="catalogo_vacio_texto">Prueba con otra búsqueda o quita los filtros.</string>
+    <string name="catalogo_error_titulo">No hemos podido cargar el catálogo</string>
+    <string name="estado_en_stock">En stock</string>
+    <string name="estado_ultimas">Últimas %d uds.</string>
+    <string name="estado_agotado">Agotado</string>
+    <string name="precio_alquiler_dia">Alquiler %s/día</string>
+    <string name="pegi">PEGI %d</string>
+    <string name="pegi_titulo" translatable="false">PEGI</string>
+
+    <!-- PT-06 / PT-08 / PT-10 Detalle -->
+    <string name="detalle_alquiler">Alquiler</string>
+    <string name="detalle_por_dia">/día</string>
+    <string name="detalle_copias">%1$d de %2$d copias disponibles</string>
+    <string name="detalle_sin_copias">No quedan copias para alquilar ahora mismo</string>
+    <string name="detalle_comprar">Comprar · %s</string>
+    <string name="detalle_alquilar">Alquilar</string>
+    <string name="detalle_descripcion">Descripción</string>
+    <string name="detalle_detalles">Detalles</string>
+    <string name="detalle_genero">Género</string>
+    <string name="detalle_plataforma">Plataforma</string>
+    <string name="detalle_marca">Marca</string>
+    <string name="detalle_pantalla">Pantalla</string>
+    <string name="detalle_ram">RAM</string>
+    <string name="detalle_almacenamiento">Almacenamiento</string>
+    <string name="detalle_modelo">Modelo</string>
+    <string name="detalle_formato">Formato</string>
+    <string name="detalle_pulgadas">%s″</string>
+    <string name="detalle_gb">%d GB</string>
+    <string name="detalle_en_stock_uds">En stock · %d uds.</string>
+    <string name="imagen_producto">Imagen de %s</string>
+
+    <!-- Permisos -->
+    <string name="permiso_ubicacion_titulo">¿Nos dejas usar tu ubicación?</string>
+    <string name="permiso_ubicacion_texto">La tienda registra desde dónde haces cada consulta, pedido o reparación. Sin ella no podrás confirmar pedidos ni pedir reparaciones.</string>
+    <string name="permiso_continuar">Continuar</string>
+    <string name="permiso_ahora_no">Ahora no</string>
+</resources>

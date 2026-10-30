@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-26 Ubicación · diseño 26-ubicacion: mapa (OSMDroid, ADR-037) + hoja con la dirección y «Cómo llegar» -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo">
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/JuegAlmi.BarraSecundaria"
+        android:background="@android:color/transparent"
+        app:title="@string/tienda_ubicacion" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnMiUbicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/ubicacion_fab_arriba"
+        android:layout_marginEnd="@dimen/ja_espacio_4"
+        android:contentDescription="@string/ubicacion_centrar"
+        android:src="@drawable/ic_my_location"
+        app:backgroundTint="@color/ja_superficie"
+        app:tint="@color/ja_marca" />
+
+    <!-- Hoja inferior fija con la muesca -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/hoja"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Hoja">
+
+        <LinearLayout
+            android:id="@+id/hojaContenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/ja_espacio_5">
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:drawablePadding="@dimen/ja_espacio_2"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.CuerpoL"
+                android:textColor="@color/ja_texto"
+                app:drawableStartCompat="@drawable/ic_location_on"
+                app:drawableTint="@color/ja_marca" />
+
+            <LinearLayout
+                style="@style/JuegAlmi.FilaIcono"
+                android:layout_marginTop="@dimen/ja_espacio_3">
+
+                <TextView
+                    android:id="@+id/tvDistancia"
+                    style="@style/JuegAlmi.Pastilla"
+                    android:backgroundTint="@color/ja_marca_suave"
+                    android:textColor="@color/ja_marca"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvCoordenadas"
+                    style="@style/JuegAlmi.Pastilla"
+                    android:layout_marginStart="@dimen/ja_espacio_2"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                    android:textColor="@color/ja_texto_2" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnComoLlegar"
+                style="@style/Widget.JuegAlmi.Boton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4"
+                android:text="@string/ubicacion_como_llegar"
+                app:icon="@drawable/ic_directions"
+                app:iconTint="@color/ja_sobre_primario" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

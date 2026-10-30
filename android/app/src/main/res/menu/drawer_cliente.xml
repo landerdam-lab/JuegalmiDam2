@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Menú lateral del CLIENTE (diseño n1-menu-lateral). Las apps no tienen opciones de técnico ni de admin (ADR-024). -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/grupoTienda" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:checked="true"
+            android:icon="@drawable/ic_home"
+            android:title="@string/menu_inicio" />
+        <item
+            android:id="@+id/nav_carrito"
+            android:icon="@drawable/ic_shopping_cart"
+            android:title="@string/menu_carrito" />
+        <item
+            android:id="@+id/nav_tienda"
+            android:icon="@drawable/ic_storefront"
+            android:title="@string/menu_tienda" />
+    </group>
+
+    <item android:title="@string/menu_grupo_cuenta">
+        <menu>
+            <group android:id="@+id/grupoCuenta" android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_pedidos"
+                    android:icon="@drawable/ic_receipt_long"
+                    android:title="@string/menu_pedidos" />
+                <item
+                    android:id="@+id/nav_alquileres"
+                    android:icon="@drawable/ic_event"
+                    android:title="@string/menu_alquileres" />
+                <item
+                    android:id="@+id/nav_reparaciones"
+                    android:icon="@drawable/ic_build"
+                    android:title="@string/menu_reparaciones" />
+                <item
+                    android:id="@+id/nav_perfil"
+                    android:icon="@drawable/ic_person"
+                    android:title="@string/menu_perfil" />
+                <item
+                    android:id="@+id/nav_cerrar_sesion"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/menu_cerrar_sesion" />
+            </group>
+        </menu>
+    </item>
+</menu>

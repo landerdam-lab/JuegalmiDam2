@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-12 Confirmar pedido · diseño 12-confirmar-pedido -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/JuegAlmi.BarraSecundaria"
+        app:title="@string/confirmar_titulo" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/ja_espacio_4"
+            android:paddingBottom="@dimen/ja_espacio_6">
+
+            <!-- Barra de vida de 3 pasos: Carrito · Confirmar · Listo -->
+            <com.juegalmi.app.ui.comun.BarraVida
+                android:id="@+id/barraPasos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:text="@string/confirmar_paso"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                android:textColor="@color/ja_marca" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ja_espacio_4">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/confirmar_resumen"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                        android:textColor="@color/ja_texto" />
+
+                    <!-- Una fila por línea del carrito (las crea el código) -->
+                    <LinearLayout
+                        android:id="@+id/lineas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ja_espacio_2"
+                        android:orientation="vertical" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/ja_borde_fino"
+                        android:layout_marginVertical="@dimen/ja_espacio_3"
+                        android:background="@color/ja_borde" />
+
+                    <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/total_pagar"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                            android:textColor="@color/ja_texto" />
+
+                        <TextView
+                            android:id="@+id/tvTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Precio"
+                            android:textColor="@color/ja_texto" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvMetodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ja_espacio_3"
+                        android:drawablePadding="@dimen/ja_espacio_2"
+                        android:gravity="center_vertical"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                        android:textColor="@color/ja_texto"
+                        app:drawableStartCompat="@drawable/ic_credit_card"
+                        app:drawableTint="@color/ja_texto_2" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Entrega: recoger en la tienda o envío a domicilio, con su mapa (ADR-038) -->
+            <include
+                android:id="@+id/cajaEntrega"
+                layout="@layout/caja_entrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4" />
+
+            <!-- Aviso de ubicación (P-28: sin ubicación no se puede confirmar) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cajaUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4"
+                app:cardBackgroundColor="@color/ja_info_suave"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ja_espacio_4">
+
+                    <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+                        <ImageView
+                            android:id="@+id/ivUbicacion"
+                            style="@style/JuegAlmi.IconoFila"
+                            android:src="@drawable/ic_location_on"
+                            app:tint="@color/ja_info" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/ja_espacio_2"
+                            android:layout_weight="1"
+                            android:text="@string/confirmar_ubicacion_titulo"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                            android:textColor="@color/ja_texto" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ja_espacio_1"
+                        android:text="@string/confirmar_ubicacion_texto"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                        android:textColor="@color/ja_texto_2" />
+
+                    <TextView
+                        android:id="@+id/tvUbicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ja_espacio_2"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                        android:textColor="@color/ja_info" />
+
+                    <Button
+                        android:id="@+id/btnPermiso"
+                        style="@style/Widget.JuegAlmi.Boton.Texto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/confirmar_dar_permiso"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbAcepto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4"
+                android:text="@string/confirmar_acepto"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                android:textColor="@color/ja_texto"
+                app:buttonTint="@color/ja_marca" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:text="@string/confirmar_cancelable"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                android:textColor="@color/ja_texto_3" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/pie"
+        style="@style/JuegAlmi.PieBoton">
+
+        <Button
+            android:id="@+id/btnConfirmar"
+            style="@style/Widget.JuegAlmi.Boton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="@dimen/ja_elevacion_3"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/ja_sobre_primario"
+            app:indicatorSize="@dimen/ja_tamano_icono" />
+    </FrameLayout>
+</LinearLayout>

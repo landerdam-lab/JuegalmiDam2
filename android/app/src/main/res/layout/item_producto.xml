@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta horizontal de producto (DESIGN.md §9): miniatura con muesca, nombre, marca · plataforma,
+     precio en mono + chip de alquiler y pastilla de stock. CardView de la rúbrica (RT-06). -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tarjeta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ja_espacio_3"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:id="@+id/contenidoTarjeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/ja_espacio_3">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImagen"
+            android:layout_width="@dimen/miniatura_ancho"
+            android:layout_height="@dimen/miniatura_alto"
+            android:background="@color/ja_superficie_2"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Muesca" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ja_espacio_4"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvSubtitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_1"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                android:textColor="@color/ja_texto_2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvPrecio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Precio"
+                    android:textColor="@color/ja_texto" />
+
+                <TextView
+                    android:id="@+id/tvAlquiler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ja_espacio_2"
+                    android:background="@drawable/fondo_pastilla"
+                    android:backgroundTint="@color/ja_alquiler_suave"
+                    android:paddingHorizontal="@dimen/ja_espacio_2"
+                    android:paddingVertical="@dimen/ja_espacio_0"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                    android:textColor="@color/ja_alquiler"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:background="@drawable/fondo_pastilla"
+                android:paddingHorizontal="@dimen/ja_espacio_2"
+                android:paddingVertical="@dimen/ja_espacio_1"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

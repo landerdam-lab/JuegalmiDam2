@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta de Mis reparaciones (PT-18): departamento, estado, dispositivo, barra de vida de 4 etiquetada y presupuesto -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ja_espacio_3">
+
+    <LinearLayout
+        android:id="@+id/contenido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_4">
+
+        <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+            <TextView
+                android:id="@+id/tvDepartamento"
+                style="@style/JuegAlmi.Pastilla" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvEstado"
+                style="@style/JuegAlmi.Pastilla" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/JuegAlmi.FilaIcono"
+            android:layout_marginTop="@dimen/ja_espacio_2">
+
+            <TextView
+                android:id="@+id/tvDispositivo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvReferencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                android:textColor="@color/ja_marca" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvProblema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+            android:textColor="@color/ja_texto_2" />
+
+        <TextView
+            android:id="@+id/tvFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_2"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+            android:textColor="@color/ja_texto_2" />
+
+        <com.juegalmi.app.ui.comun.BarraVida
+            android:id="@+id/barra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_1"
+            android:orientation="horizontal">
+
+            <TextView style="@style/JuegAlmi.EtiquetaPaso" android:gravity="start" android:text="@string/estado_recibida" />
+
+            <TextView style="@style/JuegAlmi.EtiquetaPaso" android:gravity="center" android:text="@string/estado_en_reparacion" />
+
+            <TextView style="@style/JuegAlmi.EtiquetaPaso" android:gravity="center" android:text="@string/estado_lista" />
+
+            <TextView style="@style/JuegAlmi.EtiquetaPaso" android:gravity="end" android:text="@string/estado_entregada" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/JuegAlmi.FilaIcono"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            android:background="@drawable/fondo_buscador"
+            android:paddingHorizontal="@dimen/ja_espacio_3"
+            android:paddingVertical="@dimen/ja_espacio_2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/reparacion_presupuesto"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                android:textColor="@color/ja_texto_2" />
+
+            <TextView
+                android:id="@+id/tvPresupuesto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+                android:textColor="@color/ja_texto" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCancelar"
+            style="@style/Widget.JuegAlmi.Boton.Texto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/reparacion_cancelar"
+            android:textColor="@color/ja_error"
+            android:visibility="gone" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

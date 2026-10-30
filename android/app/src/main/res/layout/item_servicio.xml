@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Un servicio (PT-25): nombre, descripción y precio orientativo («Consultar» si no tiene) -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ja_espacio_3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_4">
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Subtitulo"
+            android:textColor="@color/ja_texto" />
+
+        <TextView
+            android:id="@+id/tvDescripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_1"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+            android:textColor="@color/ja_texto_2" />
+
+        <TextView
+            android:id="@+id/tvPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/ja_espacio_2"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+            android:textColor="@color/ja_marca" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

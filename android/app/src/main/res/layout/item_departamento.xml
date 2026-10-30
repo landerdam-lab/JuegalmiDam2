@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta seleccionable de departamento (PT-17): al elegirla, borde grueso violeta y fondo marca-suave -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:checkedIconTint="@color/ja_marca">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_4">
+
+        <ImageView
+            android:id="@+id/ivIcono"
+            style="@style/JuegAlmi.IconoFila"
+            app:tint="@color/ja_marca" />
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+            android:textColor="@color/ja_texto" />
+
+        <TextView
+            android:id="@+id/tvDescripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+            android:textColor="@color/ja_texto_2" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

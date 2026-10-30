@@ -39,9 +39,24 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
 
-        <!-- Fuentes y formas -->
-        <item name="fontFamily">@font/dm_sans</item>
-        <item name="android:fontFamily">@font/dm_sans</item>
+        <!-- Fuentes: SIN android:fontFamily en el tema. Un fontFamily de tema pisa la fuente de cada
+             TextAppearance.JuegAlmi.* (Android lo trata como atributo de la vista), y los titulares y precios
+             salían en DM Sans. En su lugar, el texto por defecto y los estilos de Material 3 usan los nuestros. -->
+        <item name="android:textViewStyle">@style/Widget.JuegAlmi.Texto</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.JuegAlmi.Display</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.JuegAlmi.TitularL</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.JuegAlmi.Titulo</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.JuegAlmi.Subtitulo</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.JuegAlmi.CuerpoL</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.JuegAlmi.Cuerpo</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.JuegAlmi.Etiqueta</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+
+        <!-- Formas y componentes -->
         <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.JuegAlmi.Pequena</item>
         <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.JuegAlmi.Media</item>
         <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.JuegAlmi.Muesca</item>

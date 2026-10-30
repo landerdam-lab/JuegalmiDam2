@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano. -->
+<!-- Estilos de texto. Requieren las fuentes en res/font (ver design/generated/android/LEEME.md). -->
+<resources>
+    <style name="TextAppearance.JuegAlmi.Display" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/bricolage_grotesque</item>
+        <item name="fontFamily">@font/bricolage_grotesque</item>
+        <item name="android:textSize">@dimen/ja_texto_display</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="lineHeight">40sp</item>
+        <item name="android:textFontWeight">800</item>
+        <item name="android:fontVariationSettings">\'wght\' 800</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.TitularL" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/bricolage_grotesque</item>
+        <item name="fontFamily">@font/bricolage_grotesque</item>
+        <item name="android:textSize">@dimen/ja_texto_titular_l</item>
+        <item name="android:letterSpacing">-0.015</item>
+        <item name="lineHeight">34sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.TitularM" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/bricolage_grotesque</item>
+        <item name="fontFamily">@font/bricolage_grotesque</item>
+        <item name="android:textSize">@dimen/ja_texto_titular_m</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="lineHeight">28sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.Titulo" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/bricolage_grotesque</item>
+        <item name="fontFamily">@font/bricolage_grotesque</item>
+        <item name="android:textSize">@dimen/ja_texto_titulo</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.Subtitulo" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/ja_texto_subtitulo</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="lineHeight">22sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.CuerpoL" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/ja_texto_cuerpo_l</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontVariationSettings">\'wght\' 400</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.Cuerpo" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/ja_texto_cuerpo</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontVariationSettings">\'wght\' 400</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.Etiqueta" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/ja_texto_etiqueta</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.EtiquetaS" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/dm_sans</item>
+        <item name="fontFamily">@font/dm_sans</item>
+        <item name="android:textSize">@dimen/ja_texto_etiqueta_s</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="lineHeight">16sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:fontVariationSettings">\'wght\' 600</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.Precio" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/jetbrains_mono</item>
+        <item name="fontFamily">@font/jetbrains_mono</item>
+        <item name="android:textSize">@dimen/ja_texto_precio</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.PrecioS" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/jetbrains_mono</item>
+        <item name="fontFamily">@font/jetbrains_mono</item>
+        <item name="android:textSize">@dimen/ja_texto_precio_s</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:fontVariationSettings">\'wght\' 700</item>
+    </style>
+    <style name="TextAppearance.JuegAlmi.Codigo" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/jetbrains_mono</item>
+        <item name="fontFamily">@font/jetbrains_mono</item>
+        <item name="android:textSize">@dimen/ja_texto_codigo</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="lineHeight">16sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontVariationSettings">\'wght\' 500</item>
+    </style>
+</resources>

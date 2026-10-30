@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-17 Solicitar reparación · diseño 17-solicitar-reparacion: 5 pasos en una sola pantalla -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/JuegAlmi.BarraSecundaria"
+        app:title="@string/reparacion_nueva_titulo" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/ja_espacio_4"
+            android:paddingBottom="@dimen/ja_espacio_6">
+
+            <!-- Progreso del formulario: barra de vida de 5 (un segmento por paso completado) -->
+            <TextView
+                android:id="@+id/tvPaso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                android:textColor="@color/ja_marca" />
+
+            <com.juegalmi.app.ui.comun.BarraVida
+                android:id="@+id/barraPasos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2" />
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/reparacion_paso_departamento" />
+
+            <!-- Dos tarjetas seleccionables (Telefonía / Consolas). Las rellena el código desde GET /api/departamentos -->
+            <LinearLayout
+                android:id="@+id/departamentos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/reparacion_paso_dispositivo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDispositivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/reparacion_dispositivo"
+                app:startIconDrawable="@drawable/ic_phone_android">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDispositivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:maxLength="100" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/reparacion_paso_problema" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilProblema"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/reparacion_problema"
+                app:counterEnabled="true"
+                app:counterMaxLength="500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etProblema"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLength="500"
+                    android:minLines="4" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/reparacion_paso_foto" />
+
+            <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFoto"
+                    style="@style/Widget.JuegAlmi.Boton.Secundario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reparacion_hacer_foto"
+                    app:icon="@drawable/ic_photo_camera"
+                    app:iconTint="@color/ja_marca" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivFoto"
+                    style="@style/JuegAlmi.MiniaturaCuadrada"
+                    android:layout_marginStart="@dimen/ja_espacio_3"
+                    android:contentDescription="@string/reparacion_foto_desc"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvFoto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ja_espacio_3"
+                    android:layout_weight="1"
+                    android:text="@string/reparacion_foto_ayuda"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                    android:textColor="@color/ja_texto_2" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/reparacion_paso_ubicacion" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    style="@style/JuegAlmi.FilaIcono"
+                    android:padding="@dimen/ja_espacio_4">
+
+                    <ImageView
+                        style="@style/JuegAlmi.IconoFila"
+                        android:src="@drawable/ic_location_on"
+                        app:tint="@color/ja_marca" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ja_espacio_3"
+                        android:layout_weight="1"
+                        android:text="@string/reparacion_ubicacion_texto"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                        android:textColor="@color/ja_texto" />
+
+                    <TextView
+                        android:id="@+id/tvUbicacion"
+                        style="@style/JuegAlmi.Pastilla" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4"
+                app:cardBackgroundColor="@color/ja_info_suave"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    style="@style/JuegAlmi.FilaIcono"
+                    android:padding="@dimen/ja_espacio_4">
+
+                    <ImageView
+                        style="@style/JuegAlmi.IconoFila"
+                        android:src="@drawable/ic_info"
+                        app:tint="@color/ja_info" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ja_espacio_3"
+                        android:layout_weight="1"
+                        android:text="@string/reparacion_info"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                        android:textColor="@color/ja_texto" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/pie"
+        style="@style/JuegAlmi.PieBoton">
+
+        <Button
+            android:id="@+id/btnEnviar"
+            style="@style/Widget.JuegAlmi.Boton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reparacion_enviar"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/ja_sobre_primario" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="@dimen/ja_elevacion_3"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/ja_sobre_primario"
+            app:indicatorSize="@dimen/ja_tamano_icono" />
+    </FrameLayout>
+</LinearLayout>

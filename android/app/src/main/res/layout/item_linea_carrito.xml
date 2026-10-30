@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Una línea del carrito: miniatura, nombre, tipo (compra / alquiler), stepper y subtotal -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ja_espacio_3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivImagen"
+                style="@style/JuegAlmi.MiniaturaCuadrada" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ja_espacio_3"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Subtitulo"
+                    android:textColor="@color/ja_texto" />
+
+                <TextView
+                    android:id="@+id/tvTipo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_1"
+                    android:background="@drawable/fondo_pastilla"
+                    android:paddingHorizontal="@dimen/ja_espacio_2"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS" />
+
+                <TextView
+                    android:id="@+id/tvUnitario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_1"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                    android:textColor="@color/ja_texto_2" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnQuitar"
+                style="@style/JuegAlmi.BotonIcono"
+                android:contentDescription="@string/carrito_quitar"
+                android:src="@drawable/ic_delete"
+                app:tint="@color/ja_texto_2" />
+        </LinearLayout>
+
+        <!-- Stepper (DESIGN.md §9): − n + con botones de 48 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnMenos"
+                style="@style/JuegAlmi.BotonIcono"
+                android:contentDescription="@string/carrito_menos"
+                android:src="@drawable/ic_remove"
+                app:tint="@color/ja_marca" />
+
+            <TextView
+                android:id="@+id/tvCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/ja_tamano_tactil_min"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+                android:textColor="@color/ja_texto" />
+
+            <ImageButton
+                android:id="@+id/btnMas"
+                style="@style/JuegAlmi.BotonIcono"
+                android:contentDescription="@string/carrito_mas"
+                android:src="@drawable/ic_add"
+                app:tint="@color/ja_marca" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvSubtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+                android:textColor="@color/ja_texto" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
