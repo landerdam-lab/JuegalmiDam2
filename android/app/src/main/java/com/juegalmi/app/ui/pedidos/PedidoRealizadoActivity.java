@@ -34,12 +34,17 @@ public class PedidoRealizadoActivity extends AppCompatActivity {
         Pedido pedido = new Gson().fromJson(getIntent().getStringExtra(EXTRA_PEDIDO), Pedido.class);
 
         ((BarraVida) findViewById(R.id.barra)).mostrar(5, 5, R.color.ja_exito);
+        if (pedido.aDomicilio()) {
+            ((android.widget.TextView) findViewById(R.id.tvRealizadoTexto)).setText(R.string.realizado_texto_domicilio);
+        }
         ViewGroup ticket = findViewById(R.id.ticket);
         FilaResumen.anadir(ticket, getString(R.string.ticket_referencia), "", pedido.referencia(), null);
         FilaResumen.anadir(ticket, getString(R.string.ticket_fecha), "", Fechas.fechaHora(pedido.fecha), null);
         FilaResumen.anadir(ticket, getString(R.string.ticket_cantidad), "",
                 getResources().getQuantityString(R.plurals.articulos, pedido.numeroArticulos(), pedido.numeroArticulos()), null);
         FilaResumen.anadir(ticket, getString(R.string.ticket_metodo), "", MetodosPago.texto(this, pedido.metodoPago), null);
+        FilaResumen.anadir(ticket, getString(R.string.ticket_entrega), "",
+                getString(pedido.aDomicilio() ? R.string.entrega_domicilio : R.string.entrega_tienda), null);
         FilaResumen.anadir(ticket, getString(R.string.ticket_total), "", Formato.precio(pedido.total), null);
 
         // Animación «insertar»: la baldosa entra desde abajo con un rebote corto, como un cartucho (DESIGN.md §7)

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import com.google.android.material.imageview.ShapeableImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -220,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) cabecera.findViewById(R.id.tvNombre)).setText(usuario.nombreCompleto());
         ((TextView) cabecera.findViewById(R.id.tvEmail)).setText(usuario.email);
         if (usuario.foto != null) {
-            ImageView avatar = cabecera.findViewById(R.id.ivAvatar);
-            avatar.setPadding(0, 0, 0, 0);
+            ShapeableImageView avatar = cabecera.findViewById(R.id.ivAvatar);
+            avatar.setContentPadding(0, 0, 0, 0);
             avatar.setImageTintList(null);
             Glide.with(this).load(usuario.foto).placeholder(R.drawable.ic_person).centerCrop().into(avatar);
         }
