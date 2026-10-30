@@ -22,12 +22,11 @@ import com.juegalmi.app.util.Bordes;
 import java.util.List;
 
 /**
- * PT-27 Galería (RF-08): fotos de la tienda en una cuadrícula de 3 columnas (GridLayoutManager) y visor
- * a pantalla completa al tocar una. Glide pone el placeholder y solo descarga el tamaño de la baldosa.
+ * PT-27 Galería (RF-08): fotos de la tienda en una cuadrícula (GridLayoutManager) y visor a pantalla completa
+ * al tocar una. Columnas: 3 en el móvil y hasta 6 en pantallas anchas (res/values-wNNNdp/adaptativo.xml).
+ * Glide pone el placeholder y solo descarga el tamaño de la baldosa.
  */
 public class GaleriaActivity extends TiendaBaseActivity {
-
-    private static final int COLUMNAS = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class GaleriaActivity extends TiendaBaseActivity {
         ((MaterialToolbar) findViewById(R.id.toolbar)).setSubtitle(
                 getResources().getQuantityString(R.plurals.fotos_n, t.fotos.size(), t.fotos.size()));
         RecyclerView lista = findViewById(R.id.lista);
-        lista.setLayoutManager(new GridLayoutManager(this, COLUMNAS));
+        lista.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.columnas_galeria)));
         lista.setAdapter(new Adaptador(t.fotos));
     }
 

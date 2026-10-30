@@ -1,5 +1,15 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+}
+
+// Firma de la APK de entrega (release). Las claves están en android/keystore.properties, que NO se sube a Git
+// (igual que el .jks). Si el fichero no existe, la release se genera sin firmar y la debug sigue igual.
+// Cómo crearlo: android/README.md
+val firma = Properties().apply {
+    val fichero = rootProject.file("keystore.properties")
+    if (fichero.exists()) fichero.inputStream().use { load(it) }
 }
 
 android {
@@ -19,8 +29,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (!firma.isEmpty) {
+            create("release") {
+                storeFile = rootProject.file(firma.getProperty("storeFile"))
+                storePassword = firma.getProperty("storePassword")
+                keyAlias = firma.getProperty("keyAlias")
+                keyPassword = firma.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (!firma.isEmpty) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             optimization {
                 enable = false
             }
