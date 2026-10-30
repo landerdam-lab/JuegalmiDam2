@@ -36,10 +36,31 @@ final class CatalogoTest extends ApiTestCase
         self::assertSame(['Xbox Series S'], array_column($json['items'], 'nombre'));
     }
 
+    public function testOrdenarPorPrecioYGeneros(): void
+    {
+        [, $json] = $this->peticion('GET', '/api/videojuegos?orden=precio_asc&limit=100', null, 'cliente1');
+        $precios = array_column($json['items'], 'precio');
+        $ordenados = $precios;
+        sort($ordenados);
+        self::assertSame($ordenados, $precios);
+
+        [, $json] = $this->peticion('GET', '/api/consolas?orden=precio_desc', null, 'cliente1');
+        self::assertSame('PlayStation 5 Pro', $json['items'][0]['nombre']); // la más cara
+
+        [$estado, $json] = $this->peticion('GET', '/api/videojuegos?orden=fecha', null, 'cliente1');
+        self::assertSame(422, $estado);
+        self::assertArrayHasKey('orden', $json['error']['campos']);
+
+        [$estado, $generos] = $this->peticion('GET', '/api/generos', null, 'cliente1');
+        self::assertSame(200, $estado);
+        self::assertContains('Rol', $generos);
+        self::assertSame(array_values(array_unique($generos)), $generos);
+    }
+
     public function testFiltrosDelCatalogo(): void
     {
         [, $json] = $this->peticion('GET', '/api/moviles?formato=tablet', null, 'cliente1');
-        self::assertSame(4, $json['total']);
+        self::assertSame(6, $json['total']);
 
         [$estado] = $this->peticion('GET', '/api/moviles?formato=reloj', null, 'cliente1');
         self::assertSame(422, $estado);
@@ -114,6 +135,6 @@ final class CatalogoTest extends ApiTestCase
         self::assertStringStartsWith('http', $tienda['fotos'][0]['imagen']);
 
         [, $servicios] = $this->peticion('GET', '/api/servicios?linea=telefonia');
-        self::assertCount(4, $servicios);
+        self::assertCount(6, $servicios);
     }
 }

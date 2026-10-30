@@ -35,7 +35,7 @@ security:
         - { path: ^/api/(login|registro)$, roles: PUBLIC_ACCESS }
         # ADR-028: catálogo y tienda en solo lectura, sin token, para la web pública.
         # Las apps mandan el token igualmente (y así se registra su ubicación).
-        - { path: ^/api/(productos|videojuegos|moviles|consolas|marcas|plataformas|departamentos|servicios|tiendas|fotos-tienda)(/|$), methods: [GET], roles: PUBLIC_ACCESS }
+        - { path: ^/api/(productos|videojuegos|moviles|consolas|marcas|plataformas|generos|departamentos|servicios|tiendas|fotos-tienda)(/|$), methods: [GET], roles: PUBLIC_ACCESS }
         - { path: ^/api/, roles: IS_AUTHENTICATED }
 
 when@test:
