@@ -207,12 +207,24 @@ CREATE TABLE IF NOT EXISTS pedido (
   fecha       DATETIME NOT NULL,
   estado      VARCHAR(20) NOT NULL DEFAULT 'pendiente',
   metodo_pago VARCHAR(20) NOT NULL,
+  -- ADR-038: recogida en tienda o envío gratis a domicilio (dirección y punto del mapa)
+  entrega           VARCHAR(20) NOT NULL DEFAULT 'tienda',
+  direccion_entrega VARCHAR(255) NULL,
+  latitud_entrega   DECIMAL(10,7) NULL,
+  longitud_entrega  DECIMAL(10,7) NULL,
   cliente_id  INT NOT NULL,
   CONSTRAINT pk_pedido PRIMARY KEY (id),
   CONSTRAINT fk_pedido_cliente FOREIGN KEY (cliente_id)
     REFERENCES cliente (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT chk_pedido_estado CHECK (estado IN ('pendiente', 'preparado', 'entregado', 'cancelado')),
   CONSTRAINT chk_pedido_metodo_pago CHECK (metodo_pago IN ('tarjeta', 'bizum', 'paypal', 'en_tienda')),
+  CONSTRAINT chk_pedido_entrega CHECK (entrega IN ('tienda', 'domicilio')),
+  -- A domicilio, los tres datos; en tienda, ninguno
+  CONSTRAINT chk_pedido_entrega_datos CHECK (
+    (entrega = 'tienda' AND direccion_entrega IS NULL AND latitud_entrega IS NULL AND longitud_entrega IS NULL)
+    OR (entrega = 'domicilio' AND direccion_entrega IS NOT NULL AND latitud_entrega IS NOT NULL AND longitud_entrega IS NOT NULL)),
+  CONSTRAINT chk_pedido_latitud_entrega CHECK (latitud_entrega BETWEEN -90 AND 90),
+  CONSTRAINT chk_pedido_longitud_entrega CHECK (longitud_entrega BETWEEN -180 AND 180),
   INDEX idx_pedido_cliente_fecha (cliente_id, fecha)
 ) ENGINE=InnoDB;
 
