@@ -121,7 +121,7 @@ public class CabeceraInicioAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     Formato.precio(p.precioAlquiler == null ? 0 : p.precioAlquiler)));
             ImageView iv = v.findViewById(R.id.ivImagen);
             iv.setContentDescription(v.getContext().getString(R.string.imagen_producto, p.nombre));
-            Glide.with(iv).load(p.imagen).placeholder(R.drawable.ic_image).error(R.drawable.ic_broken_image)
+            Glide.with(iv).load(p.imagen).placeholder(R.drawable.placeholder_imagen).error(R.drawable.placeholder_error)
                     .centerCrop().into(iv);
             v.setOnClickListener(b -> acciones.abrir(p, iv));
         }

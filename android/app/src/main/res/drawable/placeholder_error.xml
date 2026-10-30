@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Imagen que no se ha podido cargar: igual que el placeholder pero con «broken_image» (DESIGN.md §6) -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:width="@dimen/placeholder_lado" android:height="@dimen/placeholder_lado">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ja_superficie_2" />
+        </shape>
+    </item>
+    <item
+        android:width="@dimen/placeholder_icono"
+        android:height="@dimen/placeholder_icono"
+        android:drawable="@drawable/ic_broken_image_gris"
+        android:gravity="center" />
+</layer-list>

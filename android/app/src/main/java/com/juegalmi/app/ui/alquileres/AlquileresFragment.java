@@ -144,8 +144,8 @@ public class AlquileresFragment extends ListaBaseFragment {
             t.cuenta.setTextColor(ContextCompat.getColor(c, color));
             t.barra.mostrar(SEGMENTOS, llenos, color);
 
-            Glide.with(t.imagen).load(a.videojuego.imagen).placeholder(R.drawable.ic_image)
-                    .error(R.drawable.ic_broken_image).centerCrop().into(t.imagen);
+            Glide.with(t.imagen).load(a.videojuego.imagen).placeholder(R.drawable.placeholder_imagen)
+                    .error(R.drawable.placeholder_error).centerCrop().into(t.imagen);
         }
 
         static class Tarjeta extends RecyclerView.ViewHolder {

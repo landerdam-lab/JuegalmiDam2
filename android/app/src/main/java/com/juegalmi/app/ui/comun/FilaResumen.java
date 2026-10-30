@@ -29,7 +29,7 @@ public final class FilaResumen {
         ImageView iv = fila.findViewById(R.id.ivImagen);
         if (imagen != null) {
             iv.setVisibility(View.VISIBLE);
-            Glide.with(iv).load(imagen).placeholder(R.drawable.ic_image).error(R.drawable.ic_broken_image)
+            Glide.with(iv).load(imagen).placeholder(R.drawable.placeholder_imagen).error(R.drawable.placeholder_error)
                     .centerCrop().into(iv);
         } else {
             // Sin miniatura, el texto empieza pegado al borde

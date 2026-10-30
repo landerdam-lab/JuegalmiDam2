@@ -15,6 +15,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.juegalmi.app.R;
+import com.juegalmi.app.ui.comun.Dialogos;
 import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.Callback;
 import com.juegalmi.app.data.api.VolleyClient;
@@ -136,7 +137,7 @@ public class DetallePedidoActivity extends AppCompatActivity {
 
     /** Diálogo destructivo antes de cancelar (DESIGN.md §9). */
     private void confirmarCancelacion(Pedido p) {
-        new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_JuegAlmi_Dialogo)
+        Dialogos.destructivo(new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_JuegAlmi_Dialogo)
                 .setTitle(getString(R.string.cancelar_pedido_titulo, p.referencia()))
                 .setMessage(R.string.cancelar_pedido_texto)
                 .setNegativeButton(R.string.volver, null)
@@ -157,7 +158,7 @@ public class DetallePedidoActivity extends AppCompatActivity {
                                 }
                             }
                         }))
-                .show();
+                .show());
     }
 
     @Override
