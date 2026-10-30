@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-12b Pedido realizado · diseño 12b-pedido-realizado: baldosa de éxito, barra llena y «ticket» -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/raiz"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/btnCerrar"
+        style="@style/JuegAlmi.BotonIcono"
+        android:layout_margin="@dimen/ja_espacio_2"
+        android:contentDescription="@string/cerrar"
+        android:src="@drawable/ic_close"
+        app:tint="@color/ja_texto" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/contenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/ja_espacio_6">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivExito"
+                android:layout_width="@dimen/estado_baldosa"
+                android:layout_height="@dimen/estado_baldosa"
+                android:background="@color/ja_exito_suave"
+                android:importantForAccessibility="no"
+                app:contentPadding="@dimen/estado_icono_relleno"
+                android:src="@drawable/ic_check"
+                app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Muesca"
+                app:tint="@color/ja_exito" />
+
+            <com.juegalmi.app.ui.comun.BarraVida
+                android:id="@+id/barra"
+                android:layout_width="@dimen/estado_baldosa_ancha"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_6"
+                android:text="@string/realizado_titulo"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Display"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvRealizadoTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:gravity="center"
+                android:text="@string/realizado_texto"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.CuerpoL"
+                android:textColor="@color/ja_texto_2" />
+
+            <!-- «Ticket de caja»: cifras en JetBrains Mono (DESIGN.md D-4) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_6">
+
+                <LinearLayout
+                    android:id="@+id/ticket"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ja_espacio_5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/ja_espacio_2"
+                        android:text="@string/realizado_ticket"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                        android:textColor="@color/ja_texto" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/pie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_4">
+
+        <Button
+            android:id="@+id/btnVerPedido"
+            style="@style/Widget.JuegAlmi.Boton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/realizado_ver"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/ja_sobre_primario" />
+
+        <Button
+            android:id="@+id/btnSeguir"
+            style="@style/Widget.JuegAlmi.Boton.Texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_2"
+            android:text="@string/realizado_seguir" />
+    </LinearLayout>
+</LinearLayout>

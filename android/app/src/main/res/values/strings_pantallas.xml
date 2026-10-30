@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Textos de las pantallas del cliente (PT-11 a PT-28). Los de login, catálogo y fichas están en strings.xml -->
+<resources>
+    <!-- Comunes -->
+    <string name="cerrar">Cerrar</string>
+    <string name="deshacer">Deshacer</string>
+    <string name="gratis">Gratis</string>
+    <string name="total">Total</string>
+    <string name="total_pagar">Total a pagar</string>
+    <string name="pendiente">Pendiente</string>
+    <string name="ver_carrito">Ver carrito</string>
+    <string name="mas_n">+%d más</string>
+    <string name="paso_de">%1$d / %2$d</string>
+    <string name="rango_fechas">%1$s → %2$s</string>
+    <string name="precio_por_dia">%s/día</string>
+    <string name="precio_por_unidad">%s/ud.</string>
+    <string name="rol_cliente">Cliente</string>
+    <string name="cerrar_sesion_texto">Tendrás que volver a entrar con tu correo y contraseña. El carrito se vaciará.</string>
+    <plurals name="dias">
+        <item quantity="one">%d día</item>
+        <item quantity="other">%d días</item>
+    </plurals>
+    <plurals name="articulos">
+        <item quantity="one">%d artículo</item>
+        <item quantity="other">%d artículos</item>
+    </plurals>
+
+    <!-- Estados (mismos valores que la BBDD y la API; los muestra ui/comun/Pastilla) -->
+    <string name="estado_pendiente">Pendiente</string>
+    <string name="estado_preparado">Preparado</string>
+    <string name="estado_entregado">Entregado</string>
+    <string name="estado_cancelado">Cancelado</string>
+    <string name="estado_recibida">Recibida</string>
+    <string name="estado_en_reparacion">En reparación</string>
+    <string name="estado_lista">Lista</string>
+    <string name="estado_entregada">Entregada</string>
+    <string name="estado_cancelada">Cancelada</string>
+    <string name="estado_activo">Activo</string>
+    <string name="estado_retrasado">Retrasado</string>
+    <string name="estado_devuelto">Devuelto</string>
+
+    <!-- Métodos de pago (pedido.metodo_pago) -->
+    <string name="pago_tarjeta">Tarjeta</string>
+    <string name="pago_bizum">Bizum</string>
+    <string name="pago_paypal">PayPal</string>
+    <string name="pago_en_tienda">En tienda</string>
+
+    <!-- PT-04 Inicio (cabecera de la pestaña Videojuegos) -->
+    <string name="inicio_para_alquilar">Para alquilar</string>
+    <string name="inicio_ver_todo">Ver todo</string>
+    <string name="inicio_reparamos">Reparamos tu dispositivo</string>
+    <string name="inicio_reparamos_texto">¿Pantalla rota o mando con drift? Pide presupuesto sin compromiso.</string>
+    <string name="inicio_todo_catalogo">Todo el catálogo</string>
+
+    <!-- PT-11 Carrito -->
+    <string name="carrito_titulo">Tu carrito</string>
+    <string name="carrito_recogida">En el siguiente paso eliges si lo recoges en la tienda o te lo enviamos a casa. Las dos opciones son gratis.</string>
+    <string name="carrito_recogida_corta">Entrega (tienda o domicilio)</string>
+    <string name="carrito_metodo_pago">Método de pago</string>
+    <string name="carrito_resumen">Resumen del pedido</string>
+    <string name="carrito_precio_api">El precio final lo confirma la tienda al hacer el pedido.</string>
+    <string name="carrito_continuar">Continuar · %s</string>
+    <string name="carrito_vacio_titulo">Tu carrito está vacío</string>
+    <string name="carrito_vacio_texto">Añade videojuegos, consolas o móviles desde el catálogo.</string>
+    <string name="carrito_ir_catalogo">Ir al catálogo</string>
+    <string name="carrito_quitar">Quitar del carrito</string>
+    <string name="carrito_quitada">Producto quitado del carrito</string>
+    <string name="carrito_menos">Uno menos</string>
+    <string name="carrito_mas">Uno más</string>
+    <string name="linea_compra">Compra</string>
+    <string name="linea_alquiler">Alquiler</string>
+    <string name="anadido_compra">«%s» añadido al carrito</string>
+    <string name="anadido_alquiler">Alquiler de %s añadido al carrito</string>
+
+    <!-- PT-12 Confirmar pedido -->
+    <string name="confirmar_titulo">Confirmar pedido</string>
+    <string name="confirmar_paso">Paso 2 de 3 · Confirmar</string>
+    <string name="confirmar_resumen">Resumen del pedido</string>
+    <string name="confirmar_metodo">Método de pago: %s</string>
+    <string name="confirmar_ubicacion_titulo">Necesitamos tu ubicación</string>
+    <string name="confirmar_ubicacion_texto">La guardamos con el pedido para saber desde dónde compras. Solo se usa al confirmar.</string>
+    <string name="confirmar_ubicacion_ok">Ubicación obtenida (%s)</string>
+    <string name="confirmar_ubicacion_buscando">Buscando tu ubicación…</string>
+    <string name="confirmar_ubicacion_sin_permiso">Sin permiso de ubicación: no se puede confirmar el pedido</string>
+    <string name="confirmar_dar_permiso">Dar permiso de ubicación</string>
+    <string name="confirmar_acepto">He revisado mi pedido y los datos de entrega</string>
+    <string name="confirmar_cancelable">Puedes cancelarlo mientras esté pendiente</string>
+    <string name="confirmar_boton">Confirmar y pagar (%s)</string>
+    <string name="confirmar_falta_aceptar">Marca la casilla para confirmar el pedido</string>
+    <string name="confirmar_falta_ubicacion">Activa la ubicación para continuar</string>
+    <string name="confirmar_error">No se ha podido hacer el pedido</string>
+    <string name="confirmar_error_stock">Falta stock o copias</string>
+    <string name="resumen_cantidad">Cantidad: %d</string>
+    <string name="resumen_alquiler">Alquiler · %s</string>
+
+    <!-- Entrega del pedido (ADR-038): recoger en la tienda o envío a domicilio -->
+    <string name="entrega_titulo">¿Cómo lo quieres?</string>
+    <string name="entrega_tienda">Recoger en tienda</string>
+    <string name="entrega_op_tienda">En tienda</string>
+    <string name="entrega_op_domicilio">A domicilio</string>
+    <string name="entrega_domicilio">Envío a domicilio</string>
+    <string name="entrega_tienda_texto">Recógelo en %1$s: %2$s</string>
+    <string name="entrega_tienda_gratis">Recogida gratis en la tienda</string>
+    <string name="entrega_domicilio_gratis">Envío gratis a esta dirección</string>
+    <string name="entrega_direccion">Dirección de entrega</string>
+    <string name="entrega_direccion_ayuda">Calle, número, piso, código postal y ciudad</string>
+    <string name="entrega_mapa">Mapa del punto de entrega</string>
+    <string name="entrega_tu_casa">Entrega aquí</string>
+    <string name="entrega_punto">Toca el mapa para mover el punto · %s</string>
+    <string name="entrega_falta_direccion">Escribe la dirección completa (calle, número, código postal y ciudad)</string>
+    <string name="entrega_falta_punto">Toca el mapa para marcar dónde lo entregamos</string>
+    <string name="entrega_falta_datos">Completa los datos de la entrega</string>
+    <string name="pedido_texto_preparado_domicilio">Tu pedido está preparado y sale hacia tu casa.</string>
+    <string name="pedido_texto_entregado_domicilio">Pedido entregado en tu casa. ¡Que lo disfrutes!</string>
+    <string name="ticket_entrega">Entrega</string>
+    <string name="realizado_texto_domicilio">Te avisaremos cuando salga hacia tu casa.</string>
+
+    <!-- PT-12b Pedido realizado -->
+    <string name="realizado_titulo">¡Pedido realizado!</string>
+    <string name="realizado_texto">Te avisaremos cuando esté preparado para recoger en la tienda.</string>
+    <string name="realizado_ticket" translatable="false">● TICKET</string>
+    <string name="realizado_ver">Ver mi pedido</string>
+    <string name="realizado_seguir">Seguir comprando</string>
+    <string name="realizado_ubicacion">Ubicación guardada con el pedido</string>
+    <string name="ticket_referencia">Referencia</string>
+    <string name="ticket_fecha">Fecha y hora</string>
+    <string name="ticket_cantidad">Cantidad</string>
+    <string name="ticket_metodo">Método de pago</string>
+    <string name="ticket_total">Total pagado</string>
+
+    <!-- PT-13 / PT-14 Pedidos -->
+    <string name="filtro_pendientes">Pendientes</string>
+    <string name="filtro_preparados">Preparados</string>
+    <string name="filtro_entregados">Entregados</string>
+    <string name="filtro_cancelados">Cancelados</string>
+    <plurals name="pedidos_realizados">
+        <item quantity="one">%d pedido</item>
+        <item quantity="other">%d pedidos</item>
+    </plurals>
+    <string name="pedidos_vacio_titulo">Aún no tienes pedidos</string>
+    <string name="pedidos_vacio_texto">Cuando compres o alquiles algo, aparecerá aquí.</string>
+    <string name="pedidos_error">No hemos podido cargar tus pedidos</string>
+    <string name="pedido_anulado">Anulado</string>
+    <string name="detalle_pedido_titulo">Pedido %s</string>
+    <string name="detalle_pedido_productos">Productos</string>
+    <string name="detalle_pedido_resumen">Resumen</string>
+    <string name="detalle_pedido_compra">×%1$d · %2$s/ud.</string>
+    <string name="detalle_pedido_alquiler">Alquiler %1$s → %2$s · %3$s</string>
+    <string name="detalle_pedido_cancelar">Cancelar pedido</string>
+    <string name="detalle_pedido_cancelable">Puedes cancelarlo mientras esté pendiente</string>
+    <string name="detalle_pedido_no_cancelable">Ya no se puede cancelar: el pedido está %s</string>
+    <string name="pedido_texto_pendiente">Estamos preparando tu pedido.</string>
+    <string name="pedido_texto_preparado">Tu pedido está listo. Recógelo en la tienda.</string>
+    <string name="pedido_texto_entregado">Pedido entregado. ¡Que lo disfrutes!</string>
+    <string name="pedido_texto_cancelado">Este pedido se canceló.</string>
+    <string name="cancelar_pedido_titulo">¿Cancelar el pedido %s?</string>
+    <string name="cancelar_pedido_texto">Se anulará el pedido y se liberarán los productos y las copias de alquiler. No se puede deshacer.</string>
+    <string name="pedido_cancelado_ok">Pedido cancelado</string>
+
+    <!-- PT-15 Alquilar -->
+    <string name="alquilar_duracion">¿Cuántos días?</string>
+    <string name="alquilar_disponibilidad">Disponibilidad en tienda</string>
+    <string name="alquilar_tarifa">%1$s × %2$s</string>
+    <string name="alquilar_anadir">Añadir alquiler al carrito</string>
+
+    <!-- PT-16 Mis alquileres -->
+    <string name="pestana_activos">Activos</string>
+    <string name="pestana_retrasados">Retrasados</string>
+    <string name="pestana_devueltos">Devueltos</string>
+    <string name="alquileres_aviso_tienda">Las devoluciones se registran en la tienda</string>
+    <string name="alquileres_vacio_titulo">No hay alquileres aquí</string>
+    <string name="alquileres_vacio_texto">Alquila un videojuego desde su ficha y lo verás en esta lista.</string>
+    <string name="alquileres_error">No hemos podido cargar tus alquileres</string>
+    <string name="alquiler_devolver_hoy">Devuélvelo hoy</string>
+    <string name="alquiler_devuelto_el">Devuelto el %s</string>
+    <plurals name="alquiler_quedan">
+        <item quantity="one">Queda %d día</item>
+        <item quantity="other">Quedan %d días</item>
+    </plurals>
+    <plurals name="alquiler_retraso">
+        <item quantity="one">Retraso de %d día</item>
+        <item quantity="other">Retraso de %d días</item>
+    </plurals>
+
+    <!-- PT-17 / PT-18 Reparaciones -->
+    <string name="reparacion_nueva_titulo">Nueva reparación</string>
+    <string name="reparacion_progreso">PASO %1$d DE %2$d</string>
+    <string name="reparacion_paso_departamento">1 · Departamento</string>
+    <string name="reparacion_paso_dispositivo">2 · Dispositivo</string>
+    <string name="reparacion_paso_problema">3 · ¿Qué le pasa?</string>
+    <string name="reparacion_paso_foto">4 · Foto del problema</string>
+    <string name="reparacion_paso_ubicacion">5 · Ubicación</string>
+    <string name="departamento_telefonia">Móviles y tablets</string>
+    <string name="departamento_consolas">Consolas y mandos</string>
+    <string name="reparacion_dispositivo">Dispositivo a reparar</string>
+    <string name="reparacion_problema">Descripción de la avería</string>
+    <string name="reparacion_hacer_foto">Hacer foto</string>
+    <string name="reparacion_foto_desc">Foto del problema</string>
+    <string name="reparacion_foto_ayuda">Opcional, pero ayuda al técnico a darte un presupuesto</string>
+    <string name="reparacion_foto_lista">Foto lista. Se enviará con la solicitud</string>
+    <string name="reparacion_ubicacion_texto">Se guardará con la solicitud</string>
+    <string name="reparacion_info">Un técnico del departamento revisará tu solicitud y te dará un presupuesto sin compromiso.</string>
+    <string name="reparacion_enviar">Enviar solicitud</string>
+    <string name="reparacion_elige_departamento">Elige el departamento: Telefonía o Consolas</string>
+    <string name="reparacion_falta_dispositivo">Escribe qué dispositivo es, por ejemplo «PlayStation 5»</string>
+    <string name="reparacion_falta_problema">Cuéntanos qué le pasa</string>
+    <string name="reparacion_creada_titulo">Solicitud %s enviada</string>
+    <string name="reparacion_creada_texto">Tráenos el dispositivo a la tienda. Verás el estado y el presupuesto en «Mis reparaciones».</string>
+    <string name="reparacion_presupuesto">Presupuesto</string>
+    <string name="reparacion_entrada">Entrada: %s</string>
+    <string name="reparacion_salida">Salida: %s</string>
+    <string name="reparacion_cancelar">Cancelar solicitud</string>
+    <string name="cancelar_reparacion_titulo">¿Cancelar la reparación %s?</string>
+    <string name="cancelar_reparacion_texto">El técnico dejará de trabajar en ella. No se puede deshacer.</string>
+    <string name="filtro_todas">Todas</string>
+    <string name="filtro_activas">Activas</string>
+    <string name="filtro_finalizadas">Finalizadas</string>
+    <plurals name="reparaciones_n">
+        <item quantity="one">%d reparación</item>
+        <item quantity="other">%d reparaciones</item>
+    </plurals>
+    <string name="reparaciones_vacio_titulo">No tienes reparaciones</string>
+    <string name="reparaciones_vacio_texto">¿Pantalla rota o mando con drift? Pide una reparación con el botón amarillo.</string>
+    <string name="reparaciones_error">No hemos podido cargar tus reparaciones</string>
+    <string name="ubicacion_obtenida">Obtenida</string>
+    <string name="ubicacion_buscando">Buscando…</string>
+    <string name="ubicacion_dar_permiso">Dar permiso</string>
+
+    <!-- PT-21 Perfil -->
+    <string name="perfil_foto">Tu foto</string>
+    <string name="perfil_cambiar_foto">Cambiar la foto con la cámara</string>
+    <string name="perfil_datos">Datos personales</string>
+    <string name="perfil_no_editable">No se puede cambiar desde la app</string>
+    <string name="perfil_preferencias">Preferencias de la aplicación</string>
+    <string name="perfil_tema">Tema visual</string>
+    <string name="tema_sistema">Sistema</string>
+    <string name="tema_claro">Claro</string>
+    <string name="tema_oscuro">Oscuro</string>
+    <string name="perfil_agitar">Agitar el móvil para refrescar las listas</string>
+    <string name="perfil_guardar">Guardar cambios</string>
+    <string name="perfil_guardado">Cambios guardados</string>
+    <string name="perfil_foto_guardada">Foto actualizada</string>
+
+    <!-- PT-24 a PT-28 La tienda -->
+    <string name="tienda_explora">Explora la tienda</string>
+    <string name="tienda_servicios">Servicios</string>
+    <string name="tienda_servicios_sub">Reparación de consolas y móviles</string>
+    <string name="tienda_ubicacion">Ubicación</string>
+    <string name="tienda_ubicacion_sub">Cómo llegar a la tienda</string>
+    <string name="tienda_galeria">Galería</string>
+    <string name="tienda_galeria_sub">Fotos de la tienda</string>
+    <string name="tienda_historia">Historia</string>
+    <string name="tienda_historia_sub">Quiénes somos</string>
+    <string name="tienda_error">No hemos podido cargar la tienda</string>
+    <string name="linea_telefonia">Telefonía</string>
+    <string name="servicio_desde">desde %s</string>
+    <string name="servicio_consultar">Consultar</string>
+    <string name="servicios_solicitar">Solicitar reparación</string>
+    <string name="servicios_vacio_titulo">Sin servicios en esta línea</string>
+    <string name="servicios_vacio_texto">Pregunta en la tienda: te ayudamos igualmente.</string>
+    <plurals name="servicios_n">
+        <item quantity="one">%d servicio</item>
+        <item quantity="other">%d servicios</item>
+    </plurals>
+    <string name="ubicacion_como_llegar">Cómo llegar</string>
+    <string name="ubicacion_centrar">Centrar el mapa en la tienda</string>
+    <string name="ubicacion_tu">Estás aquí</string>
+    <string name="ubicacion_estas_m">Estás a %d m</string>
+    <string name="ubicacion_estas_km">Estás a %s km</string>
+    <string name="ubicacion_sin_app_mapas">No hay ninguna app de mapas en este móvil</string>
+    <plurals name="fotos_n">
+        <item quantity="one">%d foto</item>
+        <item quantity="other">%d fotos</item>
+    </plurals>
+    <string name="historia_etiqueta">NUESTRA HISTORIA</string>
+    <string name="historia_lema">«Aquí se juega, se alquila y se arregla.»</string>
+    <string name="historia_ver_galeria">Ver galería</string>
+</resources>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-11 Carrito · diseño 11-carrito: líneas, método de pago, resumen y botón fijo abajo -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/ja_espacio_4"
+                android:paddingBottom="@dimen/ja_espacio_6">
+
+                <TextView
+                    style="@style/JuegAlmi.TituloPantalla"
+                    android:text="@string/carrito_titulo" />
+
+                <TextView
+                    android:id="@+id/tvArticulos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                    android:textColor="@color/ja_texto_2" />
+
+                <!-- Aviso de recogida (es una tienda física: el pedido se recoge allí) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_4"
+                    app:cardBackgroundColor="@color/ja_info_suave"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        style="@style/JuegAlmi.FilaIcono"
+                        android:padding="@dimen/ja_espacio_3">
+
+                        <ImageView
+                            style="@style/JuegAlmi.IconoFila"
+                            android:src="@drawable/ic_storefront"
+                            app:tint="@color/ja_info" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/ja_espacio_3"
+                            android:layout_weight="1"
+                            android:text="@string/carrito_recogida"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                            android:textColor="@color/ja_texto" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lista"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_4"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    style="@style/JuegAlmi.TituloSeccion"
+                    android:text="@string/carrito_metodo_pago" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipsPago"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleSelection="true" />
+
+                <!-- Resumen -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ja_espacio_4">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/carrito_resumen"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                            android:textColor="@color/ja_texto" />
+
+                        <LinearLayout
+                            style="@style/JuegAlmi.FilaIcono"
+                            android:layout_marginTop="@dimen/ja_espacio_3">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/carrito_recogida_corta"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                                android:textColor="@color/ja_texto_2" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/gratis"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+                                android:textColor="@color/ja_exito" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/JuegAlmi.FilaIcono"
+                            android:layout_marginTop="@dimen/ja_espacio_3">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/total"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                                android:textColor="@color/ja_texto" />
+
+                            <TextView
+                                android:id="@+id/tvTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.JuegAlmi.Precio"
+                                android:textColor="@color/ja_texto" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ja_espacio_1"
+                            android:text="@string/carrito_precio_api"
+                            android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                            android:textColor="@color/ja_texto_3" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            layout="@layout/estado_vacio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/pie"
+        style="@style/JuegAlmi.PieBoton">
+
+        <Button
+            android:id="@+id/btnContinuar"
+            style="@style/Widget.JuegAlmi.Boton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/ja_sobre_primario" />
+    </FrameLayout>
+</LinearLayout>

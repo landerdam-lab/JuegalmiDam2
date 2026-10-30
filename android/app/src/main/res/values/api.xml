@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- URL base de la API: el ÚNICO sitio de la app donde está (la usan Volley y Retrofit). Termina en "/".
+     - Emulador con la API en el PC (symfony server:start -d no-tls port 8000): http://10.0.2.2:8000/api/
+     - AWS mientras no haya HTTPS (A-32): http://symfony.3-208-228-110.sslip.io/api/
+     Si es HTTP, el dominio tiene que estar en res/xml/network_security_config.xml. -->
+<resources>
+    <string name="api_url_base" translatable="false">http://10.0.2.2:8000/api/</string>
+</resources>

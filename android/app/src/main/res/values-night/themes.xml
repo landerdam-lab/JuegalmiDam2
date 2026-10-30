@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano. -->
+<!-- Tema Material 3 de JuegAlmi (oscuro: values-night). En el Manifest: android:theme="@style/Theme.JuegAlmi" -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.JuegAlmi" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Colores Material 3 ← tokens -->
+        <item name="colorPrimary">@color/ja_primario</item>
+        <item name="colorOnPrimary">@color/ja_sobre_primario</item>
+        <item name="colorPrimaryContainer">@color/ja_primario</item>
+        <item name="colorOnPrimaryContainer">@color/ja_sobre_primario</item>
+        <item name="colorSecondary">@color/ja_marca</item>
+        <item name="colorOnSecondary">@color/ja_sobre_marca</item>
+        <item name="colorSecondaryContainer">@color/ja_marca_suave</item>
+        <item name="colorOnSecondaryContainer">@color/ja_marca</item>
+        <item name="colorTertiary">@color/ja_alquiler</item>
+        <item name="colorTertiaryContainer">@color/ja_alquiler_suave</item>
+        <item name="colorOnTertiaryContainer">@color/ja_alquiler</item>
+        <item name="colorError">@color/ja_error</item>
+        <item name="colorErrorContainer">@color/ja_error_suave</item>
+        <item name="colorOnErrorContainer">@color/ja_error</item>
+        <item name="android:colorBackground">@color/ja_fondo</item>
+        <item name="colorOnBackground">@color/ja_texto</item>
+        <item name="colorSurface">@color/ja_superficie</item>
+        <item name="colorOnSurface">@color/ja_texto</item>
+        <item name="colorSurfaceVariant">@color/ja_superficie_2</item>
+        <item name="colorOnSurfaceVariant">@color/ja_texto_2</item>
+        <item name="colorSurfaceContainerLowest">@color/ja_superficie</item>
+        <item name="colorSurfaceContainerLow">@color/ja_superficie</item>
+        <item name="colorSurfaceContainer">@color/ja_superficie_2</item>
+        <item name="colorSurfaceContainerHigh">@color/ja_superficie_2</item>
+        <item name="colorSurfaceContainerHighest">@color/ja_superficie_3</item>
+        <item name="colorOutline">@color/ja_borde_campo</item>
+        <item name="colorOutlineVariant">@color/ja_borde</item>
+
+        <!-- Edge-to-edge: barras transparentes; el contenido aplica los insets (WindowInsetsCompat) -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+
+        <!-- Fuentes: SIN android:fontFamily en el tema. Un fontFamily de tema pisa la fuente de cada
+             TextAppearance.JuegAlmi.* (Android lo trata como atributo de la vista), y los titulares y precios
+             salían en DM Sans. En su lugar, el texto por defecto y los estilos de Material 3 usan los nuestros. -->
+        <item name="android:textViewStyle">@style/Widget.JuegAlmi.Texto</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.JuegAlmi.Display</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.JuegAlmi.TitularL</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.JuegAlmi.TitularM</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.JuegAlmi.Titulo</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.JuegAlmi.Subtitulo</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.JuegAlmi.CuerpoL</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.JuegAlmi.Cuerpo</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.JuegAlmi.Etiqueta</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.JuegAlmi.EtiquetaS</item>
+
+        <!-- Formas y componentes -->
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.JuegAlmi.Pequena</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.JuegAlmi.Media</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.JuegAlmi.Muesca</item>
+        <item name="materialCardViewStyle">@style/Widget.JuegAlmi.Tarjeta</item>
+        <item name="materialButtonStyle">@style/Widget.JuegAlmi.Boton</item>
+        <item name="textInputStyle">@style/Widget.JuegAlmi.Campo</item>
+        <item name="chipStyle">@style/Widget.JuegAlmi.Chip</item>
+    </style>
+
+    <!-- Splash (API de SplashScreen, androidx.core:core-splashscreen) -->
+    <style name="Theme.JuegAlmi.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ja_fondo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.JuegAlmi</item>
+    </style>
+</resources>

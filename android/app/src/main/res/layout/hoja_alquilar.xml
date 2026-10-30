@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-15 Alquilar (hoja inferior) · diseño 15-alquilar: duración, fechas, copias y total -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/ja_espacio_5">
+
+    <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImagen"
+            style="@style/JuegAlmi.MiniaturaCuadrada" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ja_espacio_3"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPrecioDia"
+                style="@style/JuegAlmi.Pastilla"
+                android:backgroundTint="@color/ja_alquiler_suave"
+                android:textColor="@color/ja_alquiler" />
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_1"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvPlataforma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                android:textColor="@color/ja_texto_2" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        style="@style/JuegAlmi.TituloSeccion"
+        android:layout_marginTop="@dimen/ja_espacio_5"
+        android:text="@string/alquilar_duracion" />
+
+    <!-- 3, 7 o 14 días (ADR-035 permite de 1 a 14; el diseño propone estos tres) -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipsDias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionRequired="true"
+        app:singleSelection="true" />
+
+    <LinearLayout
+        style="@style/JuegAlmi.FilaIcono"
+        android:layout_marginTop="@dimen/ja_espacio_3">
+
+        <TextView
+            android:id="@+id/tvDesde"
+            style="@style/JuegAlmi.Pastilla"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+            android:textColor="@color/ja_texto" />
+
+        <ImageView
+            style="@style/JuegAlmi.IconoFila"
+            android:layout_marginHorizontal="@dimen/ja_espacio_2"
+            android:src="@drawable/ic_arrow_forward"
+            app:tint="@color/ja_texto_2" />
+
+        <TextView
+            android:id="@+id/tvHasta"
+            style="@style/JuegAlmi.Pastilla"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+            android:textColor="@color/ja_texto" />
+    </LinearLayout>
+
+    <!-- Copias disponibles: barra de vida de 5 -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ja_espacio_4"
+        app:cardBackgroundColor="@color/ja_alquiler_suave"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/ja_espacio_4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alquilar_disponibilidad"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Subtitulo"
+                android:textColor="@color/ja_alquiler" />
+
+            <com.juegalmi.app.ui.comun.BarraVida
+                android:id="@+id/barraCopias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2" />
+
+            <TextView
+                android:id="@+id/tvCopias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                android:textColor="@color/ja_alquiler" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        style="@style/JuegAlmi.FilaIcono"
+        android:layout_marginTop="@dimen/ja_espacio_4">
+
+        <TextView
+            android:id="@+id/tvTarifa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+            android:textColor="@color/ja_texto_2" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Precio"
+            android:textColor="@color/ja_texto" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAnadir"
+        style="@style/Widget.JuegAlmi.Boton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ja_espacio_5"
+        android:text="@string/alquilar_anadir" />
+</LinearLayout>

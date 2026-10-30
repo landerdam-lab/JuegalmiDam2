@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-21 Perfil · diseño 21-perfil: foto con la cámara, datos, preferencias y cerrar sesión -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/ja_espacio_4"
+            android:paddingBottom="@dimen/ja_espacio_6">
+
+            <!-- Avatar + botón de cámara -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/ja_espacio_4">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="@dimen/avatar_grande"
+                    android:layout_height="@dimen/avatar_grande"
+                    android:background="@color/ja_marca_suave"
+                    android:contentDescription="@string/perfil_foto"
+                    app:contentPadding="@dimen/ja_espacio_5"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person"
+                    app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Pastilla"
+                    app:tint="@color/ja_marca" />
+
+                <ImageButton
+                    android:id="@+id/btnCamara"
+                    android:layout_width="@dimen/ja_tamano_tactil_min"
+                    android:layout_height="@dimen/ja_tamano_tactil_min"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/fondo_micro"
+                    android:contentDescription="@string/perfil_cambiar_foto"
+                    android:src="@drawable/ic_photo_camera"
+                    app:tint="@color/ja_sobre_primario" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvRol"
+                style="@style/JuegAlmi.Pastilla"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/ja_espacio_1" />
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/perfil_datos" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/campo_nombre">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName|textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:hint="@string/campo_apellidos">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName|textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Solo lectura: el email y el DNI solo los cambia el admin (API) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:enabled="false"
+                android:hint="@string/campo_email"
+                app:endIconDrawable="@drawable/ic_lock"
+                app:endIconMode="custom"
+                app:helperText="@string/perfil_no_editable">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:hint="@string/campo_telefono"
+                app:startIconDrawable="@drawable/ic_call">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:maxLength="9" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:enabled="false"
+                android:hint="@string/campo_dni"
+                app:endIconDrawable="@drawable/ic_lock"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/JuegAlmi.TituloSeccion"
+                android:text="@string/perfil_preferencias" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_tema"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Subtitulo"
+                android:textColor="@color/ja_texto" />
+
+            <!-- Control segmentado (DESIGN.md §9) -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/grupoTema"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/temaSistema"
+                    style="@style/Widget.JuegAlmi.Boton.Secundario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tema_sistema" />
+
+                <Button
+                    android:id="@+id/temaClaro"
+                    style="@style/Widget.JuegAlmi.Boton.Secundario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tema_claro" />
+
+                <Button
+                    android:id="@+id/temaOscuro"
+                    style="@style/Widget.JuegAlmi.Boton.Secundario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tema_oscuro" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/swAgitar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4"
+                android:text="@string/perfil_agitar"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                android:textColor="@color/ja_texto" />
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                style="@style/Widget.JuegAlmi.Boton.Texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/ja_espacio_5"
+                android:text="@string/menu_cerrar_sesion"
+                android:textColor="@color/ja_error"
+                app:icon="@drawable/ic_logout"
+                app:iconTint="@color/ja_error" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout style="@style/JuegAlmi.PieBoton">
+
+        <Button
+            android:id="@+id/btnGuardar"
+            style="@style/Widget.JuegAlmi.Boton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/perfil_guardar" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progreso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="@dimen/ja_elevacion_3"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/ja_sobre_primario"
+            app:indicatorSize="@dimen/ja_tamano_icono" />
+    </FrameLayout>
+</LinearLayout>

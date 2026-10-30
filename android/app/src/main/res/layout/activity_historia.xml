@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-28 Historia · diseño 28-historia: cabecera con foto que se pliega (CollapsingToolbarLayout)
+     y tarjeta superpuesta con muesca de 24 -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/historia_cabecera"
+        android:background="@color/ja_fondo">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/plegable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="@color/ja_fondo"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <ImageView
+                android:id="@+id/ivCabecera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/ja_superficie_2"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/JuegAlmi.BarraSecundaria"
+                app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/ja_espacio_4"
+            app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.MuescaDestacada">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/ja_espacio_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/historia_etiqueta"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                    android:textColor="@color/ja_marca" />
+
+                <TextView
+                    android:id="@+id/tvNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_1"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.TitularL"
+                    android:textColor="@color/ja_texto" />
+
+                <!-- Cita con barra amarilla (SCREEN-MAP, PT-28) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_4"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="@dimen/ja_borde_foco"
+                        android:layout_height="match_parent"
+                        android:background="@color/ja_primario" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ja_espacio_3"
+                        android:text="@string/historia_lema"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                        android:textColor="@color/ja_texto" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvHistoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_4"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.CuerpoL"
+                    android:textColor="@color/ja_texto" />
+
+                <TextView
+                    android:id="@+id/tvDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_4"
+                    android:drawablePadding="@dimen/ja_espacio_2"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.EtiquetaS"
+                    android:textColor="@color/ja_texto_2"
+                    app:drawableStartCompat="@drawable/ic_location_on"
+                    app:drawableTint="@color/ja_texto_2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_5"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnGaleria"
+                        style="@style/Widget.JuegAlmi.Boton.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/historia_ver_galeria" />
+
+                    <Button
+                        android:id="@+id/btnLlegar"
+                        style="@style/Widget.JuegAlmi.Boton.Secundario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ja_espacio_3"
+                        android:layout_weight="1"
+                        android:text="@string/ubicacion_como_llegar" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

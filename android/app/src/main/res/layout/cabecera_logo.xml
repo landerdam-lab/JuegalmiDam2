@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo grande + logotipo «Jueg» (tinta) «Almi» (marca) + lema. Lo comparten Login y Registro. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/logo_grande"
+        android:layout_height="@dimen/logo_grande"
+        android:importantForAccessibility="no"
+        android:src="@drawable/logo_almi_companion" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:text="@string/logo_almi"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Display"
+            android:textColor="@color/ja_marca" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:text="@string/logo_companion"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Display"
+            android:textColor="@color/ja_texto" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvLema"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ja_espacio_1"
+        android:gravity="center"
+        android:text="@string/login_lema"
+        android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+        android:textColor="@color/ja_texto_2" />
+</LinearLayout>

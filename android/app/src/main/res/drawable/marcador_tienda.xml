@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Marcador de la tienda en el mapa: el cartucho amarillo con muesca (DESIGN.md, PT-26) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="48dp"
+    android:viewportWidth="40"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="@color/ja_tinta_fija"
+        android:pathData="M18,40 L22,40 L20,48 Z" />
+    <path
+        android:fillColor="@color/ja_primario_fijo"
+        android:pathData="M4,2 L28,2 L38,12 L38,38 Q38,40 36,40 L4,40 Q2,40 2,38 L2,4 Q2,2 4,2 Z" />
+    <path
+        android:fillColor="@color/ja_tinta_fija"
+        android:pathData="M8,8 L26,8 L32,14 L32,26 L8,26 Z" />
+    <path
+        android:fillColor="@color/ja_tinta_fija"
+        android:pathData="M9,31h4v5h-4z M16,31h4v5h-4z M23,31h4v5h-4z M30,31h2v5h-2z" />
+</vector>

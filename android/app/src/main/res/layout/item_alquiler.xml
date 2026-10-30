@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta de Mis alquileres (PT-16): portada, estado, cuenta atrás en mono y barra de vida de 5 que se vacía -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tarjeta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ja_espacio_3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/ja_espacio_3">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImagen"
+            android:layout_width="@dimen/miniatura_ancho"
+            android:layout_height="@dimen/miniatura_alto"
+            android:background="@color/ja_superficie_2"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Muesca" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ja_espacio_3"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+                <TextView
+                    android:id="@+id/tvPlataforma"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                    android:textColor="@color/ja_texto_2" />
+
+                <TextView
+                    android:id="@+id/tvEstado"
+                    style="@style/JuegAlmi.Pastilla" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                android:textColor="@color/ja_texto" />
+
+            <TextView
+                android:id="@+id/tvCuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo" />
+
+            <com.juegalmi.app.ui.comun.BarraVida
+                android:id="@+id/barra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_2" />
+
+            <LinearLayout
+                style="@style/JuegAlmi.FilaIcono"
+                android:layout_marginTop="@dimen/ja_espacio_2">
+
+                <TextView
+                    android:id="@+id/tvFechas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+                    android:textColor="@color/ja_texto_2" />
+
+                <TextView
+                    android:id="@+id/tvImporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+                    android:textColor="@color/ja_texto" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

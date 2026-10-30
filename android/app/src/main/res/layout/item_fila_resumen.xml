@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fila de un resumen o de un ticket: icono + título + detalle a la izquierda, importe en mono a la derecha -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/ja_espacio_2">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivImagen"
+        style="@style/JuegAlmi.MiniaturaCuadrada"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/textos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ja_espacio_3"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Subtitulo"
+            android:textColor="@color/ja_texto" />
+
+        <TextView
+            android:id="@+id/tvDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+            android:textColor="@color/ja_texto_2" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvImporte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ja_espacio_2"
+        android:textAppearance="@style/TextAppearance.JuegAlmi.PrecioS"
+        android:textColor="@color/ja_texto" />
+</LinearLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT-25 Servicios · diseño 25-servicios: 3 pestañas (Videojuegos · Consolas · Telefonía, ADR-030) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/JuegAlmi.BarraSecundaria"
+        app:title="@string/tienda_servicios" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/pestanas"
+        style="@style/Widget.JuegAlmi.Pestanas"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ja_tamano_barra_pestanas"
+        app:tabMode="fixed" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/paginas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:id="@+id/pie"
+        style="@style/JuegAlmi.PieBoton">
+
+        <Button
+            android:id="@+id/btnSolicitar"
+            style="@style/Widget.JuegAlmi.Boton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/servicios_solicitar"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/ja_sobre_primario" />
+    </FrameLayout>
+</LinearLayout>

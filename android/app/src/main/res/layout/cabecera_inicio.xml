@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cabecera de Inicio (PT-04, pestaña Videojuegos): carrusel «Para alquilar» y tarjeta de reparaciones.
+     Va dentro de la lista (ConcatAdapter) para desplazarse con el catálogo. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/ja_espacio_4">
+
+    <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/inicio_para_alquilar"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+            android:textColor="@color/ja_texto" />
+
+        <Button
+            android:id="@+id/btnVerAlquilables"
+            style="@style/Widget.JuegAlmi.Boton.Texto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inicio_ver_todo"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/ja_marca" />
+    </LinearLayout>
+
+    <!-- Carrusel horizontal (RecyclerView con LinearLayoutManager HORIZONTAL) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/carrusel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ja_espacio_2"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false" />
+
+    <!-- «Reparamos tu dispositivo» → PT-17 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tarjetaReparar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ja_espacio_5"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/ja_espacio_4">
+
+            <LinearLayout style="@style/JuegAlmi.FilaIcono">
+
+                <ImageView
+                    android:layout_width="@dimen/ja_tamano_tactil_min"
+                    android:layout_height="@dimen/ja_tamano_tactil_min"
+                    android:background="@drawable/fondo_pastilla"
+                    android:backgroundTint="@color/ja_marca_suave"
+                    android:importantForAccessibility="no"
+                    android:padding="@dimen/ja_espacio_3"
+                    android:src="@drawable/ic_build"
+                    app:tint="@color/ja_marca" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ja_espacio_3"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/inicio_reparamos"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+                        android:textColor="@color/ja_texto" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/inicio_reparamos_texto"
+                        android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                        android:textColor="@color/ja_texto_2" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnReparar"
+                style="@style/Widget.JuegAlmi.Boton.Secundario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_3"
+                android:text="@string/servicios_solicitar" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ja_espacio_6"
+        android:text="@string/inicio_todo_catalogo"
+        android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+        android:textColor="@color/ja_texto" />
+</LinearLayout>

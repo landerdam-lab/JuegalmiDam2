@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Visor de una foto de la galería a pantalla completa (PT-27). Fondo tinta fija: es un visor de fotos -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_tinta_fija">
+
+    <ImageView
+        android:id="@+id/ivFoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="fitCenter" />
+
+    <ImageButton
+        android:id="@+id/btnCerrar"
+        style="@style/JuegAlmi.BotonIcono"
+        android:layout_margin="@dimen/ja_espacio_6"
+        android:contentDescription="@string/cerrar"
+        android:src="@drawable/ic_close"
+        app:tint="@color/ja_primario_fijo" />
+
+    <TextView
+        android:id="@+id/tvDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/ja_espacio_6"
+        android:textAppearance="@style/TextAppearance.JuegAlmi.CuerpoL"
+        android:textColor="@color/ja_primario_fijo" />
+</FrameLayout>

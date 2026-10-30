@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Esqueleto de la app con sesión: Navigation Drawer + barra superior + contenedor de pantallas (RT-08) -->
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ja_fondo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Barra superior (64): ☰ · logo · carrito (DESIGN.md §8) -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ja_tamano_barra_superior"
+            app:menu="@menu/barra_principal"
+            app:navigationContentDescription="@string/menu_abrir"
+            app:navigationIcon="@drawable/ic_menu"
+            app:navigationIconTint="@color/ja_texto">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/logo_barra"
+                    android:layout_height="@dimen/logo_barra"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/logo_almi_companion" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ja_espacio_1"
+                    android:importantForAccessibility="no"
+                    android:text="@string/logo_almi"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+                    android:textColor="@color/ja_marca" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:text="@string/logo_companion"
+                    android:textAppearance="@style/TextAppearance.JuegAlmi.TitularM"
+                    android:textColor="@color/ja_texto" />
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <FrameLayout
+            android:id="@+id/contenedor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navegacion"
+        android:layout_width="@dimen/drawer_ancho"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/ja_superficie"
+        app:drawerLayoutCornerSize="@dimen/ja_radio_xl"
+        app:headerLayout="@layout/drawer_cabecera"
+        app:itemIconTint="@color/ja_texto_2"
+        app:itemShapeFillColor="@color/ja_drawer_fondo"
+        app:itemTextAppearanceActiveBoldEnabled="true"
+        app:itemTextColor="@color/ja_texto"
+        app:menu="@menu/drawer_cliente" />
+</androidx.drawerlayout.widget.DrawerLayout>

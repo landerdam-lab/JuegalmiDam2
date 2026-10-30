@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Baldosa cuadrada de la galería con muesca pequeña. Placeholder superficie-2 mientras carga (Glide) -->
+<com.juegalmi.app.ui.tienda.FotoCuadrada xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/ja_espacio_1"
+    android:background="@color/ja_superficie_2"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:scaleType="centerCrop"
+    app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.MuescaFoto" />
