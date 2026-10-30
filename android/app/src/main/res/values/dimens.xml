@@ -34,4 +34,6 @@
     <!-- Carrusel de Inicio: tarjeta vertical con imagen 4:3 -->
     <dimen name="carrusel_ancho">160dp</dimen>
     <dimen name="carrusel_imagen">120dp</dimen>
+    <!-- Mapa de la entrega en Confirmar pedido y en el detalle (ADR-038) -->
+    <dimen name="mapa_pedido">200dp</dimen>
 </resources>

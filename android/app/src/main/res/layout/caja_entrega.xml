@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Entrega del pedido (ADR-038): recoger en la tienda o envío a domicilio, con su mapa debajo.
+     Se usa en Confirmar pedido (PT-12, se elige) y en el detalle del pedido (PT-14, solo se ve). -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/ja_espacio_4">
+
+        <TextView
+            android:id="@+id/tvEntregaTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/entrega_titulo"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Titulo"
+            android:textColor="@color/ja_texto" />
+
+        <!-- Control segmentado (DESIGN.md §9). Oculto en el detalle -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/grupoEntrega"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/opTienda"
+                style="@style/Widget.JuegAlmi.Boton.Secundario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/entrega_op_tienda"
+                app:icon="@drawable/ic_storefront"
+                app:iconTint="@color/ja_marca" />
+
+            <Button
+                android:id="@+id/opDomicilio"
+                style="@style/Widget.JuegAlmi.Boton.Secundario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/entrega_op_domicilio"
+                app:icon="@drawable/ic_local_shipping"
+                app:iconTint="@color/ja_marca" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <TextView
+            android:id="@+id/tvEntregaModo"
+            style="@style/JuegAlmi.Pastilla"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvEntregaTexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            android:drawablePadding="@dimen/ja_espacio_2"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+            android:textColor="@color/ja_texto"
+            app:drawableStartCompat="@drawable/ic_location_on"
+            app:drawableTint="@color/ja_marca" />
+
+        <!-- A domicilio: el cliente escribe la dirección -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            android:hint="@string/entrega_direccion"
+            android:visibility="gone"
+            app:helperText="@string/entrega_direccion_ayuda"
+            app:startIconDrawable="@drawable/ic_home">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="postalAddress"
+                android:inputType="textPostalAddress|textCapWords"
+                android:maxLength="255" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Mapa: la tienda (recogida) o la casa del cliente (envío). Muesca como el resto de contenedores -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mapa_pedido"
+            android:layout_marginTop="@dimen/ja_espacio_3"
+            app:cardPreventCornerOverlap="false"
+            app:strokeColor="@color/ja_borde">
+
+            <org.osmdroid.views.MapView
+                android:id="@+id/mapaEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/entrega_mapa" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvPunto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ja_espacio_2"
+            android:textAppearance="@style/TextAppearance.JuegAlmi.Codigo"
+            android:textColor="@color/ja_texto_2" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

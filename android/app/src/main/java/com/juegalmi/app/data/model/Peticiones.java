@@ -13,14 +13,48 @@ public final class Peticiones {
     private Peticiones() {
     }
 
-    /** POST /api/pedidos: {lineas: [...], metodoPago} */
+    /**
+     * POST /api/pedidos: {lineas: [...], metodoPago, entrega} y, si es a domicilio,
+     * {direccionEntrega, latitudEntrega, longitudEntrega} (ADR-038). Los null no se envían.
+     */
     public static class NuevoPedido {
         public final List<Linea> lineas;
         public final String metodoPago;
+        public final String entrega;
+        @Nullable public final String direccionEntrega;
+        @Nullable public final Double latitudEntrega;
+        @Nullable public final Double longitudEntrega;
 
-        public NuevoPedido(List<Linea> lineas, String metodoPago) {
+        public NuevoPedido(List<Linea> lineas, String metodoPago, Entrega entrega) {
             this.lineas = lineas;
             this.metodoPago = metodoPago;
+            this.entrega = entrega.tipo;
+            this.direccionEntrega = entrega.direccion;
+            this.latitudEntrega = entrega.latitud;
+            this.longitudEntrega = entrega.longitud;
+        }
+    }
+
+    /** Cómo se entrega el pedido: en la tienda o en una dirección con su punto del mapa. */
+    public static class Entrega {
+        public final String tipo;
+        @Nullable public final String direccion;
+        @Nullable public final Double latitud;
+        @Nullable public final Double longitud;
+
+        private Entrega(String tipo, @Nullable String direccion, @Nullable Double latitud, @Nullable Double longitud) {
+            this.tipo = tipo;
+            this.direccion = direccion;
+            this.latitud = latitud;
+            this.longitud = longitud;
+        }
+
+        public static Entrega enTienda() {
+            return new Entrega("tienda", null, null, null);
+        }
+
+        public static Entrega aDomicilio(String direccion, double latitud, double longitud) {
+            return new Entrega("domicilio", direccion, latitud, longitud);
         }
     }
 

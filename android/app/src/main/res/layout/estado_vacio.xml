@@ -16,7 +16,7 @@
         android:layout_width="@dimen/estado_baldosa"
         android:layout_height="@dimen/estado_baldosa"
         android:background="@color/ja_primario"
-        android:padding="@dimen/estado_icono_relleno"
+        app:contentPadding="@dimen/estado_icono_relleno"
         android:src="@drawable/ic_inventory_2"
         app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Muesca"
         app:tint="@color/ja_sobre_primario" />

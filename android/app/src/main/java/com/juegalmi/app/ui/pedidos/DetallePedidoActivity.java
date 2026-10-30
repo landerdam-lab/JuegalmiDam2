@@ -40,6 +40,7 @@ public class DetallePedidoActivity extends AppCompatActivity {
     private PedidoRepository repositorio;
     private EstadoVista estado;
     private int id;
+    private EntregaVista entrega;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class DetallePedidoActivity extends AppCompatActivity {
         id = getIntent().getIntExtra(EXTRA_ID, 0);
         repositorio = new PedidoRepository(this);
         estado = new EstadoVista(findViewById(android.R.id.content));
+        entrega = new EntregaVista(findViewById(R.id.cajaEntrega), this);
         cargar();
     }
 
@@ -81,11 +83,16 @@ public class DetallePedidoActivity extends AppCompatActivity {
 
         int color = Pastilla.colorPedido(p.estado);
         Pastilla.pintar(findViewById(R.id.tvEstado), color, Pastilla.texto(this, p.estado));
-        ((TextView) findViewById(R.id.tvEstadoTitulo)).setText(textoEstado(p.estado));
+        ((TextView) findViewById(R.id.tvEstadoTitulo)).setText(
+                Pedido.PREPARADO.equals(p.estado) && p.aDomicilio() ? R.string.pedido_texto_preparado_domicilio
+                        : Pedido.ENTREGADO.equals(p.estado) && p.aDomicilio() ? R.string.pedido_texto_entregado_domicilio
+                        : textoEstado(p.estado));
         ((BarraVida) findViewById(R.id.barra)).mostrar(3, PedidoAdapter.paso(p.estado), color);
         ((MaterialCardView) findViewById(R.id.cajaEstado)).setCardBackgroundColor(
                 ColorStateList.valueOf(ContextCompat.getColor(this, Pedido.PREPARADO.equals(p.estado)
                         ? R.color.ja_info_suave : R.color.ja_superficie)));
+
+        entrega.ver(p);
 
         ViewGroup lineas = findViewById(R.id.lineas);
         lineas.removeAllViews();
@@ -105,7 +112,8 @@ public class DetallePedidoActivity extends AppCompatActivity {
         resumen.removeAllViews();
         FilaResumen.anadir(resumen, getString(R.string.ticket_fecha), "", Fechas.fechaHora(p.fecha), null);
         FilaResumen.anadir(resumen, getString(R.string.ticket_metodo), "", MetodosPago.texto(this, p.metodoPago), null);
-        FilaResumen.anadir(resumen, getString(R.string.carrito_recogida_corta), "", getString(R.string.gratis), null);
+        FilaResumen.anadir(resumen, getString(p.aDomicilio() ? R.string.entrega_domicilio : R.string.entrega_tienda), "",
+                getString(R.string.gratis), null);
         FilaResumen.anadir(resumen, getString(R.string.total), "", Formato.precio(p.total), null);
 
         boolean cancelable = Pedido.PENDIENTE.equals(p.estado);
@@ -150,6 +158,18 @@ public class DetallePedidoActivity extends AppCompatActivity {
                             }
                         }))
                 .show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        entrega.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        entrega.onPause();
+        super.onPause();
     }
 
     @Override

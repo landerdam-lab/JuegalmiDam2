@@ -39,10 +39,12 @@ public class PedidoRepository {
         VolleyClient.get(context).get("pedidos/" + id, Pedido.class, etiqueta, callback);
     }
 
-    /** POST /api/pedidos. La API comprueba stock y copias y pone los precios (409 si no hay). */
-    public void crear(List<Peticiones.Linea> lineas, String metodoPago, Callback<Pedido> callback) {
+    /** POST /api/pedidos. La API comprueba stock y copias, pone los precios (409 si no hay) y valida la entrega (422). */
+    public void crear(List<Peticiones.Linea> lineas, String metodoPago, Peticiones.Entrega entrega,
+                      Callback<Pedido> callback) {
         RetrofitClient cliente = RetrofitClient.get(context);
-        cliente.enviar(cliente.servicio().crearPedido(new Peticiones.NuevoPedido(lineas, metodoPago)), callback);
+        cliente.enviar(cliente.servicio().crearPedido(new Peticiones.NuevoPedido(lineas, metodoPago, entrega)),
+                callback);
     }
 
     public void cancelar(int id, Callback<Pedido> callback) {

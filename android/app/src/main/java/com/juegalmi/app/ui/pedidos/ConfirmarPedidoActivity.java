@@ -26,6 +26,7 @@ import com.juegalmi.app.data.Carrito;
 import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.Callback;
 import com.juegalmi.app.data.model.Pedido;
+import com.juegalmi.app.data.model.Peticiones;
 import com.juegalmi.app.data.repository.PedidoRepository;
 import com.juegalmi.app.ui.comun.BarraVida;
 import com.juegalmi.app.ui.comun.FilaResumen;
@@ -36,7 +37,8 @@ import com.juegalmi.app.util.UbicacionHelper;
 import java.util.Locale;
 
 /**
- * PT-12 Confirmar pedido: resumen del carrito, ubicación y POST /api/pedidos (Retrofit).
+ * PT-12 Confirmar pedido: resumen del carrito, entrega (tienda o domicilio con mapa, ADR-038), ubicación
+ * y POST /api/pedidos (Retrofit).
  * Sin ubicación no se puede confirmar (P-28 → la API respondería 422): se pide el permiso y se explica por qué.
  */
 public class ConfirmarPedidoActivity extends AppCompatActivity {
@@ -50,6 +52,7 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
     private Button btnConfirmar;
     private MaterialCheckBox cbAcepto;
     private View progreso;
+    private EntregaVista entrega;
     private final Handler principal = new Handler(Looper.getMainLooper());
 
     private final ActivityResultLauncher<String> permiso = registerForActivityResult(
@@ -90,6 +93,9 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
         String metodo = getIntent().getStringExtra(EXTRA_METODO);
         ((TextView) findViewById(R.id.tvMetodo)).setText(getString(R.string.confirmar_metodo, textoMetodo(metodo)));
 
+        entrega = new EntregaVista(findViewById(R.id.cajaEntrega), this);
+        entrega.elegir();
+
         tvUbicacion = findViewById(R.id.tvUbicacion);
         btnPermiso = findViewById(R.id.btnPermiso);
         btnPermiso.setOnClickListener(v -> permiso.launch(Manifest.permission.ACCESS_COARSE_LOCATION));
@@ -129,8 +135,13 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
             Snackbar.make(btnConfirmar, R.string.confirmar_falta_ubicacion, Snackbar.LENGTH_LONG).show();
             return;
         }
+        Peticiones.Entrega datosEntrega = entrega.entrega();
+        if (datosEntrega == null) {
+            Snackbar.make(btnConfirmar, R.string.entrega_falta_datos, Snackbar.LENGTH_LONG).show();
+            return;
+        }
         cargando(true);
-        new PedidoRepository(this).crear(carrito.paraLaApi(), metodo, new Callback<Pedido>() {
+        new PedidoRepository(this).crear(carrito.paraLaApi(), metodo, datosEntrega, new Callback<Pedido>() {
             @Override
             public void onExito(Pedido pedido) {
                 carrito.vaciar();
@@ -145,6 +156,7 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
                     return;
                 }
                 cargando(false);
+                entrega.errores(error);
                 // 409 STOCK_INSUFICIENTE / SIN_COPIAS: el mensaje de la API dice qué producto falla
                 new MaterialAlertDialogBuilder(ConfirmarPedidoActivity.this, R.style.ThemeOverlay_JuegAlmi_Dialogo)
                         .setTitle(error.status == 409 ? R.string.confirmar_error_stock : R.string.confirmar_error)
@@ -167,8 +179,21 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        entrega.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        entrega.onPause();
+        super.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         principal.removeCallbacksAndMessages(null);
+        com.juegalmi.app.data.api.VolleyClient.get(this).cancelar(this);
         super.onDestroy();
     }
 }

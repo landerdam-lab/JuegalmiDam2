@@ -15,7 +15,7 @@
         android:layout_height="@dimen/ja_tamano_avatar"
         android:background="@color/ja_marca_suave"
         android:contentDescription="@string/menu_perfil"
-        android:padding="@dimen/ja_espacio_2"
+        app:contentPadding="@dimen/ja_espacio_2"
         android:src="@drawable/ic_person"
         app:shapeAppearance="@style/ShapeAppearance.JuegAlmi.Pastilla"
         app:tint="@color/ja_marca" />

@@ -84,6 +84,14 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Entrega: mapa de la tienda (recogida) o de la casa del cliente (envío), ADR-038 -->
+                <include
+                    android:id="@+id/cajaEntrega"
+                    layout="@layout/caja_entrega"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ja_espacio_4" />
+
                 <TextView
                     style="@style/JuegAlmi.TituloSeccion"
                     android:text="@string/detalle_pedido_productos" />

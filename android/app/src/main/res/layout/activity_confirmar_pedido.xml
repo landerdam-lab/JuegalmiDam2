@@ -103,6 +103,14 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Entrega: recoger en la tienda o envío a domicilio, con su mapa (ADR-038) -->
+            <include
+                android:id="@+id/cajaEntrega"
+                layout="@layout/caja_entrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ja_espacio_4" />
+
             <!-- Aviso de ubicación (P-28: sin ubicación no se puede confirmar) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cajaUbicacion"

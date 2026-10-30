@@ -54,8 +54,8 @@
 
     <!-- PT-11 Carrito -->
     <string name="carrito_titulo">Tu carrito</string>
-    <string name="carrito_recogida">Recogida en tienda: te avisamos cuando tu pedido esté preparado.</string>
-    <string name="carrito_recogida_corta">Recogida en tienda</string>
+    <string name="carrito_recogida">En el siguiente paso eliges si lo recoges en la tienda o te lo enviamos a casa. Las dos opciones son gratis.</string>
+    <string name="carrito_recogida_corta">Entrega (tienda o domicilio)</string>
     <string name="carrito_metodo_pago">Método de pago</string>
     <string name="carrito_resumen">Resumen del pedido</string>
     <string name="carrito_precio_api">El precio final lo confirma la tienda al hacer el pedido.</string>
@@ -83,7 +83,7 @@
     <string name="confirmar_ubicacion_buscando">Buscando tu ubicación…</string>
     <string name="confirmar_ubicacion_sin_permiso">Sin permiso de ubicación: no se puede confirmar el pedido</string>
     <string name="confirmar_dar_permiso">Dar permiso de ubicación</string>
-    <string name="confirmar_acepto">He revisado mi pedido y acepto recogerlo en la tienda</string>
+    <string name="confirmar_acepto">He revisado mi pedido y los datos de entrega</string>
     <string name="confirmar_cancelable">Puedes cancelarlo mientras esté pendiente</string>
     <string name="confirmar_boton">Confirmar y pagar (%s)</string>
     <string name="confirmar_falta_aceptar">Marca la casilla para confirmar el pedido</string>
@@ -92,6 +92,28 @@
     <string name="confirmar_error_stock">Falta stock o copias</string>
     <string name="resumen_cantidad">Cantidad: %d</string>
     <string name="resumen_alquiler">Alquiler · %s</string>
+
+    <!-- Entrega del pedido (ADR-038): recoger en la tienda o envío a domicilio -->
+    <string name="entrega_titulo">¿Cómo lo quieres?</string>
+    <string name="entrega_tienda">Recoger en tienda</string>
+    <string name="entrega_op_tienda">En tienda</string>
+    <string name="entrega_op_domicilio">A domicilio</string>
+    <string name="entrega_domicilio">Envío a domicilio</string>
+    <string name="entrega_tienda_texto">Recógelo en %1$s: %2$s</string>
+    <string name="entrega_tienda_gratis">Recogida gratis en la tienda</string>
+    <string name="entrega_domicilio_gratis">Envío gratis a esta dirección</string>
+    <string name="entrega_direccion">Dirección de entrega</string>
+    <string name="entrega_direccion_ayuda">Calle, número, piso, código postal y ciudad</string>
+    <string name="entrega_mapa">Mapa del punto de entrega</string>
+    <string name="entrega_tu_casa">Entrega aquí</string>
+    <string name="entrega_punto">Toca el mapa para mover el punto · %s</string>
+    <string name="entrega_falta_direccion">Escribe la dirección completa (calle, número, código postal y ciudad)</string>
+    <string name="entrega_falta_punto">Toca el mapa para marcar dónde lo entregamos</string>
+    <string name="entrega_falta_datos">Completa los datos de la entrega</string>
+    <string name="pedido_texto_preparado_domicilio">Tu pedido está preparado y sale hacia tu casa.</string>
+    <string name="pedido_texto_entregado_domicilio">Pedido entregado en tu casa. ¡Que lo disfrutes!</string>
+    <string name="ticket_entrega">Entrega</string>
+    <string name="realizado_texto_domicilio">Te avisaremos cuando salga hacia tu casa.</string>
 
     <!-- PT-12b Pedido realizado -->
     <string name="realizado_titulo">¡Pedido realizado!</string>

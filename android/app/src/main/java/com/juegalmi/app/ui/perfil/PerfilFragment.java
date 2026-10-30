@@ -44,7 +44,7 @@ public class PerfilFragment extends Fragment {
     private TextInputLayout tilNombre;
     private TextInputLayout tilApellidos;
     private TextInputLayout tilTelefono;
-    private ImageView avatar;
+    private com.google.android.material.imageview.ShapeableImageView avatar;
     private Button btnGuardar;
     private View progreso;
     private Uri fotoPendiente;
@@ -113,7 +113,7 @@ public class PerfilFragment extends Fragment {
         texto(tilTelefono, u.telefono);
         texto(v.findViewById(R.id.tilDni), u.dni);
         if (u.foto != null) {
-            avatar.setPadding(0, 0, 0, 0);
+            avatar.setContentPadding(0, 0, 0, 0);
             avatar.setImageTintList(null);
             Glide.with(this).load(u.foto).placeholder(R.drawable.ic_person).centerCrop().into(avatar);
         }
