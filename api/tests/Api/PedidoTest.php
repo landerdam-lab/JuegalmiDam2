@@ -36,6 +36,56 @@ final class PedidoTest extends ApiTestCase
         self::assertContains('/api/pedidos', $rutas);
     }
 
+    public function testPorDefectoSeRecogeEnLaTienda(): void
+    {
+        $redmi = $this->productoPorNombre('Xiaomi Redmi Note 15 Pro');
+        [$estado, $pedido] = $this->peticion('POST', '/api/pedidos', ['metodoPago' => 'tarjeta', 'lineas' => [
+            ['productoId' => $redmi['id'], 'tipo' => 'compra', 'cantidad' => 1],
+        ]], 'cliente1');
+
+        self::assertSame(201, $estado);
+        self::assertSame('tienda', $pedido['entrega']);
+        self::assertNull($pedido['direccionEntrega']);
+        self::assertNull($pedido['latitudEntrega']);
+    }
+
+    public function testEnvioADomicilioGuardaLaDireccionYElPunto(): void
+    {
+        $redmi = $this->productoPorNombre('Xiaomi Redmi Note 15 Pro');
+        [$estado, $pedido] = $this->peticion('POST', '/api/pedidos', [
+            'metodoPago' => 'tarjeta',
+            'entrega' => 'domicilio',
+            'direccionEntrega' => 'Calle Autonomía 10, 3.º B, 48012 Bilbao',
+            'latitudEntrega' => 43.2581234,
+            'longitudEntrega' => -2.9381234,
+            'lineas' => [['productoId' => $redmi['id'], 'tipo' => 'compra', 'cantidad' => 1]],
+        ], 'cliente1');
+
+        self::assertSame(201, $estado);
+        self::assertSame('domicilio', $pedido['entrega']);
+        self::assertSame('Calle Autonomía 10, 3.º B, 48012 Bilbao', $pedido['direccionEntrega']);
+        self::assertSame(43.2581234, $pedido['latitudEntrega']);
+        self::assertSame(-2.9381234, $pedido['longitudEntrega']);
+    }
+
+    public function testADomicilioSinDireccionNiPuntoNoSeGuardaNada(): void
+    {
+        $redmi = $this->productoPorNombre('Xiaomi Redmi Note 15 Pro');
+        [$estado, $json] = $this->peticion('POST', '/api/pedidos', ['metodoPago' => 'tarjeta', 'entrega' => 'domicilio',
+            'lineas' => [['productoId' => $redmi['id'], 'tipo' => 'compra', 'cantidad' => 1]]], 'cliente1');
+
+        self::assertSame(422, $estado);
+        self::assertArrayHasKey('direccionEntrega', $json['error']['campos']);
+        self::assertArrayHasKey('ubicacionEntrega', $json['error']['campos']);
+        // No se ha tocado el stock
+        self::assertSame($redmi['stock'], $this->productoPorNombre('Xiaomi Redmi Note 15 Pro')['stock']);
+
+        [$estado, $json] = $this->peticion('POST', '/api/pedidos', ['metodoPago' => 'tarjeta', 'entrega' => 'dron',
+            'lineas' => [['productoId' => $redmi['id'], 'tipo' => 'compra', 'cantidad' => 1]]], 'cliente1');
+        self::assertSame(422, $estado);
+        self::assertArrayHasKey('entrega', $json['error']['campos']);
+    }
+
     public function testSiFaltaStockNoSeGuardaNada(): void
     {
         $ipad = $this->productoPorNombre('iPad Air 11"');

@@ -57,7 +57,7 @@ En *compra* y *alquila* el mínimo del lado del producto es 0 porque un pedido p
 | VIDEOJUEGO | (**`id → PRODUCTO`**, genero, pegi, precio_alquiler, copias_alquiler, `plataforma_id → PLATAFORMA`) | 4, 2 |
 | MOVIL | (**`id → PRODUCTO`**, formato, pantalla_pulgadas, ram_gb, almacenamiento_gb) | 4 |
 | CONSOLA | (**`id → PRODUCTO`**, modelo, almacenamiento_gb) | 4 |
-| PEDIDO | (**id**, fecha, estado, metodo_pago, `cliente_id → CLIENTE`) | 1, 2 |
+| PEDIDO | (**id**, fecha, estado, metodo_pago, entrega, direccion_entrega (nulo), latitud_entrega (nulo), longitud_entrega (nulo), `cliente_id → CLIENTE`) | 1, 2 |
 | COMPRA | (**id**, `pedido_id → PEDIDO`, `producto_id → PRODUCTO`, cantidad, precio_unitario) + UQ(pedido_id, producto_id) | 3 |
 | ALQUILER | (**id**, `pedido_id → PEDIDO`, `videojuego_id → VIDEOJUEGO`, precio_dia, fecha_fin, fecha_devolucion (nulo)) + UQ(pedido_id, videojuego_id) | 3 |
 | REPARACION | (**id**, dispositivo, problema, estado, fecha_entrada, fecha_salida (nulo), presupuesto (nulo), foto (nulo), `cliente_id → CLIENTE`, `tecnico_id → TRABAJADOR`) | 1, 2 |

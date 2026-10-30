@@ -16,11 +16,11 @@ Paso a tablas: `paso-a-tablas.md`. Ningún dato se guarda dos veces. **v4:** `us
 | `reparacion` N:1 `trabajador` (obligatoria, solo técnicos); `trabajador` N:1 `departamento` (nulo en el admin) | Al crear la reparación la API asigna un técnico del departamento elegido. El departamento de la reparación se saca del técnico: no se guarda dos veces. Los técnicos entran en la web y ven las reparaciones de su departamento. |
 | `servicio` con `linea` (videojuegos / consolas / telefonia), sin relación con `departamento` | Contenido de las 3 pestañas de "Servicios" de la tienda (ADR-030). |
 | `plataforma` como catálogo (una por videojuego) | Filtro principal sin valores repetidos escritos de formas distintas. |
-| Ubicación **solo** en `registro_ubicacion` | El enunciado exige la ubicación del usuario en **cualquier consulta**: las apps envían `X-Latitud`/`X-Longitud` y la API registra cada petición (también pedidos y reparaciones). Guardarla además en pedido o reparación sería redundante. |
+| Ubicación **solo** en `registro_ubicacion` | El enunciado exige la ubicación del usuario en **cualquier consulta**: las apps envían `X-Latitud`/`X-Longitud` y la API registra cada petición (también pedidos y reparaciones). Guardarla además en pedido o reparación sería redundante. (El punto de entrega de un pedido a domicilio es otro dato: **adónde** se envía, no desde dónde se pidió.) |
 | `activo` (baja lógica) en `producto` y `usuario` | No se puede borrar un producto o un usuario con historial (RESTRICT), pero sí desactivarlo: con `false` desaparece y con `true` vuelve a aparecer. Videojuego, móvil y consola lo heredan de `producto` (no se repite). |
 | `tienda` + `foto_tienda` | Datos de la parte Android: ubicación, galería e historia. |
 | `token` guardado como hash SHA-256 | Autenticación por token (nivel 5 de la rúbrica); si se filtra la BBDD, los tokens no sirven. |
-| Pedidos con recogida en tienda | No hay dirección de envío: estados `pendiente → preparado → entregado` o `cancelado`. |
+| Pedidos con **recogida en tienda o envío a domicilio** (ADR-038) | `pedido.entrega` ∈ {tienda, domicilio}. A domicilio se guardan la dirección que escribe el cliente y el punto que marca en el mapa (`latitud_entrega`, `longitud_entrega`); un CHECK obliga a los tres o a ninguno. El envío es gratis, así que el total no cambia. Estados: `pendiente → preparado → entregado` o `cancelado`. |
 
 ## Pendiente de decidir en grupo
 - Los diseños beta muestran valoración (★), favoritos y "Exclusivo", que no están en el modelo (aviso A-08 de la bóveda).
