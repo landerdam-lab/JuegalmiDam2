@@ -8,3 +8,5 @@
 .externalNativeBuild
 .cxx
 .kotlin
+# Claves para firmar la APK de entrega (ver android/README.md). Nunca se suben
+/keystore.properties

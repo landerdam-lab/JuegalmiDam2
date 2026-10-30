@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Interfaz adaptativa (rúbrica Interfaces 1 · DESIGN.md §172). Valores para el móvil en vertical.
+     Android elige values-w600dp, -w840dp o -w1200dp según el ANCHO disponible de la ventana, así que
+     cambian solos al girar el móvil, en tablet y en pantalla partida. Sin layouts duplicados. -->
+<resources>
+    <!-- Columnas de las listas de tarjetas (catálogos, pedidos, alquileres, reparaciones) -->
+    <integer name="columnas_lista">1</integer>
+    <!-- Columnas de la galería de la tienda (PT-27) -->
+    <integer name="columnas_galeria">3</integer>
+    <!-- Hueco lateral de cada tarjeta: separa las columnas cuando hay más de una -->
+    <dimen name="tarjeta_hueco">0dp</dimen>
+    <!-- Margen a cada lado de los formularios y fichas: en pantallas anchas el contenido queda en una
+         columna centrada en vez de estirarse de borde a borde -->
+    <dimen name="columna_margen">0dp</dimen>
+    <!-- Igual, pero sumando el borde de 16 de las tarjetas que van sueltas (Historia) -->
+    <dimen name="columna_margen_con_borde">16dp</dimen>
+</resources>

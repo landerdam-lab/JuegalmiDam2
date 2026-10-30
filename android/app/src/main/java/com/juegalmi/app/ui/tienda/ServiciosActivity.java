@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -97,7 +97,8 @@ public class ServiciosActivity extends AppCompatActivity {
         public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
             v.findViewById(R.id.chips).setVisibility(View.GONE);
             RecyclerView lista = v.findViewById(R.id.lista);
-            lista.setLayoutManager(new LinearLayoutManager(requireContext()));
+            lista.setLayoutManager(new GridLayoutManager(requireContext(),
+                    getResources().getInteger(R.integer.columnas_lista)));
             cargar(v, lista);
         }
 

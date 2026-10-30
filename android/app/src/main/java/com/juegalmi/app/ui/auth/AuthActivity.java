@@ -3,10 +3,13 @@ package com.juegalmi.app.ui.auth;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.juegalmi.app.R;
+import com.juegalmi.app.util.RedLocal;
 
 /**
  * Pantallas sin sesión: Login (PT-02) y Registro (PT-03), como dos fragments en el mismo contenedor.
@@ -18,6 +21,15 @@ public class AuthActivity extends AppCompatActivity {
     public static final String EXTRA_SESION_CADUCADA = "sesion_caducada";
     /** true si el splash no pudo comprobar la sesión por falta de red. */
     public static final String EXTRA_SIN_RED = "sin_red";
+
+    /** Android 17: permiso para hablar con una API de la red local (util/RedLocal). Si se niega, se explica */
+    private final ActivityResultLauncher<String> permisoRedLocal = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), concedido -> {
+                if (!concedido) {
+                    Snackbar.make(findViewById(R.id.contenedorAuth), R.string.permiso_red_local_denegado,
+                            Snackbar.LENGTH_LONG).show();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +50,10 @@ public class AuthActivity extends AppCompatActivity {
             }
             if (aviso != 0) {
                 Snackbar.make(findViewById(R.id.contenedorAuth), aviso, Snackbar.LENGTH_LONG).show();
+            }
+            // Antes del login y del registro, que ya hablan con la API
+            if (RedLocal.hayQuePedir(this)) {
+                permisoRedLocal.launch(RedLocal.permiso());
             }
         }
     }

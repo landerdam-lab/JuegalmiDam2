@@ -3,6 +3,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/tarjeta_hueco"
     android:layout_marginBottom="@dimen/ja_espacio_3">
 
     <LinearLayout

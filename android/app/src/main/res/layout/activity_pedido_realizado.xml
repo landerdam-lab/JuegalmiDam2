@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/columna_margen"
             android:paddingHorizontal="@dimen/ja_espacio_6">
 
             <com.google.android.material.imageview.ShapeableImageView

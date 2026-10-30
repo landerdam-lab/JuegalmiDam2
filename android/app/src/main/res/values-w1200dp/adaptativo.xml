@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ventana de 1200 dp o más (tablet girada). Ver values/adaptativo.xml -->
+<resources>
+    <integer name="columnas_lista">4</integer>
+    <integer name="columnas_galeria">6</integer>
+    <dimen name="tarjeta_hueco">6dp</dimen>
+    <dimen name="columna_margen">240dp</dimen>
+    <dimen name="columna_margen_con_borde">256dp</dimen>
+</resources>
