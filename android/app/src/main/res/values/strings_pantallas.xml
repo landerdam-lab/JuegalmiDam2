@@ -100,7 +100,7 @@
     <string name="entrega_op_domicilio">A domicilio</string>
     <string name="entrega_domicilio">Envío a domicilio</string>
     <string name="entrega_tienda_texto">Recógelo en %1$s: %2$s</string>
-    <string name="entrega_tienda_gratis">Recogida gratis en la tienda</string>
+    <string name="entrega_tienda_gratis">Recogida gratis en la tienda · mueve el mapa o haz zoom para ver cómo llegar</string>
     <string name="entrega_domicilio_gratis">Envío gratis a esta dirección</string>
     <string name="entrega_direccion">Dirección de entrega</string>
     <string name="entrega_direccion_ayuda">Calle, número, piso, código postal y ciudad</string>
