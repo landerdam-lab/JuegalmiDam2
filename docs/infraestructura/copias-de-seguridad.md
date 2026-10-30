@@ -5,7 +5,7 @@
 Volver a *00 - INICIO* (bóveda) · Infraestructura: [Guia de la infraestructura](README.md), *ADR-010 Despliegue en AWS con host bastion* (bóveda, `10-Decisiones/`) · Rúbrica: *Rubrica* (bóveda) (Acceso a datos, nivel 2: «se realizan copias de seguridad») · Responsable: **Lander**
 
 > **Resumen:** En una frase
-> Todos los días a las **09:00 (hora de España)**, la máquina privada de AWS hace una copia de la base de datos `juegalmi`, guarda **7 días en local** y la sube a un **bucket privado de S3**. A los 30 días pasa sola a **Glacier** y a los 365 se borra. Nadie de fuera puede verla, y la máquina no guarda ninguna credencial.
+> Todos los días a las **09:00 (hora de España)**, la máquina privada de AWS hace una copia de la base de datos `almi_companion`, guarda **7 días en local** y la sube a un **bucket privado de S3**. A los 30 días pasa sola a **Glacier** y a los 365 se borra. Nadie de fuera puede verla, y la máquina no guarda ninguna credencial.
 
 > **⚠️** Contraseñas
 > Las contraseñas (root de MariaDB, `juegalmi_admin`…) y las credenciales de AWS **no están en esta bóveda**: las tiene Lander en `RETO_dam2\credenciales.txt`. Donde abajo pone `<contraseña de root>`, es la de la sección `[MariaDB]` de ese archivo.
@@ -95,7 +95,7 @@ $DB -e "DROP DATABASE prueba"
 
 **b) Restaurar desde una copia local** (de los últimos 7 días):
 ```bash
-zcat /var/backups/juegalmi/juegalmi-AAAA-MM-DD-HHMM.sql.gz | $DB juegalmi
+zcat /var/backups/juegalmi/juegalmi-AAAA-MM-DD-HHMM.sql.gz | $DB almi_companion
 ```
 
 **c) Restaurar desde S3** (copia de menos de 30 días: está en S3 Standard y se descarga al momento):

@@ -7,8 +7,8 @@
 -- =====================================================================
 
 -- JuegAlmi · esquema v6 · MariaDB 11.4
-CREATE DATABASE IF NOT EXISTS juegalmi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE juegalmi;
+CREATE DATABASE IF NOT EXISTS almi_companion CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE almi_companion;
 
 -- 1) Catálogos y tablas sin FK ------------------------------------------------
 CREATE TABLE IF NOT EXISTS departamento (
