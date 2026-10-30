@@ -178,6 +178,11 @@ final class Presentador
             'fecha' => $p->getFecha()->format(DATE_ATOM),
             'estado' => $p->getEstado()->value,
             'metodoPago' => $p->getMetodoPago()->value,
+            // ADR-038: tienda | domicilio. Los datos de envío son null si se recoge en la tienda
+            'entrega' => $p->getEntrega()->value,
+            'direccionEntrega' => $p->getDireccionEntrega(),
+            'latitudEntrega' => $p->getLatitudEntrega() !== null ? (float) $p->getLatitudEntrega() : null,
+            'longitudEntrega' => $p->getLongitudEntrega() !== null ? (float) $p->getLongitudEntrega() : null,
             'cliente' => [
                 'id' => $cliente->getId(),
                 'nombre' => $cliente->getNombre(),

@@ -29,7 +29,7 @@ Usan otra BBDD, `almi_companion_test`, configurada en `api/.env.test.local` (mis
 Doctrine añade `_test` al nombre). Las migraciones y los datos de ejemplo se cargan solos.
 
 ```bash
-php bin/phpunit          # 33 pruebas: login, catálogo, pedidos, alquileres, reparaciones y permisos
+php bin/phpunit          # 36 pruebas: login, catálogo, pedidos (con envío a domicilio), alquileres, reparaciones y permisos
 ```
 
 ### Otros comandos
@@ -62,6 +62,10 @@ reparaciones en los 5 estados y una marca sin productos (Nokia) que se puede bor
   (`TOKEN_TTL_HORAS` en `.env`). Después, en cada petición: `Authorization: Bearer <token>`.
 - Las apps mandan además `X-Latitud` y `X-Longitud` en **todas** las peticiones: se guardan en
   `registro_ubicacion`. Sin ellas, `POST /api/pedidos` y `POST /api/reparaciones` responden 422.
+- **Entrega del pedido (ADR-038):** `POST /api/pedidos` acepta `entrega` = `tienda` (por defecto) o `domicilio`.
+  A domicilio son obligatorios `direccionEntrega` (texto) y `latitudEntrega`/`longitudEntrega` (el punto que el
+  cliente marca en el mapa); si faltan, 422 con `direccionEntrega` o `ubicacionEntrega`. El envío es gratis.
+  El pedido devuelve `entrega`, `direccionEntrega`, `latitudEntrega` y `longitudEntrega` (null si es en tienda).
 - Sin token solo funcionan `login`, `registro` y los `GET` de catálogo y tienda (web pública, ADR-028).
   Sin token no se envía el stock exacto, solo `disponible` (y `alquilable` en los videojuegos).
 - Listados largos paginados: `?page=1&limit=20` → `{items, page, limit, total}`.

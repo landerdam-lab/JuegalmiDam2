@@ -198,8 +198,9 @@ final class AppFixtures extends Fixture
         // Pedido 2 (entregado, hace 12 días): alquiler de 7 días SIN devolver → RETRASADO
         $p2 = $this->pedido($c1, MetodoPago::Bizum, $hoy->modify('-12 days 17:05'), EstadoPedido::Entregado);
         $this->alquiler($p2, $v['gow'], 7);
-        // Pedido 3 (preparado, hace 2 días): compra + alquiler ACTIVO
-        $p3 = $this->pedido($c2, MetodoPago::Paypal, $hoy->modify('-2 days 12:00'), EstadoPedido::Preparado);
+        // Pedido 3 (preparado, hace 2 días): compra + alquiler ACTIVO, con envío a domicilio (ADR-038)
+        $p3 = $this->pedido($c2, MetodoPago::Paypal, $hoy->modify('-2 days 12:00'), EstadoPedido::Preparado)
+            ->enviarA('Calle Autonomía 10, 3.º B, 48012 Bilbao', '43.2581000', '-2.9380000');
         $this->compra($p3, $v['mario'], 1);
         $this->alquiler($p3, $v['zelda'], 7);
         // Pedidos 4 y 5: las 2 copias de "Gran Turismo 7" alquiladas → 0 disponibles
