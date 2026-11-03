@@ -47,7 +47,8 @@ public class CatalogoFragment extends Fragment {
     private static final String ARG_TIPO = "tipo";
 
     private ProductoRepository repositorio;
-    private final ProductoRepository.Filtro filtro = new ProductoRepository.Filtro();
+    /** Vive en un ViewModel: al girar la pantalla se recrea el fragmento, pero los filtros elegidos se conservan */
+    private ProductoRepository.Filtro filtro;
     private ProductoAdapter adaptador;
     /** Solo en la pestaña de videojuegos: carrusel «Para alquilar» y tarjeta de reparaciones (PT-04) */
     @Nullable private CabeceraInicioAdapter cabecera;
@@ -86,6 +87,7 @@ public class CatalogoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View vista, @Nullable Bundle savedInstanceState) {
         repositorio = new ProductoRepository(requireContext());
+        filtro = new ViewModelProvider(this).get(FiltroViewModel.class).filtro;
         filtro.tipo = requireArguments().getString(ARG_TIPO, Producto.VIDEOJUEGO);
 
         progreso = vista.findViewById(R.id.progreso);
@@ -169,6 +171,7 @@ public class CatalogoFragment extends Fragment {
         if (filtro.tipo.equals(Producto.VIDEOJUEGO)) {
             Chip alquilables = nuevoChip(chips, R.string.filtro_solo_alquilables);
             chipAlquilables = alquilables;
+            alquilables.setChecked(filtro.soloAlquilables);
             alquilables.setOnCheckedChangeListener((c, marcado) -> {
                 filtro.soloAlquilables = marcado;
                 cargar(1);
@@ -179,7 +182,7 @@ public class CatalogoFragment extends Fragment {
                 filtro.plataformaId = (Integer) valor;
                 cargar(1);
             });
-            repositorio.plataformas(etiquetaOpciones, opcionesDe(plataforma));
+            repositorio.plataformas(etiquetaOpciones, opcionesDe(plataforma, filtro.plataformaId));
             desplegables.add(plataforma);
 
             ChipDesplegable genero = new ChipDesplegable(chips, getString(R.string.filtro_genero),
@@ -187,6 +190,7 @@ public class CatalogoFragment extends Fragment {
                 filtro.genero = (String) valor;
                 cargar(1);
             });
+            if (filtro.genero != null) genero.mostrar(filtro.genero, true);
             repositorio.generos(etiquetaOpciones, new Callback<List<String>>() {
                 @Override
                 public void onExito(List<String> lista) {
@@ -210,6 +214,7 @@ public class CatalogoFragment extends Fragment {
             List<ChipDesplegable.Opcion> edades = new ArrayList<>();
             for (int edad : PEGI) edades.add(new ChipDesplegable.Opcion(String.valueOf(edad), edad));
             pegi.opciones(edades);
+            if (filtro.pegi != null) pegi.mostrar(String.valueOf(filtro.pegi), true);
             desplegables.add(pegi);
         } else if (filtro.tipo.equals(Producto.MOVIL)) {
             chips.setSingleSelection(true);
@@ -217,7 +222,7 @@ public class CatalogoFragment extends Fragment {
             Chip todos = nuevoChip(chips, R.string.filtro_todos);
             Chip moviles = nuevoChip(chips, R.string.filtro_moviles);
             Chip tablets = nuevoChip(chips, R.string.filtro_tablets);
-            todos.setChecked(true);
+            (Producto.MOVIL.equals(filtro.formato) ? moviles : "tablet".equals(filtro.formato) ? tablets : todos).setChecked(true);
             chips.setOnCheckedStateChangeListener((grupo, ids) -> {
                 int id = ids.isEmpty() ? View.NO_ID : ids.get(0);
                 filtro.formato = id == moviles.getId() ? Producto.MOVIL : id == tablets.getId() ? "tablet" : null;
@@ -230,7 +235,7 @@ public class CatalogoFragment extends Fragment {
             filtro.marcaId = (Integer) valor;
             cargar(1);
         });
-        repositorio.marcas(etiquetaOpciones, opcionesDe(marca));
+        repositorio.marcas(etiquetaOpciones, opcionesDe(marca, filtro.marcaId));
         desplegables.add(marca);
 
         // Ordenar no tiene opción vacía: siempre hay un orden (nombre por defecto)
@@ -243,7 +248,7 @@ public class CatalogoFragment extends Fragment {
         ordenes.add(new ChipDesplegable.Opcion(getString(R.string.orden_precio_asc), ProductoRepository.ORDEN_PRECIO_ASC));
         ordenes.add(new ChipDesplegable.Opcion(getString(R.string.orden_precio_desc), ProductoRepository.ORDEN_PRECIO_DESC));
         orden.opciones(ordenes);
-        orden.mostrar(getString(R.string.orden_nombre), false);
+        orden.mostrar(textoOrden(), !ProductoRepository.ORDEN_NOMBRE.equals(filtro.orden));
 
         quitar.setOnClickListener(v -> {
             filtro.quitarFiltros();
@@ -255,13 +260,23 @@ public class CatalogoFragment extends Fragment {
     }
 
     /** Callback que convierte una lista {id, nombre} de la API en las opciones de un desplegable. */
-    private Callback<List<Referencia>> opcionesDe(ChipDesplegable chip) {
+    private String textoOrden() {
+        if (ProductoRepository.ORDEN_PRECIO_ASC.equals(filtro.orden)) return getString(R.string.orden_precio_asc);
+        if (ProductoRepository.ORDEN_PRECIO_DESC.equals(filtro.orden)) return getString(R.string.orden_precio_desc);
+        return getString(R.string.orden_nombre);
+    }
+
+    private Callback<List<Referencia>> opcionesDe(ChipDesplegable chip, @Nullable Integer elegido) {
         return new Callback<List<Referencia>>() {
             @Override
             public void onExito(List<Referencia> lista) {
                 List<ChipDesplegable.Opcion> o = new ArrayList<>();
                 for (Referencia r : lista) o.add(new ChipDesplegable.Opcion(r.nombre, r.id));
                 chip.opciones(o);
+                // Tras girar la pantalla, el chip vuelve a mostrar lo que estaba elegido
+                for (Referencia r : lista) {
+                    if (elegido != null && elegido == r.id) chip.mostrar(r.nombre, true);
+                }
             }
 
             @Override
