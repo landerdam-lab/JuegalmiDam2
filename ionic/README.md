@@ -23,7 +23,7 @@ npx eslint src             # comprobación de estilo
 
 Cada archivo lista en sus comentarios las URL habituales (VM, Docker, emulador, AWS).
 
-⚠️ **La VM de VirtualBox usa un certificado local que el WebView de Android no acepta.** Para probar la APK contra ella, hay que arrancar la API sin TLS: `symfony server:start -d --no-tls --allow-all-ip --port=8000`. Mientras la API vaya por HTTP (A-32), `capacitor.config.ts` carga la app desde `http://localhost`; con el HTTPS final se quita ese bloque.
+⚠️ **La VM de VirtualBox usa un certificado local que el WebView de Android no acepta.** Para probar la APK contra ella, hay que arrancar la API sin TLS: `symfony server:start -d --no-tls --allow-all-ip --port=8002` (el 8000 de esa VM lo usa otro proyecto, A-36). Mientras la API vaya por HTTP (A-32), `capacitor.config.ts` carga la app desde `http://localhost`; con el HTTPS final se quita ese bloque.
 
 ## Generar la APK
 
