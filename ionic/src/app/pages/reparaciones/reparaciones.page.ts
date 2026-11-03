@@ -57,7 +57,7 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
                   <ja-vida [llenos]="pasos[r.estado]" [total]="4" />
                   <div class="ja-entre">
                     <span class="ja-etiqueta-s ja-t2">Entrada: {{ dia(r.fechaEntrada) }}@if (r.fechaSalida) { · Salida: {{ dia(r.fechaSalida) }} }</span>
-                    <span class="ja-precio-s">{{ r.presupuesto != null ? formato(r.presupuesto) : 'Pendiente' }}</span>
+                    <span class="ja-precio-s">{{ r.presupuesto !== null ? formato(r.presupuesto) : 'Pendiente' }}</span>
                   </div>
                   @if (r.estado === 'recibida' || r.estado === 'en_reparacion') {
                     <ion-button fill="clear" color="danger" (click)="cancelar(r)">Cancelar solicitud</ion-button>

@@ -11,6 +11,7 @@ import { Logo } from './shared/logo.component';
 
 /** Menú lateral (Navigation Drawer) y el hueco donde se abren las páginas. */
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector -- nombre estándar de la raíz de Angular
   selector: 'app-root',
   imports: [IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonMenuToggle, RouterLink, RouterLinkActive, Icono, Logo],
   styles: `

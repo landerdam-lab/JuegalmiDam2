@@ -29,12 +29,8 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
-      '@angular-eslint/component-class-suffix': [
-        'error',
-        {
-          suffixes: ['Page', 'Component'],
-        },
-      ],
+      // Los componentes de shared/ se llaman como lo que son (Barra, Imagen…), sin sufijo
+      '@angular-eslint/component-class-suffix': 'off',
     },
   },
   {
