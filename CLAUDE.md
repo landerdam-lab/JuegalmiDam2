@@ -49,7 +49,7 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
   - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
   - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, clientes, trabajadores, pedidos, reparaciones, tienda) para el admin, y las reparaciones de su departamento para los técnicos (ADR-032). Bóveda: `12-Web/`
-  - `docs/`: `reto/` (enunciado, rúbrica), `datos/` (modelo, E-R, paso a tablas y `sql/` con el esquema completo), `infraestructura/` (guía de AWS y de las copias de seguridad), `diseno/`, `entrega/` (propuesta, anexo, dossier, presentación) y `equipo/`. Índice en `docs/README.md`
+  - `docs/`: documentación. Índice en `docs/README.md`
 - ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
@@ -89,8 +89,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 
 ## 4. Git (resumen; detalle en `02-Equipo/Flujo de trabajo Git.md`)
 
-- Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `web` (aún no existe: crearla desde `main`) · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
-- ⚠️ Las ramas `api`, `android` e `ionic` se crearon antes que los docs: **la primera vez, haz `git merge origin/main`**.
+- Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `web` · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
 - **No hagas commit, push ni PR si el usuario no lo pide.** Nunca push directo a `main`. Nunca `--force` sobre ramas compartidas.
 - Commits en **español**, cortos y descriptivos, con los IDs de requisito cuando los haya: `Añade login con token (RT-04)`.
 - **Nunca se suben:** `.env.local`, credenciales, tokens, `vendor/`, `node_modules/`, `build/`, `*.apk`, `*.jks`, `local.properties`, `CLAUDE.local.md`.
@@ -163,19 +162,12 @@ Mantener la bóveda al día **es parte de la tarea**. Antes de cerrar, propón (
 composer install
 php bin/console doctrine:migrations:migrate   # esquema v6 + CHECK + triggers (nunca schema:update)
 php bin/console doctrine:fixtures:load        # datos de ejemplo (usuarios *@juegalmi.test, contraseña demo1234)
-php bin/phpunit                               # 37 pruebas (BBDD almi_companion_test, en api/.env.test.local)
+php bin/phpunit                               # pruebas (BBDD almi_companion_test, en api/.env.test.local)
 symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/api
 
 # Ionic (ionic/)
 npm install && ionic serve
 ionic build && npx cap sync android            # APK vía Android Studio
-
-# Android (android/)
-./gradlew assembleDebug
-
-# Web (web/, Angular)
-npm install && ng serve                        # http://localhost:4200 (la API necesita CORS para este origen)
-ng build
 ```
 
 ---

@@ -1,0 +1,184 @@
+@use './theme/cartucho';
+@use './app/ja-marcadores';
+
+@import '@ionic/angular/css/core.css';
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/flex-utils.css';
+@import '@ionic/angular/css/palettes/dark.class.css';
+
+// Fuentes incluidas en la app, las mismas que en Android (funcionan sin red)
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/assets/fonts/bricolage_grotesque.ttf') format('truetype');
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/assets/fonts/dm_sans.ttf') format('truetype');
+  font-weight: 100 1000;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/assets/fonts/jetbrains_mono.ttf') format('truetype');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+:root {
+  --ion-font-family: var(--ja-fuente-texto);
+  --ion-background-color: var(--ja-fondo);
+  --ion-text-color: var(--ja-texto);
+  --ion-toolbar-background: var(--ja-fondo);
+  --ion-toolbar-color: var(--ja-texto);
+}
+
+// ── Estructura común ──
+.ja-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ja-espacio-4);
+  padding: var(--ja-espacio-4);
+}
+.ja-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+}
+.ja-entre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ja-espacio-2);
+}
+.ja-t2 {
+  color: var(--ja-texto-2);
+}
+.ja-t3 {
+  color: var(--ja-texto-3);
+}
+.ja-marca-t {
+  color: var(--ja-marca);
+}
+.ja-error-t {
+  color: var(--ja-error);
+  font: var(--ja-tipo-etiqueta-s);
+  margin-top: var(--ja-espacio-1);
+}
+.ja-sin-margen {
+  margin: 0;
+}
+.ja-centrado {
+  text-align: center;
+}
+// Listas: 1 columna en el móvil y hasta 4 en pantallas grandes (igual que res/values-w600dp… en Android)
+.ja-lista {
+  display: grid;
+  gap: var(--ja-espacio-3);
+  grid-template-columns: repeat(var(--columnas, 1), minmax(0, 1fr));
+}
+@media (min-width: 600px) {
+  .ja-lista {
+    --columnas: 2;
+  }
+}
+@media (min-width: 840px) {
+  .ja-lista {
+    --columnas: 3;
+  }
+}
+@media (min-width: 1200px) {
+  .ja-lista {
+    --columnas: 4;
+  }
+}
+// Formularios y detalles: columna centrada al girar o en tablet
+.ja-columna {
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+}
+.ja-caja {
+  padding: var(--ja-espacio-4);
+  background: var(--ja-superficie);
+  border: var(--ja-borde-fino) solid var(--ja-borde);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ja-espacio-3);
+}
+.ja-pulsable {
+  cursor: pointer;
+}
+.ja-chips {
+  display: flex;
+  gap: var(--ja-espacio-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: var(--ja-espacio-2) var(--ja-espacio-4);
+}
+.ja-chips ion-chip {
+  flex: none;
+  margin: 0;
+}
+ion-chip {
+  --background: var(--ja-superficie-2);
+  --color: var(--ja-texto);
+}
+ion-card.ja-tarjeta {
+  color: var(--ja-texto);
+}
+ion-content {
+  --padding-bottom: var(--ion-safe-area-bottom, 0px);
+}
+ion-fab[vertical='bottom'] {
+  margin-bottom: var(--ion-safe-area-bottom, 0px);
+}
+ion-chip.activo {
+  --background: var(--ja-marca-suave);
+  --color: var(--ja-marca);
+  font-weight: 600;
+}
+ion-segment-button {
+  --color-checked: var(--ja-marca);
+  --indicator-color: var(--ja-marca);
+  text-transform: none;
+  letter-spacing: normal;
+  min-width: auto;
+}
+ion-input.ja-campo,
+ion-textarea.ja-campo {
+  --background: var(--ja-superficie-2);
+  --border-color: var(--ja-borde-campo);
+  --highlight-color-focused: var(--ja-marca);
+  --color: var(--ja-texto);
+}
+.ja-boton-cargando ion-spinner {
+  width: var(--ja-tamano-icono);
+  height: var(--ja-tamano-icono);
+}
+.ja-dialogo-destructivo .alert-button-role-destructive {
+  color: var(--ja-error);
+}
+.ja-ticket-fila {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ja-espacio-3);
+  font: var(--ja-tipo-cuerpo);
+}
+.ja-separador {
+  border-top: var(--ja-borde-fino) solid var(--ja-borde);
+}
+.ja-pie {
+  padding: var(--ja-espacio-3) var(--ja-espacio-4) calc(var(--ja-espacio-3) + var(--ion-safe-area-bottom, 0px));
+  background: var(--ja-fondo);
+  border-top: var(--ja-borde-fino) solid var(--ja-borde);
+}
+.ja-boton-ancho {
+  width: 100%;
+  margin: 0;
+}

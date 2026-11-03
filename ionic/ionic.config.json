@@ -1,0 +1,7 @@
+{
+  "name": "almi",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

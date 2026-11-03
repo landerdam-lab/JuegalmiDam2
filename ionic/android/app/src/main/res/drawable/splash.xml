@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pantalla de arranque (PT-01): el logo centrado sobre el color del icono -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/ic_launcher_background" />
+    <item android:drawable="@drawable/logo_almi_companion" android:width="160dp" android:height="160dp" android:gravity="center" />
+</layer-list>
