@@ -132,6 +132,12 @@ ion-chip {
 ion-card.ja-tarjeta {
   color: var(--ja-texto);
 }
+ion-content {
+  --padding-bottom: var(--ion-safe-area-bottom, 0px);
+}
+ion-fab[vertical='bottom'] {
+  margin-bottom: var(--ion-safe-area-bottom, 0px);
+}
 ion-chip.activo {
   --background: var(--ja-marca-suave);
   --color: var(--ja-marca);
@@ -168,7 +174,7 @@ ion-textarea.ja-campo {
   border-top: var(--ja-borde-fino) solid var(--ja-borde);
 }
 .ja-pie {
-  padding: var(--ja-espacio-3) var(--ja-espacio-4);
+  padding: var(--ja-espacio-3) var(--ja-espacio-4) calc(var(--ja-espacio-3) + var(--ion-safe-area-bottom, 0px));
   background: var(--ja-fondo);
   border-top: var(--ja-borde-fino) solid var(--ja-borde);
 }

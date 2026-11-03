@@ -41,7 +41,7 @@ export class VozService {
         maxResults: 1,
         partialResults: false,
         popup: true,
-        prompt: 'Di por ejemplo «abre el carrito», «mis pedidos», «llévame a la tienda» o «busca Zelda»',
+        prompt: 'Di «abre el carrito» o «busca Zelda»',
       });
       return r.matches?.[0] ?? null;
     } catch {

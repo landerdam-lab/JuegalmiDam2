@@ -1,4 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
+import type { Position } from '@capacitor/geolocation';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 
@@ -49,12 +51,29 @@ export class UbicacionService {
   async actualizar(): Promise<void> {
     this.estado.set('buscando');
     try {
-      const posicion = await Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 });
+      // En la APK el plugin no pide el permiso solo; en el navegador lo pide el propio navegador
+      if (Capacitor.isNativePlatform()) {
+        const permiso = await Geolocation.requestPermissions();
+        if (permiso.location !== 'granted' && permiso.coarseLocation !== 'granted') {
+          this.estado.set('sin_permiso');
+          return;
+        }
+      }
+      const posicion = await this.posicion();
       this.punto.set({ latitud: posicion.coords.latitude, longitud: posicion.coords.longitude });
       this.estado.set('obtenida');
     } catch {
       // Sin permiso o sin señal: la API acepta la petición sin cabeceras, pero no los pedidos ni las reparaciones
       this.estado.set(this.punto() ? 'obtenida' : 'sin_permiso');
+    }
+  }
+
+  /** Primero la ubicación aproximada, que gasta menos (CPU mínima); si no hay, el GPS. */
+  private async posicion(): Promise<Position> {
+    try {
+      return await Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
+    } catch {
+      return Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
     }
   }
 }
