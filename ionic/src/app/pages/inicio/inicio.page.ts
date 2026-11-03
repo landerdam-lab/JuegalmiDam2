@@ -1,5 +1,5 @@
 import type { OnInit} from '@angular/core';
-import { Component, DestroyRef, ViewChild, computed, inject, input, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { ActionSheetController, IonButton, IonCard, IonChip, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel, IonRefresher, IonRefresherContent, IonSearchbar, IonSegment, IonSegmentButton } from '@ionic/angular';
@@ -68,16 +68,16 @@ const ORDENES: { valor: Orden; texto: string }[] = [
         }
         @if (tipo() === 'videojuego') {
           <ion-chip [class.activo]="filtro().soloAlquilables" (click)="cambiar({ soloAlquilables: !filtro().soloAlquilables })">Solo alquilables</ion-chip>
-          <ion-chip [class.activo]="filtro().plataforma != null" (click)="elegirPlataforma()">Plataforma: {{ nombrePlataforma() }}<ja-icono nombre="expand_more" /></ion-chip>
-          <ion-chip [class.activo]="filtro().genero != null" (click)="elegirGenero()">Género: {{ filtro().genero ?? 'Todos' }}<ja-icono nombre="expand_more" /></ion-chip>
-          <ion-chip [class.activo]="filtro().pegi != null" (click)="elegirPegi()">PEGI: {{ filtro().pegi ?? 'Todos' }}<ja-icono nombre="expand_more" /></ion-chip>
+          <ion-chip [class.activo]="(filtro().plataforma ?? null) !== null" (click)="elegirPlataforma()">Plataforma: {{ nombrePlataforma() }}<ja-icono nombre="expand_more" /></ion-chip>
+          <ion-chip [class.activo]="(filtro().genero ?? null) !== null" (click)="elegirGenero()">Género: {{ filtro().genero ?? 'Todos' }}<ja-icono nombre="expand_more" /></ion-chip>
+          <ion-chip [class.activo]="(filtro().pegi ?? null) !== null" (click)="elegirPegi()">PEGI: {{ filtro().pegi ?? 'Todos' }}<ja-icono nombre="expand_more" /></ion-chip>
         }
         @if (tipo() === 'movil') {
           <ion-chip [class.activo]="!filtro().formato" (click)="cambiar({ formato: null })">Todos</ion-chip>
           <ion-chip [class.activo]="filtro().formato === 'movil'" (click)="cambiar({ formato: 'movil' })">Móviles</ion-chip>
           <ion-chip [class.activo]="filtro().formato === 'tablet'" (click)="cambiar({ formato: 'tablet' })">Tablets</ion-chip>
         }
-        <ion-chip [class.activo]="filtro().marca != null" (click)="elegirMarca()">Marca: {{ nombreMarca() }}<ja-icono nombre="expand_more" /></ion-chip>
+        <ion-chip [class.activo]="(filtro().marca ?? null) !== null" (click)="elegirMarca()">Marca: {{ nombreMarca() }}<ja-icono nombre="expand_more" /></ion-chip>
         <ion-chip [class.activo]="filtro().orden !== 'nombre'" (click)="elegirOrden()">Ordenar: {{ textoOrden() }}<ja-icono nombre="expand_more" /></ion-chip>
       </div>
 

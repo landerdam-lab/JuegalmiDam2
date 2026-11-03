@@ -39,7 +39,7 @@ import { Estado } from '../../shared/estado.component';
                 <div class="interior">
                   <div class="ja-entre">
                     <span class="ja-subtitulo">{{ s.nombre }}</span>
-                    <span class="ja-precio-s">{{ s.precioOrientativo != null ? 'desde ' + formato(s.precioOrientativo) : 'Consultar' }}</span>
+                    <span class="ja-precio-s">{{ s.precioOrientativo !== null ? 'desde ' + formato(s.precioOrientativo) : 'Consultar' }}</span>
                   </div>
                   <div class="ja-etiqueta-s ja-t2">{{ s.descripcion }}</div>
                 </div>
