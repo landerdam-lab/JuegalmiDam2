@@ -163,7 +163,7 @@ Mantener la bóveda al día **es parte de la tarea**. Antes de cerrar, propón (
 composer install
 php bin/console doctrine:migrations:migrate   # esquema v6 + CHECK + triggers (nunca schema:update)
 php bin/console doctrine:fixtures:load        # datos de ejemplo (usuarios *@juegalmi.test, contraseña demo1234)
-php bin/phpunit                               # 36 pruebas (BBDD almi_companion_test, en api/.env.test.local)
+php bin/phpunit                               # 37 pruebas (BBDD almi_companion_test, en api/.env.test.local)
 symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/api
 
 # Ionic (ionic/)
