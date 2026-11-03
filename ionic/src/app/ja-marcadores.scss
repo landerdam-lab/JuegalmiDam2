@@ -1,0 +1,17 @@
+// Marcadores del mapa: la misma idea que marcador_tienda/casa/cliente en Android
+.ja-marcador {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: var(--ja-borde-grueso) solid var(--ja-superficie);
+}
+.ja-marcador--tienda {
+  background: var(--ja-primario);
+}
+.ja-marcador--casa {
+  background: var(--ja-marca);
+}
+.ja-marcador--cliente {
+  background: var(--ja-info);
+}
