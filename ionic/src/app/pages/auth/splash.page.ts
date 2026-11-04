@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
@@ -12,8 +12,19 @@ import { Vida } from '../../shared/vida.component';
 @Component({
   imports: [IonContent, Logo, Vida],
   styles: `
-    .caja { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--ja-espacio-6); padding: var(--ja-espacio-8); }
-    ja-vida { width: 100%; max-width: 240px; }
+    .caja {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ja-espacio-6);
+      padding: var(--ja-espacio-8);
+    }
+    ja-vida {
+      width: 100%;
+      max-width: 240px;
+    }
   `,
   template: `
     <ion-content>

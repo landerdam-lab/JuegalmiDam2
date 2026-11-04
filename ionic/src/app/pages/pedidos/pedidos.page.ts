@@ -1,8 +1,16 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { IonCard, IonChip, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent } from '@ionic/angular';
+import {
+  IonCard,
+  IonChip,
+  IonContent,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonRefresher,
+  IonRefresherContent,
+} from '@ionic/angular';
 
 import { AgitarService } from '../../core/agitar.service';
 import type { ApiError } from '../../core/api-error';
@@ -18,11 +26,33 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
 
 /** PT-13 Mis pedidos, con filtro por estado (lo aplica la API). */
 @Component({
-  imports: [RouterLink, IonContent, IonCard, IonChip, IonRefresher, IonRefresherContent, IonInfiniteScroll, IonInfiniteScrollContent, Barra, Estado, Pastilla, Vida],
+  imports: [
+    RouterLink,
+    IonContent,
+    IonCard,
+    IonChip,
+    IonRefresher,
+    IonRefresherContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    Barra,
+    Estado,
+    Pastilla,
+    Vida,
+  ],
   styles: `
-    .interior { padding: var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-2); }
-    ion-card { cursor: pointer; }
-    .lista { padding: 0 var(--ja-espacio-4) var(--ja-espacio-4); }
+    .interior {
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-2);
+    }
+    ion-card {
+      cursor: pointer;
+    }
+    .lista {
+      padding: 0 var(--ja-espacio-4) var(--ja-espacio-4);
+    }
   `,
   template: `
     <ja-barra titulo="Mis pedidos" />
@@ -37,9 +67,19 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
         @if (cargando() && !pedidos().length) {
           <ja-estado tipo="cargando" />
         } @else if (error()) {
-          <ja-estado tipo="error" titulo="No hemos podido cargar tus pedidos" [texto]="error()" (reintentar)="cargar(1)" />
+          <ja-estado
+            tipo="error"
+            titulo="No hemos podido cargar tus pedidos"
+            [texto]="error()"
+            (reintentar)="cargar(1)"
+          />
         } @else if (!pedidos().length) {
-          <ja-estado tipo="vacio" icono="receipt_long" titulo="Aún no tienes pedidos" texto="Cuando compres o alquiles algo, aparecerá aquí." />
+          <ja-estado
+            tipo="vacio"
+            icono="receipt_long"
+            titulo="Aún no tienes pedidos"
+            texto="Cuando compres o alquiles algo, aparecerá aquí."
+          />
         } @else {
           <div class="ja-lista">
             @for (p of pedidos(); track p.id) {
@@ -52,7 +92,9 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
                   <div class="ja-etiqueta-s ja-t2">{{ fecha(p.fecha) }} · {{ articulos(p) }} art.</div>
                   <ja-vida [llenos]="pasos[p.estado]" [total]="3" />
                   <div class="ja-entre">
-                    <span class="ja-etiqueta-s ja-t2">{{ p.entrega === 'domicilio' ? 'Envío a domicilio' : 'Recoger en tienda' }}</span>
+                    <span class="ja-etiqueta-s ja-t2">{{
+                      p.entrega === 'domicilio' ? 'Envío a domicilio' : 'Recoger en tienda'
+                    }}</span>
                     <span class="ja-precio-s">{{ formato(p.total) }}</span>
                   </div>
                 </div>
@@ -61,7 +103,9 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
           </div>
         }
       </div>
-      <ion-infinite-scroll [disabled]="!hayMas()" (ionInfinite)="mas($event)"><ion-infinite-scroll-content /></ion-infinite-scroll>
+      <ion-infinite-scroll [disabled]="!hayMas()" (ionInfinite)="mas($event)"
+        ><ion-infinite-scroll-content
+      /></ion-infinite-scroll>
     </ion-content>
   `,
 })

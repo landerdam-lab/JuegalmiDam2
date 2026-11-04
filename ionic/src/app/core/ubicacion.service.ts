@@ -32,7 +32,8 @@ export class UbicacionService {
     }
     const alerta = await this.alertas.create({
       header: '¿Nos dejas usar tu ubicación?',
-      message: 'La tienda registra desde dónde haces cada consulta, pedido o reparación. Sin ella no podrás confirmar pedidos ni pedir reparaciones.',
+      message:
+        'La tienda registra desde dónde haces cada consulta, pedido o reparación. Sin ella no podrás confirmar pedidos ni pedir reparaciones.',
       buttons: [
         { text: 'Ahora no', role: 'cancel' },
         { text: 'Continuar', role: 'confirm' },

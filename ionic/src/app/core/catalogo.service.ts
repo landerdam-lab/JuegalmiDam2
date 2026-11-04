@@ -23,7 +23,15 @@ const RECURSO: Record<TipoProducto, string> = { videojuego: 'videojuegos', movil
 export const POR_PAGINA = 20;
 
 export function hayFiltros(f: Filtro): boolean {
-  return !!f.soloAlquilables || !!f.formato || f.plataforma != null || f.genero != null || f.pegi != null || f.marca != null || f.orden !== 'nombre';
+  return (
+    !!f.soloAlquilables ||
+    !!f.formato ||
+    f.plataforma != null ||
+    f.genero != null ||
+    f.pegi != null ||
+    f.marca != null ||
+    f.orden !== 'nombre'
+  );
 }
 
 @Injectable({ providedIn: 'root' })

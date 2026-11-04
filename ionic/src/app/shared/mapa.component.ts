@@ -1,4 +1,4 @@
-import type { AfterViewInit, ElementRef, OnDestroy} from '@angular/core';
+import type { AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { Component, effect, input, output, viewChild } from '@angular/core';
 import * as L from 'leaflet';
 
@@ -18,8 +18,16 @@ export interface MarcaMapa {
 @Component({
   selector: 'ja-mapa',
   styles: `
-    :host { display: block; height: var(--alto, 220px); border-radius: var(--ja-radio-m); overflow: hidden; }
-    .lienzo { width: 100%; height: 100%; }
+    :host {
+      display: block;
+      height: var(--alto, 220px);
+      border-radius: var(--ja-radio-m);
+      overflow: hidden;
+    }
+    .lienzo {
+      width: 100%;
+      height: 100%;
+    }
   `,
   template: `<div #lienzo class="lienzo"></div>`,
 })
@@ -44,7 +52,9 @@ export class Mapa implements AfterViewInit, OnDestroy {
       attribution: '© OpenStreetMap',
     }).addTo(this.mapa);
     this.capa.addTo(this.mapa);
-    this.mapa.on('click', (e: L.LeafletMouseEvent) => this.toque.emit({ latitud: e.latlng.lat, longitud: e.latlng.lng }));
+    this.mapa.on('click', (e: L.LeafletMouseEvent) =>
+      this.toque.emit({ latitud: e.latlng.lat, longitud: e.latlng.lng }),
+    );
     // Ionic anima la entrada de la página: al cambiar de tamaño, Leaflet tiene que volver a medir
     this.tamano = new ResizeObserver(() => this.mapa?.invalidateSize());
     this.tamano.observe(this.lienzo().nativeElement);
@@ -83,7 +93,12 @@ export class Mapa implements AfterViewInit, OnDestroy {
         // Con textContent: la dirección la escribe el cliente y Leaflet trataría una cadena como HTML
         const texto = document.createElement('span');
         texto.textContent = m.etiqueta;
-        marcador.bindTooltip(texto, { permanent: true, direction: 'top', offset: [0, -28], className: 'ja-marcador-texto' });
+        marcador.bindTooltip(texto, {
+          permanent: true,
+          direction: 'top',
+          offset: [0, -28],
+          className: 'ja-marcador-texto',
+        });
       }
     }
     if (marcas.length && !this.centrado) {

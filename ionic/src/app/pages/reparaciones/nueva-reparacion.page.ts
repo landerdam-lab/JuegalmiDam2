@@ -1,9 +1,9 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonButton, IonCard, IonContent, IonFooter, IonInput, IonSpinner, IonTextarea } from '@ionic/angular';
-import type { Observable} from 'rxjs';
+import type { Observable } from 'rxjs';
 import { of, switchMap } from 'rxjs';
 
 import type { ApiError } from '../../core/api-error';
@@ -20,13 +20,51 @@ import { Vida } from '../../shared/vida.component';
 
 /** PT-17 Solicitar reparación: departamento, dispositivo, avería, foto con la cámara y ubicación. */
 @Component({
-  imports: [FormsModule, IonContent, IonFooter, IonCard, IonInput, IonTextarea, IonButton, IonSpinner, Barra, Icono, Vida],
+  imports: [
+    FormsModule,
+    IonContent,
+    IonFooter,
+    IonCard,
+    IonInput,
+    IonTextarea,
+    IonButton,
+    IonSpinner,
+    Barra,
+    Icono,
+    Vida,
+  ],
   styles: `
-    .departamentos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ja-espacio-3); }
-    .departamentos ion-card { cursor: pointer; padding: var(--ja-espacio-4); display: flex; flex-direction: column; align-items: center; gap: var(--ja-espacio-2); text-align: center; }
-    ion-card.elegido { background: var(--ja-marca-suave); --background: var(--ja-marca-suave); color: var(--ja-marca); border-color: var(--ja-marca); }
-    .foto { width: 100%; max-height: 240px; object-fit: cover; border-radius: var(--ja-radio-m); }
-    .paso { display: flex; flex-direction: column; gap: var(--ja-espacio-2); }
+    .departamentos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--ja-espacio-3);
+    }
+    .departamentos ion-card {
+      cursor: pointer;
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ja-espacio-2);
+      text-align: center;
+    }
+    ion-card.elegido {
+      background: var(--ja-marca-suave);
+      --background: var(--ja-marca-suave);
+      color: var(--ja-marca);
+      border-color: var(--ja-marca);
+    }
+    .foto {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: var(--ja-radio-m);
+    }
+    .paso {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-2);
+    }
   `,
   template: `
     <ja-barra titulo="Nueva reparación" atras="/reparaciones" />
@@ -42,21 +80,47 @@ import { Vida } from '../../shared/vida.component';
             @for (d of departamentos(); track d.id) {
               <ion-card class="ja-tarjeta" [class.elegido]="departamento() === d.id" (click)="departamento.set(d.id)">
                 <ja-icono [nombre]="d.nombre === 'Consolas' ? 'sports_esports' : 'smartphone'" />
-                <span class="ja-etiqueta">{{ d.nombre === 'Consolas' ? 'Consolas y mandos' : 'Móviles y tablets' }}</span>
+                <span class="ja-etiqueta">{{
+                  d.nombre === 'Consolas' ? 'Consolas y mandos' : 'Móviles y tablets'
+                }}</span>
               </ion-card>
             }
           </div>
-          @if (errores()['departamentoId']) { <div class="ja-error-t">{{ errores()['departamentoId'] }}</div> }
+          @if (errores()['departamentoId']) {
+            <div class="ja-error-t">{{ errores()['departamentoId'] }}</div>
+          }
         </div>
         <div class="paso">
           <div class="ja-subtitulo">2 · Dispositivo</div>
-          <ion-input class="ja-campo" fill="solid" labelPlacement="floating" label="Dispositivo a reparar" [(ngModel)]="dispositivo" (ionInput)="tocado.set(tocado() + 1)" />
-          @if (errores()['dispositivo']) { <div class="ja-error-t">{{ errores()['dispositivo'] }}</div> }
+          <ion-input
+            class="ja-campo"
+            fill="solid"
+            labelPlacement="floating"
+            label="Dispositivo a reparar"
+            [(ngModel)]="dispositivo"
+            (ionInput)="tocado.set(tocado() + 1)"
+          />
+          @if (errores()['dispositivo']) {
+            <div class="ja-error-t">{{ errores()['dispositivo'] }}</div>
+          }
         </div>
         <div class="paso">
           <div class="ja-subtitulo">3 · ¿Qué le pasa?</div>
-          <ion-textarea class="ja-campo" fill="solid" labelPlacement="floating" label="Descripción de la avería" [autoGrow]="true" [rows]="3" [counter]="true" [maxlength]="500" [(ngModel)]="problema" (ionInput)="tocado.set(tocado() + 1)" />
-          @if (errores()['problema']) { <div class="ja-error-t">{{ errores()['problema'] }}</div> }
+          <ion-textarea
+            class="ja-campo"
+            fill="solid"
+            labelPlacement="floating"
+            label="Descripción de la avería"
+            [autoGrow]="true"
+            [rows]="3"
+            [counter]="true"
+            [maxlength]="500"
+            [(ngModel)]="problema"
+            (ionInput)="tocado.set(tocado() + 1)"
+          />
+          @if (errores()['problema']) {
+            <div class="ja-error-t">{{ errores()['problema'] }}</div>
+          }
         </div>
         <div class="paso">
           <div class="ja-subtitulo">4 · Foto del problema</div>
@@ -66,27 +130,46 @@ import { Vida } from '../../shared/vida.component';
           } @else {
             <div class="ja-etiqueta-s ja-t2">Opcional, pero ayuda al técnico a darte un presupuesto</div>
           }
-          <ion-button fill="outline" color="secondary" (click)="hacerFoto()"><ja-icono slot="start" nombre="photo_camera" />Hacer foto</ion-button>
+          <ion-button fill="outline" color="secondary" (click)="hacerFoto()"
+            ><ja-icono slot="start" nombre="photo_camera" />Hacer foto</ion-button
+          >
         </div>
         <div class="paso">
           <div class="ja-subtitulo">5 · Ubicación</div>
           <div class="ja-entre">
             <span class="ja-etiqueta-s ja-t2">Se guardará con la solicitud</span>
             @switch (ubicacion.estado()) {
-              @case ('obtenida') { <span class="ja-etiqueta ja-marca-t">Obtenida</span> }
-              @case ('buscando') { <span class="ja-etiqueta">Buscando…</span> }
-              @default { <ion-button fill="clear" color="secondary" (click)="ubicacion.actualizar()">Dar permiso</ion-button> }
+              @case ('obtenida') {
+                <span class="ja-etiqueta ja-marca-t">Obtenida</span>
+              }
+              @case ('buscando') {
+                <span class="ja-etiqueta">Buscando…</span>
+              }
+              @default {
+                <ion-button fill="clear" color="secondary" (click)="ubicacion.actualizar()">Dar permiso</ion-button>
+              }
             }
           </div>
         </div>
-        <div class="ja-etiqueta-s ja-t2">Un técnico del departamento revisará tu solicitud y te dará un presupuesto sin compromiso.</div>
+        <div class="ja-etiqueta-s ja-t2">
+          Un técnico del departamento revisará tu solicitud y te dará un presupuesto sin compromiso.
+        </div>
       </div>
     </ion-content>
     <ion-footer class="ion-no-border">
       <div class="ja-pie">
         <div class="ja-columna">
-          <ion-button class="ja-boton-ancho ja-boton-cargando" color="primary" [disabled]="enviando()" (click)="enviar()">
-            @if (enviando()) { <ion-spinner /> } @else { Enviar solicitud }
+          <ion-button
+            class="ja-boton-ancho ja-boton-cargando"
+            color="primary"
+            [disabled]="enviando()"
+            (click)="enviar()"
+          >
+            @if (enviando()) {
+              <ion-spinner />
+            } @else {
+              Enviar solicitud
+            }
           </ion-button>
         </div>
       </div>
@@ -147,13 +230,27 @@ export class NuevaReparacionPage implements OnInit {
     }
     this.enviando.set(true);
     // Primero la foto y luego la solicitud con su URL (ADR-019)
-    const subida: Observable<string | undefined> = this.foto ? this.imagenes.subir(this.foto, 'reparaciones') : of(undefined);
+    const subida: Observable<string | undefined> = this.foto
+      ? this.imagenes.subir(this.foto, 'reparaciones')
+      : of(undefined);
     subida
-      .pipe(switchMap((url) => this.servicio.crear({ departamentoId, dispositivo: this.dispositivo.trim(), problema: this.problema.trim(), foto: url })))
+      .pipe(
+        switchMap((url) =>
+          this.servicio.crear({
+            departamentoId,
+            dispositivo: this.dispositivo.trim(),
+            problema: this.problema.trim(),
+            foto: url,
+          }),
+        ),
+      )
       .subscribe({
         next: async (r) => {
           this.enviando.set(false);
-          await this.avisos.informar(`Solicitud ${referenciaReparacion(r.id)} enviada`, 'Tráenos el dispositivo a la tienda. Verás el estado y el presupuesto en «Mis reparaciones».');
+          await this.avisos.informar(
+            `Solicitud ${referenciaReparacion(r.id)} enviada`,
+            'Tráenos el dispositivo a la tienda. Verás el estado y el presupuesto en «Mis reparaciones».',
+          );
           void this.router.navigateByUrl('/reparaciones', { replaceUrl: true });
         },
         error: (err: ApiError) => {
