@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  padding-top: var(--ja-espacio-8);
+}
+
+.cabecera {
+  display: grid;
+  gap: var(--ja-espacio-2);
+  margin-bottom: var(--ja-espacio-6);
+}
+
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ja-espacio-3);
+  padding: var(--ja-espacio-5) 0;
+}
+
+// Buscador de la barra superior de las apps (56 de alto, pastilla superficie-2)
+.buscador {
+  flex: 1 1 320px;
+  display: flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+  min-height: var(--ja-tamano-campo-alto);
+  padding: 0 var(--ja-espacio-4);
+  border-radius: var(--ja-radio-completo);
+  background: var(--ja-superficie-2);
+  color: var(--ja-texto-2);
+  border: var(--ja-borde-grueso) solid transparent;
+  &:focus-within {
+    border-color: var(--ja-marca);
+  }
+  input {
+    flex: 1;
+    min-width: 0;
+    height: var(--ja-tamano-campo-alto);
+    border: 0;
+    background: none;
+    font: var(--ja-tipo-cuerpo-l);
+    color: var(--ja-texto);
+    outline: none;
+    &::placeholder {
+      color: var(--ja-texto-3);
+    }
+  }
+}
+
+.orden {
+  flex: 0 1 260px;
+}
+
+.boton-filtros {
+  display: none;
+}
+
+.cuerpo {
+  display: grid;
+  gap: var(--ja-espacio-8);
+  align-items: start;
+  @media (min-width: 900px) {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+}
+
+.filtros {
+  display: grid;
+  gap: var(--ja-espacio-6);
+  @media (min-width: 900px) {
+    position: sticky;
+    top: calc(var(--ja-tamano-barra-superior) + var(--ja-espacio-4));
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  legend {
+    margin-bottom: var(--ja-espacio-2);
+    font: var(--ja-tipo-etiqueta);
+    color: var(--ja-texto-2);
+  }
+}
+
+@media (max-width: 899px) {
+  .boton-filtros {
+    display: inline-flex;
+  }
+  .filtros {
+    display: none;
+    padding: var(--ja-espacio-4);
+    border: var(--ja-borde-fino) solid var(--ja-borde);
+    border-radius: var(--ja-radio-l);
+    background: var(--ja-superficie);
+  }
+  .filtros.abiertos {
+    display: grid;
+  }
+}
+
+.total {
+  margin-bottom: var(--ja-espacio-4);
+  font: var(--ja-tipo-etiqueta);
+}
+
+.rejilla {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  transition: opacity var(--ja-duracion-base) var(--ja-curva-estandar);
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (min-width: 1200px) {
+    gap: var(--ja-espacio-5);
+  }
+  // Las portadas de los juegos son verticales (3:4, DESIGN.md §6)
+  &.portadas {
+    --proporcion-tarjeta: 3 / 4;
+  }
+  // Mientras llega la página siguiente se ve la anterior atenuada (no un spinner a pantalla completa)
+  &.recargando {
+    opacity: 0.5;
+  }
+}
+
+.esqueleto {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--ja-radio-l);
+}

@@ -1,0 +1,212 @@
+<!-- PW-13 Clientes -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Clientes</h1>
+    <p>
+      Las cuentas de quienes compran, alquilan y piden reparaciones en las apps. Normalmente se
+      registran solos desde la app.
+    </p>
+  </div>
+  <button type="button" class="ja-boton" (click)="nuevo()">
+    <ja-icono nombre="person_add" />Nuevo cliente
+  </button>
+</header>
+
+<div class="ja-filtros">
+  <div class="ja-campo ja-campo--ancho">
+    <label for="buscar">Buscar</label>
+    <input
+      id="buscar"
+      type="search"
+      [value]="q()"
+      placeholder="Nombre, apellidos o email"
+      (input)="buscar($event)"
+    />
+  </div>
+  <div class="ja-chips" role="group" aria-label="Estado de la cuenta">
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="!desactivados()"
+      (click)="navegar({ desactivados: null, page: null })"
+    >
+      Activos
+    </button>
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="desactivados()"
+      (click)="navegar({ desactivados: 1, page: null })"
+    >
+      Desactivados
+    </button>
+  </div>
+</div>
+
+@if (clientes.hasValue()) {
+  @if (clientes.value().items.length) {
+    <div class="ja-tabla-caja">
+      <table class="ja-tabla">
+        <caption class="ja-oculto">
+          Clientes
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Cliente</th>
+            <th scope="col">DNI</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Cuenta</th>
+            <th scope="col"><span class="ja-oculto">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of clientes.value().items; track u.id) {
+            <tr [class.retirado]="!u.activo">
+              <td>
+                <div class="persona">
+                  <ja-imagen class="avatar" [src]="u.foto" [alt]="'Foto de ' + u.nombre" />
+                  <div>
+                    <div class="fuerte">{{ u.nombre }} {{ u.apellidos }}</div>
+                    <div class="ja-etiqueta-s ja-t2">{{ u.email }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="codigo">{{ u.dni }}</td>
+              <td class="codigo">{{ u.telefono }}</td>
+              <td>
+                @if (u.activo) {
+                  <ja-pastilla clase="exito" icono="check_circle" texto="Activa" />
+                } @else {
+                  <ja-pastilla clase="neutro" icono="lock" texto="Desactivada" />
+                }
+              </td>
+              <td class="acciones">
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="'Editar a ' + u.nombre"
+                  (click)="editar(u)"
+                >
+                  <ja-icono nombre="edit" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="(u.activo ? 'Desactivar a ' : 'Activar a ') + u.nombre"
+                  [title]="u.activo ? 'Desactivar cuenta' : 'Activar cuenta'"
+                  (click)="cambiarActivo(u)"
+                >
+                  <ja-icono [nombre]="u.activo ? 'lock' : 'check_circle'" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono ja-boton-icono--peligro"
+                  [attr.aria-label]="'Borrar a ' + u.nombre"
+                  (click)="borrar(u)"
+                >
+                  <ja-icono nombre="delete" />
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <ja-paginador
+      [page]="clientes.value().page"
+      [limit]="clientes.value().limit"
+      [total]="clientes.value().total"
+      (cambiar)="navegar({ page: $event })"
+    />
+  } @else {
+    <ja-estado-vista
+      tipo="vacio"
+      icono="group"
+      [titulo]="
+        q()
+          ? 'Nadie coincide con «' + q() + '»'
+          : 'No hay clientes ' + (desactivados() ? 'desactivados' : 'activos')
+      "
+      texto="Prueba con otra búsqueda."
+    />
+  }
+} @else if (clientes.error()) {
+  <ja-estado-vista tipo="error" (reintentar)="clientes.reload()" />
+} @else {
+  <ja-estado-vista tipo="cargando" />
+}
+
+<ja-hoja
+  [abierta]="hojaAbierta()"
+  [titulo]="editando() ? 'Editar cliente' : 'Nuevo cliente'"
+  (cerrar)="hojaAbierta.set(false)"
+>
+  <form id="form-cliente" class="ja-form" [formRoot]="formulario">
+    @if (error()) {
+      <p class="ja-aviso-linea" role="alert"><ja-icono nombre="error" />{{ error() }}</p>
+    }
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="c-nombre">Nombre</label>
+        <input id="c-nombre" autocomplete="off" [formField]="formulario.nombre" />
+        <ja-error-campo [campo]="formulario.nombre" />
+      </div>
+      <div class="ja-campo">
+        <label for="c-apellidos">Apellidos</label>
+        <input id="c-apellidos" autocomplete="off" [formField]="formulario.apellidos" />
+        <ja-error-campo [campo]="formulario.apellidos" />
+      </div>
+    </div>
+    <div class="ja-campo">
+      <label for="c-email">Email</label>
+      <input id="c-email" type="email" autocomplete="off" [formField]="formulario.email" />
+      <ja-error-campo [campo]="formulario.email" />
+    </div>
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="c-telefono">Teléfono</label>
+        <input id="c-telefono" type="tel" autocomplete="off" [formField]="formulario.telefono" />
+        <ja-error-campo [campo]="formulario.telefono" />
+      </div>
+      <div class="ja-campo">
+        <label for="c-dni">DNI / NIE</label>
+        <input id="c-dni" autocomplete="off" [formField]="formulario.dni" />
+        <ja-error-campo [campo]="formulario.dni" />
+      </div>
+    </div>
+    <div class="ja-campo">
+      <label for="c-password">{{
+        editando() ? 'Nueva contraseña (opcional)' : 'Contraseña inicial'
+      }}</label>
+      <input
+        id="c-password"
+        type="password"
+        autocomplete="new-password"
+        [formField]="formulario.password"
+      />
+      <ja-error-campo [campo]="formulario.password" />
+      <span class="ja-ayuda"
+        >Al menos 8 caracteres.{{ editando() ? ' Déjala vacía para no cambiarla.' : '' }}</span
+      >
+    </div>
+    @if (editando()) {
+      <label class="ja-casilla"
+        ><input type="checkbox" [formField]="formulario.activo" />Cuenta activa (puede entrar en las
+        apps)</label
+      >
+    }
+  </form>
+  <div pie>
+    <button type="button" class="ja-boton ja-boton--texto" (click)="hojaAbierta.set(false)">
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      form="form-cliente"
+      class="ja-boton"
+      [disabled]="formulario().submitting()"
+    >
+      <ja-icono nombre="check" />{{ editando() ? 'Guardar cambios' : 'Dar de alta' }}
+    </button>
+  </div>
+</ja-hoja>

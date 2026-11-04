@@ -1,0 +1,401 @@
+<!-- PW-11 Productos -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Productos</h1>
+    <p>
+      Alta, edición y retirada del catálogo. Lo retirado deja de verse en la web y en las apps, pero
+      sigue en los pedidos antiguos.
+    </p>
+  </div>
+  <button type="button" class="ja-boton" (click)="nuevo()">
+    <ja-icono nombre="add" /> Nuevo producto
+  </button>
+</header>
+
+<nav class="ja-pestanas" aria-label="Tipo de producto">
+  @for (t of listaTipos; track t) {
+    <button type="button" [attr.aria-selected]="tipo() === t" (click)="cambiarTipo(t)">
+      <ja-icono [nombre]="tipos[t].icono" />{{ tipos[t].plural }}
+    </button>
+  }
+</nav>
+
+<div class="ja-filtros barra">
+  <div class="ja-campo ja-campo--ancho">
+    <label for="buscar">Buscar</label>
+    <input
+      id="buscar"
+      type="search"
+      [value]="q()"
+      placeholder="Nombre del producto"
+      (input)="buscar(valor($event))"
+    />
+  </div>
+  <div class="ja-chips" role="group" aria-label="Estado en el catálogo">
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="!retirados()"
+      (click)="navegar({ retirados: null, page: null })"
+    >
+      <ja-icono nombre="check" />A la venta
+    </button>
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="retirados()"
+      (click)="navegar({ retirados: 1, page: null })"
+    >
+      <ja-icono nombre="visibility_off" />Retirados
+    </button>
+  </div>
+</div>
+
+@if (productos.hasValue()) {
+  @if (productos.value().items.length) {
+    <div class="ja-tabla-caja">
+      <table class="ja-tabla">
+        <caption class="ja-oculto">
+          {{
+            tipos[tipo()].plural
+          }}
+          {{
+            retirados() ? 'retirados' : 'a la venta'
+          }}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col" class="num">Precio</th>
+            <th scope="col">Stock</th>
+            @if (tipo() === 'videojuego') {
+              <th scope="col">Alquiler</th>
+            }
+            <th scope="col"><span class="ja-oculto">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of productos.value().items; track p.id) {
+            <tr [class.retirado]="!p.activo">
+              <td>
+                <div class="ja-celda-producto">
+                  <ja-imagen class="ja-miniatura" [src]="p.imagen" [alt]="p.nombre" />
+                  <div>
+                    <div class="fuerte">{{ p.nombre }}</div>
+                    <div class="ja-etiqueta-s ja-t2">{{ subtitulo(p) }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="num">{{ precio(p.precio) }}</td>
+              <td>
+                @if (p.stock === 0) {
+                  <ja-pastilla clase="stock-agotado" texto="Agotado" />
+                } @else if ((p.stock ?? 0) <= 2) {
+                  <ja-pastilla
+                    clase="stock-pocas-unidades"
+                    icono="warning"
+                    [texto]="p.stock + ' uds.'"
+                  />
+                } @else {
+                  <ja-pastilla clase="stock-disponible" [texto]="p.stock + ' uds.'" />
+                }
+              </td>
+              @if (tipo() === 'videojuego') {
+                <td>
+                  <div class="alquiler">
+                    <span class="ja-precio-s">{{ precio(p.precioAlquiler) }}/día</span>
+                    <ja-vida
+                      [llenos]="copias(p)"
+                      [total]="5"
+                      color="var(--ja-alquiler)"
+                      [etiqueta]="
+                        (p.copiasDisponibles ?? 0) +
+                        ' de ' +
+                        (p.copiasAlquiler ?? 0) +
+                        ' copias libres'
+                      "
+                    />
+                    <span class="ja-etiqueta-s ja-t2"
+                      >{{ p.copiasDisponibles ?? 0 }} de {{ p.copiasAlquiler ?? 0 }} copias
+                      libres</span
+                    >
+                  </div>
+                </td>
+              }
+              <td class="acciones">
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="'Editar ' + p.nombre"
+                  (click)="abrirEdicion(p)"
+                >
+                  <ja-icono nombre="edit" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="
+                    (p.activo ? 'Retirar del catálogo: ' : 'Volver a poner a la venta: ') + p.nombre
+                  "
+                  [title]="p.activo ? 'Retirar del catálogo' : 'Volver a poner a la venta'"
+                  (click)="cambiarActivo(p)"
+                >
+                  <ja-icono [nombre]="p.activo ? 'visibility_off' : 'visibility'" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono ja-boton-icono--peligro"
+                  [attr.aria-label]="'Borrar ' + p.nombre"
+                  (click)="borrar(p)"
+                >
+                  <ja-icono nombre="delete" />
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <ja-paginador
+      [page]="productos.value().page"
+      [limit]="productos.value().limit"
+      [total]="productos.value().total"
+      (cambiar)="navegar({ page: $event })"
+    />
+  } @else {
+    <ja-estado-vista
+      tipo="vacio"
+      [titulo]="
+        q()
+          ? 'Nada coincide con «' + q() + '»'
+          : retirados()
+            ? 'No hay productos retirados'
+            : 'Todavía no hay ' + tipos[tipo()].plural.toLowerCase()
+      "
+      texto="Cambia la búsqueda o da de alta un producto nuevo."
+    />
+  }
+} @else if (productos.error()) {
+  <ja-estado-vista
+    tipo="error"
+    [texto]="productos.error()?.message ?? ''"
+    (reintentar)="productos.reload()"
+  />
+} @else {
+  <ja-estado-vista tipo="cargando" />
+}
+
+<!-- Hoja de alta / edición -->
+<ja-hoja [abierta]="hojaAbierta()" [titulo]="tituloHoja()" (cerrar)="cerrarHoja()">
+  <form id="form-producto" class="ja-form" [formRoot]="formulario">
+    @if (errorForm()) {
+      <p class="ja-aviso-linea" role="alert"><ja-icono nombre="error" />{{ errorForm() }}</p>
+    }
+
+    @if (!editando()) {
+      <fieldset class="tipo">
+        <legend class="ja-campo__etiqueta">Tipo de producto</legend>
+        <div class="ja-chips">
+          @for (t of listaTipos; track t) {
+            <button
+              type="button"
+              class="ja-chip"
+              [attr.aria-pressed]="tipoForm() === t"
+              (click)="tipoForm.set(t)"
+            >
+              <ja-icono [nombre]="tipos[t].icono" />{{ tipos[t].singular }}
+            </button>
+          }
+        </div>
+      </fieldset>
+    }
+
+    <ja-subir-imagen carpeta="productos" etiqueta="Foto del producto" [(url)]="imagen" />
+
+    <div class="ja-campo">
+      <label for="p-nombre">Nombre</label>
+      <input
+        id="p-nombre"
+        [formField]="formulario.nombre"
+        [attr.aria-invalid]="formulario.nombre().touched() && formulario.nombre().invalid()"
+      />
+      <ja-error-campo [campo]="formulario.nombre" />
+    </div>
+
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="p-marca">Marca</label>
+        <select
+          id="p-marca"
+          [formField]="formulario.marcaId"
+          [attr.aria-invalid]="formulario.marcaId().touched() && formulario.marcaId().invalid()"
+        >
+          <option value="">Elige una marca</option>
+          @if (marcas.hasValue()) {
+            @for (m of marcas.value(); track m.id) {
+              <option [value]="m.id">{{ m.nombre }}</option>
+            }
+          }
+        </select>
+        <ja-error-campo [campo]="formulario.marcaId" />
+      </div>
+      <div class="ja-campo">
+        <label for="p-precio">Precio (€)</label>
+        <input
+          id="p-precio"
+          type="number"
+          step="0.01"
+          inputmode="decimal"
+          [formField]="formulario.precio"
+        />
+        <ja-error-campo [campo]="formulario.precio" />
+      </div>
+      <div class="ja-campo">
+        <label for="p-stock">Stock (uds.)</label>
+        <input
+          id="p-stock"
+          type="number"
+          step="1"
+          inputmode="numeric"
+          [formField]="formulario.stock"
+        />
+        <ja-error-campo [campo]="formulario.stock" />
+      </div>
+    </div>
+
+    @switch (tipoForm()) {
+      @case ('videojuego') {
+        <p class="ja-form-seccion">Videojuego</p>
+        <div class="ja-form-fila">
+          <div class="ja-campo">
+            <label for="p-plataforma">Plataforma</label>
+            <select id="p-plataforma" [formField]="formulario.plataformaId">
+              <option value="">Elige una plataforma</option>
+              @if (plataformas.hasValue()) {
+                @for (pl of plataformas.value(); track pl.id) {
+                  <option [value]="pl.id">{{ pl.nombre }}</option>
+                }
+              }
+            </select>
+            <ja-error-campo [campo]="formulario.plataformaId" />
+          </div>
+          <div class="ja-campo">
+            <label for="p-genero">Género</label>
+            <input id="p-genero" [formField]="formulario.genero" placeholder="Aventura" />
+            <ja-error-campo [campo]="formulario.genero" />
+          </div>
+          <div class="ja-campo">
+            <label for="p-pegi">PEGI</label>
+            <select id="p-pegi" [formField]="formulario.pegi">
+              @for (e of edadesPegi; track e) {
+                <option [value]="e">PEGI {{ e }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="ja-form-fila">
+          <div class="ja-campo">
+            <label for="p-alquiler">Alquiler por día (€)</label>
+            <input
+              id="p-alquiler"
+              type="number"
+              step="0.01"
+              [formField]="formulario.precioAlquiler"
+            />
+            <ja-error-campo [campo]="formulario.precioAlquiler" />
+          </div>
+          <div class="ja-campo">
+            <label for="p-copias">Copias para alquilar</label>
+            <input id="p-copias" type="number" step="1" [formField]="formulario.copiasAlquiler" />
+            <ja-error-campo [campo]="formulario.copiasAlquiler" />
+          </div>
+        </div>
+      }
+      @case ('movil') {
+        <p class="ja-form-seccion">Móvil o tablet</p>
+        <div class="ja-form-fila">
+          <div class="ja-campo">
+            <label for="p-formato">Formato</label>
+            <select id="p-formato" [formField]="formulario.formato">
+              <option value="movil">Móvil</option>
+              <option value="tablet">Tablet</option>
+            </select>
+          </div>
+          <div class="ja-campo">
+            <label for="p-pantalla">Pantalla (pulgadas)</label>
+            <input
+              id="p-pantalla"
+              type="number"
+              step="0.1"
+              [formField]="formulario.pantallaPulgadas"
+            />
+            <ja-error-campo [campo]="formulario.pantallaPulgadas" />
+          </div>
+          <div class="ja-campo">
+            <label for="p-ram">RAM (GB)</label>
+            <input id="p-ram" type="number" step="1" [formField]="formulario.ramGb" />
+            <ja-error-campo [campo]="formulario.ramGb" />
+          </div>
+          <div class="ja-campo">
+            <label for="p-almacen">Almacenamiento (GB)</label>
+            <input
+              id="p-almacen"
+              type="number"
+              step="1"
+              [formField]="formulario.almacenamientoGb"
+            />
+            <ja-error-campo [campo]="formulario.almacenamientoGb" />
+          </div>
+        </div>
+      }
+      @case ('consola') {
+        <p class="ja-form-seccion">Consola</p>
+        <div class="ja-form-fila">
+          <div class="ja-campo">
+            <label for="p-modelo">Modelo</label>
+            <input id="p-modelo" [formField]="formulario.modelo" placeholder="CFI-2016" />
+            <ja-error-campo [campo]="formulario.modelo" />
+          </div>
+          <div class="ja-campo">
+            <label for="p-almacen-c">Almacenamiento (GB)</label>
+            <input
+              id="p-almacen-c"
+              type="number"
+              step="1"
+              [formField]="formulario.almacenamientoGb"
+            />
+            <ja-error-campo [campo]="formulario.almacenamientoGb" />
+          </div>
+        </div>
+      }
+    }
+
+    <div class="ja-campo">
+      <label for="p-descripcion">Descripción</label>
+      <textarea id="p-descripcion" [formField]="formulario.descripcion" rows="4"></textarea>
+    </div>
+
+    <label class="ja-casilla">
+      <input type="checkbox" [formField]="formulario.activo" />
+      A la venta (si lo desmarcas, se retira del catálogo)
+    </label>
+  </form>
+
+  <div pie>
+    <button type="button" class="ja-boton ja-boton--texto" (click)="cerrarHoja()">Cancelar</button>
+    <button
+      type="submit"
+      form="form-producto"
+      class="ja-boton"
+      [disabled]="formulario().submitting()"
+    >
+      <ja-icono nombre="check" />{{
+        formulario().submitting()
+          ? 'Guardando…'
+          : editando()
+            ? 'Guardar cambios'
+            : 'Añadir al catálogo'
+      }}
+    </button>
+  </div>
+</ja-hoja>

@@ -1,0 +1,134 @@
+<!-- PW-03 Detalle de producto -->
+<div class="ja-contenedor">
+  @if (producto.hasValue()) {
+    @let p = producto.value();
+    <nav class="migas" aria-label="Estás en">
+      <a routerLink="/catalogo" [queryParams]="{ tipo: p.tipo }"
+        ><ja-icono nombre="arrow_back" />{{ tipos[p.tipo].plural }}</a
+      >
+    </nav>
+
+    <article class="ficha">
+      <div class="ficha__imagen ja-muesca--destacada" [class.portada]="p.tipo === 'videojuego'">
+        <ja-imagen [src]="p.imagen" [alt]="p.nombre" [prioridad]="true" />
+      </div>
+
+      <div class="ficha__datos">
+        <p class="ficha__tipo">
+          <ja-icono [nombre]="tipos[p.tipo].icono" />{{ tipos[p.tipo].singular }}
+        </p>
+        <h1 class="ja-titular-l">{{ p.nombre }}</h1>
+        <p class="ja-t2 ja-cuerpo-l">{{ subtitulo() }}</p>
+
+        <div class="ticket">
+          <div class="ticket__fila">
+            <span>Precio</span>
+            <span class="ja-precio grande">{{ precio(p.precio) }}</span>
+          </div>
+          @if (p.tipo === 'videojuego' && p.precioAlquiler) {
+            <div class="ticket__fila alquiler">
+              <span>Alquiler</span>
+              <span class="ja-precio">{{ precio(p.precioAlquiler) }} <small>/ día</small></span>
+            </div>
+          }
+          <div class="ticket__estado">
+            @if (p.disponible) {
+              <span class="ja-estado ja-estado--stock-disponible"
+                ><ja-icono nombre="check_circle" />En stock para comprar</span
+              >
+            } @else {
+              <span class="ja-estado ja-estado--stock-agotado"
+                ><ja-icono nombre="remove" />Agotado para comprar</span
+              >
+            }
+            @if (p.tipo === 'videojuego') {
+              @if (p.alquilable) {
+                <span class="ja-estado ja-estado--alquiler-activo"
+                  ><ja-icono nombre="event" />Copias libres para alquilar</span
+                >
+              } @else {
+                <span class="ja-estado ja-estado--alquiler-devuelto"
+                  ><ja-icono nombre="schedule" />Sin copias de alquiler ahora</span
+                >
+              }
+            }
+          </div>
+        </div>
+
+        <!-- En la web no se compra (ADR-024): se avisa de que se hace desde la app -->
+        <div class="en-app">
+          <ja-icono nombre="smartphone" />
+          <div>
+            <p class="ja-subtitulo">Disponible en la app Almi Companion</p>
+            <p class="ja-cuerpo ja-t2">
+              @if (p.tipo === 'videojuego') {
+                Cómpralo o alquílalo por días desde la app, y recógelo en la tienda o recíbelo en
+                casa.
+              } @else {
+                Cómpralo desde la app y recógelo en la tienda o recíbelo en casa.
+              }
+            </p>
+            <a
+              class="ja-boton ja-boton--secundario ja-boton--peque"
+              [routerLink]="'/'"
+              fragment="app"
+              >Conocer la app</a
+            >
+          </div>
+        </div>
+
+        @if (p.descripcion) {
+          <section class="bloque">
+            <h2 class="ja-titulo">Descripción</h2>
+            <p class="ja-cuerpo-l">{{ p.descripcion }}</p>
+          </section>
+        }
+
+        @if (caracteristicas().length) {
+          <section class="bloque">
+            <h2 class="ja-titulo">Características</h2>
+            <dl class="caracteristicas">
+              @for (c of caracteristicas(); track c.nombre) {
+                <div>
+                  <dt>{{ c.nombre }}</dt>
+                  <dd>{{ c.valor }}</dd>
+                </div>
+              }
+            </dl>
+          </section>
+        }
+      </div>
+    </article>
+
+    @if (relacionados.hasValue() && relacionados.value().length) {
+      <section class="relacionados" aria-labelledby="t-relacionados">
+        <h2 id="t-relacionados" class="ja-titular-m">
+          Más {{ tipos[p.tipo].plural.toLowerCase() }}
+        </h2>
+        <div class="rejilla" [class.portadas]="p.tipo === 'videojuego'">
+          @for (r of relacionados.value(); track r.id) {
+            <ja-tarjeta-producto [producto]="r" />
+          }
+        </div>
+      </section>
+    }
+  } @else if (producto.error()) {
+    <ja-estado-vista
+      tipo="vacio"
+      icono="search"
+      titulo="Este producto no está en el catálogo"
+      texto="Puede que se haya retirado o que el enlace esté mal. Busca otro en el catálogo."
+    >
+      <a class="ja-boton ja-boton--secundario" routerLink="/catalogo">Ir al catálogo</a>
+    </ja-estado-vista>
+  } @else {
+    <div class="ficha cargando">
+      <span class="ja-esqueleto" style="aspect-ratio: 3 / 4"></span>
+      <div class="ficha__datos">
+        <span class="ja-esqueleto" style="height: var(--ja-espacio-10)"></span>
+        <span class="ja-esqueleto" style="height: var(--ja-espacio-6); width: 50%"></span>
+        <span class="ja-esqueleto" style="height: 160px"></span>
+      </div>
+    </div>
+  }
+</div>

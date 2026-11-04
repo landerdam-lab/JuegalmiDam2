@@ -168,6 +168,11 @@ symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/ap
 # Ionic (ionic/)
 npm install && ionic serve
 ionic build && npx cap sync android            # APK vía Android Studio
+
+# Web (web/, Angular 22.2) · URL de la API en src/environments/environment.ts · guía en web/README.md
+npm install && npm start                       # http://localhost:4200 (la API necesita CORS para este origen)
+npm test                                       # pruebas unitarias (Vitest)
+npm run build                                  # dist/almi-companion-web/browser
 ```
 
 ---

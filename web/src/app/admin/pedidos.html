@@ -1,0 +1,402 @@
+<!-- PW-15 Pedidos y alquileres -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Pedidos y alquileres</h1>
+    <p>
+      Los clientes compran y alquilan desde las apps. Aquí se preparan, se entregan y se registran
+      las devoluciones.
+    </p>
+  </div>
+</header>
+
+<nav class="ja-pestanas" aria-label="Vista">
+  <button
+    type="button"
+    [attr.aria-selected]="vista() === 'pedidos'"
+    (click)="cambiarVista('pedidos')"
+  >
+    <ja-icono nombre="receipt_long" />Pedidos
+  </button>
+  <button
+    type="button"
+    [attr.aria-selected]="vista() === 'alquileres'"
+    (click)="cambiarVista('alquileres')"
+  >
+    <ja-icono nombre="event" />Alquileres
+  </button>
+</nav>
+
+<div class="ja-chips filtros" role="group" aria-label="Filtrar por estado">
+  <button
+    type="button"
+    class="ja-chip"
+    [attr.aria-pressed]="!estado()"
+    (click)="navegar({ estado: null, page: null })"
+  >
+    Todos
+  </button>
+  @if (vista() === 'pedidos') {
+    @for (e of listaEstadosP; track e) {
+      <button
+        type="button"
+        class="ja-chip"
+        [attr.aria-pressed]="estado() === e"
+        (click)="navegar({ estado: e, page: null })"
+      >
+        <ja-icono [nombre]="estadosPedido[e].icono" />{{ estadosPedido[e].texto }}
+      </button>
+    }
+  } @else {
+    @for (e of listaEstadosA; track e) {
+      <button
+        type="button"
+        class="ja-chip"
+        [attr.aria-pressed]="estado() === e"
+        (click)="navegar({ estado: e, page: null })"
+      >
+        <ja-icono [nombre]="estadosAlquiler[e].icono" />{{ estadosAlquiler[e].texto }}
+      </button>
+    }
+  }
+</div>
+
+@if (vista() === 'pedidos') {
+  @if (listaPedidos.hasValue()) {
+    @if (listaPedidos.value().items.length) {
+      <div class="ja-tabla-caja">
+        <table class="ja-tabla">
+          <caption class="ja-oculto">
+            Pedidos
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Pedido</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Entrega</th>
+              <th scope="col" class="num">Total</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of listaPedidos.value().items; track p.id) {
+              <tr class="clicable" (click)="verPedido(p.id)">
+                <td>
+                  <button
+                    type="button"
+                    class="enlace-fila"
+                    (click)="verPedido(p.id); $event.stopPropagation()"
+                  >
+                    <span class="codigo">{{ ref(p.id) }}</span>
+                  </button>
+                  <div class="ja-etiqueta-s ja-t2">{{ fechaHora(p.fecha) }}</div>
+                </td>
+                <td>
+                  <div class="fuerte">{{ p.cliente.nombre }} {{ p.cliente.apellidos }}</div>
+                  <div class="ja-etiqueta-s ja-t2">
+                    {{ lineas(p) }} {{ lineas(p) === 1 ? 'artículo' : 'artículos' }} ·
+                    {{ metodoPago(p.metodoPago) }}
+                  </div>
+                </td>
+                <td>
+                  @if (p.entrega === 'domicilio') {
+                    <span class="entrega"><ja-icono nombre="local_shipping" />A domicilio</span>
+                  } @else {
+                    <span class="entrega"><ja-icono nombre="storefront" />En tienda</span>
+                  }
+                </td>
+                <td class="num">{{ precio(p.total) }}</td>
+                <td>
+                  <div class="estado">
+                    <ja-pastilla
+                      [clase]="'pedido-' + p.estado"
+                      [icono]="estadosPedido[p.estado].icono"
+                      [texto]="estadosPedido[p.estado].texto"
+                    />
+                    @if (p.estado !== 'cancelado') {
+                      <ja-vida
+                        [llenos]="estadosPedido[p.estado].paso"
+                        [total]="3"
+                        color="var(--ja-exito)"
+                      />
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <ja-paginador
+        [page]="listaPedidos.value().page"
+        [limit]="listaPedidos.value().limit"
+        [total]="listaPedidos.value().total"
+        (cambiar)="navegar({ page: $event })"
+      />
+    } @else {
+      <ja-estado-vista
+        tipo="vacio"
+        icono="receipt_long"
+        titulo="No hay pedidos con ese estado"
+        texto="Cuando un cliente compre o alquile desde la app, aparecerá aquí."
+      />
+    }
+  } @else if (listaPedidos.error()) {
+    <ja-estado-vista tipo="error" (reintentar)="listaPedidos.reload()" />
+  } @else {
+    <ja-estado-vista tipo="cargando" />
+  }
+} @else {
+  @if (listaAlquileres.hasValue()) {
+    @if (listaAlquileres.value().items.length) {
+      <div class="ja-tabla-caja">
+        <table class="ja-tabla">
+          <caption class="ja-oculto">
+            Alquileres
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Videojuego</th>
+              <th scope="col">Pedido</th>
+              <th scope="col">Del</th>
+              <th scope="col">Al</th>
+              <th scope="col">Plazo</th>
+              <th scope="col" class="num">Importe</th>
+              <th scope="col"><span class="ja-oculto">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of listaAlquileres.value().items; track a.id) {
+              <tr>
+                <td>
+                  <div class="ja-celda-producto">
+                    <ja-imagen
+                      class="ja-miniatura"
+                      [src]="a.videojuego.imagen"
+                      [alt]="a.videojuego.nombre"
+                    />
+                    <div>
+                      <div class="fuerte">{{ a.videojuego.nombre }}</div>
+                      <div class="ja-etiqueta-s ja-t2">
+                        {{ a.videojuego.plataforma?.nombre }} · {{ a.dias }} días a
+                        {{ precio(a.precioDia) }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  @if (a.pedidoId) {
+                    <button type="button" class="enlace-fila" (click)="verPedido(a.pedidoId)">
+                      <span class="codigo">{{ ref(a.pedidoId) }}</span>
+                    </button>
+                  }
+                </td>
+                <td class="codigo">{{ fecha(a.fechaInicio) }}</td>
+                <td class="codigo">{{ fecha(a.fechaFin) }}</td>
+                <td>
+                  @switch (a.estado) {
+                    @case ('devuelto') {
+                      <ja-pastilla
+                        clase="alquiler-devuelto"
+                        icono="assignment_return"
+                        [texto]="'Devuelto el ' + fecha(a.fechaDevolucion ?? a.fechaFin)"
+                      />
+                    }
+                    @case ('cancelado') {
+                      <ja-pastilla
+                        clase="alquiler-cancelado"
+                        icono="cancel"
+                        texto="Pedido cancelado"
+                      />
+                    }
+                    @case ('retrasado') {
+                      <ja-pastilla clase="alquiler-retrasado" icono="warning" [texto]="plazo(a)" />
+                    }
+                    @default {
+                      <ja-pastilla clase="alquiler-activo" icono="event" [texto]="plazo(a)" />
+                    }
+                  }
+                </td>
+                <td class="num">{{ precio(a.subtotal) }}</td>
+                <td class="acciones">
+                  @if (a.estado === 'activo' || a.estado === 'retrasado') {
+                    <button
+                      type="button"
+                      class="ja-boton ja-boton--alquilar ja-boton--peque"
+                      (click)="devolver(a)"
+                    >
+                      <ja-icono nombre="assignment_return" />Registrar devolución
+                    </button>
+                  } @else if (a.estado === 'devuelto') {
+                    <button
+                      type="button"
+                      class="ja-boton ja-boton--texto ja-boton--peque"
+                      (click)="deshacer(a)"
+                    >
+                      <ja-icono nombre="undo" />Deshacer
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <ja-paginador
+        [page]="listaAlquileres.value().page"
+        [limit]="listaAlquileres.value().limit"
+        [total]="listaAlquileres.value().total"
+        (cambiar)="navegar({ page: $event })"
+      />
+    } @else {
+      <ja-estado-vista
+        tipo="vacio"
+        icono="event"
+        titulo="No hay alquileres con ese estado"
+        texto="Los alquileres se crean desde la app, como línea de un pedido."
+      />
+    }
+  } @else if (listaAlquileres.error()) {
+    <ja-estado-vista tipo="error" (reintentar)="listaAlquileres.reload()" />
+  } @else {
+    <ja-estado-vista tipo="cargando" />
+  }
+}
+
+<!-- Ficha del pedido -->
+<ja-hoja
+  [abierta]="!!seleccionado()"
+  [titulo]="seleccionado() ? 'Pedido ' + ref(seleccionado()!.id) : 'Pedido'"
+  (cerrar)="cerrarFicha()"
+>
+  @if (seleccionado(); as p) {
+    <div class="ficha">
+      <div class="ficha__estado">
+        <ja-pastilla
+          [clase]="'pedido-' + p.estado"
+          [icono]="estadosPedido[p.estado].icono"
+          [texto]="estadosPedido[p.estado].texto"
+        />
+        @if (p.estado !== 'cancelado') {
+          <ja-vida
+            [llenos]="estadosPedido[p.estado].paso"
+            [total]="3"
+            color="var(--ja-exito)"
+            [etiqueta]="'Paso ' + estadosPedido[p.estado].paso + ' de 3'"
+          />
+        }
+        <span class="ja-etiqueta-s ja-t2">{{ fechaHora(p.fecha) }}</span>
+      </div>
+
+      <section class="ficha__bloque">
+        <h3 class="ja-etiqueta ja-t2">Cliente</h3>
+        <p class="ja-subtitulo">{{ p.cliente.nombre }} {{ p.cliente.apellidos }}</p>
+        <a class="ja-cuerpo" [href]="'mailto:' + p.cliente.email">{{ p.cliente.email }}</a>
+      </section>
+
+      @if (p.compras.length) {
+        <section class="ficha__bloque">
+          <h3 class="ja-etiqueta ja-t2">Compras</h3>
+          <ul class="lineas">
+            @for (c of p.compras; track c.id) {
+              <li>
+                <ja-imagen
+                  class="ja-miniatura"
+                  [src]="c.producto.imagen"
+                  [alt]="c.producto.nombre"
+                />
+                <span class="lineas__nombre"
+                  >{{ c.producto.nombre
+                  }}<span class="ja-etiqueta-s ja-t2"
+                    >{{ c.cantidad }} × {{ precio(c.precioUnitario) }}</span
+                  ></span
+                >
+                <span class="ja-precio-s">{{ precio(c.subtotal) }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (p.alquileres.length) {
+        <section class="ficha__bloque">
+          <h3 class="ja-etiqueta ja-t2">Alquileres</h3>
+          <ul class="lineas">
+            @for (a of p.alquileres; track a.id) {
+              <li>
+                <ja-imagen
+                  class="ja-miniatura"
+                  [src]="a.videojuego.imagen"
+                  [alt]="a.videojuego.nombre"
+                />
+                <span class="lineas__nombre">
+                  {{ a.videojuego.nombre }}
+                  <span class="ja-etiqueta-s ja-t2"
+                    >{{ a.dias }} días · del {{ fecha(a.fechaInicio) }} al
+                    {{ fecha(a.fechaFin) }}</span
+                  >
+                </span>
+                <span class="ja-precio-s alquiler">{{ precio(a.subtotal) }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      <div class="ticket">
+        <span>{{ metodoPago(p.metodoPago) }}</span>
+        <span class="ja-precio">Total {{ precio(p.total) }}</span>
+      </div>
+
+      <section class="ficha__bloque">
+        <h3 class="ja-etiqueta ja-t2">Entrega</h3>
+        @if (p.entrega === 'domicilio') {
+          <p class="entrega">
+            <ja-icono nombre="local_shipping" />A domicilio: {{ p.direccionEntrega }}
+          </p>
+          @if (marcaEntrega().length) {
+            <ja-mapa
+              [marcas]="marcaEntrega()"
+              [zoom]="16"
+              etiqueta="Mapa con la dirección de entrega"
+            />
+          }
+        } @else {
+          <p class="entrega"><ja-icono nombre="storefront" />Recogida en la tienda</p>
+        }
+      </section>
+    </div>
+  }
+
+  <div pie>
+    @if (seleccionado(); as p) {
+      <button
+        type="button"
+        class="ja-boton ja-boton--peligro-texto ja-boton--peque borrar"
+        (click)="borrar(p)"
+      >
+        <ja-icono nombre="delete" />Borrar
+      </button>
+      @for (s of siguientes[p.estado]; track s) {
+        @if (s === 'cancelado') {
+          <button
+            type="button"
+            class="ja-boton ja-boton--peligro-texto"
+            [disabled]="cambiando()"
+            (click)="cambiarEstado(p, s)"
+          >
+            <ja-icono nombre="cancel" />{{ accion[s] }}
+          </button>
+        } @else {
+          <button
+            type="button"
+            class="ja-boton"
+            [disabled]="cambiando()"
+            (click)="cambiarEstado(p, s)"
+          >
+            <ja-icono [nombre]="estadosPedido[s].icono" />{{ accion[s] }}
+          </button>
+        }
+      }
+    }
+  </div>
+</ja-hoja>

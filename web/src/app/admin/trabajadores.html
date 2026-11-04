@@ -1,0 +1,248 @@
+<!-- PW-14 Trabajadores -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Trabajadores</h1>
+    <p>
+      Técnicos de cada departamento y administradores. Los técnicos entran en esta web y solo ven
+      las reparaciones de su departamento.
+    </p>
+  </div>
+  <button type="button" class="ja-boton" (click)="nuevo()">
+    <ja-icono nombre="person_add" />Nuevo trabajador
+  </button>
+</header>
+
+<div class="ja-filtros">
+  <div class="ja-campo">
+    <label for="f-puesto">Puesto</label>
+    <select id="f-puesto" (change)="navegar({ puesto: valor($event) || null, page: null })">
+      <option value="" [selected]="!puesto()">Todos</option>
+      <option value="tecnico" [selected]="puesto() === 'tecnico'">Técnicos</option>
+      <option value="admin" [selected]="puesto() === 'admin'">Administradores</option>
+    </select>
+  </div>
+  <div class="ja-campo">
+    <label for="f-departamento">Departamento</label>
+    <select
+      id="f-departamento"
+      (change)="navegar({ departamento: valor($event) || null, page: null })"
+    >
+      <option value="">Todos</option>
+      @if (departamentos.hasValue()) {
+        @for (d of departamentos.value(); track d.id) {
+          <option [value]="d.id" [selected]="departamento() === d.id">{{ d.nombre }}</option>
+        }
+      }
+    </select>
+  </div>
+  <div class="ja-chips" role="group" aria-label="Estado de la cuenta">
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="!desactivados()"
+      (click)="navegar({ desactivados: null, page: null })"
+    >
+      Activos
+    </button>
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="desactivados()"
+      (click)="navegar({ desactivados: 1, page: null })"
+    >
+      Desactivados
+    </button>
+  </div>
+</div>
+
+@if (trabajadores.hasValue()) {
+  @if (trabajadores.value().items.length) {
+    <div class="ja-tabla-caja">
+      <table class="ja-tabla">
+        <caption class="ja-oculto">
+          Trabajadores
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Trabajador</th>
+            <th scope="col">Puesto</th>
+            <th scope="col">Departamento</th>
+            <th scope="col" class="num">Reparaciones abiertas</th>
+            <th scope="col">Cuenta</th>
+            <th scope="col"><span class="ja-oculto">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of trabajadores.value().items; track t.id) {
+            <tr [class.retirado]="!t.activo">
+              <td>
+                <div class="persona">
+                  <span class="iniciales" [class.admin]="t.puesto === 'admin'" aria-hidden="true">{{
+                    iniciales(t)
+                  }}</span>
+                  <div>
+                    <div class="fuerte">{{ t.nombre }} {{ t.apellidos }}</div>
+                    <div class="ja-etiqueta-s ja-t2">{{ t.email }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                @if (t.puesto === 'admin') {
+                  <ja-pastilla clase="marca" icono="shield" texto="Administración" />
+                } @else {
+                  <ja-pastilla clase="info" icono="engineering" texto="Técnico" />
+                }
+              </td>
+              <td>{{ t.departamento?.nombre ?? '—' }}</td>
+              <td class="num">{{ t.reparacionesAbiertas ?? '—' }}</td>
+              <td>
+                @if (t.activo) {
+                  <ja-pastilla clase="exito" icono="check_circle" texto="Activa" />
+                } @else {
+                  <ja-pastilla clase="neutro" icono="lock" texto="Desactivada" />
+                }
+              </td>
+              <td class="acciones">
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="'Editar a ' + t.nombre"
+                  (click)="editar(t)"
+                >
+                  <ja-icono nombre="edit" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="(t.activo ? 'Desactivar a ' : 'Activar a ') + t.nombre"
+                  [title]="t.activo ? 'Desactivar cuenta' : 'Activar cuenta'"
+                  (click)="cambiarActivo(t)"
+                >
+                  <ja-icono [nombre]="t.activo ? 'lock' : 'check_circle'" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono ja-boton-icono--peligro"
+                  [attr.aria-label]="'Borrar a ' + t.nombre"
+                  (click)="borrar(t)"
+                >
+                  <ja-icono nombre="delete" />
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <ja-paginador
+      [page]="trabajadores.value().page"
+      [limit]="trabajadores.value().limit"
+      [total]="trabajadores.value().total"
+      (cambiar)="navegar({ page: $event })"
+    />
+  } @else {
+    <ja-estado-vista
+      tipo="vacio"
+      icono="badge"
+      titulo="No hay trabajadores con esos filtros"
+      texto="Cambia los filtros o da de alta uno nuevo."
+    />
+  }
+} @else if (trabajadores.error()) {
+  <ja-estado-vista tipo="error" (reintentar)="trabajadores.reload()" />
+} @else {
+  <ja-estado-vista tipo="cargando" />
+}
+
+<ja-hoja
+  [abierta]="hojaAbierta()"
+  [titulo]="editando() ? 'Editar trabajador' : 'Nuevo trabajador'"
+  (cerrar)="hojaAbierta.set(false)"
+>
+  <form id="form-trabajador" class="ja-form" [formRoot]="formulario">
+    @if (error()) {
+      <p class="ja-aviso-linea" role="alert"><ja-icono nombre="error" />{{ error() }}</p>
+    }
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="t-nombre">Nombre</label>
+        <input id="t-nombre" autocomplete="off" [formField]="formulario.nombre" />
+        <ja-error-campo [campo]="formulario.nombre" />
+      </div>
+      <div class="ja-campo">
+        <label for="t-apellidos">Apellidos</label>
+        <input id="t-apellidos" autocomplete="off" [formField]="formulario.apellidos" />
+        <ja-error-campo [campo]="formulario.apellidos" />
+      </div>
+    </div>
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="t-email">Email</label>
+        <input id="t-email" type="email" autocomplete="off" [formField]="formulario.email" />
+        <ja-error-campo [campo]="formulario.email" />
+      </div>
+      <div class="ja-campo">
+        <label for="t-telefono">Teléfono</label>
+        <input id="t-telefono" type="tel" autocomplete="off" [formField]="formulario.telefono" />
+        <ja-error-campo [campo]="formulario.telefono" />
+      </div>
+    </div>
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="t-puesto">Puesto</label>
+        <select id="t-puesto" [formField]="formulario.puesto">
+          <option value="tecnico">Técnico</option>
+          <option value="admin">Administración</option>
+        </select>
+      </div>
+      @if (formulario.puesto().value() === 'tecnico') {
+        <div class="ja-campo">
+          <label for="t-departamento">Departamento</label>
+          <select id="t-departamento" [formField]="formulario.departamentoId">
+            <option value="">Elige uno</option>
+            @if (departamentos.hasValue()) {
+              @for (d of departamentos.value(); track d.id) {
+                <option [value]="d.id">{{ d.nombre }}</option>
+              }
+            }
+          </select>
+          <ja-error-campo [campo]="formulario.departamentoId" />
+        </div>
+      }
+    </div>
+    <div class="ja-campo">
+      <label for="t-password">{{
+        editando() ? 'Nueva contraseña (opcional)' : 'Contraseña inicial'
+      }}</label>
+      <input
+        id="t-password"
+        type="password"
+        autocomplete="new-password"
+        [formField]="formulario.password"
+      />
+      <ja-error-campo [campo]="formulario.password" />
+      <span class="ja-ayuda"
+        >Al menos 8 caracteres.{{ editando() ? ' Déjala vacía para no cambiarla.' : '' }}</span
+      >
+    </div>
+    @if (editando() && editando()?.id !== sesion.usuario()?.id) {
+      <label class="ja-casilla"
+        ><input type="checkbox" [formField]="formulario.activo" />Cuenta activa (puede entrar en el
+        backoffice)</label
+      >
+    }
+  </form>
+  <div pie>
+    <button type="button" class="ja-boton ja-boton--texto" (click)="hojaAbierta.set(false)">
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      form="form-trabajador"
+      class="ja-boton"
+      [disabled]="formulario().submitting()"
+    >
+      <ja-icono nombre="check" />{{ editando() ? 'Guardar cambios' : 'Dar de alta' }}
+    </button>
+  </div>
+</ja-hoja>

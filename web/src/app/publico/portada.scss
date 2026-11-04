@@ -1,0 +1,382 @@
+// PW-01 Portada. Todo con tokens --ja-*; los únicos valores propios son los puntos de corte.
+
+:host {
+  display: block;
+}
+
+// ── Hero ──
+.hero {
+  padding: var(--ja-espacio-12) 0 var(--ja-espacio-16);
+  background: var(--ja-fondo);
+  border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+}
+.hero__rejilla {
+  display: grid;
+  gap: var(--ja-espacio-12);
+  align-items: center;
+  @media (min-width: 1024px) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+.hero__titular {
+  font: var(--ja-tipo-display);
+  letter-spacing: var(--ja-tipo-display-espaciado);
+  max-width: 14ch;
+  // En pantallas grandes el titular crece (sin pasar del tamaño display × 1,6)
+  @media (min-width: 720px) {
+    font-size: calc(var(--ja-espacio-12) + var(--ja-espacio-2));
+    line-height: 1.02;
+  }
+  @media (min-width: 1200px) {
+    font-size: calc(var(--ja-espacio-16));
+  }
+  text-wrap: balance;
+}
+.hero__entrada {
+  margin-top: var(--ja-espacio-5);
+  max-width: 46ch;
+  font: var(--ja-tipo-cuerpo-l);
+  color: var(--ja-texto-2);
+  text-wrap: pretty;
+}
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ja-espacio-3);
+  margin-top: var(--ja-espacio-8);
+}
+
+// ── Los tres cartuchos ──
+.cartuchos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ja-espacio-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  @media (min-width: 720px) {
+    gap: var(--ja-espacio-5);
+  }
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cartucho {
+  // Entrada orquestada: los cartuchos bajan y «encajan» uno detrás de otro (curva insertar)
+  animation: insertar var(--ja-duracion-enfasis) var(--ja-curva-insertar) both;
+  animation-delay: calc(var(--orden) * var(--ja-duracion-escalonado) + var(--ja-duracion-base));
+  // El del centro va un poco más alto: las tres piezas no quedan alineadas como una rejilla de tarjetas
+  &:nth-child(2) {
+    @media (min-width: 561px) {
+      margin-top: calc(var(--ja-espacio-8) * -1);
+    }
+  }
+}
+
+@keyframes insertar {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ja-espacio-12) * -1));
+  }
+}
+
+.cartucho__cuerpo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--ja-espacio-3) var(--ja-espacio-3) var(--ja-espacio-8);
+  border-radius: var(--ja-radio-l);
+  background: var(--ja-superficie);
+  border: var(--ja-borde-grueso) solid var(--ja-borde);
+  color: inherit;
+  text-decoration: none;
+  // La muesca grande: el corte que comparten cartucho, tarjeta SD y SIM
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-espacio-10)) 0,
+    100% var(--ja-espacio-10),
+    100% 100%,
+    0 100%
+  );
+  transition:
+    transform var(--ja-duracion-base) var(--ja-curva-insertar),
+    border-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+
+  &:hover {
+    transform: translateY(var(--ja-espacio-1));
+    border-color: var(--ja-marca);
+  }
+  &:hover .cartucho__titulo {
+    color: var(--ja-marca);
+  }
+  &:focus-visible {
+    outline-offset: calc(var(--ja-borde-foco) * -1);
+  }
+}
+
+// La «etiqueta» del cartucho: la foto del producto con su propia muesca
+.cartucho__etiqueta {
+  border-radius: var(--ja-radio-m);
+  overflow: hidden;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-espacio-8)) 0,
+    100% var(--ja-espacio-8),
+    100% 100%,
+    0 100%
+  );
+  ja-imagen {
+    --proporcion: 4 / 5;
+  }
+  @media (max-width: 560px) {
+    ja-imagen {
+      --proporcion: 16 / 9;
+    }
+  }
+}
+
+.cartucho__datos {
+  display: grid;
+  gap: var(--ja-espacio-1);
+  padding: var(--ja-espacio-4) var(--ja-espacio-1) 0;
+}
+.cartucho__icono {
+  display: inline-grid;
+  place-items: center;
+  width: var(--ja-espacio-10);
+  height: var(--ja-espacio-10);
+  margin-bottom: var(--ja-espacio-1);
+  border-radius: var(--ja-radio-m);
+  background: var(--ja-primario);
+  color: var(--ja-sobre-primario);
+}
+.cartucho__titulo {
+  font: var(--ja-tipo-titular-m);
+  letter-spacing: var(--ja-tipo-titular-m-espaciado);
+  transition: color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+}
+.cartucho__texto {
+  font: var(--ja-tipo-cuerpo);
+  color: var(--ja-texto-2);
+}
+.cartucho__total {
+  margin-top: var(--ja-espacio-2);
+  font: var(--ja-tipo-codigo);
+  letter-spacing: var(--ja-tipo-codigo-espaciado);
+  color: var(--ja-marca);
+}
+
+// Los contactos dorados del borde inferior de un cartucho
+.cartucho__contactos {
+  position: absolute;
+  left: var(--ja-espacio-6);
+  right: var(--ja-espacio-6);
+  bottom: var(--ja-espacio-3);
+  display: flex;
+  gap: var(--ja-espacio-2);
+  i {
+    flex: 1;
+    height: var(--ja-espacio-2);
+    border-radius: var(--ja-radio-segmento);
+    background: var(--ja-superficie-3);
+  }
+}
+
+// ── Secciones ──
+.seccion {
+  margin-top: var(--ja-espacio-16);
+}
+.seccion__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ja-espacio-3);
+  margin-bottom: var(--ja-espacio-6);
+  h2 {
+    letter-spacing: var(--ja-tipo-titular-m-espaciado);
+  }
+  p {
+    margin-top: var(--ja-espacio-1);
+  }
+}
+.ver-todo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-1);
+  min-height: var(--ja-tamano-tactil-min);
+  color: var(--ja-marca);
+  font: var(--ja-tipo-etiqueta);
+  text-decoration: none;
+  --tam: var(--ja-tamano-icono-s);
+  ja-icono {
+    transition: transform var(--ja-duracion-rapida) var(--ja-curva-estandar);
+  }
+  &:hover ja-icono {
+    transform: translateX(var(--ja-espacio-1));
+  }
+}
+
+.rejilla {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.esqueleto-tarjeta {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--ja-radio-l);
+}
+
+// ── Reparaciones ──
+.reparar {
+  display: grid;
+  gap: var(--ja-espacio-10);
+  padding: var(--ja-espacio-8) var(--ja-espacio-6);
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    padding: var(--ja-espacio-12);
+  }
+}
+.reparar__texto {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  align-content: start;
+  p {
+    max-width: 52ch;
+  }
+}
+.reparar__icono {
+  display: grid;
+  place-items: center;
+  width: var(--ja-espacio-12);
+  height: var(--ja-espacio-12);
+  border-radius: var(--ja-radio-completo);
+  background: var(--ja-marca-suave);
+  color: var(--ja-marca);
+}
+.proceso {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ja-espacio-3);
+  margin: var(--ja-espacio-4) 0 0;
+  padding: 0;
+  list-style: none;
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  li {
+    display: grid;
+    gap: var(--ja-espacio-2);
+  }
+  ja-vida {
+    --ancho: 0;
+  }
+}
+.proceso__paso {
+  display: flex;
+  align-items: center;
+  gap: var(--ja-espacio-1);
+  font: var(--ja-tipo-etiqueta-s);
+  color: var(--ja-texto-2);
+  --tam: var(--ja-espacio-4);
+}
+.reparar__lista {
+  display: grid;
+  gap: var(--ja-espacio-3);
+  align-content: start;
+}
+.servicios {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--ja-espacio-3);
+    padding: var(--ja-espacio-3) 0;
+    border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+  }
+}
+.servicios__linea {
+  color: var(--ja-texto-3);
+  --tam: var(--ja-tamano-icono-s);
+  display: inline-flex;
+}
+.servicios__nombre {
+  font: var(--ja-tipo-cuerpo);
+}
+
+// ── Tienda ──
+.tienda {
+  display: grid;
+  gap: var(--ja-espacio-6);
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+.tienda__foto {
+  overflow: hidden;
+  ja-imagen {
+    --proporcion: 4 / 3;
+    height: 100%;
+  }
+}
+.tienda__datos {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  align-content: start;
+  ja-mapa {
+    --alto: 260px;
+  }
+}
+
+// ── La app ──
+.app {
+  display: grid;
+  gap: var(--ja-espacio-6);
+  padding: var(--ja-espacio-8) var(--ja-espacio-6);
+  background: var(--ja-marca-suave);
+  border-color: transparent;
+  @media (min-width: 720px) {
+    grid-template-columns: auto 1fr;
+    padding: var(--ja-espacio-12);
+  }
+}
+.app__logo {
+  --alto: 120px;
+  align-self: start;
+}
+.app__texto {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  justify-items: start;
+}
+.app__lista {
+  display: grid;
+  gap: var(--ja-espacio-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--ja-espacio-3);
+    font: var(--ja-tipo-cuerpo-l);
+  }
+  ja-icono {
+    color: var(--ja-marca);
+  }
+}
+.app__nota {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+  color: var(--ja-marca);
+}

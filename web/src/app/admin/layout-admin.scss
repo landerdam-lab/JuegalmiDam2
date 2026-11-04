@@ -1,0 +1,200 @@
+:host {
+  display: block;
+}
+
+.marco {
+  display: grid;
+  min-height: 100vh;
+  @media (min-width: 1024px) {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+}
+
+// ── Menú lateral (drawer con muesca de 24) ──
+.lateral {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border-right: var(--ja-borde-fino) solid var(--ja-borde);
+  background: var(--ja-superficie);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-muesca-destacada)) 0,
+    100% var(--ja-muesca-destacada),
+    100% 100%,
+    0 100%
+  );
+
+  @media (max-width: 1023px) {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    width: min(300px, 86vw);
+    border-radius: 0 var(--ja-radio-xl) var(--ja-radio-xl) 0;
+    transform: translateX(-105%);
+    transition: transform var(--ja-duracion-lenta) var(--ja-curva-estandar);
+    visibility: hidden;
+    .menu-abierto & {
+      transform: none;
+      visibility: visible;
+    }
+  }
+}
+.lateral__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--ja-tamano-barra-superior);
+  padding: 0 var(--ja-espacio-4) 0 var(--ja-espacio-5);
+  a {
+    text-decoration: none;
+  }
+}
+.cerrar-menu {
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ja-espacio-2) var(--ja-espacio-3);
+  ul {
+    margin: 0 0 var(--ja-espacio-4);
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--ja-espacio-1);
+  }
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--ja-espacio-3);
+    min-height: var(--ja-tamano-tactil-min);
+    padding: 0 var(--ja-espacio-3);
+    border-radius: var(--ja-radio-completo);
+    color: var(--ja-texto-2);
+    font: var(--ja-tipo-etiqueta);
+    text-decoration: none;
+    transition: background-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+    &:hover {
+      background: var(--ja-superficie-2);
+      color: var(--ja-texto);
+    }
+    &.activo {
+      background: var(--ja-marca-suave);
+      color: var(--ja-marca);
+    }
+  }
+}
+.grupo {
+  padding: var(--ja-espacio-3) var(--ja-espacio-3) var(--ja-espacio-1);
+  font: var(--ja-tipo-etiqueta-s);
+  color: var(--ja-texto-3);
+}
+.lateral__pie {
+  padding: var(--ja-espacio-3);
+  border-top: var(--ja-borde-fino) solid var(--ja-borde);
+  .web {
+    display: flex;
+    align-items: center;
+    gap: var(--ja-espacio-2);
+    min-height: var(--ja-tamano-tactil-min);
+    padding: 0 var(--ja-espacio-3);
+    color: var(--ja-marca);
+    font: var(--ja-tipo-etiqueta);
+    text-decoration: none;
+    --tam: var(--ja-tamano-icono-s);
+  }
+}
+
+.velo {
+  display: none;
+  @media (max-width: 1023px) {
+    .menu-abierto & {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      border: 0;
+      background: var(--ja-velo);
+    }
+  }
+}
+
+// ── Barra superior ──
+.principal {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+  height: var(--ja-tamano-barra-superior);
+  padding: 0 var(--ja-espacio-4);
+  background: var(--ja-fondo);
+  border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+  @media (min-width: 720px) {
+    padding: 0 var(--ja-espacio-8);
+  }
+}
+.abrir-menu {
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+.usuario {
+  margin-left: auto;
+}
+.usuario__enlace {
+  display: flex;
+  align-items: center;
+  gap: var(--ja-espacio-3);
+  padding: var(--ja-espacio-1) var(--ja-espacio-3) var(--ja-espacio-1) var(--ja-espacio-1);
+  border-radius: var(--ja-radio-completo);
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    background: var(--ja-superficie-2);
+  }
+}
+.usuario__datos {
+  display: grid;
+  @media (max-width: 560px) {
+    display: none;
+  }
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: var(--ja-tamano-avatar);
+  height: var(--ja-tamano-avatar);
+  border-radius: var(--ja-radio-completo);
+  background: var(--ja-marca);
+  color: var(--ja-sobre-marca);
+  font: var(--ja-tipo-etiqueta);
+}
+.salir-texto {
+  @media (max-width: 720px) {
+    display: none;
+  }
+}
+
+.contenido {
+  flex: 1;
+  padding: var(--ja-espacio-6) var(--ja-espacio-4) var(--ja-espacio-16);
+  @media (min-width: 720px) {
+    padding: var(--ja-espacio-8);
+  }
+  &:focus {
+    outline: none;
+  }
+}

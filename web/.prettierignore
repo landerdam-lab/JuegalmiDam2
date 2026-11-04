@@ -1,0 +1,4 @@
+# Copias exactas de design/generated (no se formatean ni se editan a mano)
+src/theme/
+dist/
+.angular/

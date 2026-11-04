@@ -1,0 +1,276 @@
+<!-- PW-16 Reparaciones -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Reparaciones</h1>
+    @if (sesion.esAdmin()) {
+      <p>
+        Las que piden los clientes desde la app. Cada una entra en un departamento y se asigna a uno
+        de sus técnicos.
+      </p>
+    } @else {
+      <p>
+        Las reparaciones del departamento de {{ sesion.usuario()?.departamento?.nombre }}. Cambia su
+        estado y el presupuesto según avances.
+      </p>
+    }
+  </div>
+</header>
+
+<div class="ja-filtros">
+  <div class="ja-chips" role="group" aria-label="Filtrar por estado">
+    <button
+      type="button"
+      class="ja-chip"
+      [attr.aria-pressed]="!estado()"
+      (click)="navegar({ estado: null, page: null })"
+    >
+      Todas
+    </button>
+    @for (e of listaEstados; track e) {
+      <button
+        type="button"
+        class="ja-chip"
+        [attr.aria-pressed]="estado() === e"
+        (click)="navegar({ estado: e, page: null })"
+      >
+        <ja-icono [nombre]="estados[e].icono" />{{ estados[e].texto }}
+      </button>
+    }
+  </div>
+  @if (sesion.esAdmin()) {
+    <div class="ja-campo">
+      <label for="f-dep">Departamento</label>
+      <select id="f-dep" (change)="navegar({ departamento: valor($event) || null, page: null })">
+        <option value="">Todos</option>
+        @if (departamentos.hasValue()) {
+          @for (d of departamentos.value(); track d.id) {
+            <option [value]="d.id" [selected]="departamento() === d.id">{{ d.nombre }}</option>
+          }
+        }
+      </select>
+    </div>
+  }
+</div>
+
+@if (lista.hasValue()) {
+  @if (lista.value().items.length) {
+    <ul class="tarjetas">
+      @for (r of lista.value().items; track r.id) {
+        <li>
+          <button
+            type="button"
+            class="tarjeta ja-panel"
+            (click)="navegar({ reparacion: r.id })"
+            [attr.aria-label]="'Abrir ' + ref(r.id) + ': ' + r.dispositivo"
+          >
+            <ja-imagen
+              class="tarjeta__foto ja-recorte"
+              [src]="r.foto"
+              [alt]="'Foto de ' + r.dispositivo"
+            />
+            <span class="tarjeta__datos">
+              <span class="tarjeta__cabecera">
+                <span class="ja-codigo ja-t2">{{ ref(r.id) }}</span>
+                <span class="ja-etiqueta-s ja-t3">{{ r.departamento?.nombre }}</span>
+              </span>
+              <span class="ja-subtitulo">{{ r.dispositivo }}</span>
+              <span class="ja-cuerpo ja-t2 problema">{{ r.problema }}</span>
+              <span class="tarjeta__pie">
+                <ja-pastilla
+                  [clase]="'reparacion-' + r.estado"
+                  [icono]="estados[r.estado].icono"
+                  [texto]="estados[r.estado].texto"
+                />
+                @if (r.presupuesto !== null) {
+                  <span class="ja-precio-s">{{ precio(r.presupuesto) }}</span>
+                }
+              </span>
+              <ja-vida
+                [llenos]="r.estado === 'cancelada' ? 4 : estados[r.estado].paso"
+                [total]="4"
+                [color]="color[r.estado]"
+              />
+              <span class="ja-etiqueta-s ja-t3"
+                >{{ r.tecnico.nombre }} {{ r.tecnico.apellidos }} · entró el
+                {{ fechaHora(r.fechaEntrada) }}</span
+              >
+            </span>
+          </button>
+        </li>
+      }
+    </ul>
+    <ja-paginador
+      [page]="lista.value().page"
+      [limit]="lista.value().limit"
+      [total]="lista.value().total"
+      (cambiar)="navegar({ page: $event })"
+    />
+  } @else {
+    <ja-estado-vista
+      tipo="vacio"
+      icono="build"
+      titulo="No hay reparaciones con ese estado"
+      texto="Las reparaciones las piden los clientes desde la app."
+    />
+  }
+} @else if (lista.error()) {
+  <ja-estado-vista tipo="error" (reintentar)="lista.reload()" />
+} @else {
+  <ja-estado-vista tipo="cargando" />
+}
+
+<!-- Ficha de la reparación -->
+<ja-hoja
+  [abierta]="!!seleccionada()"
+  [titulo]="seleccionada() ? 'Reparación ' + ref(seleccionada()!.id) : 'Reparación'"
+  (cerrar)="navegar({ reparacion: null })"
+>
+  @if (seleccionada(); as r) {
+    <div class="ficha">
+      <div class="ficha__estado">
+        <ja-pastilla
+          [clase]="'reparacion-' + r.estado"
+          [icono]="estados[r.estado].icono"
+          [texto]="estados[r.estado].texto"
+        />
+        <ja-vida
+          [llenos]="r.estado === 'cancelada' ? 4 : estados[r.estado].paso"
+          [total]="4"
+          [color]="color[r.estado]"
+          [etiqueta]="
+            r.estado === 'cancelada' ? 'Cancelada' : 'Paso ' + estados[r.estado].paso + ' de 4'
+          "
+        />
+      </div>
+
+      @if (r.foto) {
+        <ja-imagen
+          class="ficha__foto ja-muesca--destacada"
+          [src]="r.foto"
+          [alt]="'Foto de ' + r.dispositivo"
+        />
+      } @else {
+        <p class="ja-etiqueta ja-t3">El cliente no adjuntó foto.</p>
+      }
+
+      <section class="bloque">
+        <h3 class="ja-titular-m">{{ r.dispositivo }}</h3>
+        <p class="ja-cuerpo-l">{{ r.problema }}</p>
+        <dl class="datos">
+          <div>
+            <dt>Departamento</dt>
+            <dd>{{ r.departamento?.nombre }}</dd>
+          </div>
+          <div>
+            <dt>Entrada</dt>
+            <dd>{{ fechaHora(r.fechaEntrada) }}</dd>
+          </div>
+          @if (r.fechaSalida) {
+            <div>
+              <dt>Salida</dt>
+              <dd>{{ fechaHora(r.fechaSalida) }}</dd>
+            </div>
+          }
+        </dl>
+      </section>
+
+      <section class="bloque">
+        <h3 class="ja-etiqueta ja-t2">Cliente</h3>
+        <p class="ja-subtitulo">{{ r.cliente.nombre }} {{ r.cliente.apellidos }}</p>
+        <p class="contacto">
+          <a [href]="'mailto:' + r.cliente.email"
+            ><ja-icono nombre="mail" />{{ r.cliente.email }}</a
+          >
+          @if (r.cliente.telefono) {
+            <a [href]="'tel:' + r.cliente.telefono"
+              ><ja-icono nombre="call" />{{ r.cliente.telefono }}</a
+            >
+          }
+        </p>
+      </section>
+
+      <section class="bloque">
+        <div class="ja-campo">
+          <label for="r-presupuesto">Presupuesto (€)</label>
+          <div class="fila">
+            <input
+              id="r-presupuesto"
+              type="text"
+              inputmode="decimal"
+              placeholder="Sin presupuesto todavía"
+              [value]="presupuesto()"
+              [disabled]="!abierta()"
+              (input)="presupuesto.set(valor($event))"
+              (keydown.enter)="guardarPresupuesto(r)"
+            />
+            <button
+              type="button"
+              class="ja-boton ja-boton--secundario ja-boton--peque"
+              [disabled]="!abierta() || guardando()"
+              (click)="guardarPresupuesto(r)"
+            >
+              Guardar
+            </button>
+          </div>
+          <span class="ja-ayuda">El cliente lo ve en la app. Déjalo vacío si aún no lo sabes.</span>
+        </div>
+
+        <div class="ja-campo">
+          <label for="r-tecnico">Técnico</label>
+          @if (sesion.esAdmin() && abierta()) {
+            <select id="r-tecnico" [disabled]="guardando()" (change)="reasignar(r, $event)">
+              @if (tecnicos.hasValue()) {
+                @for (t of tecnicos.value().items; track t.id) {
+                  <option [value]="t.id" [selected]="t.id === r.tecnico.id">
+                    {{ t.nombre }} {{ t.apellidos }} ({{ t.reparacionesAbiertas ?? 0 }} abiertas)
+                  </option>
+                }
+              } @else {
+                <option [value]="r.tecnico.id" selected>
+                  {{ r.tecnico.nombre }} {{ r.tecnico.apellidos }}
+                </option>
+              }
+            </select>
+          } @else {
+            <input id="r-tecnico" [value]="r.tecnico.nombre + ' ' + r.tecnico.apellidos" readonly />
+          }
+        </div>
+      </section>
+    </div>
+  }
+
+  <div pie>
+    @if (seleccionada(); as r) {
+      @if (sesion.esAdmin()) {
+        <button
+          type="button"
+          class="ja-boton ja-boton--peligro-texto ja-boton--peque borrar"
+          (click)="borrar(r)"
+        >
+          <ja-icono nombre="delete" />Borrar
+        </button>
+      }
+      @for (s of siguientes[r.estado]; track s) {
+        @if (s === 'cancelada') {
+          <button
+            type="button"
+            class="ja-boton ja-boton--peligro-texto"
+            [disabled]="guardando()"
+            (click)="cambiarEstado(r, s)"
+          >
+            <ja-icono nombre="cancel" />{{ accion[s] }}
+          </button>
+        } @else {
+          <button
+            type="button"
+            class="ja-boton"
+            [disabled]="guardando()"
+            (click)="cambiarEstado(r, s)"
+          >
+            <ja-icono [nombre]="estados[s].icono" />{{ accion[s] }}
+          </button>
+        }
+      }
+    }
+  </div>
+</ja-hoja>

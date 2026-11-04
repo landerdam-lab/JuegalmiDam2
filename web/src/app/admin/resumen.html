@@ -1,0 +1,217 @@
+<!-- PW-10 Resumen -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>{{ saludo() }}</h1>
+    <p>Esto es lo que necesita atención en la tienda.</p>
+  </div>
+  <button type="button" class="ja-boton ja-boton--secundario ja-boton--peque" (click)="recargar()">
+    <ja-icono nombre="refresh" /> Actualizar
+  </button>
+</header>
+
+<!-- Contadores -->
+<section class="contadores" aria-label="Contadores">
+  <a class="contador ja-panel" routerLink="/admin/pedidos" [queryParams]="{ estado: 'pendiente' }">
+    <span class="contador__icono aviso"><ja-icono nombre="receipt_long" /></span>
+    <span class="contador__numero">{{
+      pendientes.hasValue() ? pendientes.value().total : '–'
+    }}</span>
+    <span class="contador__texto">Pedidos por preparar</span>
+    <span class="contador__extra">{{
+      preparados.hasValue()
+        ? plural(preparados.value().total, 'preparado', 'preparados') + ' para entregar'
+        : ''
+    }}</span>
+  </a>
+  <a
+    class="contador ja-panel"
+    routerLink="/admin/pedidos"
+    [queryParams]="{ vista: 'alquileres', estado: 'retrasado' }"
+  >
+    <span class="contador__icono error"><ja-icono nombre="warning" /></span>
+    <span class="contador__numero">{{
+      retrasados.hasValue() ? retrasados.value().total : '–'
+    }}</span>
+    <span class="contador__texto">Alquileres retrasados</span>
+    <span class="contador__extra">{{
+      activos.hasValue()
+        ? plural(activos.value().total, 'alquiler', 'alquileres') + ' en curso'
+        : ''
+    }}</span>
+  </a>
+  <a class="contador ja-panel" routerLink="/admin/reparaciones">
+    <span class="contador__icono info"><ja-icono nombre="build" /></span>
+    <span class="contador__numero">{{ abiertas.hasValue() ? abiertas.value().total : '–' }}</span>
+    <span class="contador__texto">Reparaciones abiertas</span>
+    <span class="contador__extra">{{
+      abiertas.hasValue()
+        ? plural(abiertas.value().listas, 'lista', 'listas') + ' para recoger'
+        : ''
+    }}</span>
+  </a>
+  <a class="contador ja-panel" routerLink="/admin/productos">
+    <span class="contador__icono neutro"><ja-icono nombre="inventory_2" /></span>
+    <span class="contador__numero">{{
+      stockBajo.hasValue() ? stockBajo.value().length : '–'
+    }}</span>
+    <span class="contador__texto">Productos con stock bajo</span>
+    <span class="contador__extra">2 unidades o menos</span>
+  </a>
+</section>
+
+<div class="columnas">
+  <!-- Pedidos pendientes -->
+  <section class="bloque ja-panel" aria-labelledby="t-pendientes">
+    <div class="bloque__cabecera">
+      <h2 id="t-pendientes" class="ja-titulo">Pedidos por preparar</h2>
+      <a routerLink="/admin/pedidos" [queryParams]="{ estado: 'pendiente' }" class="ver"
+        >Ver todos</a
+      >
+    </div>
+    @if (pendientes.hasValue()) {
+      <ul class="lista">
+        @for (p of pendientes.value().items; track p.id) {
+          <li>
+            <a [routerLink]="['/admin/pedidos']" [queryParams]="{ pedido: p.id }">
+              <span class="ja-codigo">{{ refPedido(p.id) }}</span>
+              <span class="lista__principal">
+                <span class="ja-subtitulo">{{ p.cliente.nombre }} {{ p.cliente.apellidos }}</span>
+                <span class="ja-etiqueta-s ja-t2">
+                  {{ fechaHora(p.fecha) }} ·
+                  {{ p.entrega === 'domicilio' ? 'A domicilio' : 'Recogida en tienda' }}
+                </span>
+              </span>
+              <span class="ja-precio-s">{{ precio(p.total) }}</span>
+            </a>
+          </li>
+        } @empty {
+          <li class="vacio"><ja-icono nombre="check_circle" />No hay pedidos pendientes.</li>
+        }
+      </ul>
+    } @else if (pendientes.error()) {
+      <ja-estado-vista tipo="error" (reintentar)="pendientes.reload()" />
+    } @else {
+      <span class="ja-esqueleto" style="height: 200px"></span>
+    }
+  </section>
+
+  <!-- Alquileres retrasados -->
+  <section class="bloque ja-panel" aria-labelledby="t-retrasados">
+    <div class="bloque__cabecera">
+      <h2 id="t-retrasados" class="ja-titulo">Alquileres retrasados</h2>
+      <a
+        routerLink="/admin/pedidos"
+        [queryParams]="{ vista: 'alquileres', estado: 'retrasado' }"
+        class="ver"
+        >Ver todos</a
+      >
+    </div>
+    @if (retrasados.hasValue()) {
+      <ul class="lista">
+        @for (a of retrasados.value().items; track a.id) {
+          <li>
+            <a
+              routerLink="/admin/pedidos"
+              [queryParams]="{ vista: 'alquileres', estado: 'retrasado' }"
+            >
+              <ja-imagen
+                class="ja-miniatura"
+                [src]="a.videojuego.imagen"
+                [alt]="a.videojuego.nombre"
+              />
+              <span class="lista__principal">
+                <span class="ja-subtitulo">{{ a.videojuego.nombre }}</span>
+                <span class="ja-etiqueta-s ja-t2">Pedido {{ refPedido(a.pedidoId ?? 0) }}</span>
+              </span>
+              <ja-pastilla
+                clase="alquiler-retrasado"
+                icono="warning"
+                [texto]="plural(-diasHasta(a.fechaFin), 'día', 'días') + ' tarde'"
+              />
+            </a>
+          </li>
+        } @empty {
+          <li class="vacio">
+            <ja-icono nombre="check_circle" />Todos los alquileres van en plazo.
+          </li>
+        }
+      </ul>
+    } @else if (retrasados.error()) {
+      <ja-estado-vista tipo="error" (reintentar)="retrasados.reload()" />
+    } @else {
+      <span class="ja-esqueleto" style="height: 200px"></span>
+    }
+  </section>
+
+  <!-- Reparaciones recién llegadas -->
+  <section class="bloque ja-panel" aria-labelledby="t-reparaciones">
+    <div class="bloque__cabecera">
+      <h2 id="t-reparaciones" class="ja-titulo">Reparaciones recién llegadas</h2>
+      <a routerLink="/admin/reparaciones" [queryParams]="{ estado: 'recibida' }" class="ver"
+        >Ver todas</a
+      >
+    </div>
+    @if (abiertas.hasValue()) {
+      <ul class="lista">
+        @for (r of abiertas.value().recibidas.items; track r.id) {
+          <li>
+            <a routerLink="/admin/reparaciones" [queryParams]="{ reparacion: r.id }">
+              <span class="ja-codigo">{{ refReparacion(r.id) }}</span>
+              <span class="lista__principal">
+                <span class="ja-subtitulo">{{ r.dispositivo }}</span>
+                <span class="ja-etiqueta-s ja-t2"
+                  >{{ r.departamento?.nombre }} · {{ r.tecnico.nombre }}
+                  {{ r.tecnico.apellidos }}</span
+                >
+              </span>
+              <span class="ja-etiqueta-s ja-t3">{{ fechaHora(r.fechaEntrada) }}</span>
+            </a>
+          </li>
+        } @empty {
+          <li class="vacio"><ja-icono nombre="check_circle" />No hay reparaciones nuevas.</li>
+        }
+      </ul>
+    } @else if (abiertas.error()) {
+      <ja-estado-vista tipo="error" (reintentar)="abiertas.reload()" />
+    } @else {
+      <span class="ja-esqueleto" style="height: 200px"></span>
+    }
+  </section>
+
+  <!-- Stock bajo -->
+  <section class="bloque ja-panel" aria-labelledby="t-stock">
+    <div class="bloque__cabecera">
+      <h2 id="t-stock" class="ja-titulo">Stock bajo</h2>
+      <a routerLink="/admin/productos" class="ver">Ir a productos</a>
+    </div>
+    @if (stockBajo.hasValue()) {
+      <ul class="lista">
+        @for (p of stockBajo.value().slice(0, 6); track p.id) {
+          <li>
+            <a routerLink="/admin/productos" [queryParams]="{ tipo: p.tipo, editar: p.id }">
+              <ja-imagen class="ja-miniatura" [src]="p.imagen" [alt]="p.nombre" />
+              <span class="lista__principal">
+                <span class="ja-subtitulo">{{ p.nombre }}</span>
+                <span class="ja-etiqueta-s ja-t2">{{ tipos[p.tipo].singular }}</span>
+              </span>
+              @if (p.stock === 0) {
+                <ja-pastilla clase="stock-agotado" texto="Agotado" />
+              } @else {
+                <ja-pastilla
+                  clase="stock-pocas-unidades"
+                  [texto]="p.stock + (p.stock === 1 ? ' unidad' : ' unidades')"
+                />
+              }
+            </a>
+          </li>
+        } @empty {
+          <li class="vacio"><ja-icono nombre="check_circle" />Hay stock de todo.</li>
+        }
+      </ul>
+    } @else if (stockBajo.error()) {
+      <ja-estado-vista tipo="error" (reintentar)="stockBajo.reload()" />
+    } @else {
+      <span class="ja-esqueleto" style="height: 200px"></span>
+    }
+  </section>
+</div>
