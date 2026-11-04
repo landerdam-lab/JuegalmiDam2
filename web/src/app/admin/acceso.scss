@@ -1,0 +1,137 @@
+:host {
+  display: block;
+}
+
+.acceso {
+  display: grid;
+  min-height: 100vh;
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+}
+
+// Columna de marca: un gran cartucho amarillo con la muesca
+.marca {
+  display: none;
+  @media (min-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--ja-espacio-8);
+    padding: var(--ja-espacio-16);
+    background: var(--ja-marca);
+    color: var(--ja-sobre-marca);
+  }
+}
+.marca__cartucho {
+  position: relative;
+  width: min(320px, 100%);
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  border-radius: var(--ja-radio-xl);
+  background: var(--ja-primario);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-espacio-16)) 0,
+    100% var(--ja-espacio-16),
+    100% 100%,
+    0 100%
+  );
+  animation: encajar var(--ja-duracion-enfasis) var(--ja-curva-insertar) both;
+  ja-logo {
+    --alto: 160px;
+  }
+}
+.marca__contactos {
+  position: absolute;
+  left: var(--ja-espacio-8);
+  right: var(--ja-espacio-8);
+  bottom: var(--ja-espacio-6);
+  display: flex;
+  gap: var(--ja-espacio-3);
+  i {
+    flex: 1;
+    height: var(--ja-espacio-3);
+    border-radius: var(--ja-radio-segmento);
+    background: var(--ja-sobre-primario);
+    opacity: 0.2;
+  }
+}
+.marca__texto {
+  max-width: 32ch;
+  font: var(--ja-tipo-titulo);
+}
+@keyframes encajar {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ja-espacio-16) * -1));
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: var(--ja-espacio-6) var(--ja-espacio-4);
+  @media (min-width: 720px) {
+    padding: var(--ja-espacio-8) var(--ja-espacio-12);
+  }
+}
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+  align-self: flex-start;
+  min-height: var(--ja-tamano-tactil-min);
+  color: var(--ja-marca);
+  font: var(--ja-tipo-etiqueta);
+  text-decoration: none;
+}
+.caja {
+  display: grid;
+  gap: var(--ja-espacio-3);
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: var(--ja-espacio-8) 0;
+  h1 {
+    margin-top: var(--ja-espacio-4);
+  }
+}
+.formulario {
+  display: grid;
+  gap: var(--ja-espacio-5);
+  margin-top: var(--ja-espacio-4);
+}
+.con-boton {
+  position: relative;
+  input {
+    padding-right: var(--ja-espacio-12) !important;
+  }
+  button {
+    position: absolute;
+    top: 50%;
+    right: var(--ja-espacio-1);
+    transform: translateY(-50%);
+  }
+}
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ja-espacio-2);
+  padding: var(--ja-espacio-3) var(--ja-espacio-4);
+  border-radius: var(--ja-radio-m);
+  font: var(--ja-tipo-cuerpo);
+  &--error {
+    background: var(--ja-error-suave);
+    color: var(--ja-error);
+  }
+  &--info {
+    background: var(--ja-info-suave);
+    color: var(--ja-info);
+  }
+}
+.nota {
+  margin-top: var(--ja-espacio-4);
+  text-align: center;
+}

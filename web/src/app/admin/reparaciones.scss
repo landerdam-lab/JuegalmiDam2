@@ -1,0 +1,109 @@
+:host {
+  display: block;
+}
+
+.tarjetas {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tarjeta {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: var(--ja-espacio-4);
+  width: 100%;
+  height: 100%;
+  padding: var(--ja-espacio-4);
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+  &:hover {
+    border-color: var(--ja-marca);
+  }
+}
+.tarjeta__foto {
+  --proporcion: 3 / 4;
+  --tam-placeholder: var(--ja-espacio-8);
+  border-radius: var(--ja-radio-m);
+  align-self: start;
+}
+.tarjeta__datos {
+  display: grid;
+  gap: var(--ja-espacio-2);
+  align-content: start;
+  min-width: 0;
+}
+.tarjeta__cabecera,
+.tarjeta__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ja-espacio-2);
+}
+.problema {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ── Ficha ──
+.ficha {
+  display: grid;
+  gap: var(--ja-espacio-6);
+}
+.ficha__estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ja-espacio-3);
+  ja-vida {
+    width: 160px;
+  }
+}
+.ficha__foto {
+  --proporcion: 4 / 3;
+}
+.bloque {
+  display: grid;
+  gap: var(--ja-espacio-3);
+}
+.datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--ja-espacio-3);
+  dt {
+    font: var(--ja-tipo-etiqueta-s);
+    color: var(--ja-texto-3);
+  }
+  dd {
+    font: var(--ja-tipo-subtitulo);
+  }
+}
+.contacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ja-espacio-4);
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ja-espacio-2);
+    min-height: var(--ja-tamano-tactil-min);
+    --tam: var(--ja-tamano-icono-s);
+  }
+}
+.fila {
+  display: flex;
+  gap: var(--ja-espacio-2);
+  align-items: center;
+  input {
+    flex: 1;
+  }
+}
+.borrar {
+  margin-right: auto;
+}

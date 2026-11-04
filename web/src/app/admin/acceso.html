@@ -1,0 +1,94 @@
+<!-- PW-05 Acceso del personal -->
+<div class="acceso">
+  <aside class="marca" aria-hidden="true">
+    <div class="marca__cartucho">
+      <ja-logo [conTexto]="false" />
+      <span class="marca__contactos"><i></i><i></i><i></i><i></i></span>
+    </div>
+    <p class="marca__texto">
+      Backoffice de JuegAlmi: catálogo, pedidos, reparaciones y tienda en un solo sitio.
+    </p>
+  </aside>
+
+  <main class="panel">
+    <a routerLink="/" class="volver"><ja-icono nombre="arrow_back" />Volver a la web</a>
+
+    <div class="caja">
+      <ja-logo />
+      <h1 class="ja-titular-m">Acceso del personal</h1>
+      <p class="ja-t2">Para administradores y técnicos de la tienda.</p>
+
+      @if (caducada()) {
+        <p class="aviso aviso--info" role="status">
+          <ja-icono nombre="schedule" />Tu sesión ha caducado. Vuelve a entrar para seguir.
+        </p>
+      }
+      @if (error()) {
+        <p class="aviso aviso--error" role="alert"><ja-icono nombre="error" />{{ error() }}</p>
+      }
+
+      <form [formRoot]="formulario" class="formulario">
+        <div class="ja-campo">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="username"
+            [formField]="formulario.email"
+            [attr.aria-invalid]="formulario.email().touched() && formulario.email().invalid()"
+            aria-describedby="email-error"
+          />
+          @if (formulario.email().touched() && formulario.email().invalid()) {
+            <span id="email-error" class="ja-ayuda ja-ayuda--error">
+              <ja-icono nombre="error" />{{ formulario.email().errors()[0].message }}
+            </span>
+          }
+        </div>
+
+        <div class="ja-campo">
+          <label for="password">Contraseña</label>
+          <div class="con-boton">
+            <input
+              id="password"
+              [type]="verPassword() ? 'text' : 'password'"
+              autocomplete="current-password"
+              [formField]="formulario.password"
+              [attr.aria-invalid]="
+                formulario.password().touched() && formulario.password().invalid()
+              "
+              aria-describedby="password-error"
+            />
+            <button
+              type="button"
+              class="ja-boton-icono"
+              [attr.aria-label]="verPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+              [attr.aria-pressed]="verPassword()"
+              (click)="verPassword.set(!verPassword())"
+            >
+              <ja-icono [nombre]="verPassword() ? 'visibility_off' : 'visibility'" />
+            </button>
+          </div>
+          @if (formulario.password().touched() && formulario.password().invalid()) {
+            <span id="password-error" class="ja-ayuda ja-ayuda--error">
+              <ja-icono nombre="error" />{{ formulario.password().errors()[0].message }}
+            </span>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="ja-boton ja-boton--bloque"
+          [disabled]="formulario().submitting()"
+        >
+          @if (formulario().submitting()) {
+            Entrando…
+          } @else {
+            <ja-icono nombre="lock" /> Entrar
+          }
+        </button>
+      </form>
+
+      <p class="ja-etiqueta-s ja-t3 nota">¿Eres cliente? Entra desde la app Almi Companion.</p>
+    </div>
+  </main>
+</div>

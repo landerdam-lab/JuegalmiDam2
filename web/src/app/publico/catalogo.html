@@ -1,0 +1,231 @@
+<!-- PW-02 Catálogo público -->
+<div class="ja-contenedor">
+  <header class="cabecera">
+    <h1 class="ja-titular-l">Catálogo</h1>
+    <p class="ja-t2">
+      Consulta precios y disponibilidad. Para comprar o alquilar, usa la app Almi Companion.
+    </p>
+  </header>
+
+  <nav class="ja-pestanas" aria-label="Tipo de producto">
+    @for (t of listaTipos; track t) {
+      <button
+        type="button"
+        [attr.aria-selected]="tipo() === t"
+        [class.activa]="tipo() === t"
+        (click)="cambiarTipo(t)"
+      >
+        <ja-icono [nombre]="tipos[t].icono" />{{ tipos[t].plural }}
+      </button>
+    }
+  </nav>
+
+  <div class="barra">
+    <label class="buscador">
+      <ja-icono nombre="search" />
+      <span class="ja-oculto">Buscar en {{ tipos[tipo()].plural }}</span>
+      <input
+        type="search"
+        [value]="q()"
+        [placeholder]="'Busca en ' + tipos[tipo()].plural.toLowerCase()"
+        (input)="buscar(valor($event))"
+        autocomplete="off"
+      />
+    </label>
+    <div class="ja-campo orden">
+      <label for="orden" class="ja-oculto">Ordenar por</label>
+      <select id="orden" [value]="orden()" (change)="filtrar({ orden: valor($event) })">
+        <option value="nombre">Nombre (A-Z)</option>
+        <option value="precio_asc">Precio: de menor a mayor</option>
+        <option value="precio_desc">Precio: de mayor a menor</option>
+      </select>
+    </div>
+    <button
+      type="button"
+      class="ja-boton ja-boton--secundario ja-boton--peque boton-filtros"
+      aria-controls="filtros"
+      [attr.aria-expanded]="filtrosAbiertos()"
+      (click)="filtrosAbiertos.set(!filtrosAbiertos())"
+    >
+      <ja-icono nombre="tune" /> Filtros
+    </button>
+  </div>
+
+  <div class="cuerpo">
+    <aside id="filtros" class="filtros" [class.abiertos]="filtrosAbiertos()" aria-label="Filtros">
+      @if (tipo() === 'videojuego') {
+        <fieldset>
+          <legend>Plataforma</legend>
+          <div class="ja-chips">
+            <button
+              type="button"
+              class="ja-chip"
+              [attr.aria-pressed]="!plataforma()"
+              (click)="filtrar({ plataforma: null })"
+            >
+              Todas
+            </button>
+            @if (plataformas.hasValue()) {
+              @for (p of plataformas.value(); track p.id) {
+                <button
+                  type="button"
+                  class="ja-chip"
+                  [attr.aria-pressed]="plataforma() === p.id"
+                  (click)="filtrar({ plataforma: p.id })"
+                >
+                  {{ p.nombre }}
+                </button>
+              }
+            }
+          </div>
+        </fieldset>
+        <div class="ja-campo">
+          <label for="genero">Género</label>
+          <select
+            id="genero"
+            [value]="genero()"
+            (change)="filtrar({ genero: valor($event) || null })"
+          >
+            <option value="">Todos los géneros</option>
+            @if (generos.hasValue()) {
+              @for (g of generos.value(); track g) {
+                <option [value]="g" [selected]="g === genero()">{{ g }}</option>
+              }
+            }
+          </select>
+        </div>
+        <fieldset>
+          <legend>Edad (PEGI)</legend>
+          <div class="ja-chips">
+            <button
+              type="button"
+              class="ja-chip"
+              [attr.aria-pressed]="!pegi()"
+              (click)="filtrar({ pegi: null })"
+            >
+              Todas
+            </button>
+            @for (e of edadesPegi; track e) {
+              <button
+                type="button"
+                class="ja-chip"
+                [attr.aria-pressed]="pegi() === e"
+                (click)="filtrar({ pegi: e })"
+              >
+                PEGI {{ e }}
+              </button>
+            }
+          </div>
+        </fieldset>
+        <label class="ja-casilla">
+          <input
+            type="checkbox"
+            [checked]="alquilable()"
+            (change)="filtrar({ alquilable: alquilable() ? null : 1 })"
+          />
+          Solo con copias para alquilar
+        </label>
+      } @else {
+        @if (tipo() === 'movil') {
+          <fieldset>
+            <legend>Formato</legend>
+            <div class="ja-chips">
+              <button
+                type="button"
+                class="ja-chip"
+                [attr.aria-pressed]="!formato()"
+                (click)="filtrar({ formato: null })"
+              >
+                Todos
+              </button>
+              <button
+                type="button"
+                class="ja-chip"
+                [attr.aria-pressed]="formato() === 'movil'"
+                (click)="filtrar({ formato: 'movil' })"
+              >
+                Móviles
+              </button>
+              <button
+                type="button"
+                class="ja-chip"
+                [attr.aria-pressed]="formato() === 'tablet'"
+                (click)="filtrar({ formato: 'tablet' })"
+              >
+                Tablets
+              </button>
+            </div>
+          </fieldset>
+        }
+        <div class="ja-campo">
+          <label for="marca">Marca</label>
+          <select id="marca" (change)="filtrar({ marca: valor($event) || null })">
+            <option value="">Todas las marcas</option>
+            @if (marcas.hasValue()) {
+              @for (m of marcas.value(); track m.id) {
+                <option [value]="m.id" [selected]="m.id === marca()">{{ m.nombre }}</option>
+              }
+            }
+          </select>
+        </div>
+      }
+      @if (hayFiltros()) {
+        <button type="button" class="ja-boton ja-boton--texto ja-boton--peque" (click)="limpiar()">
+          <ja-icono nombre="close" /> Quitar filtros
+        </button>
+      }
+    </aside>
+
+    <section class="resultados" aria-live="polite" [attr.aria-busy]="productos.isLoading()">
+      @if (productos.hasValue()) {
+        <p class="total ja-t2">
+          {{ productos.value().total }}
+          {{ productos.value().total === 1 ? 'producto' : 'productos' }}
+          @if (q()) {
+            para «{{ q() }}»
+          }
+        </p>
+        @if (productos.value().items.length) {
+          <div
+            class="rejilla"
+            [class.portadas]="tipo() === 'videojuego'"
+            [class.recargando]="productos.isLoading()"
+          >
+            @for (p of productos.value().items; track p.id) {
+              <ja-tarjeta-producto [producto]="p" />
+            }
+          </div>
+          <ja-paginador
+            [page]="productos.value().page"
+            [limit]="productos.value().limit"
+            [total]="productos.value().total"
+            (cambiar)="irAPagina($event)"
+          />
+        } @else {
+          <ja-estado-vista
+            tipo="vacio"
+            icono="search"
+            titulo="No hay nada con esos filtros"
+            texto="Prueba con otra búsqueda o quita algún filtro."
+          >
+            <button type="button" class="ja-boton ja-boton--secundario" (click)="limpiar()">
+              Quitar filtros
+            </button>
+          </ja-estado-vista>
+        }
+      } @else if (productos.error()) {
+        <ja-estado-vista
+          tipo="error"
+          texto="El catálogo no responde ahora mismo."
+          (reintentar)="productos.reload()"
+        />
+      } @else {
+        <div class="rejilla">
+          @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+            <span class="ja-esqueleto esqueleto"></span>
+          }
+        </div>
+      }
+    </section>
+  </div>
+</div>
