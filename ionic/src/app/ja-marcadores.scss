@@ -12,6 +12,13 @@
 .ja-marcador--casa {
   background: var(--ja-marca);
 }
+.ja-marcador-texto {
+  max-width: 220px;
+  white-space: normal;
+  color: var(--ja-texto);
+  background: var(--ja-superficie);
+  border-color: var(--ja-borde);
+}
 .ja-marcador--cliente {
   background: var(--ja-info);
 }

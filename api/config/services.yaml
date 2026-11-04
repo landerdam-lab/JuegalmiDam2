@@ -21,3 +21,11 @@ services:
             - '../src/Enum/'
             - '../src/Util/'
             - '../src/Http/'
+
+
+when@test:
+    services:
+        # Las pruebas no llaman a Nominatim (servicio externo)
+        App\Service\Geocodificador:
+            class: App\Tests\Api\GeocodificadorFalso
+            autowire: true

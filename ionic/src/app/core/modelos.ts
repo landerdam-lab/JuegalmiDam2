@@ -120,6 +120,12 @@ export interface Entrega {
   longitudEntrega?: number;
 }
 
+export interface DireccionEncontrada {
+  latitud: number;
+  longitud: number;
+  direccion: string;
+}
+
 export type EstadoReparacion = 'recibida' | 'en_reparacion' | 'lista' | 'entregada' | 'cancelada';
 
 export interface Reparacion {

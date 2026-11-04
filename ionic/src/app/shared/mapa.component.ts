@@ -7,6 +7,8 @@ export interface MarcaMapa {
   longitud: number;
   tipo: 'tienda' | 'casa' | 'cliente';
   titulo?: string;
+  /** Texto fijo encima del marcador: la dirección que escribió el cliente. */
+  etiqueta?: string;
 }
 
 /**
@@ -58,13 +60,18 @@ export class Mapa implements AfterViewInit, OnDestroy {
     }
   }
 
+  /** Centra el mapa en un punto, por ejemplo la dirección que se acaba de encontrar. */
+  centrarEn(punto: { latitud: number; longitud: number }): void {
+    this.mapa?.setView([punto.latitud, punto.longitud], 16);
+  }
+
   private pintar(marcas: MarcaMapa[]): void {
     if (!this.mapa) {
       return;
     }
     this.capa.clearLayers();
     for (const m of marcas) {
-      L.marker([m.latitud, m.longitud], {
+      const marcador = L.marker([m.latitud, m.longitud], {
         title: m.titulo,
         icon: L.divIcon({
           className: `ja-marcador ja-marcador--${m.tipo}`,
@@ -72,6 +79,12 @@ export class Mapa implements AfterViewInit, OnDestroy {
           iconAnchor: [14, 28],
         }),
       }).addTo(this.capa);
+      if (m.etiqueta) {
+        // Con textContent: la dirección la escribe el cliente y Leaflet trataría una cadena como HTML
+        const texto = document.createElement('span');
+        texto.textContent = m.etiqueta;
+        marcador.bindTooltip(texto, { permanent: true, direction: 'top', offset: [0, -28], className: 'ja-marcador-texto' });
+      }
     }
     if (marcas.length && !this.centrado) {
       this.centrado = true;

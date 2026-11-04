@@ -137,7 +137,7 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
         }
         Peticiones.Entrega datosEntrega = entrega.entrega();
         if (datosEntrega == null) {
-            Snackbar.make(btnConfirmar, R.string.entrega_falta_datos, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(btnConfirmar, entrega.mensajeFalta(), Snackbar.LENGTH_LONG).show();
             return;
         }
         cargando(true);
