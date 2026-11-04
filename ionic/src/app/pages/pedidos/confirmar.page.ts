@@ -30,40 +30,72 @@ import { EntregaCaja } from './entrega.component';
           <div class="ja-titulo">Resumen del pedido</div>
           @for (l of carrito.lineas(); track l.producto.id + l.tipo) {
             <div class="ja-ticket-fila">
-              <span>{{ l.producto.nombre }} <span class="ja-t2">{{ l.tipo === 'compra' ? 'Cantidad: ' + l.cantidad : 'Alquiler · ' + l.dias + ' días' }}</span></span>
+              <span
+                >{{ l.producto.nombre }}
+                <span class="ja-t2">{{
+                  l.tipo === 'compra' ? 'Cantidad: ' + l.cantidad : 'Alquiler · ' + l.dias + ' días'
+                }}</span></span
+              >
               <span class="ja-precio-s">{{ formato(sub(l)) }}</span>
             </div>
           }
           <div class="ja-separador"></div>
-          <div class="ja-ticket-fila"><span class="ja-t2">Método de pago: {{ nombreMetodo() }}</span></div>
-          <div class="ja-ticket-fila"><span class="ja-subtitulo">Total a pagar</span><span class="ja-precio">{{ formato(carrito.total()) }}</span></div>
+          <div class="ja-ticket-fila">
+            <span class="ja-t2">Método de pago: {{ nombreMetodo() }}</span>
+          </div>
+          <div class="ja-ticket-fila">
+            <span class="ja-subtitulo">Total a pagar</span><span class="ja-precio">{{ formato(carrito.total()) }}</span>
+          </div>
         </div>
 
         <ja-entrega #entrega />
 
         <div class="ja-caja ja-muesca">
-          <div class="ja-fila"><ja-icono nombre="my_location" /><span class="ja-subtitulo">Necesitamos tu ubicación</span></div>
-          <div class="ja-etiqueta-s ja-t2">La guardamos con el pedido para saber desde dónde compras. Solo se usa al confirmar.</div>
+          <div class="ja-fila">
+            <ja-icono nombre="my_location" /><span class="ja-subtitulo">Necesitamos tu ubicación</span>
+          </div>
+          <div class="ja-etiqueta-s ja-t2">
+            La guardamos con el pedido para saber desde dónde compras. Solo se usa al confirmar.
+          </div>
           @switch (ubicacion.estado()) {
-            @case ('obtenida') { <div class="ja-etiqueta">Ubicación obtenida ({{ coordenadas() }})</div> }
-            @case ('buscando') { <div class="ja-etiqueta">Buscando tu ubicación…</div> }
+            @case ('obtenida') {
+              <div class="ja-etiqueta">Ubicación obtenida ({{ coordenadas() }})</div>
+            }
+            @case ('buscando') {
+              <div class="ja-etiqueta">Buscando tu ubicación…</div>
+            }
             @default {
               <div class="ja-error-t">Sin permiso de ubicación: no se puede confirmar el pedido</div>
-              <ion-button fill="outline" color="secondary" (click)="ubicacion.actualizar()">Dar permiso de ubicación</ion-button>
+              <ion-button fill="outline" color="secondary" (click)="ubicacion.actualizar()"
+                >Activar ubicación</ion-button
+              >
             }
           }
         </div>
 
-        <ion-checkbox color="secondary" labelPlacement="end" justify="start" [(ngModel)]="acepto">He revisado mi pedido y los datos de entrega</ion-checkbox>
+        <ion-checkbox color="secondary" labelPlacement="end" justify="start" [(ngModel)]="acepto"
+          >He revisado mi pedido y los datos de entrega</ion-checkbox
+        >
         <div class="ja-etiqueta-s ja-t2">Puedes cancelarlo mientras esté pendiente</div>
-        @if (errorForm()) { <div class="ja-error-t">{{ errorForm() }}</div> }
+        @if (errorForm()) {
+          <div class="ja-error-t">{{ errorForm() }}</div>
+        }
       </div>
     </ion-content>
     <ion-footer class="ion-no-border">
       <div class="ja-pie">
         <div class="ja-columna">
-          <ion-button class="ja-boton-ancho ja-boton-cargando" color="primary" [disabled]="enviando()" (click)="confirmar()">
-            @if (enviando()) { <ion-spinner /> } @else { Confirmar y pagar ({{ formato(carrito.total()) }}) }
+          <ion-button
+            class="ja-boton-ancho ja-boton-cargando"
+            color="primary"
+            [disabled]="enviando()"
+            (click)="confirmar()"
+          >
+            @if (enviando()) {
+              <ion-spinner />
+            } @else {
+              Confirmar y pagar ({{ formato(carrito.total()) }})
+            }
           </ion-button>
         </div>
       </div>
@@ -103,7 +135,7 @@ export class ConfirmarPage {
     this.errorForm.set('');
     const entrega = this.entrega.datos();
     if (!entrega) {
-      this.errorForm.set('Completa los datos de la entrega');
+      this.errorForm.set(this.entrega.mensajeFalta());
       return;
     }
     if (!this.ubicacion.punto()) {
@@ -125,7 +157,10 @@ export class ConfirmarPage {
         this.enviando.set(false);
         this.entrega.errores(e);
         // 409 STOCK_INSUFICIENTE o SIN_COPIAS: el mensaje de la API dice qué producto
-        void this.avisos.informar(e.status === 409 ? 'Falta stock o copias' : 'No se ha podido hacer el pedido', e.mensaje);
+        void this.avisos.informar(
+          e.status === 409 ? 'Falta stock o copias' : 'No se ha podido hacer el pedido',
+          e.mensaje,
+        );
       },
     });
   }

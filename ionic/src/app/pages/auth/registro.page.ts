@@ -13,7 +13,18 @@ import { Vida } from '../../shared/vida.component';
 
 /** PT-03 Registro: siempre crea un cliente. Valida antes de enviar y muestra en su campo los errores 422 de la API. */
 @Component({
-  imports: [FormsModule, RouterLink, IonContent, IonFooter, IonInput, IonInputPasswordToggle, IonButton, IonSpinner, Barra, Vida],
+  imports: [
+    FormsModule,
+    RouterLink,
+    IonContent,
+    IonFooter,
+    IonInput,
+    IonInputPasswordToggle,
+    IonButton,
+    IonSpinner,
+    Barra,
+    Vida,
+  ],
   template: `
     <ja-barra titulo="Crea tu cuenta" atras="/login" [sinAcciones]="true" />
     <ion-content>
@@ -22,14 +33,34 @@ import { Vida } from '../../shared/vida.component';
         @for (c of campos; track c.clave) {
           <div>
             @if (c.clave === 'password') {
-              <ion-input class="ja-campo" fill="solid" labelPlacement="floating" [label]="c.etiqueta" type="password" autocomplete="new-password" [name]="c.clave" [(ngModel)]="datos.password" (ionInput)="longitud.set(datos.password.length)">
+              <ion-input
+                class="ja-campo"
+                fill="solid"
+                labelPlacement="floating"
+                [label]="c.etiqueta"
+                type="password"
+                autocomplete="new-password"
+                [name]="c.clave"
+                [(ngModel)]="datos.password"
+                (ionInput)="longitud.set(datos.password.length)"
+              >
                 <ion-input-password-toggle slot="end" color="medium" />
               </ion-input>
               <ja-vida [llenos]="fuerza()" [total]="4" [color]="colorFuerza()" />
             } @else {
-              <ion-input class="ja-campo" fill="solid" labelPlacement="floating" [label]="c.etiqueta" [type]="c.tipo" [name]="c.clave" [(ngModel)]="datos[c.clave]" />
+              <ion-input
+                class="ja-campo"
+                fill="solid"
+                labelPlacement="floating"
+                [label]="c.etiqueta"
+                [type]="c.tipo"
+                [name]="c.clave"
+                [(ngModel)]="datos[c.clave]"
+              />
             }
-            @if (errores()[c.clave]) { <div class="ja-error-t">{{ errores()[c.clave] }}</div> }
+            @if (errores()[c.clave]) {
+              <div class="ja-error-t">{{ errores()[c.clave] }}</div>
+            }
           </div>
         }
         <div class="ja-fila" style="justify-content:center">
@@ -41,8 +72,17 @@ import { Vida } from '../../shared/vida.component';
     <ion-footer class="ion-no-border">
       <div class="ja-pie">
         <div class="ja-columna">
-          <ion-button class="ja-boton-ancho ja-boton-cargando" color="primary" [disabled]="enviando()" (click)="crear()">
-            @if (enviando()) { <ion-spinner /> } @else { Crear cuenta }
+          <ion-button
+            class="ja-boton-ancho ja-boton-cargando"
+            color="primary"
+            [disabled]="enviando()"
+            (click)="crear()"
+          >
+            @if (enviando()) {
+              <ion-spinner />
+            } @else {
+              Crear cuenta
+            }
           </ion-button>
         </div>
       </div>
@@ -69,7 +109,9 @@ export class RegistroPage {
   // Barra de vida de la contraseña: 4 segmentos a partir de la longitud mínima
   readonly longitud = signal(0);
   readonly fuerza = computed(() => Math.min(4, Math.floor(this.longitud() / (PASSWORD_MINIMA / 2))));
-  readonly colorFuerza = computed(() => (this.fuerza() < 2 ? 'var(--ja-error)' : this.fuerza() < 4 ? 'var(--ja-aviso)' : 'var(--ja-exito)'));
+  readonly colorFuerza = computed(() =>
+    this.fuerza() < 2 ? 'var(--ja-error)' : this.fuerza() < 4 ? 'var(--ja-aviso)' : 'var(--ja-exito)',
+  );
 
   crear(): void {
     const d = this.datos;
@@ -87,23 +129,32 @@ export class RegistroPage {
     }
     this.enviando.set(true);
     const email = d.email.trim();
-    this.auth.registro({ ...d, nombre: d.nombre.trim(), apellidos: d.apellidos.trim(), email, telefono: d.telefono.trim(), dni: d.dni.trim() }).subscribe({
-      next: () => {
-        this.enviando.set(false);
-        void this.router.navigate(['/login'], { queryParams: { creada: email }, replaceUrl: true });
-      },
-      error: (err: ApiError) => {
-        this.enviando.set(false);
-        if (Object.keys(err.campos).length) {
-          this.errores.set(err.campos);
-        } else if (err.codigo === 'DNI_REPETIDO') {
-          this.errores.set({ dni: err.mensaje });
-        } else if (err.status === 409) {
-          this.errores.set({ email: err.mensaje });
-        } else {
-          void this.avisos.mensaje(err.mensaje);
-        }
-      },
-    });
+    this.auth
+      .registro({
+        ...d,
+        nombre: d.nombre.trim(),
+        apellidos: d.apellidos.trim(),
+        email,
+        telefono: d.telefono.trim(),
+        dni: d.dni.trim(),
+      })
+      .subscribe({
+        next: () => {
+          this.enviando.set(false);
+          void this.router.navigate(['/login'], { queryParams: { creada: email }, replaceUrl: true });
+        },
+        error: (err: ApiError) => {
+          this.enviando.set(false);
+          if (Object.keys(err.campos).length) {
+            this.errores.set(err.campos);
+          } else if (err.codigo === 'DNI_REPETIDO') {
+            this.errores.set({ dni: err.mensaje });
+          } else if (err.status === 409) {
+            this.errores.set({ email: err.mensaje });
+          } else {
+            void this.avisos.mensaje(err.mensaje);
+          }
+        },
+      });
   }
 }

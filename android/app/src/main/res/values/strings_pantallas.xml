@@ -109,6 +109,10 @@
     <string name="entrega_punto">Toca el mapa para mover el punto · %s</string>
     <string name="entrega_falta_direccion">Escribe la dirección completa (calle, número, código postal y ciudad)</string>
     <string name="entrega_falta_punto">Toca el mapa para marcar dónde lo entregamos</string>
+    <string name="entrega_buscar">Buscar la dirección en el mapa</string>
+    <string name="entrega_buscando">Buscando la dirección…</string>
+    <string name="entrega_encontrada">Marcado en: %s · toca el mapa si no es el punto exacto</string>
+    <string name="entrega_revisa_punto">Comprueba el punto en el mapa y vuelve a confirmar</string>
     <string name="entrega_falta_datos">Completa los datos de la entrega</string>
     <string name="pedido_texto_preparado_domicilio">Tu pedido está preparado y sale hacia tu casa.</string>
     <string name="pedido_texto_entregado_domicilio">Pedido entregado en tu casa. ¡Que lo disfrutes!</string>

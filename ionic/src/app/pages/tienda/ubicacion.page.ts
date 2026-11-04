@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { IonButton, IonContent, IonFooter } from '@ionic/angular';
 
@@ -16,7 +16,9 @@ import { Mapa } from '../../shared/mapa.component';
 /** Distancia en metros entre dos puntos (fórmula de Haversine). */
 export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const rad = (g: number) => (g * Math.PI) / 180;
-  const a = Math.sin(rad(lat2 - lat1) / 2) ** 2 + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(rad(lon2 - lon1) / 2) ** 2;
+  const a =
+    Math.sin(rad(lat2 - lat1) / 2) ** 2 +
+    Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(rad(lon2 - lon1) / 2) ** 2;
   return 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -24,9 +26,23 @@ export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: 
 @Component({
   imports: [IonContent, IonFooter, IonButton, Barra, Estado, Icono, Mapa],
   styles: `
-    .todo { height: 100%; display: flex; flex-direction: column; }
-    ja-mapa { flex: 1; --alto: 100%; border-radius: 0; min-height: 240px; }
-    .datos { padding: var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-1); }
+    .todo {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    ja-mapa {
+      flex: 1;
+      --alto: 100%;
+      border-radius: 0;
+      min-height: 240px;
+    }
+    .datos {
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-1);
+    }
   `,
   template: `
     <ja-barra titulo="Ubicación" atras="/tienda" />
@@ -37,10 +53,18 @@ export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: 
           <div class="datos ja-columna">
             <div class="ja-entre">
               <div class="ja-titulo">{{ t.nombre }}</div>
-              <ion-button fill="clear" color="secondary" aria-label="Centrar el mapa en la tienda" (click)="mapa.centrar()"><ja-icono nombre="my_location" /></ion-button>
+              <ion-button
+                fill="clear"
+                color="secondary"
+                aria-label="Centrar el mapa en la tienda"
+                (click)="mapa.centrar()"
+                ><ja-icono nombre="my_location"
+              /></ion-button>
             </div>
             <div class="ja-cuerpo ja-t2">{{ t.direccion }}</div>
-            @if (distancia()) { <div class="ja-etiqueta ja-marca-t">{{ distancia() }}</div> }
+            @if (distancia()) {
+              <div class="ja-etiqueta ja-marca-t">{{ distancia() }}</div>
+            }
           </div>
         </div>
       } @else if (error()) {
@@ -52,7 +76,9 @@ export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: 
     <ion-footer class="ion-no-border">
       <div class="ja-pie">
         <div class="ja-columna">
-          <ion-button class="ja-boton-ancho" color="primary" (click)="comoLlegar()"><ja-icono slot="start" nombre="directions" />Cómo llegar</ion-button>
+          <ion-button class="ja-boton-ancho" color="primary" (click)="comoLlegar()"
+            ><ja-icono slot="start" nombre="directions" />Cómo llegar</ion-button
+          >
         </div>
       </div>
     </ion-footer>
@@ -97,14 +123,19 @@ export class UbicacionPage implements OnInit {
 
   cargar(): void {
     this.error.set('');
-    this.servicio.tienda().subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
+    this.servicio
+      .tienda()
+      .subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
   }
 
   /** Abre la app de mapas del móvil con la dirección de la tienda. */
   comoLlegar(): void {
     const t = this.tienda();
     if (t) {
-      window.open(`geo:${t.latitud},${t.longitud}?q=${t.latitud},${t.longitud}(${encodeURIComponent(t.nombre)})`, '_system');
+      window.open(
+        `geo:${t.latitud},${t.longitud}?q=${t.latitud},${t.longitud}(${encodeURIComponent(t.nombre)})`,
+        '_system',
+      );
     }
   }
 }

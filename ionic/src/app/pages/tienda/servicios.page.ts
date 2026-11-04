@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonButton, IonCard, IonContent, IonFooter, IonLabel, IonSegment, IonSegmentButton } from '@ionic/angular';
@@ -12,10 +12,29 @@ import { Estado } from '../../shared/estado.component';
 
 /** PT-25 Servicios: tres pestañas según servicio.linea (ADR-030). */
 @Component({
-  imports: [RouterLink, IonContent, IonFooter, IonCard, IonButton, IonSegment, IonSegmentButton, IonLabel, Barra, Estado],
+  imports: [
+    RouterLink,
+    IonContent,
+    IonFooter,
+    IonCard,
+    IonButton,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    Barra,
+    Estado,
+  ],
   styles: `
-    .interior { padding: var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-1); }
-    .ja-precio-s { flex: none; white-space: nowrap; }
+    .interior {
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-1);
+    }
+    .ja-precio-s {
+      flex: none;
+      white-space: nowrap;
+    }
   `,
   template: `
     <ja-barra titulo="Servicios" atras="/tienda" />
@@ -31,7 +50,12 @@ import { Estado } from '../../shared/estado.component';
         } @else if (error()) {
           <ja-estado tipo="error" titulo="No hemos podido cargar la tienda" [texto]="error()" (reintentar)="cargar()" />
         } @else if (!servicios().length) {
-          <ja-estado tipo="vacio" icono="build" titulo="Sin servicios en esta línea" texto="Pregunta en la tienda: te ayudamos igualmente." />
+          <ja-estado
+            tipo="vacio"
+            icono="build"
+            titulo="Sin servicios en esta línea"
+            texto="Pregunta en la tienda: te ayudamos igualmente."
+          />
         } @else {
           <div class="ja-lista">
             @for (s of servicios(); track s.id) {
@@ -39,7 +63,9 @@ import { Estado } from '../../shared/estado.component';
                 <div class="interior">
                   <div class="ja-entre">
                     <span class="ja-subtitulo">{{ s.nombre }}</span>
-                    <span class="ja-precio-s">{{ s.precioOrientativo !== null ? 'desde ' + formato(s.precioOrientativo) : 'Consultar' }}</span>
+                    <span class="ja-precio-s">{{
+                      s.precioOrientativo !== null ? 'desde ' + formato(s.precioOrientativo) : 'Consultar'
+                    }}</span>
                   </div>
                   <div class="ja-etiqueta-s ja-t2">{{ s.descripcion }}</div>
                 </div>
@@ -52,7 +78,9 @@ import { Estado } from '../../shared/estado.component';
     <ion-footer class="ion-no-border">
       <div class="ja-pie">
         <div class="ja-columna">
-          <ion-button class="ja-boton-ancho" color="primary" routerLink="/reparaciones/nueva">Solicitar reparación</ion-button>
+          <ion-button class="ja-boton-ancho" color="primary" routerLink="/reparaciones/nueva"
+            >Solicitar reparación</ion-button
+          >
         </div>
       </div>
     </ion-footer>

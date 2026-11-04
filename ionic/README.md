@@ -21,9 +21,9 @@ npx eslint src             # comprobación de estilo
 | `src/environments/environment.ts` | `ionic serve` |
 | `src/environments/environment.prod.ts` | la APK |
 
-Cada archivo lista en sus comentarios las URL habituales (VM, Docker, emulador, AWS).
+Las dos apuntan a AWS: `https://symfony.3-208-228-110.sslip.io/api`. `environment.ts` lista también las URL de desarrollo.
 
-⚠️ **La VM de VirtualBox usa un certificado local que el WebView de Android no acepta.** Para probar la APK contra ella, hay que arrancar la API sin TLS: `symfony server:start -d --no-tls --allow-all-ip --port=8002` (el 8000 de esa VM lo usa otro proyecto, A-36). Mientras la API vaya por HTTP (A-32), `capacitor.config.ts` carga la app desde `http://localhost`; con el HTTPS final se quita ese bloque.
+⚠️ **La APK solo habla por HTTPS.** Para probarla contra una API por HTTP (Docker o la VM), hay que añadir en local a `capacitor.config.ts` `server: { androidScheme: 'http', cleartext: true }`, sin subirlo. `ionic serve` no lo necesita.
 
 ## Generar la APK
 
@@ -65,6 +65,7 @@ Tres reglas que conviene saber para defenderla:
 | Control por voz | `core/voz.service.ts` + `core/orden-voz.ts` |
 | Otro sensor | `core/agitar.service.ts` (acelerómetro, `@capacitor/motion`) |
 | Mapa interactivo | `shared/mapa.component.ts` (Leaflet, ADR-037) |
+| Dirección de entrega en el mapa | `pages/pedidos/entrega.component.ts` y `core/direccion.service.ts` (ADR-040) |
 | Sesión en Local Storage | `core/sesion.service.ts` |
 | Placeholder en las imágenes | `shared/imagen.component.ts` |
 | Interfaz adaptativa | `.ja-lista` en `src/global.scss` (1 a 4 columnas) |

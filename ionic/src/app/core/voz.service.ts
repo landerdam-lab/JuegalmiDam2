@@ -85,7 +85,12 @@ export class VozService {
       void this.router.navigateByUrl(ruta);
       return;
     }
-    const pestanas: Partial<Record<OrdenVoz['accion'], string>> = { inicio: 'videojuego', videojuegos: 'videojuego', moviles: 'movil', consolas: 'consola' };
+    const pestanas: Partial<Record<OrdenVoz['accion'], string>> = {
+      inicio: 'videojuego',
+      videojuegos: 'videojuego',
+      moviles: 'movil',
+      consolas: 'consola',
+    };
     const params = orden.accion === 'buscar' ? { q: orden.texto } : { pestana: pestanas[orden.accion] };
     void this.router.navigate(['/inicio'], { queryParams: params });
   }

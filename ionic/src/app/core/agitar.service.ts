@@ -1,4 +1,4 @@
-import type { OnDestroy} from '@angular/core';
+import type { OnDestroy } from '@angular/core';
 import { Injectable, inject } from '@angular/core';
 import type { PluginListenerHandle } from '@capacitor/core';
 import { Motion } from '@capacitor/motion';

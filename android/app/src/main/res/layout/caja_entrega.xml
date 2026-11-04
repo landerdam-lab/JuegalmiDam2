@@ -75,6 +75,9 @@
             android:layout_marginTop="@dimen/ja_espacio_3"
             android:hint="@string/entrega_direccion"
             android:visibility="gone"
+            app:endIconContentDescription="@string/entrega_buscar"
+            app:endIconDrawable="@drawable/ic_search"
+            app:endIconMode="custom"
             app:helperText="@string/entrega_direccion_ayuda"
             app:startIconDrawable="@drawable/ic_home">
 
@@ -83,6 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="postalAddress"
+                android:imeOptions="actionSearch"
                 android:inputType="textPostalAddress|textCapWords"
                 android:maxLength="255" />
         </com.google.android.material.textfield.TextInputLayout>

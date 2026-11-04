@@ -1,8 +1,21 @@
 /** Interpreta una frase dicha en voz alta. Función pura y con pruebas: lo mismo que OrdenVoz en Android. */
 export type Accion =
-  | 'inicio' | 'carrito' | 'pedidos' | 'alquileres' | 'reparaciones' | 'nueva_reparacion' | 'perfil'
-  | 'tienda' | 'servicios' | 'ubicacion' | 'galeria' | 'historia'
-  | 'videojuegos' | 'moviles' | 'consolas' | 'buscar';
+  | 'inicio'
+  | 'carrito'
+  | 'pedidos'
+  | 'alquileres'
+  | 'reparaciones'
+  | 'nueva_reparacion'
+  | 'perfil'
+  | 'tienda'
+  | 'servicios'
+  | 'ubicacion'
+  | 'galeria'
+  | 'historia'
+  | 'videojuegos'
+  | 'moviles'
+  | 'consolas'
+  | 'buscar';
 
 export interface OrdenVoz {
   accion: Accion;

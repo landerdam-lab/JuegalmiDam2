@@ -1,13 +1,27 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, DestroyRef, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { ActionSheetController, IonButton, IonCard, IonChip, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel, IonRefresher, IonRefresherContent, IonSearchbar, IonSegment, IonSegmentButton } from '@ionic/angular';
+import {
+  ActionSheetController,
+  IonButton,
+  IonCard,
+  IonChip,
+  IonContent,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonLabel,
+  IonRefresher,
+  IonRefresherContent,
+  IonSearchbar,
+  IonSegment,
+  IonSegmentButton,
+} from '@ionic/angular';
 import type { Subscription } from 'rxjs';
 
 import { AgitarService } from '../../core/agitar.service';
 import type { ApiError } from '../../core/api-error';
-import type { Filtro, Orden} from '../../core/catalogo.service';
+import type { Filtro, Orden } from '../../core/catalogo.service';
 import { CatalogoService, hayFiltros, POR_PAGINA } from '../../core/catalogo.service';
 import { precio } from '../../core/formato';
 import type { Producto, Referencia, TipoProducto } from '../../core/modelos';
@@ -31,21 +45,110 @@ const ORDENES: { valor: Orden; texto: string }[] = [
  * todos → marca y orden. A-39: el buscador se esconde al bajar por la lista y vuelve al subir.
  */
 @Component({
-  imports: [RouterLink, IonContent, IonSearchbar, IonSegment, IonSegmentButton, IonLabel, IonChip, IonCard, IonButton, IonRefresher, IonRefresherContent, IonInfiniteScroll, IonInfiniteScrollContent, Barra, Estado, Icono, Imagen, ProductoTarjeta],
+  imports: [
+    RouterLink,
+    IonContent,
+    IonSearchbar,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonChip,
+    IonCard,
+    IonButton,
+    IonRefresher,
+    IonRefresherContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    Barra,
+    Estado,
+    Icono,
+    Imagen,
+    ProductoTarjeta,
+  ],
   styles: `
-    .fijo { background: var(--ja-fondo); position: sticky; top: 0; z-index: 2; }
-    .buscador { display: flex; align-items: center; gap: var(--ja-espacio-2); padding: var(--ja-espacio-2) var(--ja-espacio-4) 0; overflow: hidden; max-height: var(--ja-espacio-16); transition: max-height var(--ja-duracion-base) var(--ja-curva-estandar), opacity var(--ja-duracion-base); }
-    .buscador.oculto { max-height: 0; opacity: 0; padding-top: 0; }
-    ion-searchbar { padding: 0; --background: var(--ja-superficie-2); --border-radius: var(--ja-radio-l); --box-shadow: none; }
-    .micro { flex: none; width: var(--ja-tamano-tactil-min); height: var(--ja-tamano-tactil-min); --padding-start: 0; --padding-end: 0; --border-radius: var(--ja-radio-completo); margin: 0; }
-    ion-segment { justify-content: flex-start; border-bottom: var(--ja-borde-fino) solid var(--ja-borde); }
-    .lista { padding: 0 var(--ja-espacio-4) var(--ja-espacio-4); }
-    .seccion { padding: var(--ja-espacio-2) var(--ja-espacio-4) var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-3); }
-    .carrusel { display: flex; gap: var(--ja-espacio-3); overflow-x: auto; scrollbar-width: none; }
-    .mini { flex: none; width: 128px; cursor: pointer; display: flex; flex-direction: column; gap: var(--ja-espacio-1); }
-    .mini ja-imagen { border-radius: var(--ja-radio-m); }
-    .mini .nombre { font: var(--ja-tipo-etiqueta); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .reparamos { background: var(--ja-marca-suave); padding: var(--ja-espacio-4); display: flex; gap: var(--ja-espacio-3); align-items: center; cursor: pointer; color: var(--ja-marca); margin: 0; }
+    .fijo {
+      background: var(--ja-fondo);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .buscador {
+      display: flex;
+      align-items: center;
+      gap: var(--ja-espacio-2);
+      padding: var(--ja-espacio-2) var(--ja-espacio-4) 0;
+      overflow: hidden;
+      max-height: var(--ja-espacio-16);
+      transition:
+        max-height var(--ja-duracion-base) var(--ja-curva-estandar),
+        opacity var(--ja-duracion-base);
+    }
+    .buscador.oculto {
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+    }
+    ion-searchbar {
+      padding: 0;
+      --background: var(--ja-superficie-2);
+      --border-radius: var(--ja-radio-l);
+      --box-shadow: none;
+    }
+    .micro {
+      flex: none;
+      width: var(--ja-tamano-tactil-min);
+      height: var(--ja-tamano-tactil-min);
+      --padding-start: 0;
+      --padding-end: 0;
+      --border-radius: var(--ja-radio-completo);
+      margin: 0;
+    }
+    ion-segment {
+      justify-content: flex-start;
+      border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+    }
+    .lista {
+      padding: 0 var(--ja-espacio-4) var(--ja-espacio-4);
+    }
+    .seccion {
+      padding: var(--ja-espacio-2) var(--ja-espacio-4) var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-3);
+    }
+    .carrusel {
+      display: flex;
+      gap: var(--ja-espacio-3);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .mini {
+      flex: none;
+      width: 128px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-1);
+    }
+    .mini ja-imagen {
+      border-radius: var(--ja-radio-m);
+    }
+    .mini .nombre {
+      font: var(--ja-tipo-etiqueta);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .reparamos {
+      background: var(--ja-marca-suave);
+      padding: var(--ja-espacio-4);
+      display: flex;
+      gap: var(--ja-espacio-3);
+      align-items: center;
+      cursor: pointer;
+      color: var(--ja-marca);
+      margin: 0;
+    }
   `,
   template: `
     <ja-barra />
@@ -53,8 +156,17 @@ const ORDENES: { valor: Orden; texto: string }[] = [
       <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)"><ion-refresher-content /></ion-refresher>
       <div class="fijo">
         <div class="buscador" [class.oculto]="buscadorOculto()">
-          <ion-searchbar placeholder="Busca juegos, móviles o consolas" [debounce]="350" [value]="texto()" (ionInput)="buscar($any($event).detail.value ?? '')" searchIcon="assets/iconos/search.svg" clearIcon="assets/iconos/close.svg" />
-          <ion-button class="micro" color="primary" aria-label="Hablar con la app" (click)="voz.escuchar()"><ja-icono nombre="mic" /></ion-button>
+          <ion-searchbar
+            placeholder="Busca juegos, móviles o consolas"
+            [debounce]="350"
+            [value]="texto()"
+            (ionInput)="buscar($any($event).detail.value ?? '')"
+            searchIcon="assets/iconos/search.svg"
+            clearIcon="assets/iconos/close.svg"
+          />
+          <ion-button class="micro" color="primary" aria-label="Hablar con la app" (click)="voz.escuchar()"
+            ><ja-icono nombre="mic"
+          /></ion-button>
         </div>
         <ion-segment [value]="tipo()" [scrollable]="true" (ionChange)="cambiarPestana($any($event).detail.value)">
           <ion-segment-button value="videojuego"><ion-label>Videojuegos</ion-label></ion-segment-button>
@@ -67,18 +179,36 @@ const ORDENES: { valor: Orden; texto: string }[] = [
           <ion-chip (click)="quitarFiltros()"><ja-icono nombre="close" />Quitar filtros</ion-chip>
         }
         @if (tipo() === 'videojuego') {
-          <ion-chip [class.activo]="filtro().soloAlquilables" (click)="cambiar({ soloAlquilables: !filtro().soloAlquilables })">Solo alquilables</ion-chip>
-          <ion-chip [class.activo]="(filtro().plataforma ?? null) !== null" (click)="elegirPlataforma()">Plataforma: {{ nombrePlataforma() }}<ja-icono nombre="expand_more" /></ion-chip>
-          <ion-chip [class.activo]="(filtro().genero ?? null) !== null" (click)="elegirGenero()">Género: {{ filtro().genero ?? 'Todos' }}<ja-icono nombre="expand_more" /></ion-chip>
-          <ion-chip [class.activo]="(filtro().pegi ?? null) !== null" (click)="elegirPegi()">PEGI: {{ filtro().pegi ?? 'Todos' }}<ja-icono nombre="expand_more" /></ion-chip>
+          <ion-chip
+            [class.activo]="filtro().soloAlquilables"
+            (click)="cambiar({ soloAlquilables: !filtro().soloAlquilables })"
+            >Solo alquilables</ion-chip
+          >
+          <ion-chip [class.activo]="(filtro().plataforma ?? null) !== null" (click)="elegirPlataforma()"
+            >Plataforma: {{ nombrePlataforma() }}<ja-icono nombre="expand_more"
+          /></ion-chip>
+          <ion-chip [class.activo]="(filtro().genero ?? null) !== null" (click)="elegirGenero()"
+            >Género: {{ filtro().genero ?? 'Todos' }}<ja-icono nombre="expand_more"
+          /></ion-chip>
+          <ion-chip [class.activo]="(filtro().pegi ?? null) !== null" (click)="elegirPegi()"
+            >PEGI: {{ filtro().pegi ?? 'Todos' }}<ja-icono nombre="expand_more"
+          /></ion-chip>
         }
         @if (tipo() === 'movil') {
           <ion-chip [class.activo]="!filtro().formato" (click)="cambiar({ formato: null })">Todos</ion-chip>
-          <ion-chip [class.activo]="filtro().formato === 'movil'" (click)="cambiar({ formato: 'movil' })">Móviles</ion-chip>
-          <ion-chip [class.activo]="filtro().formato === 'tablet'" (click)="cambiar({ formato: 'tablet' })">Tablets</ion-chip>
+          <ion-chip [class.activo]="filtro().formato === 'movil'" (click)="cambiar({ formato: 'movil' })"
+            >Móviles</ion-chip
+          >
+          <ion-chip [class.activo]="filtro().formato === 'tablet'" (click)="cambiar({ formato: 'tablet' })"
+            >Tablets</ion-chip
+          >
         }
-        <ion-chip [class.activo]="(filtro().marca ?? null) !== null" (click)="elegirMarca()">Marca: {{ nombreMarca() }}<ja-icono nombre="expand_more" /></ion-chip>
-        <ion-chip [class.activo]="filtro().orden !== 'nombre'" (click)="elegirOrden()">Ordenar: {{ textoOrden() }}<ja-icono nombre="expand_more" /></ion-chip>
+        <ion-chip [class.activo]="(filtro().marca ?? null) !== null" (click)="elegirMarca()"
+          >Marca: {{ nombreMarca() }}<ja-icono nombre="expand_more"
+        /></ion-chip>
+        <ion-chip [class.activo]="filtro().orden !== 'nombre'" (click)="elegirOrden()"
+          >Ordenar: {{ textoOrden() }}<ja-icono nombre="expand_more"
+        /></ion-chip>
       </div>
 
       @if (mostrarCabecera()) {
@@ -110,7 +240,12 @@ const ORDENES: { valor: Orden; texto: string }[] = [
         @if (cargando() && !productos().length) {
           <ja-estado tipo="cargando" />
         } @else if (error()) {
-          <ja-estado tipo="error" titulo="No hemos podido cargar el catálogo" [texto]="error()" (reintentar)="cargar(1)" />
+          <ja-estado
+            tipo="error"
+            titulo="No hemos podido cargar el catálogo"
+            [texto]="error()"
+            (reintentar)="cargar(1)"
+          />
         } @else if (!productos().length) {
           <ja-estado tipo="vacio" titulo="No hay nada por aquí" texto="Prueba con otra búsqueda o quita los filtros." />
         } @else {
@@ -121,7 +256,9 @@ const ORDENES: { valor: Orden; texto: string }[] = [
           </div>
         }
       </div>
-      <ion-infinite-scroll [disabled]="!hayMas()" (ionInfinite)="masResultados($event)"><ion-infinite-scroll-content /></ion-infinite-scroll>
+      <ion-infinite-scroll [disabled]="!hayMas()" (ionInfinite)="masResultados($event)"
+        ><ion-infinite-scroll-content
+      /></ion-infinite-scroll>
     </ion-content>
   `,
 })
@@ -160,7 +297,9 @@ export class InicioPage implements OnInit {
   private readonly plataformas = signal<Referencia[]>([]);
   private readonly marcas = signal<Referencia[]>([]);
   private generos: string[] = [];
-  readonly nombrePlataforma = computed(() => this.plataformas().find((r) => r.id === this.filtro().plataforma)?.nombre ?? 'Todas');
+  readonly nombrePlataforma = computed(
+    () => this.plataformas().find((r) => r.id === this.filtro().plataforma)?.nombre ?? 'Todas',
+  );
   readonly nombreMarca = computed(() => this.marcas().find((r) => r.id === this.filtro().marca)?.nombre ?? 'Todas');
   readonly textoOrden = computed(() => ORDENES.find((o) => o.valor === this.filtro().orden)!.texto);
 
@@ -197,7 +336,9 @@ export class InicioPage implements OnInit {
   }
 
   private cargarCarrusel(): void {
-    this.catalogo.listar({ tipo: 'videojuego', soloAlquilables: true, orden: 'nombre' }, 1, 8).subscribe({ next: (r) => this.paraAlquilar.set(r.items), error: () => undefined });
+    this.catalogo
+      .listar({ tipo: 'videojuego', soloAlquilables: true, orden: 'nombre' }, 1, 8)
+      .subscribe({ next: (r) => this.paraAlquilar.set(r.items), error: () => undefined });
   }
 
   cargar(pagina: number, alTerminar?: () => void): void {
@@ -267,27 +408,57 @@ export class InicioPage implements OnInit {
   }
 
   elegirPlataforma(): void {
-    void this.elegir('Plataforma', 'Todas', this.plataformas().map((r) => ({ texto: r.nombre, valor: r.id })), (v) => this.cambiar({ plataforma: v }));
+    void this.elegir(
+      'Plataforma',
+      'Todas',
+      this.plataformas().map((r) => ({ texto: r.nombre, valor: r.id })),
+      (v) => this.cambiar({ plataforma: v }),
+    );
   }
 
   elegirGenero(): void {
-    void this.elegir('Género', 'Todos', this.generos.map((g) => ({ texto: g, valor: g })), (v) => this.cambiar({ genero: v }));
+    void this.elegir(
+      'Género',
+      'Todos',
+      this.generos.map((g) => ({ texto: g, valor: g })),
+      (v) => this.cambiar({ genero: v }),
+    );
   }
 
   elegirPegi(): void {
     // Los valores del CHECK de videojuego.pegi
-    void this.elegir('PEGI', 'Todos', [3, 7, 12, 16, 18].map((n) => ({ texto: String(n), valor: n })), (v) => this.cambiar({ pegi: v }));
+    void this.elegir(
+      'PEGI',
+      'Todos',
+      [3, 7, 12, 16, 18].map((n) => ({ texto: String(n), valor: n })),
+      (v) => this.cambiar({ pegi: v }),
+    );
   }
 
   elegirMarca(): void {
-    void this.elegir('Marca', 'Todas', this.marcas().map((r) => ({ texto: r.nombre, valor: r.id })), (v) => this.cambiar({ marca: v }));
+    void this.elegir(
+      'Marca',
+      'Todas',
+      this.marcas().map((r) => ({ texto: r.nombre, valor: r.id })),
+      (v) => this.cambiar({ marca: v }),
+    );
   }
 
   elegirOrden(): void {
-    void this.elegir('Ordenar', null, ORDENES.map((o) => ({ texto: o.texto, valor: o.valor })), (v) => this.cambiar({ orden: v ?? 'nombre' }));
+    void this.elegir(
+      'Ordenar',
+      null,
+      ORDENES.map((o) => ({ texto: o.texto, valor: o.valor })),
+      (v) => this.cambiar({ orden: v ?? 'nombre' }),
+    );
   }
 
-  private async elegir<T>(titulo: string, todas: string | null, opciones: { texto: string; valor: T }[], alElegir: (v: T | null) => void): Promise<void> {
+  private async elegir<T>(
+    titulo: string,
+    todas: string | null,
+    opciones: { texto: string; valor: T }[],
+    alElegir: (v: T | null) => void,
+  ): Promise<void> {
     const botones = opciones.map((o) => ({ text: o.texto, handler: () => alElegir(o.valor) }));
     const hoja = await this.hojas.create({
       header: titulo,

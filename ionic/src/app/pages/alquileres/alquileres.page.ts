@@ -1,8 +1,18 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { IonCard, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton } from '@ionic/angular';
+import {
+  IonCard,
+  IonContent,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonLabel,
+  IonRefresher,
+  IonRefresherContent,
+  IonSegment,
+  IonSegmentButton,
+} from '@ionic/angular';
 
 import { AgitarService } from '../../core/agitar.service';
 import type { ApiError } from '../../core/api-error';
@@ -17,12 +27,44 @@ import { Vida } from '../../shared/vida.component';
 
 /** PT-16 Mis alquileres: Activos · Retrasados · Devueltos. Las devoluciones se registran en la tienda. */
 @Component({
-  imports: [RouterLink, IonContent, IonCard, IonSegment, IonSegmentButton, IonLabel, IonRefresher, IonRefresherContent, IonInfiniteScroll, IonInfiniteScrollContent, Barra, Estado, Imagen, Pastilla, Vida],
+  imports: [
+    RouterLink,
+    IonContent,
+    IonCard,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonRefresher,
+    IonRefresherContent,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    Barra,
+    Estado,
+    Imagen,
+    Pastilla,
+    Vida,
+  ],
   styles: `
-    .interior { display: flex; gap: var(--ja-espacio-3); padding: var(--ja-espacio-3); }
-    ja-imagen { flex: none; width: 72px; border-radius: var(--ja-radio-s); }
-    .datos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--ja-espacio-1); }
-    ion-card { cursor: pointer; }
+    .interior {
+      display: flex;
+      gap: var(--ja-espacio-3);
+      padding: var(--ja-espacio-3);
+    }
+    ja-imagen {
+      flex: none;
+      width: 72px;
+      border-radius: var(--ja-radio-s);
+    }
+    .datos {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-1);
+    }
+    ion-card {
+      cursor: pointer;
+    }
   `,
   template: `
     <ja-barra titulo="Mis alquileres" />
@@ -38,9 +80,19 @@ import { Vida } from '../../shared/vida.component';
         @if (cargando() && !alquileres().length) {
           <ja-estado tipo="cargando" />
         } @else if (error()) {
-          <ja-estado tipo="error" titulo="No hemos podido cargar tus alquileres" [texto]="error()" (reintentar)="cargar(1)" />
+          <ja-estado
+            tipo="error"
+            titulo="No hemos podido cargar tus alquileres"
+            [texto]="error()"
+            (reintentar)="cargar(1)"
+          />
         } @else if (!alquileres().length) {
-          <ja-estado tipo="vacio" icono="event" titulo="No hay alquileres aquí" texto="Alquila un videojuego desde su ficha y lo verás en esta lista." />
+          <ja-estado
+            tipo="vacio"
+            icono="event"
+            titulo="No hay alquileres aquí"
+            texto="Alquila un videojuego desde su ficha y lo verás en esta lista."
+          />
         } @else {
           <div class="ja-lista">
             @for (a of alquileres(); track a.id) {
@@ -52,10 +104,16 @@ import { Vida } from '../../shared/vida.component';
                       <span class="ja-subtitulo">{{ a.videojuego.nombre }}</span>
                       <ja-pastilla [estado]="'alquiler-' + a.estado" />
                     </div>
-                    <div class="ja-etiqueta-s ja-t2">{{ corta(a.fechaInicio) }} → {{ corta(a.fechaFin) }} · {{ formato(a.subtotal) }}</div>
+                    <div class="ja-etiqueta-s ja-t2">
+                      {{ corta(a.fechaInicio) }} → {{ corta(a.fechaFin) }} · {{ formato(a.subtotal) }}
+                    </div>
                     <div class="ja-codigo">{{ cuenta(a) }}</div>
                     @if (a.estado === 'activo' || a.estado === 'retrasado') {
-                      <ja-vida [llenos]="vidaRestante(a)" [total]="5" [color]="a.estado === 'retrasado' ? 'var(--ja-error)' : 'var(--ja-alquiler)'" />
+                      <ja-vida
+                        [llenos]="vidaRestante(a)"
+                        [total]="5"
+                        [color]="a.estado === 'retrasado' ? 'var(--ja-error)' : 'var(--ja-alquiler)'"
+                      />
                     }
                   </div>
                 </div>
@@ -64,7 +122,9 @@ import { Vida } from '../../shared/vida.component';
           </div>
         }
       </div>
-      <ion-infinite-scroll [disabled]="!hayMas()" (ionInfinite)="mas($event)"><ion-infinite-scroll-content /></ion-infinite-scroll>
+      <ion-infinite-scroll [disabled]="!hayMas()" (ionInfinite)="mas($event)"
+        ><ion-infinite-scroll-content
+      /></ion-infinite-scroll>
     </ion-content>
   `,
 })

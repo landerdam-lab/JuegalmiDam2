@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Android 9+ bloquea el HTTP sin cifrar. Mientras la API no tenga HTTPS (A-32) se permite SOLO para
-     estos dominios. Cuando haya HTTPS: borrar el domain-config y cambiar res/values/api.xml a https://. -->
+<!-- Android 9+ bloquea el HTTP sin cifrar: la app de la entrega solo habla por HTTPS. El HTTP de
+     desarrollo se permite únicamente en debug: src/debug/res/xml/network_security_config.xml. -->
 <network-security-config>
     <base-config cleartextTrafficPermitted="false" />
-    <domain-config cleartextTrafficPermitted="true">
-        <!-- El PC anfitrión visto desde el emulador -->
-        <domain includeSubdomains="false">10.0.2.2</domain>
-        <!-- API en AWS (provisional, sin HTTPS) -->
-        <domain includeSubdomains="false">symfony.3-208-228-110.sslip.io</domain>
-    </domain-config>
 </network-security-config>

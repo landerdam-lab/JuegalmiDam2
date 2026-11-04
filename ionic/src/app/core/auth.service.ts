@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import type { Observable} from 'rxjs';
+import type { Observable } from 'rxjs';
 import { map, of, switchMap, tap, throwError } from 'rxjs';
 
 import { ApiError } from './api-error';
@@ -37,7 +37,12 @@ export class AuthService {
         }
         this.logout();
         return throwError(
-          () => new ApiError(403, 'SOLO_CLIENTES', 'Esta app es para clientes. La gestión de la tienda se hace desde la web.'),
+          () =>
+            new ApiError(
+              403,
+              'SOLO_CLIENTES',
+              'Esta app es para clientes. La gestión de la tienda se hace desde la web.',
+            ),
         );
       }),
     );

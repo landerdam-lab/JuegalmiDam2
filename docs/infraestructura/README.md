@@ -31,7 +31,7 @@ Volver a *00 - INICIO* (bóveda) · Decisión y detalle del despliegue: *ADR-010
 └──────────────────────────────────────────────────┘
 ```
 
-| Dominio (hoy por **HTTP**; HTTPS al final, A-32) | Va a | Quién puede entrar |
+| Dominio (con **HTTPS** desde el 2026-11-04) | Va a | Quién puede entrar |
 |---|---|---|
 | `symfony.3-208-228-110.sslip.io` | API Symfony `10.0.2.10:8000` | Todos (las apps y la web) |
 | `web.3-208-228-110.sslip.io` | Web `10.0.2.10:8081` | Todos |
@@ -90,7 +90,9 @@ sudo rm -rf /opt/web/html/* && sudo cp -r /tmp/web/* /opt/web/html/ && rm -rf /t
 ```
 No hace falta reiniciar nginx: sirve los archivos nuevos al momento. La URL de la API en la web: `http://symfony.3-208-228-110.sslip.io/api` (luego `https://`).
 
-**La API (`api/` del repo), cuando exista** (sustituye al Symfony de ejemplo):
+**La API (`api/` del repo):** desplegada el 2026-11-04 en `/home/ubuntu/juegalmi/api`. Para **actualizarla**: `git archive <rama> api` desde el PC, descomprimir allí, `composer install --no-dev --optimize-autoloader`, hacer una copia, migrar, `php bin/console cache:clear` y `sudo systemctl restart symfony`. **Sin** `doctrine:fixtures:load`: borra los datos.
+
+Cómo se hizo la primera vez:
 1. En la máquina privada: `git clone` del repo (o `scp` de `api/`) en `/home/ubuntu/juegalmi`, `composer install --no-dev`.
 2. `.env.local` con `DATABASE_URL="mysql://juegalmi_app:<contraseña>@127.0.0.1:3306/juegalmi?serverVersion=11.4.0-MariaDB&charset=utf8mb4"` (y `APP_ENV=prod`). Para migrar, usar `juegalmi_admin`.
 3. **Antes de migrar, una copia**: `sudo systemctl start backup-juegalmi.service`.
@@ -101,7 +103,7 @@ No hace falta reiniciar nginx: sirve los archivos nuevos al momento. La URL de l
 ## 6. El proxy (Nginx Proxy Manager)
 - Panel: `http://3.208.228.110:81` (solo la IP de Lander). Usuario y contraseña en `credenciales.txt`.
 - Los tres *proxy hosts* y la lista de acceso se crearon con `RETO_dam2\aws-juegalmi\npm_config.py`, que se puede volver a ejecutar sin duplicar nada.
-- **HTTPS (al final del proyecto):** `python npm_config.py <email real>`. Pone ese email al administrador, pide los certificados de Let's Encrypt de los tres dominios y fuerza HTTPS. Después hay que quitar el HTTP provisional de las apps (A-32) y cambiar sus URL a `https://`.
+- **HTTPS (activo desde el 2026-11-04):** se hizo con `python npm_config.py <email real>`. Pone ese email al administrador, pide los certificados de Let's Encrypt de los tres dominios y fuerza HTTPS. Después hay que quitar el HTTP provisional de las apps (A-32) y cambiar sus URL a `https://`.
 
 ## 7. Terraform
 Carpeta `RETO_dam2\aws-juegalmi` (copia del original de Lander, `aws-symfony-bastion`, que no se toca).

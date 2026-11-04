@@ -1,6 +1,15 @@
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonBackButton, IonBadge, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/angular';
+import {
+  IonBackButton,
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular';
 
 import { CarritoService } from '../core/carrito.service';
 import { VozService } from '../core/voz.service';
@@ -14,12 +23,40 @@ import { Logo } from './logo.component';
  */
 @Component({
   selector: 'ja-barra',
-  imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonBackButton, IonButton, IonTitle, IonBadge, RouterLink, Icono, Logo],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonMenuButton,
+    IonBackButton,
+    IonButton,
+    IonTitle,
+    IonBadge,
+    RouterLink,
+    Icono,
+    Logo,
+  ],
   styles: `
-    ion-title { font: var(--ja-tipo-titular-m); padding-inline: var(--ja-espacio-2); }
-    ion-badge { position: absolute; top: 0; right: 0; --background: var(--ja-primario); --color: var(--ja-sobre-primario); font: var(--ja-tipo-etiqueta-s); border-radius: var(--ja-radio-completo); }
-    ion-header { box-shadow: none; }
-    ion-toolbar { --border-width: 0 0 var(--ja-borde-fino) 0; --border-color: var(--ja-borde); }
+    ion-title {
+      font: var(--ja-tipo-titular-m);
+      padding-inline: var(--ja-espacio-2);
+    }
+    ion-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      --background: var(--ja-primario);
+      --color: var(--ja-sobre-primario);
+      font: var(--ja-tipo-etiqueta-s);
+      border-radius: var(--ja-radio-completo);
+    }
+    ion-header {
+      box-shadow: none;
+    }
+    ion-toolbar {
+      --border-width: 0 0 var(--ja-borde-fino) 0;
+      --border-color: var(--ja-borde);
+    }
   `,
   template: `
     <ion-header>
