@@ -12,7 +12,7 @@ App **solo para clientes** (ADR-024) en **Java + XML**: catálogo, carrito, pedi
    - Emulador con la API en el PC: `http://10.0.2.2:8000/api/`
    - Por `http://` solo funciona en **debug** y con los dominios de `app/src/debug/res/xml/network_security_config.xml` (`10.0.2.2` y la VM del aula). La release solo admite HTTPS.
    - Si en Windows el puerto 8000 está ocupado por `wslrelay` (WSL/Docker), el emulador se queda colgado: usad otro puerto (p. ej. 8081) y cambiad `api.xml` **solo en local** (aviso A-36).
-3. **Run** (o `./gradlew installDebug`). Usuarios de ejemplo: `cliente1@juegalmi.test` … `cliente4@juegalmi.test` / `demo1234` (solo los **clientes** pueden entrar).
+3. **Run** (o `./gradlew installDebug`). Usuarios de ejemplo: `cliente1@juegalmi.test` … `cliente3@juegalmi.test` / `demo1234` (solo los **clientes** pueden entrar). `cliente4` está desactivada a propósito, para probar ese caso.
 4. **Android 17 (targetSdk 37):** para hablar con una API de la **red local** (`10.0.2.2`, `192.168.x.x`) la app necesita el permiso **Dispositivos cercanos** (`ACCESS_LOCAL_NETWORK`). Lo pide sola al abrirse (`util/RedLocal`); si se deniega, la conexión se queda esperando y da «No hay conexión». Con la API en AWS no se pide.
 
 Desde la terminal hace falta el JDK de Android Studio:
