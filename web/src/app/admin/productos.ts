@@ -197,7 +197,12 @@ export class Productos {
           const editando = this.editando();
           try {
             if (editando) {
-              await this.catalogo.actualizarProducto(this.tipoForm(), editando.id, datos);
+              // PUT parcial: solo lo que se ha cambiado en el formulario. Si se enviara todo, un valor
+              // que la API ha cambiado mientras tanto (el stock al cancelar un pedido) se pisaría (A-46).
+              const cambios = this.soloCambios(datos, this.originales);
+              if (Object.keys(cambios).length) {
+                await this.catalogo.actualizarProducto(this.tipoForm(), editando.id, cambios);
+              }
               this.avisos.exito(`«${datos['nombre']}» guardado.`);
             } else {
               await this.catalogo.crearProducto(this.tipoForm(), datos);
@@ -298,9 +303,21 @@ export class Productos {
       almacenamientoGb: p.almacenamientoGb ?? 0,
       modelo: p.modelo ?? '',
     });
+    // Lo que había al abrir: al guardar solo se envía lo que sea distinto de esto
+    this.originales = this.datosParaApi(this.modelo());
     this.formulario().reset();
     this.errorForm.set('');
     this.hojaAbierta.set(true);
+  }
+
+  /** Datos del producto tal y como estaban al abrir la hoja de edición. */
+  private originales: DatosProducto = {};
+
+  /** Los campos de «datos» que han cambiado respecto a «antes». */
+  private soloCambios(datos: DatosProducto, antes: DatosProducto): DatosProducto {
+    return Object.fromEntries(
+      Object.entries(datos).filter(([campo, valor]) => antes[campo] !== valor),
+    );
   }
 
   protected cerrarHoja(): void {
