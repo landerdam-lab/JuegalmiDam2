@@ -7,9 +7,8 @@ Fotos de `api/public/uploads/ejemplo/productos/`, en 600×600 y con el fondo dif
 **Derechos:** este proyecto es una demo académica, sin uso comercial. Las carátulas y las marcas son de sus editoras y fabricantes, y las fotos de Commons tienen su propia licencia, que puede pedir atribución. Si el proyecto se publicara, habría que revisarlas o cambiarlas.
 
 **Excepciones:**
-- `pixel10.jpg`: conserva la imagen generada, porque no se encontró una foto.
-- `sonic.jpg`: captura del juego, no carátula.
-- `minecraft.jpg`: logotipo del juego.
+- `pixel10.jpg`: foto del Pixel 10 Pro, el modelo más parecido que se encontró.
+- `minecraft.jpg`: captura de una versión antigua del juego, porque no se encontró la carátula.
 - `switch2pack.jpg`: la consola, sin el juego del pack.
 - `iphone17.jpg`: expositor con varios modelos de la gama.
 - `ps5.jpg`: foto de la PS5 con lector; `xiaomi15.jpg` y `redmi15.jpg`, fotos de tienda.
@@ -40,7 +39,7 @@ Fotos de `api/public/uploads/ejemplo/productos/`, en 600×600 y con el fondo dif
 | `mario.jpg` | Mario Kart World Cover Artwork.png |
 | `metroid.jpg` | Metroid Prime 4 Beyond cover art.png |
 | `mhwilds.jpg` | Monster Hunter Wilds cover.png |
-| `minecraft.jpg` | Minecraft game logo 2023.png |
+| `minecraft.jpg` | Cave Game Screenshot.jpg |
 | `pad7.jpg` | Xiaomi Pad 7.jpg |
 | `pixeltablet.jpg` | Google Pixel Tablet.png |
 | `pokemon.jpg` | Pokemon_Legends_Z-A_Key_Art_Logo.png |
@@ -50,7 +49,7 @@ Fotos de `api/public/uploads/ejemplo/productos/`, en 600×600 y con el fondo dif
 | `re4.jpg` | Resident Evil 4 remake cover art.jpg |
 | `redmi15.jpg` | Redmi Note 15 Pro.jpg |
 | `sims.jpg` | Sims4 Rebrand.png |
-| `sonic.jpg` | SXSG Screenshot.jpeg |
+| `sonic.jpg` | Sonic X Shadow Generations cover art.png |
 | `spider.jpg` | SpiderMan2PS5BoxArt.jpeg |
 | `starfield.jpg` | Starfield - game cover.png |
 | `steamdeck.jpg` | Steam Deck OLED framsida hemskärm.jpg |
@@ -64,3 +63,19 @@ Fotos de `api/public/uploads/ejemplo/productos/`, en 600×600 y con el fondo dif
 | `xboxx.jpg` | Xbox Series X 2.jpg |
 | `xiaomi15.jpg` | Xiaomi 15 (1).jpg |
 | `zelda.jpg` | The Legend of Zelda Tears of the Kingdom cover.jpg |
+| `pixel10.jpg` | Arrière du Google Pixel 10 Pro pierre de lune de 256 Go.jpg |
+
+## Galería de la tienda
+
+Fotos de `api/public/uploads/ejemplo/tienda/`, en 800×500. **La tienda es ficticia: son fotos de otros sitios que ilustran cada descripción, no de JuegAlmi**, y algunas muestran marcas reales (por ejemplo, GameStop). De Wikimedia Commons (2026-11-04), con la licencia indicada, que puede pedir atribución. `taller-consolas.jpg` es lo más parecido que se encontró: el interior de una PlayStation 2.
+
+| Archivo | Imagen de origen | Licencia |
+|---|---|---|
+| `fachada.jpg` | VGNY-Storefront.jpg | CC BY-SA 3.0 |
+| `mostrador.jpg` | GameStop on Powell St., SF interior.JPG | CC BY-SA 3.0 |
+| `novedades.jpg` | Used PS2 games at GameStop, Stonestown.JPG | CC BY-SA 3.0 |
+| `retro.jpg` | Sega-Mega-Drive-JP-Mk1-Console-Set.jpg | Public domain |
+| `taller-consolas.jpg` | Sony Playstation 2 SCPH-5001 V9 - Ventoinha, chave liga desliga e conectores traseiros Fan, power on off switch and back connectors (19290810088).jpg | CC BY 2.0 |
+| `taller-moviles.jpg` | Cellphone repair shop, Joe Slovo Park, Cape Town, South Africa-3384.jpg | CC BY-SA 3.0 |
+| `zona-pruebas.jpg` | 10th AAMDC Video Game Tournament (8953454).jpg | Public domain |
+| `evento.jpg` | 10th AAMDC Video Game Tournament (8953450).jpg | Public domain |
