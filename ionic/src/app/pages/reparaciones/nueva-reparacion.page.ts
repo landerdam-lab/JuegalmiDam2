@@ -146,7 +146,9 @@ import { Vida } from '../../shared/vida.component';
                 <span class="ja-etiqueta">Buscando…</span>
               }
               @default {
-                <ion-button fill="clear" color="secondary" (click)="ubicacion.actualizar()">Activar ubicación</ion-button>
+                <ion-button fill="clear" color="secondary" (click)="ubicacion.actualizar()"
+                  >Activar ubicación</ion-button
+                >
               }
             }
           </div>
