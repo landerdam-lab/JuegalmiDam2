@@ -21,9 +21,9 @@ npx eslint src             # comprobación de estilo
 | `src/environments/environment.ts` | `ionic serve` |
 | `src/environments/environment.prod.ts` | la APK |
 
-Cada archivo lista en sus comentarios las URL habituales (VM, Docker, emulador, AWS).
+Las dos apuntan a AWS: `https://symfony.3-208-228-110.sslip.io/api`. `environment.ts` lista también las URL de desarrollo.
 
-⚠️ **El WebView de Android no acepta un certificado local**, así que la VM de VirtualBox sirve la API sin TLS: `http://192.168.2.75:8001/api`. Si no está arrancada, en `~/juegalmi/api`: `php -S 0.0.0.0:8001 -t public` (el 8000 de esa VM lo usa otro proyecto, A-36). Mientras la API vaya por HTTP (A-32), `capacitor.config.ts` carga la app desde `http://localhost`; con el HTTPS final se quita ese bloque.
+⚠️ **La APK solo habla por HTTPS.** Para probarla contra una API por HTTP (Docker o la VM), hay que añadir en local a `capacitor.config.ts` `server: { androidScheme: 'http', cleartext: true }`, sin subirlo. `ionic serve` no lo necesita.
 
 ## Generar la APK
 
