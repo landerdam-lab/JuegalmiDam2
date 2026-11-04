@@ -67,7 +67,7 @@ import { EntregaCaja } from './entrega.component';
             @default {
               <div class="ja-error-t">Sin permiso de ubicación: no se puede confirmar el pedido</div>
               <ion-button fill="outline" color="secondary" (click)="ubicacion.actualizar()"
-                >Dar permiso de ubicación</ion-button
+                >Activar ubicación</ion-button
               >
             }
           }

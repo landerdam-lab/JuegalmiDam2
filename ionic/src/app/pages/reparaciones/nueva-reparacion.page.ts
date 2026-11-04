@@ -146,7 +146,7 @@ import { Vida } from '../../shared/vida.component';
                 <span class="ja-etiqueta">Buscando…</span>
               }
               @default {
-                <ion-button fill="clear" color="secondary" (click)="ubicacion.actualizar()">Dar permiso</ion-button>
+                <ion-button fill="clear" color="secondary" (click)="ubicacion.actualizar()">Activar ubicación</ion-button>
               }
             }
           </div>
@@ -228,6 +228,12 @@ export class NuevaReparacionPage implements OnInit {
     if (!departamentoId || Object.keys(e).length) {
       return;
     }
+    // La API la exige: se comprueba antes de subir la foto, para no dejarla huérfana en el servidor
+    if (!this.ubicacion.punto()) {
+      void this.avisos.mensaje('Activa la ubicación para continuar');
+      void this.ubicacion.actualizar();
+      return;
+    }
     this.enviando.set(true);
     // Primero la foto y luego la solicitud con su URL (ADR-019)
     const subida: Observable<string | undefined> = this.foto
@@ -255,11 +261,9 @@ export class NuevaReparacionPage implements OnInit {
         },
         error: (err: ApiError) => {
           this.enviando.set(false);
-          if (Object.keys(err.campos).length) {
-            this.errores.set(err.campos);
-          } else {
-            void this.avisos.mensaje(err.mensaje);
-          }
+          this.errores.set(err.campos);
+          // También como aviso: algunos campos, como la ubicación, no tienen dónde mostrar su error
+          void this.avisos.mensaje(Object.values(err.campos)[0] ?? err.mensaje);
         },
       });
   }
