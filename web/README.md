@@ -17,8 +17,8 @@ npm run build        # versión de producción en dist/almi-companion-web/browse
 ```
 
 - **Versiones** (ADR-031, fijadas al crear el proyecto el 2026-11-04): Angular **22.2.4** (CLI 22.2.5), TypeScript 6.0, Leaflet 1.9.4, Node 24 o superior.
-- **URL de la API**: un solo sitio, `src/environments/environment.ts`. Por defecto la VM del aula (`http://192.168.2.75:8001/api`).
-- **CORS**: la API tiene que permitir el origen de la web en `CORS_ALLOW_ORIGIN` (`localhost:4200` ya entra). Al desplegarla en AWS hay que añadir el dominio de la web.
+- **URL de la API**: `src/environments/environment.ts` para desarrollo (`npm start`: la VM del aula, `http://192.168.2.75:8001/api`) y `environment.prod.ts` para producción (`npm run build`: la API de AWS, `https://symfony.3-208-228-110.sslip.io/api`). Angular cambia uno por otro al compilar (`fileReplacements` en `angular.json`).
+- **CORS**: la API tiene que permitir el origen de la web en `CORS_ALLOW_ORIGIN` (`localhost:4200` ya entra). En AWS ya está admitido `https://web.3-208-228-110.sslip.io`.
 - **Usuarios de prueba** (datos de ejemplo de la API, contraseña `demo1234`): `admin@juegalmi.test` y los técnicos `tecnico.telefonia1@juegalmi.test`, `tecnico.consolas1@juegalmi.test`…
 
 ## Pantallas
@@ -45,7 +45,7 @@ npm run build        # versión de producción en dist/almi-companion-web/browse
 
 ```
 src/
-├── environments/environment.ts   URL de la API (un solo sitio)
+├── environments/                 URL de la API: desarrollo (VM) y producción (AWS)
 ├── theme/                        COPIA EXACTA de design/generated/ionic/theme (no se edita)
 ├── styles.scss                   Estilos globales: botones, campos, tablas, hojas… todo con var(--ja-*)
 └── app/
@@ -72,4 +72,4 @@ src/
 ## Pendiente
 
 - Botón de descarga de la APK: poner su URL en `environment.apkUrl` cuando esté publicada.
-- Desplegar en AWS (nginx de la red privada) y apuntar `apiUrl` a la API de AWS; con el HTTPS final (A-32), usar `https`.
+- Desplegar en AWS: copiar `dist/almi-companion-web/browser` al nginx de la red privada (`https://web.3-208-228-110.sslip.io`), con `try_files $uri $uri/ /index.html;` para que funcionen las rutas de Angular al recargar.
