@@ -32,11 +32,35 @@ const TEXTOS = {
 
 /** PT-14 Detalle de pedido: estado, productos, resumen, entrega y cancelar (solo si está pendiente). */
 @Component({
-  imports: [RouterLink, IonContent, IonFooter, IonButton, IonSpinner, Barra, Estado, Imagen, Pastilla, Vida, EntregaCaja],
+  imports: [
+    RouterLink,
+    IonContent,
+    IonFooter,
+    IonButton,
+    IonSpinner,
+    Barra,
+    Estado,
+    Imagen,
+    Pastilla,
+    Vida,
+    EntregaCaja,
+  ],
   styles: `
-    .linea { display: flex; gap: var(--ja-espacio-3); align-items: center; cursor: pointer; }
-    ja-imagen { flex: none; width: 56px; border-radius: var(--ja-radio-s); }
-    .datos { flex: 1; min-width: 0; }
+    .linea {
+      display: flex;
+      gap: var(--ja-espacio-3);
+      align-items: center;
+      cursor: pointer;
+    }
+    ja-imagen {
+      flex: none;
+      width: 56px;
+      border-radius: var(--ja-radio-s);
+    }
+    .datos {
+      flex: 1;
+      min-width: 0;
+    }
   `,
   template: `
     <ja-barra [titulo]="titulo()" atras="/pedidos" />
@@ -68,7 +92,9 @@ const TEXTOS = {
                 <ja-imagen [src]="a.videojuego.imagen" [alt]="a.videojuego.nombre" />
                 <div class="datos">
                   <div class="ja-subtitulo">{{ a.videojuego.nombre }}</div>
-                  <div class="ja-etiqueta-s ja-t2">Alquiler {{ corta(a.fechaInicio) }} → {{ corta(a.fechaFin) }} · {{ formato(a.precioDia) }}/día</div>
+                  <div class="ja-etiqueta-s ja-t2">
+                    Alquiler {{ corta(a.fechaInicio) }} → {{ corta(a.fechaFin) }} · {{ formato(a.precioDia) }}/día
+                  </div>
                 </div>
                 <span class="ja-precio-s">{{ formato(a.subtotal) }}</span>
               </div>
@@ -76,9 +102,13 @@ const TEXTOS = {
           </div>
           <div class="ja-caja ja-muesca">
             <div class="ja-titulo">Resumen</div>
-            <div class="ja-ticket-fila"><span class="ja-t2">Método de pago</span><span>{{ metodo(p.metodoPago) }}</span></div>
+            <div class="ja-ticket-fila">
+              <span class="ja-t2">Método de pago</span><span>{{ metodo(p.metodoPago) }}</span>
+            </div>
             <div class="ja-separador"></div>
-            <div class="ja-ticket-fila"><span class="ja-subtitulo">Total</span><span class="ja-precio">{{ formato(p.total) }}</span></div>
+            <div class="ja-ticket-fila">
+              <span class="ja-subtitulo">Total</span><span class="ja-precio">{{ formato(p.total) }}</span>
+            </div>
           </div>
           <ja-entrega [pedido]="p" />
         </div>
@@ -92,9 +122,25 @@ const TEXTOS = {
       <ion-footer class="ion-no-border">
         <div class="ja-pie">
           <div class="ja-columna">
-            <div class="ja-etiqueta-s ja-t2 ja-centrado">{{ p.estado === 'pendiente' ? 'Puedes cancelarlo mientras esté pendiente' : 'Ya no se puede cancelar: el pedido está ' + p.estado }}</div>
-            <ion-button class="ja-boton-ancho ja-boton-cargando" fill="outline" color="danger" [disabled]="p.estado !== 'pendiente' || cancelando()" (click)="cancelar(p)">
-              @if (cancelando()) { <ion-spinner /> } @else { Cancelar pedido }
+            <div class="ja-etiqueta-s ja-t2 ja-centrado">
+              {{
+                p.estado === 'pendiente'
+                  ? 'Puedes cancelarlo mientras esté pendiente'
+                  : 'Ya no se puede cancelar: el pedido está ' + p.estado
+              }}
+            </div>
+            <ion-button
+              class="ja-boton-ancho ja-boton-cargando"
+              fill="outline"
+              color="danger"
+              [disabled]="p.estado !== 'pendiente' || cancelando()"
+              (click)="cancelar(p)"
+            >
+              @if (cancelando()) {
+                <ion-spinner />
+              } @else {
+                Cancelar pedido
+              }
             </ion-button>
           </div>
         </div>
@@ -116,7 +162,9 @@ export class DetallePedidoPage {
   readonly metodo = metodoPago;
 
   readonly titulo = computed(() => `Pedido ${referenciaPedido(Number(this.id()))}`);
-  readonly pasos = computed(() => ({ pendiente: 1, preparado: 2, entregado: 3, cancelado: 0 })[this.pedido()?.estado ?? 'cancelado']);
+  readonly pasos = computed(
+    () => ({ pendiente: 1, preparado: 2, entregado: 3, cancelado: 0 })[this.pedido()?.estado ?? 'cancelado'],
+  );
   readonly textoEstado = computed(() => {
     const p = this.pedido();
     return p ? TEXTOS[p.entrega][p.estado] : '';

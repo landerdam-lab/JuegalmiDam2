@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonCard, IonContent } from '@ionic/angular';
@@ -15,10 +15,24 @@ import { Imagen } from '../../shared/imagen.component';
 @Component({
   imports: [RouterLink, IonContent, IonCard, Barra, Estado, Icono, Imagen],
   styles: `
-    .portada { --proporcion: 16 / 9; }
-    .rejilla { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ja-espacio-3); }
-    .rejilla ion-card { cursor: pointer; padding: var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-2); }
-    .marca { color: var(--ja-marca); }
+    .portada {
+      --proporcion: 16 / 9;
+    }
+    .rejilla {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--ja-espacio-3);
+    }
+    .rejilla ion-card {
+      cursor: pointer;
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-2);
+    }
+    .marca {
+      color: var(--ja-marca);
+    }
   `,
   template: `
     <ja-barra titulo="La tienda" />
@@ -68,7 +82,11 @@ export class TiendaPage implements OnInit {
 
   cargar(): void {
     this.error.set('');
-    this.servicio.tienda().subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
-    this.servicio.fotos().subscribe({ next: (f: FotoTienda[]) => this.portada.set(f[0]?.imagen ?? null), error: () => undefined });
+    this.servicio
+      .tienda()
+      .subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
+    this.servicio
+      .fotos()
+      .subscribe({ next: (f: FotoTienda[]) => this.portada.set(f[0]?.imagen ?? null), error: () => undefined });
   }
 }

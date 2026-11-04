@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, computed, effect, inject, input, signal, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonInput, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular';
@@ -25,7 +25,10 @@ import { Mapa } from '../../shared/mapa.component';
     <div class="ja-caja ja-muesca">
       <div class="ja-titulo">{{ pedido() ? 'Entrega' : '¿Cómo lo quieres?' }}</div>
       @if (!pedido()) {
-        <ion-segment [value]="domicilio() ? 'domicilio' : 'tienda'" (ionChange)="cambiarModo($any($event).detail.value)">
+        <ion-segment
+          [value]="domicilio() ? 'domicilio' : 'tienda'"
+          (ionChange)="cambiarModo($any($event).detail.value)"
+        >
           <ion-segment-button value="tienda"><ion-label>En tienda</ion-label></ion-segment-button>
           <ion-segment-button value="domicilio"><ion-label>A domicilio</ion-label></ion-segment-button>
         </ion-segment>
@@ -35,10 +38,28 @@ import { Mapa } from '../../shared/mapa.component';
           <div class="ja-cuerpo">Envío a domicilio: {{ p.direccionEntrega }}</div>
         } @else {
           <div>
-            <ion-input class="ja-campo" fill="solid" labelPlacement="floating" label="Dirección de entrega" helperText="Calle, número, piso, código postal y ciudad" enterkeyhint="search" [(ngModel)]="direccion" (keyup.enter)="buscar()">
-              <ion-button slot="end" fill="clear" color="secondary" aria-label="Buscar la dirección en el mapa" (click)="buscar()"><ja-icono nombre="search" /></ion-button>
+            <ion-input
+              class="ja-campo"
+              fill="solid"
+              labelPlacement="floating"
+              label="Dirección de entrega"
+              helperText="Calle, número, piso, código postal y ciudad"
+              enterkeyhint="search"
+              [(ngModel)]="direccion"
+              (keyup.enter)="buscar()"
+            >
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="secondary"
+                aria-label="Buscar la dirección en el mapa"
+                (click)="buscar()"
+                ><ja-icono nombre="search"
+              /></ion-button>
             </ion-input>
-            @if (errorDireccion()) { <div class="ja-error-t">{{ errorDireccion() }}</div> }
+            @if (errorDireccion()) {
+              <div class="ja-error-t">{{ errorDireccion() }}</div>
+            }
           </div>
         }
       } @else if (tienda(); as t) {
@@ -73,12 +94,22 @@ export class EntregaCaja implements OnInit {
   direccion = '';
   readonly errorDireccion = signal('');
 
-  readonly domicilio = computed(() => this.pedido()?.entrega === 'domicilio' || (!this.pedido() && this.modoDomicilio()));
+  readonly domicilio = computed(
+    () => this.pedido()?.entrega === 'domicilio' || (!this.pedido() && this.modoDomicilio()),
+  );
 
   readonly marcas = computed<MarcaMapa[]>(() => {
     const p = this.pedido();
     if (p?.entrega === 'domicilio' && p.latitudEntrega != null && p.longitudEntrega != null) {
-      return [{ latitud: p.latitudEntrega, longitud: p.longitudEntrega, tipo: 'casa', titulo: 'Entrega aquí', etiqueta: p.direccionEntrega ?? undefined }];
+      return [
+        {
+          latitud: p.latitudEntrega,
+          longitud: p.longitudEntrega,
+          tipo: 'casa',
+          titulo: 'Entrega aquí',
+          etiqueta: p.direccionEntrega ?? undefined,
+        },
+      ];
     }
     const casa = this.casa();
     if (this.domicilio() && casa) {
@@ -191,7 +222,9 @@ export class EntregaCaja implements OnInit {
     }
     this.falta = 'Completa los datos de la entrega';
     const direccion = this.direccion.trim();
-    this.errorDireccion.set(direccion.length < 5 ? 'Escribe la dirección completa (calle, número, código postal y ciudad)' : '');
+    this.errorDireccion.set(
+      direccion.length < 5 ? 'Escribe la dirección completa (calle, número, código postal y ciudad)' : '',
+    );
     if (this.errorDireccion()) {
       return null;
     }
@@ -206,7 +239,12 @@ export class EntregaCaja implements OnInit {
     if (!casa) {
       return null;
     }
-    return { entrega: 'domicilio', direccionEntrega: direccion, latitudEntrega: casa.latitud, longitudEntrega: casa.longitud };
+    return {
+      entrega: 'domicilio',
+      direccionEntrega: direccion,
+      latitudEntrega: casa.latitud,
+      longitudEntrega: casa.longitud,
+    };
   }
 
   /** Errores 422 de la API sobre la entrega, en su sitio. */

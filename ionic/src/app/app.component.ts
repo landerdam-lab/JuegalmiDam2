@@ -1,6 +1,16 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { IonApp, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterOutlet } from '@ionic/angular';
+import {
+  IonApp,
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  IonRouterOutlet,
+} from '@ionic/angular';
 
 import { AuthService } from './core/auth.service';
 import { AvisosService } from './core/avisos.service';
@@ -13,17 +23,69 @@ import { Logo } from './shared/logo.component';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector -- nombre estándar de la raíz de Angular
   selector: 'app-root',
-  imports: [IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonMenuToggle, RouterLink, RouterLinkActive, Icono, Logo],
+  imports: [
+    IonApp,
+    IonRouterOutlet,
+    IonMenu,
+    IonContent,
+    IonList,
+    IonListHeader,
+    IonItem,
+    IonLabel,
+    IonMenuToggle,
+    RouterLink,
+    RouterLinkActive,
+    Icono,
+    Logo,
+  ],
   styles: `
-    ion-menu { --width: 300px; }
-    ion-list, ion-list-header { background: transparent; }
-    .cabecera { padding: var(--ja-espacio-6) var(--ja-espacio-4) var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-3); }
-    .usuario { display: flex; align-items: center; gap: var(--ja-espacio-3); }
-    .avatar { width: var(--ja-tamano-avatar); height: var(--ja-tamano-avatar); border-radius: var(--ja-radio-completo); object-fit: cover; background: var(--ja-marca-suave); color: var(--ja-marca); display: flex; align-items: center; justify-content: center; flex: none; font: var(--ja-tipo-subtitulo); }
-    ion-item.seleccionado { --background: var(--ja-marca-suave); --color: var(--ja-marca); font-weight: 600; }
-    ion-item { --background: transparent; --border-radius: var(--ja-radio-m); margin: 0 var(--ja-espacio-2); }
-    ja-icono { margin-inline-end: var(--ja-espacio-3); }
-    .salir { --color: var(--ja-error); }
+    ion-menu {
+      --width: 300px;
+    }
+    ion-list,
+    ion-list-header {
+      background: transparent;
+    }
+    .cabecera {
+      padding: var(--ja-espacio-6) var(--ja-espacio-4) var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-3);
+    }
+    .usuario {
+      display: flex;
+      align-items: center;
+      gap: var(--ja-espacio-3);
+    }
+    .avatar {
+      width: var(--ja-tamano-avatar);
+      height: var(--ja-tamano-avatar);
+      border-radius: var(--ja-radio-completo);
+      object-fit: cover;
+      background: var(--ja-marca-suave);
+      color: var(--ja-marca);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      font: var(--ja-tipo-subtitulo);
+    }
+    ion-item.seleccionado {
+      --background: var(--ja-marca-suave);
+      --color: var(--ja-marca);
+      font-weight: 600;
+    }
+    ion-item {
+      --background: transparent;
+      --border-radius: var(--ja-radio-m);
+      margin: 0 var(--ja-espacio-2);
+    }
+    ja-icono {
+      margin-inline-end: var(--ja-espacio-3);
+    }
+    .salir {
+      --color: var(--ja-error);
+    }
   `,
   template: `
     <ion-app>
@@ -49,7 +111,13 @@ import { Logo } from './shared/logo.component';
             <ion-list-header>Comprar</ion-list-header>
             @for (e of comprar; track e.ruta) {
               <ion-menu-toggle [autoHide]="false">
-                <ion-item button [detail]="false" [routerLink]="e.ruta" routerLinkActive="seleccionado" routerDirection="root">
+                <ion-item
+                  button
+                  [detail]="false"
+                  [routerLink]="e.ruta"
+                  routerLinkActive="seleccionado"
+                  routerDirection="root"
+                >
                   <ja-icono [nombre]="e.icono" /><ion-label>{{ e.texto }}</ion-label>
                 </ion-item>
               </ion-menu-toggle>
@@ -57,7 +125,13 @@ import { Logo } from './shared/logo.component';
             <ion-list-header>Mi cuenta</ion-list-header>
             @for (e of cuenta; track e.ruta) {
               <ion-menu-toggle [autoHide]="false">
-                <ion-item button [detail]="false" [routerLink]="e.ruta" routerLinkActive="seleccionado" routerDirection="root">
+                <ion-item
+                  button
+                  [detail]="false"
+                  [routerLink]="e.ruta"
+                  routerLinkActive="seleccionado"
+                  routerDirection="root"
+                >
                   <ja-icono [nombre]="e.icono" /><ion-label>{{ e.texto }}</ion-label>
                 </ion-item>
               </ion-menu-toggle>
@@ -100,7 +174,11 @@ export class AppComponent {
   }
 
   async cerrarSesion(): Promise<void> {
-    const si = await this.avisos.confirmarDestructivo('Cerrar sesión', 'Tendrás que volver a entrar con tu correo y contraseña. El carrito se vaciará.', 'Cerrar sesión');
+    const si = await this.avisos.confirmarDestructivo(
+      'Cerrar sesión',
+      'Tendrás que volver a entrar con tu correo y contraseña. El carrito se vaciará.',
+      'Cerrar sesión',
+    );
     if (si) {
       this.auth.logout();
       await this.router.navigateByUrl('/login', { replaceUrl: true });

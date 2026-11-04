@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import type { Observable} from 'rxjs';
+import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
 
 import { ApiService } from './api.service';

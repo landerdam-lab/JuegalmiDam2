@@ -1,6 +1,12 @@
 const ES = 'es-ES';
 const PRECIO = new Intl.NumberFormat(ES, { style: 'currency', currency: 'EUR' });
-const FECHA_HORA = new Intl.DateTimeFormat(ES, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const FECHA_HORA = new Intl.DateTimeFormat(ES, {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+});
 
 export function precio(importe: number | null | undefined): string {
   return PRECIO.format(importe ?? 0);
@@ -43,7 +49,12 @@ export function referenciaReparacion(id: number): string {
   return `#REP-${String(id).padStart(4, '0')}`;
 }
 
-const METODOS: Record<string, string> = { tarjeta: 'Tarjeta', bizum: 'Bizum', paypal: 'PayPal', en_tienda: 'En tienda' };
+const METODOS: Record<string, string> = {
+  tarjeta: 'Tarjeta',
+  bizum: 'Bizum',
+  paypal: 'PayPal',
+  en_tienda: 'En tienda',
+};
 
 export function metodoPago(metodo: string): string {
   return METODOS[metodo] ?? metodo;

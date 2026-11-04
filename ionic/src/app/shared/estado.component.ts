@@ -8,11 +8,36 @@ import { Icono } from './icono.component';
   selector: 'ja-estado',
   imports: [IonButton, IonSkeletonText, Icono],
   styles: `
-    :host { display: block; }
-    .caja { display: flex; flex-direction: column; align-items: center; gap: var(--ja-espacio-3); padding: var(--ja-espacio-8) var(--ja-espacio-4); text-align: center; }
-    .baldosa { width: 96px; height: 96px; display: flex; align-items: center; justify-content: center; background: var(--ja-superficie-2); color: var(--ja-marca); --tam: var(--ja-espacio-10); }
-    .baldosa.error { background: var(--ja-error-suave); color: var(--ja-error); }
-    ion-skeleton-text { height: var(--ja-tamano-portada-tarjeta); margin: 0 0 var(--ja-espacio-3); border-radius: var(--ja-radio-l); }
+    :host {
+      display: block;
+    }
+    .caja {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ja-espacio-3);
+      padding: var(--ja-espacio-8) var(--ja-espacio-4);
+      text-align: center;
+    }
+    .baldosa {
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ja-superficie-2);
+      color: var(--ja-marca);
+      --tam: var(--ja-espacio-10);
+    }
+    .baldosa.error {
+      background: var(--ja-error-suave);
+      color: var(--ja-error);
+    }
+    ion-skeleton-text {
+      height: var(--ja-tamano-portada-tarjeta);
+      margin: 0 0 var(--ja-espacio-3);
+      border-radius: var(--ja-radio-l);
+    }
   `,
   template: `
     @switch (tipo()) {

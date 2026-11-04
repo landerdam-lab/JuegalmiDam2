@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonChip, IonContent, IonFooter, IonModal } from '@ionic/angular';
@@ -19,15 +19,47 @@ import { Vida } from '../../shared/vida.component';
 @Component({
   imports: [IonContent, IonFooter, IonButton, IonChip, IonModal, Barra, Estado, Imagen, Pastilla, Vida],
   styles: `
-    .portada { border-radius: var(--ja-radio-l); --proporcion: 4 / 3; --ajuste: contain; }
-    .fila { display: flex; justify-content: space-between; gap: var(--ja-espacio-3); font: var(--ja-tipo-cuerpo); }
-    .botones { display: flex; gap: var(--ja-espacio-2); }
-    .botones ion-button { flex: 1; margin: 0; }
-    .hoja { padding: var(--ja-espacio-6) var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-3); }
-    .duraciones { display: flex; gap: var(--ja-espacio-2); }
-    .duraciones ion-chip { flex: 1; justify-content: center; margin: 0; }
-    p { white-space: pre-line; }
-    ion-modal { --height: auto; --border-radius: var(--ja-radio-xl); }
+    .portada {
+      border-radius: var(--ja-radio-l);
+      --proporcion: 4 / 3;
+      --ajuste: contain;
+    }
+    .fila {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--ja-espacio-3);
+      font: var(--ja-tipo-cuerpo);
+    }
+    .botones {
+      display: flex;
+      gap: var(--ja-espacio-2);
+    }
+    .botones ion-button {
+      flex: 1;
+      margin: 0;
+    }
+    .hoja {
+      padding: var(--ja-espacio-6) var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-3);
+    }
+    .duraciones {
+      display: flex;
+      gap: var(--ja-espacio-2);
+    }
+    .duraciones ion-chip {
+      flex: 1;
+      justify-content: center;
+      margin: 0;
+    }
+    p {
+      white-space: pre-line;
+    }
+    ion-modal {
+      --height: auto;
+      --border-radius: var(--ja-radio-xl);
+    }
   `,
   template: `
     <ja-barra [titulo]="producto()?.nombre ?? ''" atras="/inicio" />
@@ -51,8 +83,14 @@ import { Vida } from '../../shared/vida.component';
                 <span class="ja-chip-alquiler">{{ formato(p.precioAlquiler) }}/día</span>
               </div>
               @if (p.copiasDisponibles) {
-                <ja-vida [llenos]="p.copiasDisponibles" [total]="p.copiasAlquiler ?? p.copiasDisponibles" color="var(--ja-alquiler)" />
-                <div class="ja-etiqueta-s ja-t2">{{ p.copiasDisponibles }} de {{ p.copiasAlquiler }} copias disponibles</div>
+                <ja-vida
+                  [llenos]="p.copiasDisponibles"
+                  [total]="p.copiasAlquiler ?? p.copiasDisponibles"
+                  color="var(--ja-alquiler)"
+                />
+                <div class="ja-etiqueta-s ja-t2">
+                  {{ p.copiasDisponibles }} de {{ p.copiasAlquiler }} copias disponibles
+                </div>
               } @else {
                 <div class="ja-etiqueta-s ja-t2">No quedan copias para alquilar ahora mismo</div>
               }
@@ -69,7 +107,10 @@ import { Vida } from '../../shared/vida.component';
           <div class="ja-caja ja-muesca">
             <div class="ja-titulo">Detalles</div>
             @for (f of filas(); track f[0]) {
-              <div class="fila"><span class="ja-t2">{{ f[0] }}</span><span>{{ f[1] }}</span></div>
+              <div class="fila">
+                <span class="ja-t2">{{ f[0] }}</span
+                ><span>{{ f[1] }}</span>
+              </div>
             }
           </div>
         </div>
@@ -79,7 +120,12 @@ import { Vida } from '../../shared/vida.component';
         <div class="ja-pagina"><ja-estado tipo="cargando" /></div>
       }
 
-      <ion-modal [isOpen]="hojaAbierta()" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (didDismiss)="hojaAbierta.set(false)">
+      <ion-modal
+        [isOpen]="hojaAbierta()"
+        [initialBreakpoint]="1"
+        [breakpoints]="[0, 1]"
+        (didDismiss)="hojaAbierta.set(false)"
+      >
         <ng-template>
           @if (producto(); as p) {
             <div class="hoja">
@@ -90,9 +136,14 @@ import { Vida } from '../../shared/vida.component';
                   <ion-chip [class.activo]="dias() === d" (click)="dias.set(d)">{{ d }} días</ion-chip>
                 }
               </div>
-              <div class="ja-ticket-fila"><span class="ja-t2">{{ formato(p.precioAlquiler) }} × {{ dias() }} días</span><span class="ja-precio-s">{{ formato((p.precioAlquiler ?? 0) * dias()) }}</span></div>
+              <div class="ja-ticket-fila">
+                <span class="ja-t2">{{ formato(p.precioAlquiler) }} × {{ dias() }} días</span
+                ><span class="ja-precio-s">{{ formato((p.precioAlquiler ?? 0) * dias()) }}</span>
+              </div>
               <div class="ja-etiqueta-s ja-t2">Devolución: {{ fechaFin() }}</div>
-              <ion-button class="ja-boton-ancho" color="primary" (click)="anadirAlquiler(p)">Añadir alquiler al carrito</ion-button>
+              <ion-button class="ja-boton-ancho" color="primary" (click)="anadirAlquiler(p)"
+                >Añadir alquiler al carrito</ion-button
+              >
             </div>
           }
         </ng-template>
@@ -102,9 +153,17 @@ import { Vida } from '../../shared/vida.component';
       <ion-footer class="ion-no-border">
         <div class="ja-pie">
           <div class="botones ja-columna">
-            <ion-button color="primary" [disabled]="p.stock <= 0" (click)="comprar(p)">Comprar · {{ formato(p.precio) }}</ion-button>
+            <ion-button color="primary" [disabled]="p.stock <= 0" (click)="comprar(p)"
+              >Comprar · {{ formato(p.precio) }}</ion-button
+            >
             @if (p.tipo === 'videojuego') {
-              <ion-button fill="outline" color="tertiary" [disabled]="!p.copiasDisponibles" (click)="hojaAbierta.set(true)">Alquilar</ion-button>
+              <ion-button
+                fill="outline"
+                color="tertiary"
+                [disabled]="!p.copiasDisponibles"
+                (click)="hojaAbierta.set(true)"
+                >Alquilar</ion-button
+              >
             }
           </div>
         </div>
@@ -163,12 +222,18 @@ export class DetallePage implements OnInit {
 
   comprar(p: Producto): void {
     this.carrito.comprar(p);
-    void this.avisos.mensaje(`«${p.nombre}» añadido al carrito`, { texto: 'Ver carrito', hacer: () => void this.router.navigateByUrl('/carrito') });
+    void this.avisos.mensaje(`«${p.nombre}» añadido al carrito`, {
+      texto: 'Ver carrito',
+      hacer: () => void this.router.navigateByUrl('/carrito'),
+    });
   }
 
   anadirAlquiler(p: Producto): void {
     this.carrito.alquilar(p, this.dias());
     this.hojaAbierta.set(false);
-    void this.avisos.mensaje(`Alquiler de ${p.nombre} añadido al carrito`, { texto: 'Ver carrito', hacer: () => void this.router.navigateByUrl('/carrito') });
+    void this.avisos.mensaje(`Alquiler de ${p.nombre} añadido al carrito`, {
+      texto: 'Ver carrito',
+      hacer: () => void this.router.navigateByUrl('/carrito'),
+    });
   }
 }
