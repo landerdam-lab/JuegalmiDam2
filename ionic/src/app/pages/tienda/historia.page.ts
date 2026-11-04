@@ -1,4 +1,4 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonButton, IonContent } from '@ionic/angular';
@@ -14,10 +14,22 @@ import { Imagen } from '../../shared/imagen.component';
 @Component({
   imports: [RouterLink, IonContent, IonButton, Barra, Estado, Imagen],
   styles: `
-    .portada { --proporcion: 16 / 9; }
-    .tarjeta { max-width: 640px; margin: calc(-1 * var(--ja-espacio-8)) var(--ja-espacio-4) var(--ja-espacio-4); position: relative; }
-    .cita { border-inline-start: var(--ja-espacio-1) solid var(--ja-primario); padding-inline-start: var(--ja-espacio-3); }
-    p { white-space: pre-line; margin: 0; }
+    .portada {
+      --proporcion: 16 / 9;
+    }
+    .tarjeta {
+      max-width: 640px;
+      margin: calc(-1 * var(--ja-espacio-8)) var(--ja-espacio-4) var(--ja-espacio-4);
+      position: relative;
+    }
+    .cita {
+      border-inline-start: var(--ja-espacio-1) solid var(--ja-primario);
+      padding-inline-start: var(--ja-espacio-3);
+    }
+    p {
+      white-space: pre-line;
+      margin: 0;
+    }
   `,
   template: `
     <ja-barra titulo="Historia" atras="/tienda" />
@@ -51,7 +63,9 @@ export class HistoriaPage implements OnInit {
 
   cargar(): void {
     this.error.set('');
-    this.servicio.tienda().subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
+    this.servicio
+      .tienda()
+      .subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
     this.servicio.fotos().subscribe({ next: (f) => this.portada.set(f[0]?.imagen ?? null), error: () => undefined });
   }
 }

@@ -13,4 +13,5 @@
 | 2026-10-28 | Los técnicos son `trabajador` y entran en la **web**, donde ven solo las reparaciones de su departamento (ADR-032) | Decisión del grupo | Sin pantallas de técnico en las apps |
 | 2026-10-30 | Marca **Almi Companion** en apps y web; el cliente sigue siendo JuegAlmi (ADR-036) | Decisión del grupo | Hay que aclararlo en la presentación (A-35) |
 | 2026-10-30 | Además de recoger en tienda, **envío gratis a domicilio** con mapa (ADR-038) | Pedido por Lander | Cuatro columnas nuevas en `pedido` |
+| 2026-11-04 | La **dirección de entrega se marca en el mapa**, que parte de la ubicación actual (ADR-040) | Pedido por Lander | Endpoint `GET /api/direcciones`; la API usa Nominatim, un servicio externo |
 | 2026-10-29 | Las copias de seguridad van a **S3** con un temporizador en AWS, no en `api/backups/` | Decisión de infraestructura | Ver `docs/infraestructura/copias-de-seguridad.md` |

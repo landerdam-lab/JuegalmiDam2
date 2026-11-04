@@ -29,7 +29,7 @@ Usan otra BBDD, `almi_companion_test`, configurada en `api/.env.test.local` (mis
 Doctrine añade `_test` al nombre). Las migraciones y los datos de ejemplo se cargan solos.
 
 ```bash
-php bin/phpunit          # 37 pruebas: login, catálogo, pedidos (con envío a domicilio), alquileres, reparaciones y permisos
+php bin/phpunit          # 43 pruebas: login, catálogo, pedidos (con envío a domicilio), alquileres, reparaciones y permisos
 ```
 
 ### Otros comandos

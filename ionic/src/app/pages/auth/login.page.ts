@@ -12,14 +12,60 @@ import { Logo } from '../../shared/logo.component';
 
 /** PT-02 Login: email + contraseña → POST /login → Inicio. */
 @Component({
-  imports: [FormsModule, RouterLink, IonContent, IonCard, IonInput, IonInputPasswordToggle, IonButton, IonSpinner, Icono, Logo],
+  imports: [
+    FormsModule,
+    RouterLink,
+    IonContent,
+    IonCard,
+    IonInput,
+    IonInputPasswordToggle,
+    IonButton,
+    IonSpinner,
+    Icono,
+    Logo,
+  ],
   styles: `
-    .caja { min-height: 100%; display: flex; flex-direction: column; gap: var(--ja-espacio-8); padding: var(--ja-espacio-8) var(--ja-espacio-4); max-width: 480px; margin-inline: auto; }
-    .arriba { display: flex; flex-direction: column; align-items: center; gap: var(--ja-espacio-2); text-align: center; }
-    form { display: flex; flex-direction: column; gap: var(--ja-espacio-3); padding: var(--ja-espacio-6); }
-    ion-card { margin: 0; }
-    .ir { display: flex; align-items: center; justify-content: center; gap: var(--ja-espacio-1); border-top: var(--ja-borde-fino) solid var(--ja-borde); padding-top: var(--ja-espacio-2); }
-    .aviso { margin-top: auto; display: flex; gap: var(--ja-espacio-2); justify-content: center; align-items: center; --tam: var(--ja-tamano-icono-s); }
+    .caja {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-8);
+      padding: var(--ja-espacio-8) var(--ja-espacio-4);
+      max-width: 480px;
+      margin-inline: auto;
+    }
+    .arriba {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ja-espacio-2);
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-3);
+      padding: var(--ja-espacio-6);
+    }
+    ion-card {
+      margin: 0;
+    }
+    .ir {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ja-espacio-1);
+      border-top: var(--ja-borde-fino) solid var(--ja-borde);
+      padding-top: var(--ja-espacio-2);
+    }
+    .aviso {
+      margin-top: auto;
+      display: flex;
+      gap: var(--ja-espacio-2);
+      justify-content: center;
+      align-items: center;
+      --tam: var(--ja-tamano-icono-s);
+    }
   `,
   template: `
     <ion-content>
@@ -32,17 +78,43 @@ import { Logo } from '../../shared/logo.component';
           <form (ngSubmit)="entrar()">
             <h1 class="ja-titular-m ja-sin-margen">Inicia sesión</h1>
             <div>
-              <ion-input class="ja-campo" fill="solid" labelPlacement="floating" label="Correo electrónico" type="email" autocomplete="email" name="email" [(ngModel)]="email" />
-              @if (errorEmail()) { <div class="ja-error-t">{{ errorEmail() }}</div> }
+              <ion-input
+                class="ja-campo"
+                fill="solid"
+                labelPlacement="floating"
+                label="Correo electrónico"
+                type="email"
+                autocomplete="email"
+                name="email"
+                [(ngModel)]="email"
+              />
+              @if (errorEmail()) {
+                <div class="ja-error-t">{{ errorEmail() }}</div>
+              }
             </div>
             <div>
-              <ion-input class="ja-campo" fill="solid" labelPlacement="floating" label="Contraseña" type="password" autocomplete="current-password" name="password" [(ngModel)]="password">
+              <ion-input
+                class="ja-campo"
+                fill="solid"
+                labelPlacement="floating"
+                label="Contraseña"
+                type="password"
+                autocomplete="current-password"
+                name="password"
+                [(ngModel)]="password"
+              >
                 <ion-input-password-toggle slot="end" color="medium" />
               </ion-input>
-              @if (errorPassword()) { <div class="ja-error-t">{{ errorPassword() }}</div> }
+              @if (errorPassword()) {
+                <div class="ja-error-t">{{ errorPassword() }}</div>
+              }
             </div>
             <ion-button class="ja-boton-ancho ja-boton-cargando" type="submit" color="primary" [disabled]="enviando()">
-              @if (enviando()) { <ion-spinner /> } @else { Entrar <ja-icono slot="end" nombre="arrow_forward" /> }
+              @if (enviando()) {
+                <ion-spinner />
+              } @else {
+                Entrar <ja-icono slot="end" nombre="arrow_forward" />
+              }
             </ion-button>
             <div class="ir">
               <span class="ja-cuerpo ja-t2">¿No tienes cuenta?</span>

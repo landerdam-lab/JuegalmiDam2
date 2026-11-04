@@ -25,7 +25,9 @@ export class Pastilla {
   /** Por ejemplo «pedido-pendiente». */
   readonly estado = input.required<string>();
   readonly texto = input('');
-  readonly clase = computed(() => `ja-estado--${this.estado() === 'alquiler-cancelado' ? 'pedido-cancelado' : this.estado()}`);
+  readonly clase = computed(
+    () => `ja-estado--${this.estado() === 'alquiler-cancelado' ? 'pedido-cancelado' : this.estado()}`,
+  );
   readonly textoFijo = computed(() => TEXTOS[this.estado()] ?? '');
 }
 
@@ -33,5 +35,7 @@ export function estadoStock(stock: number): { estado: string; texto: string } {
   if (stock <= 0) {
     return { estado: 'stock-agotado', texto: 'Agotado' };
   }
-  return stock <= 2 ? { estado: 'stock-pocas-unidades', texto: `Últimas ${stock} uds.` } : { estado: 'stock-disponible', texto: 'En stock' };
+  return stock <= 2
+    ? { estado: 'stock-pocas-unidades', texto: `Últimas ${stock} uds.` }
+    : { estado: 'stock-disponible', texto: 'En stock' };
 }

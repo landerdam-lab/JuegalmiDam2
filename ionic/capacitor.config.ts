@@ -5,12 +5,6 @@ const config: CapacitorConfig = {
   appId: 'com.juegalmi.companion',
   appName: 'Almi Companion',
   webDir: 'www',
-  server: {
-    // Mientras la API vaya por HTTP (A-32): con https://localhost el WebView lo bloquearía como contenido mixto.
-    // Con el HTTPS final se quita este bloque.
-    androidScheme: 'http',
-    cleartext: true,
-  },
 };
 
 export default config;

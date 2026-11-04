@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,14 +58,27 @@ public final class UbicacionHelper {
         return longitud;
     }
 
-    /** Pide la ubicación actual (asíncrono). Si no hay permiso no hace nada: la app sigue funcionando. */
-    @SuppressLint("MissingPermission") // comprobado con tienePermiso()
     public void actualizar() {
+        actualizar(null);
+    }
+
+    /**
+     * Pide la ubicación actual (asíncrono). Si no hay permiso no hace nada: la app sigue funcionando.
+     *
+     * @param listo se ejecuta en el hilo principal cuando llega la ubicación actual
+     */
+    @SuppressLint("MissingPermission") // comprobado con tienePermiso()
+    public void actualizar(@Nullable Runnable listo) {
         if (!tienePermiso()) {
             return;
         }
         cliente.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null)
-                .addOnSuccessListener(this::guardar);
+                .addOnSuccessListener(ubicacion -> {
+                    guardar(ubicacion);
+                    if (listo != null) {
+                        listo.run();
+                    }
+                });
         // Mientras llega la actual, la última conocida sirve para las primeras peticiones
         cliente.getLastLocation().addOnSuccessListener(ubicacion -> {
             if (!hayUbicacion()) {

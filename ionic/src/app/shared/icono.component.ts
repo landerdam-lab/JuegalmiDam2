@@ -5,7 +5,12 @@ import { IonIcon } from '@ionic/angular';
 @Component({
   selector: 'ja-icono',
   imports: [IonIcon],
-  styles: `:host { display: inline-flex; font-size: var(--tam, var(--ja-tamano-icono)); }`,
+  styles: `
+    :host {
+      display: inline-flex;
+      font-size: var(--tam, var(--ja-tamano-icono));
+    }
+  `,
   template: `<ion-icon [src]="ruta()" aria-hidden="true" />`,
 })
 export class Icono {

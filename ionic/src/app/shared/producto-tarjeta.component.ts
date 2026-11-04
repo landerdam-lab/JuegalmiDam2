@@ -13,16 +13,54 @@ import { estadoStock, Pastilla } from './pastilla.component';
   selector: 'ja-producto-tarjeta',
   imports: [IonCard, RouterLink, Imagen, Pastilla],
   styles: `
-    ion-card { display: block; cursor: pointer; }
-    .interior { display: flex; gap: var(--ja-espacio-3); padding: var(--ja-espacio-3); }
-    ja-imagen { flex: none; width: calc(var(--ja-espacio-16) * 1.5); border-radius: var(--ja-radio-m); }
-    .datos { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: var(--ja-espacio-1); align-items: flex-start; }
-    .nombre { font: var(--ja-tipo-subtitulo); font-family: var(--ja-fuente-titulos); color: var(--ja-texto); display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .apagada { opacity: 0.6; }
-    .precios { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ja-espacio-2); }
+    ion-card {
+      display: block;
+      cursor: pointer;
+    }
+    .interior {
+      display: flex;
+      gap: var(--ja-espacio-3);
+      padding: var(--ja-espacio-3);
+    }
+    ja-imagen {
+      flex: none;
+      width: calc(var(--ja-espacio-16) * 1.5);
+      border-radius: var(--ja-radio-m);
+    }
+    .datos {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-1);
+      align-items: flex-start;
+    }
+    .nombre {
+      font: var(--ja-tipo-subtitulo);
+      font-family: var(--ja-fuente-titulos);
+      color: var(--ja-texto);
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .apagada {
+      opacity: 0.6;
+    }
+    .precios {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ja-espacio-2);
+    }
   `,
   template: `
-    <ion-card class="ja-tarjeta" [class.apagada]="producto().stock <= 0" [routerLink]="['/producto', producto().tipo, producto().id]">
+    <ion-card
+      class="ja-tarjeta"
+      [class.apagada]="producto().stock <= 0"
+      [routerLink]="['/producto', producto().tipo, producto().id]"
+    >
       <div class="interior">
         <ja-imagen [src]="producto().imagen" [alt]="'Imagen de ' + producto().nombre" />
         <div class="datos">

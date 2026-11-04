@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solo en debug: HTTP para probar contra una API de desarrollo. La release usa la de src/main. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- El PC anfitrión visto desde el emulador -->
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <!-- VM del aula con la API -->
+        <domain includeSubdomains="false">192.168.2.75</domain>
+    </domain-config>
+</network-security-config>

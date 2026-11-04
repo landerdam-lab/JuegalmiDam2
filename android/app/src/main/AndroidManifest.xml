@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 
     <!-- El tema de la app es el splash (PT-01, con el logo de Almi Companion): MainActivity pasa a Theme.JuegAlmi al arrancar.
-         networkSecurityConfig: HTTP solo para la API de desarrollo, mientras no haya HTTPS (A-32) -->
+         networkSecurityConfig: solo HTTPS; el HTTP de desarrollo se permite únicamente en debug -->
     <!-- JuegAlmiApp: aplica el tema elegido y configura OSMDroid antes de abrir ninguna pantalla -->
     <application
         android:name=".JuegAlmiApp"

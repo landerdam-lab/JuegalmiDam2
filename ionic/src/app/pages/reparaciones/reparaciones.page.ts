@@ -1,8 +1,17 @@
-import type { OnInit} from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { IonButton, IonCard, IonChip, IonContent, IonFab, IonFabButton, IonRefresher, IonRefresherContent } from '@ionic/angular';
+import {
+  IonButton,
+  IonCard,
+  IonChip,
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonRefresher,
+  IonRefresherContent,
+} from '@ionic/angular';
 
 import { AgitarService } from '../../core/agitar.service';
 import type { ApiError } from '../../core/api-error';
@@ -21,11 +30,36 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
 
 /** PT-18 Mis reparaciones. El cliente puede cancelar mientras esté recibida o en reparación. */
 @Component({
-  imports: [RouterLink, IonContent, IonCard, IonChip, IonButton, IonFab, IonFabButton, IonRefresher, IonRefresherContent, Barra, Estado, Icono, Pastilla, Vida],
+  imports: [
+    RouterLink,
+    IonContent,
+    IonCard,
+    IonChip,
+    IonButton,
+    IonFab,
+    IonFabButton,
+    IonRefresher,
+    IonRefresherContent,
+    Barra,
+    Estado,
+    Icono,
+    Pastilla,
+    Vida,
+  ],
   styles: `
-    .interior { padding: var(--ja-espacio-4); display: flex; flex-direction: column; gap: var(--ja-espacio-2); }
-    .lista { padding: 0 var(--ja-espacio-4) var(--ja-espacio-16); }
-    ion-card ion-button { margin: 0; align-self: flex-start; }
+    .interior {
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-2);
+    }
+    .lista {
+      padding: 0 var(--ja-espacio-4) var(--ja-espacio-16);
+    }
+    ion-card ion-button {
+      margin: 0;
+      align-self: flex-start;
+    }
   `,
   template: `
     <ja-barra titulo="Mis reparaciones" />
@@ -40,9 +74,19 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
         @if (cargando() && !reparaciones().length) {
           <ja-estado tipo="cargando" />
         } @else if (error()) {
-          <ja-estado tipo="error" titulo="No hemos podido cargar tus reparaciones" [texto]="error()" (reintentar)="cargar()" />
+          <ja-estado
+            tipo="error"
+            titulo="No hemos podido cargar tus reparaciones"
+            [texto]="error()"
+            (reintentar)="cargar()"
+          />
         } @else if (!visibles().length) {
-          <ja-estado tipo="vacio" icono="build" titulo="No tienes reparaciones" texto="¿Pantalla rota o mando con drift? Pide una reparación con el botón amarillo." />
+          <ja-estado
+            tipo="vacio"
+            icono="build"
+            titulo="No tienes reparaciones"
+            texto="¿Pantalla rota o mando con drift? Pide una reparación con el botón amarillo."
+          />
         } @else {
           <div class="ja-lista">
             @for (r of visibles(); track r.id) {
@@ -56,7 +100,12 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
                   <div class="ja-etiqueta-s ja-t2">{{ r.departamento?.nombre }} · {{ r.problema }}</div>
                   <ja-vida [llenos]="pasos[r.estado]" [total]="4" />
                   <div class="ja-entre">
-                    <span class="ja-etiqueta-s ja-t2">Entrada: {{ dia(r.fechaEntrada) }}@if (r.fechaSalida) { · Salida: {{ dia(r.fechaSalida) }} }</span>
+                    <span class="ja-etiqueta-s ja-t2"
+                      >Entrada: {{ dia(r.fechaEntrada) }}
+                      @if (r.fechaSalida) {
+                        · Salida: {{ dia(r.fechaSalida) }}
+                      }
+                    </span>
                     <span class="ja-precio-s">{{ r.presupuesto !== null ? formato(r.presupuesto) : 'Pendiente' }}</span>
                   </div>
                   @if (r.estado === 'recibida' || r.estado === 'en_reparacion') {
@@ -69,7 +118,9 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
         }
       </div>
       <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button color="primary" aria-label="Nueva reparación" routerLink="/reparaciones/nueva"><ja-icono nombre="add" /></ion-fab-button>
+        <ion-fab-button color="primary" aria-label="Nueva reparación" routerLink="/reparaciones/nueva"
+          ><ja-icono nombre="add"
+        /></ion-fab-button>
       </ion-fab>
     </ion-content>
   `,
@@ -134,7 +185,11 @@ export class ReparacionesPage implements OnInit {
   }
 
   async cancelar(r: Reparacion): Promise<void> {
-    const si = await this.avisos.confirmarDestructivo(`¿Cancelar la reparación ${referenciaReparacion(r.id)}?`, 'El técnico dejará de trabajar en ella. No se puede deshacer.', 'Cancelar solicitud');
+    const si = await this.avisos.confirmarDestructivo(
+      `¿Cancelar la reparación ${referenciaReparacion(r.id)}?`,
+      'El técnico dejará de trabajar en ella. No se puede deshacer.',
+      'Cancelar solicitud',
+    );
     if (si) {
       this.servicio.cancelar(r.id).subscribe({
         next: () => this.cargar(),
