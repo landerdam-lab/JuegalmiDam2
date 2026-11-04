@@ -2,19 +2,25 @@ package com.juegalmi.app.ui.pedidos;
 
 import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.juegalmi.app.R;
 import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.Callback;
+import com.juegalmi.app.data.model.Direccion;
 import com.juegalmi.app.data.model.Pedido;
 import com.juegalmi.app.data.model.Peticiones;
 import com.juegalmi.app.data.model.Tienda;
+import com.juegalmi.app.data.repository.DireccionRepository;
 import com.juegalmi.app.data.repository.TiendaRepository;
+import com.juegalmi.app.ui.comun.EtiquetaMapa;
 import com.juegalmi.app.ui.comun.Mapa;
 import com.juegalmi.app.ui.comun.Pastilla;
 import com.juegalmi.app.util.UbicacionHelper;
@@ -29,8 +35,8 @@ import java.util.Locale;
 
 /**
  * La caja «Entrega» (layout caja_entrega, ADR-038) en dos modos:
- * - elegir (PT-12 Confirmar pedido): recoger en la tienda → mapa interactivo de la tienda; envío a domicilio → el cliente
- *   escribe la dirección y toca el mapa para marcar su casa (empieza en su ubicación del GPS).
+ * - elegir (PT-12 Confirmar pedido): recoger en la tienda → mapa interactivo de la tienda; envío a domicilio → el mapa
+ *   empieza en la ubicación actual del cliente, y la dirección que escribe se marca en él (ADR-040). Tocar el mapa ajusta el punto.
  * - ver (PT-14 Detalle de pedido): muestra cómo se entrega y el mapa de la tienda o de la casa.
  */
 public class EntregaVista {
@@ -45,7 +51,15 @@ public class EntregaVista {
 
     @Nullable private Tienda tienda;
     @Nullable private Marker marcador;
+    /** Siempre la misma: si se creara una por apertura, las anteriores seguirían en el mapa. */
+    @Nullable private EtiquetaMapa etiquetaMapa;
     @Nullable private GeoPoint casa;
+    /** El cliente ha elegido el punto a mano: lo que diga la búsqueda al confirmar ya no lo mueve. */
+    private boolean tocado = false;
+    /** Última dirección marcada con la búsqueda: si cambia, hay que volver a buscarla. */
+    private String buscada = "";
+    private boolean buscando = false;
+    @StringRes private int falta = R.string.entrega_falta_datos;
     private boolean domicilio = false;
     private boolean soloVer = false;
     @Nullable private Pedido pedidoVisto;
@@ -92,12 +106,23 @@ public class EntregaVista {
                 pintar();
             }
         });
+        // La lupa del campo o la tecla «buscar» del teclado marcan en el mapa lo que ha escrito
+        tilDireccion.setEndIconOnClickListener(v -> buscar());
+        if (tilDireccion.getEditText() != null) {
+            tilDireccion.getEditText().setOnEditorActionListener((v, accion, evento) -> {
+                if (accion != EditorInfo.IME_ACTION_SEARCH) return false;
+                buscar();
+                return true;
+            });
+        }
         // Tocar el mapa (solo a domicilio) mueve el marcador de la casa a ese punto
         mapa.getOverlays().add(new MapEventsOverlay(new MapEventsReceiver() {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint punto) {
                 if (!domicilio) return false;
+                tocado = true;
                 ponerCasa(punto);
+                mostrarEtiqueta();
                 return true;
             }
 
@@ -118,6 +143,8 @@ public class EntregaVista {
                 marcador = Mapa.marcar(mapa, marcador, new GeoPoint(tienda.latitud, tienda.longitud),
                         R.drawable.marcador_tienda, tienda.nombre);
                 marcador.setIcon(context.getDrawable(R.drawable.marcador_tienda));
+                marcador.setTitle(tienda.nombre);
+                marcador.closeInfoWindow();
             }
             return;
         }
@@ -134,12 +161,77 @@ public class EntregaVista {
         if (casa != null) {
             ponerCasa(casa);
         }
+        // La ubicación guardada puede ser antigua o no haber llegado: se pide la actual y, si el
+        // cliente aún no ha marcado nada, el punto pasa a ser esa
+        UbicacionHelper u = UbicacionHelper.get(context);
+        u.actualizar(() -> {
+            if (domicilio && !tocado && buscada.isEmpty() && u.hayUbicacion()) {
+                ponerCasa(new GeoPoint(u.getLatitud(), u.getLongitud()));
+            }
+        });
+    }
+
+    /** Marca en el mapa la dirección escrita. Si no se encuentra, el marcador se queda donde estaba. */
+    private void buscar() {
+        String texto = textoDireccion();
+        if (texto.length() < 5) {
+            tilDireccion.setError(context.getString(R.string.entrega_falta_direccion));
+            return;
+        }
+        if (buscando) return;
+        buscando = true;
+        tilDireccion.setError(null);
+        tvPunto.setText(R.string.entrega_buscando);
+        ocultarTeclado();
+        new DireccionRepository(context).buscar(texto, etiqueta, new Callback<Direccion>() {
+            @Override
+            public void onExito(Direccion d) {
+                buscando = false;
+                buscada = texto;
+                tocado = false;
+                ponerCasa(new GeoPoint(d.latitud, d.longitud));
+                mostrarEtiqueta();
+                tvPunto.setText(context.getString(R.string.entrega_encontrada, d.direccion));
+            }
+
+            @Override
+            public void onError(ApiError error) {
+                buscando = false;
+                tvPunto.setText(error.mensaje);
+            }
+        });
+    }
+
+    /** Sobre el marcador, lo que ha escrito el cliente. */
+    private void mostrarEtiqueta() {
+        if (!textoDireccion().isEmpty()) {
+            abrirEtiqueta();
+        }
+    }
+
+    private void abrirEtiqueta() {
+        if (marcador == null) return;
+        if (etiquetaMapa == null) etiquetaMapa = new EtiquetaMapa(mapa);
+        marcador.setInfoWindow(etiquetaMapa);
+        marcador.showInfoWindow();
+    }
+
+    private String textoDireccion() {
+        return tilDireccion.getEditText() == null ? "" : tilDireccion.getEditText().getText().toString().trim();
+    }
+
+    private void ocultarTeclado() {
+        InputMethodManager teclado = context.getSystemService(InputMethodManager.class);
+        if (teclado != null) teclado.hideSoftInputFromWindow(raiz.getWindowToken(), 0);
     }
 
     private void ponerCasa(GeoPoint punto) {
         casa = punto;
         marcador = Mapa.marcar(mapa, marcador, punto, R.drawable.marcador_casa, context.getString(R.string.entrega_tu_casa));
         marcador.setIcon(context.getDrawable(R.drawable.marcador_casa));
+        // Al tocar el marcador se ve lo que ha escrito el cliente
+        String texto = textoDireccion();
+        marcador.setTitle(texto.isEmpty() ? context.getString(R.string.entrega_tu_casa) : texto);
         tvPunto.setText(context.getString(R.string.entrega_punto,
                 String.format(Locale.ROOT, "%.5f, %.5f", punto.getLatitude(), punto.getLongitude())));
     }
@@ -150,13 +242,20 @@ public class EntregaVista {
         if (!domicilio) {
             return Peticiones.Entrega.enTienda();
         }
-        String direccion = tilDireccion.getEditText() == null ? ""
-                : tilDireccion.getEditText().getText().toString().trim();
+        falta = R.string.entrega_falta_datos;
+        String direccion = textoDireccion();
         tilDireccion.setError(direccion.length() < 5 ? context.getString(R.string.entrega_falta_direccion) : null);
+        if (tilDireccion.getError() != null) {
+            return null;
+        }
+        // Sin esto, el pedido saldría con el punto del GPS aunque la dirección escrita sea otra
+        if (!tocado && !direccion.equals(buscada)) {
+            falta = R.string.entrega_revisa_punto;
+            buscar();
+            return null;
+        }
         if (casa == null) {
             tvPunto.setText(R.string.entrega_falta_punto);
-        }
-        if (tilDireccion.getError() != null || casa == null) {
             return null;
         }
         return Peticiones.Entrega.aDomicilio(direccion, casa.getLatitude(), casa.getLongitude());
@@ -166,6 +265,12 @@ public class EntregaVista {
     public void errores(ApiError error) {
         if (error.campo("direccionEntrega") != null) tilDireccion.setError(error.campo("direccionEntrega"));
         if (error.campo("ubicacionEntrega") != null) tvPunto.setText(error.campo("ubicacionEntrega"));
+    }
+
+    /** Qué decirle al cliente cuando entrega() devuelve null. */
+    @StringRes
+    public int mensajeFalta() {
+        return falta;
     }
 
     public boolean aDomicilio() {
@@ -186,7 +291,9 @@ public class EntregaVista {
         if (p.aDomicilio() && p.latitudEntrega != null && p.longitudEntrega != null) {
             tvTexto.setText(p.direccionEntrega);
             marcador = Mapa.marcar(mapa, marcador, new GeoPoint(p.latitudEntrega, p.longitudEntrega),
-                    R.drawable.marcador_casa, context.getString(R.string.entrega_tu_casa));
+                    R.drawable.marcador_casa, p.direccionEntrega);
+            marcador.setTitle(p.direccionEntrega);
+            abrirEtiqueta();
             tvPunto.setText(R.string.entrega_domicilio_gratis);
         } else if (tienda != null) {
             tvTexto.setText(context.getString(R.string.entrega_tienda_texto, tienda.nombre, tienda.direccion));

@@ -103,7 +103,7 @@ export class ConfirmarPage {
     this.errorForm.set('');
     const entrega = this.entrega.datos();
     if (!entrega) {
-      this.errorForm.set('Completa los datos de la entrega');
+      this.errorForm.set(this.entrega.mensajeFalta());
       return;
     }
     if (!this.ubicacion.punto()) {
