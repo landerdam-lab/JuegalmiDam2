@@ -1,0 +1,141 @@
+<!-- PW-17 Tienda y galería -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Tienda y galería</h1>
+    <p>
+      Lo que se ve en «La tienda» de la web y de las apps: dirección, ubicación en el mapa, historia
+      y fotos.
+    </p>
+  </div>
+</header>
+
+@if (tienda.hasValue()) {
+  <form id="form-tienda" class="rejilla" [formRoot]="formulario">
+    <section class="ja-panel bloque" aria-labelledby="t-datos">
+      <h2 id="t-datos" class="ja-titulo">Datos</h2>
+      @if (error()) {
+        <p class="ja-aviso-linea" role="alert"><ja-icono nombre="error" />{{ error() }}</p>
+      }
+      <div class="ja-campo">
+        <label for="t-nombre">Nombre</label>
+        <input id="t-nombre" [formField]="formulario.nombre" />
+        <ja-error-campo [campo]="formulario.nombre" />
+      </div>
+      <div class="ja-campo">
+        <label for="t-direccion">Dirección</label>
+        <input id="t-direccion" [formField]="formulario.direccion" />
+        <ja-error-campo [campo]="formulario.direccion" />
+      </div>
+      <div class="ja-campo">
+        <label for="t-historia">Historia</label>
+        <textarea id="t-historia" rows="10" [formField]="formulario.historia"></textarea>
+        <span class="ja-ayuda">Separa los párrafos con una línea en blanco.</span>
+      </div>
+    </section>
+
+    <section class="ja-panel bloque" aria-labelledby="t-ubicacion">
+      <h2 id="t-ubicacion" class="ja-titulo">Ubicación</h2>
+      <p class="ja-cuerpo ja-t2">
+        <ja-icono nombre="info" />Pulsa en el mapa para mover el marcador de la tienda.
+      </p>
+      <ja-mapa
+        [marcas]="marca()"
+        [zoom]="17"
+        etiqueta="Mapa para elegir la ubicación de la tienda"
+        (toque)="moverMarca($event)"
+      />
+      <div class="ja-form-fila">
+        <div class="ja-campo">
+          <label for="t-lat">Latitud</label>
+          <input id="t-lat" type="number" step="0.0000001" [formField]="formulario.latitud" />
+          <ja-error-campo [campo]="formulario.latitud" />
+        </div>
+        <div class="ja-campo">
+          <label for="t-lon">Longitud</label>
+          <input id="t-lon" type="number" step="0.0000001" [formField]="formulario.longitud" />
+          <ja-error-campo [campo]="formulario.longitud" />
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="ja-boton guardar"
+        [disabled]="formulario().submitting() || !formulario().dirty()"
+      >
+        <ja-icono nombre="check" />{{
+          formulario().submitting() ? 'Guardando…' : 'Guardar cambios'
+        }}
+      </button>
+    </section>
+  </form>
+
+  <section class="galeria" aria-labelledby="t-galeria">
+    <h2 id="t-galeria" class="ja-titular-m">Galería</h2>
+
+    <div class="nueva ja-panel">
+      <ja-subir-imagen carpeta="tienda" etiqueta="Nueva foto" [(url)]="nuevaImagen" />
+      <div class="ja-campo">
+        <label for="f-desc">Descripción</label>
+        <input
+          id="f-desc"
+          placeholder="Mostrador y zona de recogida"
+          [value]="nuevaDescripcion()"
+          (input)="nuevaDescripcion.set(valor($event))"
+        />
+      </div>
+      <button
+        type="button"
+        class="ja-boton ja-boton--secundario"
+        [disabled]="!nuevaImagen() || anadiendo()"
+        (click)="anadirFoto()"
+      >
+        <ja-icono nombre="add_photo_alternate" />Añadir a la galería
+      </button>
+    </div>
+
+    @if (fotos.hasValue()) {
+      <ul class="fotos">
+        @for (f of fotos.value(); track f.id) {
+          <li class="ja-panel">
+            <ja-imagen [src]="f.imagen" [alt]="f.descripcion ?? ''" />
+            <div class="foto__pie">
+              <div class="ja-campo">
+                <label class="ja-oculto" [for]="'desc-' + f.id">Descripción</label>
+                <input
+                  [id]="'desc-' + f.id"
+                  [value]="f.descripcion ?? ''"
+                  placeholder="Sin descripción"
+                  (change)="guardarDescripcion(f, $event)"
+                />
+              </div>
+              <button
+                type="button"
+                class="ja-boton-icono ja-boton-icono--peligro"
+                aria-label="Quitar foto"
+                (click)="borrarFoto(f)"
+              >
+                <ja-icono nombre="delete" />
+              </button>
+            </div>
+          </li>
+        } @empty {
+          <li class="vacia">
+            <ja-estado-vista
+              tipo="vacio"
+              icono="photo_library"
+              titulo="La galería está vacía"
+              texto="Sube la primera foto de la tienda."
+            />
+          </li>
+        }
+      </ul>
+    } @else if (fotos.error()) {
+      <ja-estado-vista tipo="error" (reintentar)="fotos.reload()" />
+    } @else {
+      <ja-estado-vista tipo="cargando" />
+    }
+  </section>
+} @else if (tienda.error()) {
+  <ja-estado-vista tipo="error" (reintentar)="tienda.reload()" />
+} @else {
+  <ja-estado-vista tipo="cargando" />
+}

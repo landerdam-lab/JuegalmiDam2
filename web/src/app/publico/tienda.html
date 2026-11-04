@@ -1,0 +1,205 @@
+<!-- PW-04 La tienda -->
+@if (tienda.hasValue()) {
+  @let t = tienda.value();
+  <section class="cabecera">
+    <div class="ja-contenedor cabecera__rejilla">
+      <div class="cabecera__texto">
+        <h1 class="ja-titular-l">{{ t.nombre }}</h1>
+        <p class="ja-cuerpo-l ja-t2"><ja-icono nombre="location_on" />{{ t.direccion }}</p>
+        <nav class="indice" aria-label="Secciones de la tienda">
+          <a href="/tienda#servicios"><ja-icono nombre="handyman" />Servicios</a>
+          <a href="/tienda#ubicacion"><ja-icono nombre="map" />Ubicación</a>
+          <a href="/tienda#galeria"><ja-icono nombre="photo_library" />Galería</a>
+          <a href="/tienda#historia"><ja-icono nombre="menu_book" />Historia</a>
+        </nav>
+      </div>
+      @if (fotos().length) {
+        <button
+          type="button"
+          class="cabecera__foto ja-muesca--destacada"
+          (click)="abrir(0)"
+          [attr.aria-label]="'Ver la foto: ' + (fotos()[0].descripcion ?? 'la tienda')"
+        >
+          <ja-imagen
+            [src]="fotos()[0].imagen"
+            [alt]="fotos()[0].descripcion ?? t.nombre"
+            [prioridad]="true"
+          />
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- Servicios: 3 pestañas por línea de negocio (servicio.linea, ADR-030) -->
+  <section id="servicios" class="ja-contenedor seccion" aria-labelledby="t-servicios">
+    <h2 id="t-servicios" class="ja-titular-m">Servicios</h2>
+    <div class="ja-pestanas" role="tablist" aria-label="Línea de negocio">
+      @for (l of listaLineas; track l) {
+        <button
+          type="button"
+          role="tab"
+          [id]="'pestana-' + l"
+          [attr.aria-selected]="linea() === l"
+          aria-controls="panel-servicios"
+          (click)="linea.set(l)"
+        >
+          <ja-icono [nombre]="lineas[l].icono" />{{ lineas[l].nombre }}
+        </button>
+      }
+    </div>
+    <div
+      id="panel-servicios"
+      role="tabpanel"
+      [attr.aria-labelledby]="'pestana-' + linea()"
+      class="servicios"
+    >
+      @if (servicios.hasValue()) {
+        @for (s of serviciosLinea(); track s.id) {
+          <article class="servicio ja-panel">
+            <h3 class="ja-titulo">{{ s.nombre }}</h3>
+            @if (s.descripcion) {
+              <p class="ja-cuerpo ja-t2">{{ s.descripcion }}</p>
+            }
+            <p class="servicio__precio">
+              @if (s.precioOrientativo !== null) {
+                <span class="ja-t3 ja-etiqueta-s">desde</span>
+                <span class="ja-precio">{{ precio(s.precioOrientativo) }}</span>
+              } @else {
+                <span class="ja-etiqueta ja-t2">Precio según presupuesto</span>
+              }
+            </p>
+          </article>
+        } @empty {
+          <p class="ja-t2">
+            Todavía no hay servicios de {{ lineas[linea()].nombre.toLowerCase() }}.
+          </p>
+        }
+      } @else if (servicios.error()) {
+        <ja-estado-vista
+          tipo="error"
+          texto="No se han podido cargar los servicios."
+          (reintentar)="servicios.reload()"
+        />
+      } @else {
+        @for (i of [1, 2, 3]; track i) {
+          <span class="ja-esqueleto" style="height: 140px"></span>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- Ubicación -->
+  <section id="ubicacion" class="ja-contenedor seccion" aria-labelledby="t-ubicacion">
+    <h2 id="t-ubicacion" class="ja-titular-m">Ubicación</h2>
+    <div class="ubicacion">
+      <ja-mapa
+        [marcas]="marcas()"
+        [rueda]="false"
+        [zoom]="17"
+        etiqueta="Mapa con la ubicación de la tienda"
+      />
+      <div class="ubicacion__datos ja-panel">
+        <p class="ja-subtitulo">{{ t.nombre }}</p>
+        <p class="ja-cuerpo-l">{{ t.direccion }}</p>
+        <p class="ja-codigo ja-t2">{{ coordenada(t.latitud) }}, {{ coordenada(t.longitud) }}</p>
+        <a
+          class="ja-boton ja-boton--secundario"
+          [href]="comoLlegar()"
+          target="_blank"
+          rel="noopener"
+        >
+          <ja-icono nombre="directions" /> Cómo llegar
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galería -->
+  @if (fotos().length) {
+    <section id="galeria" class="ja-contenedor seccion" aria-labelledby="t-galeria">
+      <h2 id="t-galeria" class="ja-titular-m">Galería</h2>
+      <ul class="galeria">
+        @for (f of fotos(); track f.id; let i = $index) {
+          <li>
+            <button
+              type="button"
+              (click)="abrir(i)"
+              [attr.aria-label]="'Ampliar: ' + (f.descripcion ?? 'foto ' + (i + 1))"
+            >
+              <ja-imagen [src]="f.imagen" [alt]="f.descripcion ?? ''" />
+              @if (f.descripcion) {
+                <span class="galeria__pie">{{ f.descripcion }}</span>
+              }
+            </button>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <!-- Historia -->
+  @if (historia().length) {
+    <section id="historia" class="ja-contenedor seccion" aria-labelledby="t-historia">
+      <div class="historia">
+        <h2 id="t-historia" class="ja-titular-m">Nuestra historia</h2>
+        <div class="historia__texto">
+          @for (parrafo of historia(); track $index) {
+            <p class="ja-cuerpo-l">{{ parrafo }}</p>
+          }
+        </div>
+      </div>
+    </section>
+  }
+} @else if (tienda.error()) {
+  <div class="ja-contenedor">
+    <ja-estado-vista
+      tipo="error"
+      texto="No se han podido cargar los datos de la tienda."
+      (reintentar)="tienda.reload()"
+    />
+  </div>
+} @else {
+  <div class="ja-contenedor cargando">
+    <span class="ja-esqueleto" style="height: var(--ja-espacio-12); width: 60%"></span>
+    <span class="ja-esqueleto" style="height: 320px"></span>
+  </div>
+}
+
+<dialog
+  #visor
+  class="visor"
+  aria-label="Galería de la tienda"
+  (keydown)="tecla($event)"
+  (click)="$event.target === visor && cerrar()"
+>
+  @if (fotoActual(); as f) {
+    <figure>
+      <img [src]="f.imagen" [alt]="f.descripcion ?? ''" />
+      <figcaption>
+        <span>{{ f.descripcion }}</span>
+        <span class="ja-codigo">{{ actual() + 1 }} / {{ fotos().length }}</span>
+      </figcaption>
+    </figure>
+    <button type="button" class="visor__boton cerrar" aria-label="Cerrar" (click)="cerrar()">
+      <ja-icono nombre="close" />
+    </button>
+    @if (fotos().length > 1) {
+      <button
+        type="button"
+        class="visor__boton anterior"
+        aria-label="Foto anterior"
+        (click)="mover(-1)"
+      >
+        <ja-icono nombre="chevron_left" />
+      </button>
+      <button
+        type="button"
+        class="visor__boton siguiente"
+        aria-label="Foto siguiente"
+        (click)="mover(1)"
+      >
+        <ja-icono nombre="chevron_right" />
+      </button>
+    }
+  }
+</dialog>

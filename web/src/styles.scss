@@ -1,0 +1,718 @@
+// Estilos globales de la web. Sistema «Cartucho» (ADR-022, design/DESIGN.md).
+// theme/variables.scss y theme/cartucho.scss se COPIAN de design/generated/ionic/theme (no se editan):
+// la web reutiliza las mismas variables CSS que la app de Ionic (--ja-*).
+// Aquí no hay ni un color, fuente o espaciado escrito a mano: todo sale de var(--ja-…).
+// Los únicos números propios son los puntos de corte del diseño adaptativo (720 y 1024 px).
+@use 'theme/variables';
+@use 'theme/cartucho';
+
+// ── Fuentes (las mismas que las apps, servidas desde public/fonts) ──
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage_grotesque.ttf') format('truetype');
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm_sans.ttf') format('truetype');
+  font-weight: 100 1000;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains_mono.ttf') format('truetype');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+// ── Base ──
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+html.ion-palette-dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ja-fondo);
+  color: var(--ja-texto);
+  font: var(--ja-tipo-cuerpo-l);
+  font-family: var(--ja-fuente-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+dl,
+dd {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--ja-marca);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--ja-marca-suave);
+  color: var(--ja-texto);
+}
+
+// ── Utilidades ──
+.ja-contenedor {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--ja-espacio-4);
+  @media (min-width: 720px) {
+    padding-inline: var(--ja-espacio-8);
+  }
+}
+
+.ja-t2 {
+  color: var(--ja-texto-2);
+}
+.ja-t3 {
+  color: var(--ja-texto-3);
+}
+
+.ja-oculto {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ja-saltar {
+  position: fixed;
+  top: var(--ja-espacio-2);
+  left: var(--ja-espacio-2);
+  z-index: 100;
+  padding: var(--ja-espacio-2) var(--ja-espacio-4);
+  background: var(--ja-primario);
+  color: var(--ja-sobre-primario);
+  border-radius: var(--ja-radio-m);
+  font: var(--ja-tipo-etiqueta);
+  transform: translateY(-200%);
+  &:focus {
+    transform: none;
+  }
+}
+
+// Muesca de tamaño variable: --corte (por defecto, la de tarjeta)
+.ja-recorte {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--corte, var(--ja-muesca-tarjeta))) 0,
+    100% var(--corte, var(--ja-muesca-tarjeta)),
+    100% 100%,
+    0 100%
+  );
+}
+
+.ja-precio-s {
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Botones (equivalen a Widget.JuegAlmi.Boton de Android) ──
+// Un solo .ja-boton (amarillo) por pantalla; el resto, --secundario, --alquilar o --texto.
+.ja-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ja-espacio-2);
+  min-height: var(--ja-tamano-boton-alto);
+  padding: 0 var(--ja-espacio-6);
+  border: var(--ja-borde-grueso) solid transparent;
+  border-radius: var(--ja-radio-m);
+  background: var(--ja-primario);
+  color: var(--ja-sobre-primario);
+  font: var(--ja-tipo-etiqueta);
+  letter-spacing: var(--ja-tipo-etiqueta-espaciado);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--ja-duracion-rapida) var(--ja-curva-estandar),
+    transform var(--ja-duracion-rapida) var(--ja-curva-estandar);
+
+  &:hover {
+    background: var(--ja-primario-pulsado);
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+  &:disabled,
+  &[aria-disabled='true'] {
+    background: var(--ja-superficie-3);
+    color: var(--ja-texto-3);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  &--secundario,
+  &--alquilar,
+  &--texto,
+  &--peligro-texto {
+    background: transparent;
+    color: var(--ja-marca);
+    border-color: var(--ja-marca);
+    &:hover {
+      background: var(--ja-marca-suave);
+    }
+  }
+  &--alquilar {
+    color: var(--ja-alquiler);
+    border-color: var(--ja-alquiler);
+    &:hover {
+      background: var(--ja-alquiler-suave);
+    }
+  }
+  &--texto,
+  &--peligro-texto {
+    border-color: transparent;
+    padding-inline: var(--ja-espacio-3);
+  }
+  &--peligro-texto {
+    color: var(--ja-error);
+    &:hover {
+      background: var(--ja-error-suave);
+    }
+  }
+  &--peligro {
+    background: var(--ja-error);
+    color: var(--ja-superficie);
+    &:hover {
+      background: var(--ja-error);
+      filter: brightness(1.08);
+    }
+  }
+  &--peque {
+    min-height: var(--ja-tamano-tactil-min);
+    padding-inline: var(--ja-espacio-4);
+  }
+  &--bloque {
+    width: 100%;
+  }
+}
+
+// Botón de solo icono (48 × 48: zona táctil mínima)
+.ja-boton-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ja-tamano-tactil-min);
+  height: var(--ja-tamano-tactil-min);
+  flex: none;
+  border: 0;
+  border-radius: var(--ja-radio-completo);
+  background: transparent;
+  color: var(--ja-texto-2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+  &:hover {
+    background: var(--ja-superficie-2);
+    color: var(--ja-texto);
+  }
+  &--peligro:hover {
+    background: var(--ja-error-suave);
+    color: var(--ja-error);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ── Campos de formulario (Widget.JuegAlmi.Campo): relleno superficie-2 y línea inferior ──
+.ja-campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ja-espacio-1);
+  min-width: 0;
+
+  > label,
+  > .ja-campo__etiqueta {
+    font: var(--ja-tipo-etiqueta);
+    color: var(--ja-texto-2);
+  }
+
+  input:not([type='checkbox']):not([type='radio']):not([type='file']),
+  select,
+  textarea {
+    width: 100%;
+    min-height: var(--ja-tamano-campo-alto);
+    padding: var(--ja-espacio-3) var(--ja-espacio-4);
+    border: 0;
+    border-bottom: var(--ja-borde-fino) solid var(--ja-borde-campo);
+    border-radius: var(--ja-radio-m) var(--ja-radio-m) var(--ja-radio-xs) var(--ja-radio-xs);
+    background: var(--ja-superficie-2);
+    color: var(--ja-texto);
+    font: var(--ja-tipo-cuerpo-l);
+    transition: border-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+
+    &::placeholder {
+      color: var(--ja-texto-3);
+    }
+    &:hover {
+      border-bottom-color: var(--ja-texto-2);
+    }
+    &:focus {
+      outline: none;
+      border-bottom: var(--ja-borde-grueso) solid var(--ja-marca);
+    }
+    &:focus-visible {
+      outline: none;
+    }
+    &[aria-invalid='true'] {
+      border-bottom: var(--ja-borde-grueso) solid var(--ja-error);
+    }
+    &:disabled,
+    &[readonly] {
+      color: var(--ja-texto-3);
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    min-height: calc(var(--ja-tamano-campo-alto) * 2.5);
+    resize: vertical;
+    font: var(--ja-tipo-cuerpo);
+    line-height: inherit;
+  }
+
+  // Se deja la flecha nativa del navegador: sigue a color-scheme, así que se ve en claro y en oscuro
+  select {
+    cursor: pointer;
+  }
+}
+
+.ja-ayuda {
+  font: var(--ja-tipo-etiqueta-s);
+  color: var(--ja-texto-3);
+  &--error {
+    display: flex;
+    align-items: center;
+    gap: var(--ja-espacio-1);
+    color: var(--ja-error);
+  }
+}
+
+// Casilla e interruptor con el violeta de la marca
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--ja-marca);
+  width: var(--ja-tamano-icono-s);
+  height: var(--ja-tamano-icono-s);
+  margin: 0;
+  cursor: pointer;
+}
+
+.ja-casilla {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+  min-height: var(--ja-tamano-tactil-min);
+  font: var(--ja-tipo-etiqueta);
+  color: var(--ja-texto);
+  cursor: pointer;
+}
+
+// ── Chips de filtro ──
+.ja-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ja-espacio-2);
+}
+.ja-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-1);
+  min-height: var(--ja-espacio-10);
+  padding: 0 var(--ja-espacio-4);
+  border: var(--ja-borde-fino) solid var(--ja-borde);
+  border-radius: var(--ja-radio-completo);
+  background: var(--ja-superficie);
+  color: var(--ja-texto-2);
+  font: var(--ja-tipo-etiqueta);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--ja-duracion-rapida) var(--ja-curva-estandar),
+    color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+  &:hover {
+    background: var(--ja-superficie-2);
+  }
+  &[aria-pressed='true'],
+  &.activo {
+    background: var(--ja-marca-suave);
+    border-color: var(--ja-marca);
+    color: var(--ja-marca);
+  }
+}
+
+// ── Pestañas (Widget.JuegAlmi.Pestanas): texto + indicador violeta de 3 ──
+.ja-pestanas {
+  display: flex;
+  gap: var(--ja-espacio-2);
+  overflow-x: auto;
+  border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+  scrollbar-width: none;
+
+  a,
+  button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ja-espacio-2);
+    min-height: var(--ja-tamano-barra-pestanas);
+    padding: 0 var(--ja-espacio-4);
+    border: 0;
+    background: none;
+    color: var(--ja-texto-2);
+    font: var(--ja-tipo-etiqueta);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: var(--ja-espacio-2);
+      right: var(--ja-espacio-2);
+      bottom: 0;
+      height: var(--ja-borde-foco);
+      border-radius: var(--ja-radio-segmento) var(--ja-radio-segmento) 0 0;
+      background: var(--ja-marca);
+      transform: scaleX(0);
+      transition: transform var(--ja-duracion-base) var(--ja-curva-estandar);
+    }
+    &:hover {
+      color: var(--ja-texto);
+    }
+    &.activa,
+    &[aria-selected='true'] {
+      color: var(--ja-marca);
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+}
+
+// ── Pastillas de estado extra (las de pedido, reparación y alquiler vienen de cartucho.scss) ──
+.ja-estado--alquiler-cancelado,
+.ja-estado--neutro {
+  color: var(--ja-neutro-estado);
+  background: var(--ja-neutro-estado-suave);
+}
+.ja-estado--exito {
+  color: var(--ja-exito);
+  background: var(--ja-exito-suave);
+}
+.ja-estado--aviso {
+  color: var(--ja-aviso);
+  background: var(--ja-aviso-suave);
+}
+.ja-estado--error {
+  color: var(--ja-error);
+  background: var(--ja-error-suave);
+}
+.ja-estado--info {
+  color: var(--ja-info);
+  background: var(--ja-info-suave);
+}
+.ja-estado--marca {
+  color: var(--ja-marca);
+  background: var(--ja-marca-suave);
+}
+.ja-estado--alquiler {
+  color: var(--ja-alquiler);
+  background: var(--ja-alquiler-suave);
+}
+
+// ── Tarjeta / panel con muesca ──
+.ja-panel {
+  border: var(--ja-borde-fino) solid var(--ja-borde);
+  border-radius: var(--ja-radio-l);
+  background: var(--ja-superficie);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-muesca-tarjeta)) 0,
+    100% var(--ja-muesca-tarjeta),
+    100% 100%,
+    0 100%
+  );
+}
+
+// ── Tablas del backoffice ──
+.ja-tabla-caja {
+  overflow-x: auto;
+  border: var(--ja-borde-fino) solid var(--ja-borde);
+  border-radius: var(--ja-radio-l);
+  background: var(--ja-superficie);
+}
+.ja-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--ja-tipo-cuerpo);
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: var(--ja-espacio-3) var(--ja-espacio-4);
+    background: var(--ja-superficie);
+    border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+    color: var(--ja-texto-2);
+    font: var(--ja-tipo-etiqueta-s);
+    letter-spacing: var(--ja-tipo-etiqueta-s-espaciado);
+    text-align: left;
+    white-space: nowrap;
+  }
+  td {
+    padding: var(--ja-espacio-3) var(--ja-espacio-4);
+    border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  tbody tr {
+    transition: background-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
+  }
+  tbody tr:hover {
+    background: var(--ja-fondo);
+  }
+  tbody tr.clicable {
+    cursor: pointer;
+  }
+  tr.retirado td {
+    color: var(--ja-texto-3);
+  }
+  .num {
+    text-align: right;
+    font: var(--ja-tipo-precio-s);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .acciones {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .fuerte {
+    font: var(--ja-tipo-subtitulo);
+    color: var(--ja-texto);
+  }
+  .codigo {
+    font: var(--ja-tipo-codigo);
+    letter-spacing: var(--ja-tipo-codigo-espaciado);
+    color: var(--ja-texto-2);
+    white-space: nowrap;
+  }
+}
+
+// ── Esqueleto de carga (solo opacidad: CPU mínima) ──
+.ja-esqueleto {
+  display: block;
+  border-radius: var(--ja-radio-m);
+  background: var(--ja-superficie-2);
+  animation: ja-latido 1.4s var(--ja-curva-estandar) infinite;
+}
+@keyframes ja-latido {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+// ── Diálogo nativo (<dialog>) y hoja lateral ──
+dialog.ja-dialogo,
+dialog.ja-hoja {
+  border: 0;
+  padding: 0;
+  color: var(--ja-texto);
+  background: var(--ja-superficie);
+  &::backdrop {
+    background: var(--ja-velo);
+  }
+}
+dialog.ja-dialogo {
+  width: min(440px, calc(100vw - var(--ja-espacio-8)));
+  border-radius: var(--ja-radio-xl);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-muesca-destacada)) 0,
+    100% var(--ja-muesca-destacada),
+    100% 100%,
+    0 100%
+  );
+  box-shadow: var(--ja-elevacion-3);
+}
+// La hoja lateral entra desde la derecha (formularios del backoffice)
+dialog.ja-hoja {
+  margin: 0 0 0 auto;
+  width: min(560px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: var(--ja-radio-xl) 0 0 var(--ja-radio-xl);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ja-muesca-destacada)) 0,
+    100% var(--ja-muesca-destacada),
+    100% 100%,
+    0 100%
+  );
+  &[open] {
+    animation: ja-entrar-derecha var(--ja-duracion-lenta) var(--ja-curva-entrada);
+  }
+}
+@keyframes ja-entrar-derecha {
+  from {
+    transform: translateX(var(--ja-espacio-16));
+    opacity: 0;
+  }
+}
+
+// ── Leaflet: marcadores (la misma idea que marcador_tienda/casa/cliente en Android e Ionic) ──
+.ja-marcador {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: var(--ja-borde-grueso) solid var(--ja-superficie);
+  box-shadow: var(--ja-elevacion-2);
+}
+.ja-marcador--tienda {
+  background: var(--ja-primario);
+}
+.ja-marcador--casa {
+  background: var(--ja-marca);
+}
+.ja-marcador--cliente {
+  background: var(--ja-info);
+}
+.leaflet-container {
+  font: var(--ja-tipo-etiqueta-s);
+  background: var(--ja-superficie-2);
+}
+html.ion-palette-dark .leaflet-tile-pane {
+  // Teselas de OSM más oscuras en el modo oscuro (un filtro, sin otra capa ni otra clave)
+  filter: brightness(0.78) contrast(1.1) saturate(0.7);
+}
+
+// ── Backoffice: cabecera de página, barra de filtros y rejilla de formularios ──
+.ja-admin-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ja-espacio-4);
+  margin-bottom: var(--ja-espacio-6);
+  h1 {
+    font: var(--ja-tipo-titular-l);
+    letter-spacing: var(--ja-tipo-titular-l-espaciado);
+  }
+  p {
+    margin-top: var(--ja-espacio-1);
+    color: var(--ja-texto-2);
+    max-width: 70ch;
+  }
+}
+.ja-admin-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ja-espacio-2);
+}
+
+.ja-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ja-espacio-3);
+  margin-bottom: var(--ja-espacio-4);
+  .ja-campo {
+    flex: 0 1 220px;
+  }
+  .ja-campo--ancho {
+    flex: 1 1 280px;
+  }
+}
+
+.ja-form {
+  display: grid;
+  gap: var(--ja-espacio-5);
+}
+.ja-form-fila {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.ja-form-seccion {
+  padding-top: var(--ja-espacio-2);
+  font: var(--ja-tipo-titulo);
+  color: var(--ja-texto);
+}
+.ja-aviso-linea {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ja-espacio-2);
+  padding: var(--ja-espacio-3) var(--ja-espacio-4);
+  border-radius: var(--ja-radio-m);
+  background: var(--ja-error-suave);
+  color: var(--ja-error);
+  font: var(--ja-tipo-cuerpo);
+  &--info {
+    background: var(--ja-info-suave);
+    color: var(--ja-info);
+  }
+}
+.ja-miniatura {
+  width: var(--ja-espacio-12);
+  height: var(--ja-espacio-12);
+  border-radius: var(--ja-radio-s);
+  overflow: hidden;
+  --proporcion: 1;
+  --tam-placeholder: var(--ja-tamano-icono-s);
+}
+.ja-celda-producto {
+  display: flex;
+  align-items: center;
+  gap: var(--ja-espacio-3);
+  min-width: 220px;
+}
