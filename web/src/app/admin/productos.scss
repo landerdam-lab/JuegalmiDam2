@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.barra {
+  margin-top: var(--ja-espacio-5);
+  .ja-chips {
+    padding-bottom: var(--ja-espacio-2);
+  }
+}
+
+.alquiler {
+  display: grid;
+  gap: var(--ja-espacio-1);
+  min-width: 140px;
+  color: var(--ja-alquiler);
+}
+
+.tipo {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  legend {
+    margin-bottom: var(--ja-espacio-2);
+  }
+}

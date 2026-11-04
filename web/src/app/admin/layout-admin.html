@@ -1,0 +1,91 @@
+<a class="ja-saltar" href="#contenido-admin">Saltar al contenido</a>
+<div class="marco" [class.menu-abierto]="menuAbierto()">
+  <aside class="lateral" id="menu-admin" aria-label="Menú del backoffice">
+    <div class="lateral__cabecera">
+      <a routerLink="/" aria-label="Ir a la web pública"><ja-logo /></a>
+      <button
+        type="button"
+        class="ja-boton-icono cerrar-menu"
+        aria-label="Cerrar menú"
+        (click)="menuAbierto.set(false)"
+      >
+        <ja-icono nombre="close" />
+      </button>
+    </div>
+
+    <nav>
+      @for (g of grupos(); track g.titulo) {
+        <p class="grupo">{{ g.titulo }}</p>
+        <ul>
+          @for (e of g.enlaces; track e.ruta) {
+            <li>
+              <a
+                [routerLink]="e.ruta"
+                routerLinkActive="activo"
+                [routerLinkActiveOptions]="{ exact: !!e.exacta }"
+                ariaCurrentWhenActive="page"
+              >
+                <ja-icono [nombre]="e.icono" />{{ e.texto }}
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </nav>
+
+    <div class="lateral__pie">
+      <a routerLink="/" class="web"><ja-icono nombre="open_in_new" />Ver la web pública</a>
+    </div>
+  </aside>
+
+  <button
+    type="button"
+    class="velo"
+    tabindex="-1"
+    aria-hidden="true"
+    (click)="menuAbierto.set(false)"
+  ></button>
+
+  <div class="principal">
+    <header class="barra">
+      <button
+        type="button"
+        class="ja-boton-icono abrir-menu"
+        aria-controls="menu-admin"
+        [attr.aria-expanded]="menuAbierto()"
+        aria-label="Abrir menú"
+        (click)="menuAbierto.set(true)"
+      >
+        <ja-icono nombre="menu" />
+      </button>
+
+      <div class="usuario">
+        <a routerLink="/admin/perfil" class="usuario__enlace" aria-label="Mi perfil">
+          <span class="avatar" aria-hidden="true">{{ iniciales() }}</span>
+          <span class="usuario__datos">
+            <span class="ja-subtitulo"
+              >{{ sesion.usuario()?.nombre }} {{ sesion.usuario()?.apellidos }}</span
+            >
+            <span class="ja-etiqueta-s ja-t2">{{ puesto() }}</span>
+          </span>
+        </a>
+      </div>
+
+      <button
+        type="button"
+        class="ja-boton-icono"
+        [attr.aria-label]="temas.esOscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+        (click)="temas.alternar()"
+      >
+        <ja-icono [nombre]="temas.esOscuro() ? 'light_mode' : 'dark_mode'" />
+      </button>
+      <button type="button" class="ja-boton ja-boton--texto ja-boton--peque" (click)="salir()">
+        <ja-icono nombre="logout" /><span class="salir-texto">Cerrar sesión</span>
+      </button>
+    </header>
+
+    <main id="contenido-admin" class="contenido" tabindex="-1">
+      <router-outlet />
+    </main>
+  </div>
+</div>

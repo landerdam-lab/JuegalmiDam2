@@ -1,0 +1,213 @@
+<!-- PW-01 Portada. Un solo botón amarillo en la pantalla: «Ver el catálogo». -->
+<section class="hero">
+  <div class="ja-contenedor hero__rejilla">
+    <div class="hero__texto">
+      <h1 class="hero__titular">Compra, alquila y repara en tu tienda de barrio</h1>
+      <p class="hero__entrada">
+        @if (tienda.hasValue()) {
+          {{ tienda.value().nombre }}, en {{ tienda.value().direccion }}:
+        }
+        videojuegos para comprar o alquilar, consolas, móviles y tablets, y un servicio técnico que
+        los arregla.
+      </p>
+      <div class="hero__acciones">
+        <a class="ja-boton" routerLink="/catalogo">
+          <ja-icono nombre="search" /> Ver el catálogo
+        </a>
+        <a class="ja-boton ja-boton--secundario" routerLink="/tienda">
+          <ja-icono nombre="storefront" /> Visitar la tienda
+        </a>
+      </div>
+    </div>
+
+    <!-- Los tres cartuchos: cada línea de negocio con la foto de uno de sus productos -->
+    <ul class="cartuchos" aria-label="Líneas de negocio">
+      @for (c of cartuchos; track c.tipo; let i = $index) {
+        <li class="cartucho" [style.--orden]="i">
+          <a class="cartucho__cuerpo" routerLink="/catalogo" [queryParams]="{ tipo: c.tipo }">
+            <div class="cartucho__etiqueta">
+              <ja-imagen
+                [src]="portadas()[c.tipo]?.imagen"
+                [alt]="portadas()[c.tipo]?.nombre ?? c.titulo"
+                [prioridad]="true"
+              />
+            </div>
+            <div class="cartucho__datos">
+              <span class="cartucho__icono"><ja-icono [nombre]="c.icono" /></span>
+              <h2 class="cartucho__titulo">{{ c.titulo }}</h2>
+              <p class="cartucho__texto">{{ c.texto }}</p>
+              <span class="cartucho__total">
+                @if (totales()[c.tipo] !== null) {
+                  {{ totales()[c.tipo] }} en catálogo
+                } @else {
+                  &nbsp;
+                }
+              </span>
+            </div>
+            <!-- Los 4 contactos del cartucho, como en el logo del sistema -->
+            <span class="cartucho__contactos" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="ja-contenedor seccion" aria-labelledby="t-alquiler">
+  <div class="seccion__cabecera">
+    <div>
+      <h2 id="t-alquiler" class="ja-titular-m">Para alquilar este finde</h2>
+      <p class="ja-t2">Juegos con copias libres ahora mismo. Se alquilan por días desde la app.</p>
+    </div>
+    <a
+      class="ver-todo"
+      routerLink="/catalogo"
+      [queryParams]="{ tipo: 'videojuego', alquilable: 1 }"
+    >
+      Ver todos <ja-icono nombre="arrow_forward" />
+    </a>
+  </div>
+  @if (juegos.hasValue()) {
+    <div class="rejilla">
+      @for (p of juegos.value().items; track p.id) {
+        <ja-tarjeta-producto [producto]="p" />
+      }
+    </div>
+  } @else if (juegos.error()) {
+    <ja-estado-vista
+      tipo="error"
+      texto="El catálogo no responde ahora mismo."
+      (reintentar)="recargarProductos()"
+    />
+  } @else {
+    <div class="rejilla">
+      @for (i of [1, 2, 3, 4]; track i) {
+        <span class="ja-esqueleto esqueleto-tarjeta"></span>
+      }
+    </div>
+  }
+</section>
+
+@if (dispositivos().length) {
+  <section class="ja-contenedor seccion" aria-labelledby="t-dispositivos">
+    <div class="seccion__cabecera">
+      <div>
+        <h2 id="t-dispositivos" class="ja-titular-m">Consolas y telefonía</h2>
+        <p class="ja-t2">Lo último en consolas, móviles y tablets.</p>
+      </div>
+      <a class="ver-todo" routerLink="/catalogo" [queryParams]="{ tipo: 'consola' }">
+        Ver todo <ja-icono nombre="arrow_forward" />
+      </a>
+    </div>
+    <div class="rejilla">
+      @for (p of dispositivos(); track p.id) {
+        <ja-tarjeta-producto [producto]="p" />
+      }
+    </div>
+  </section>
+}
+
+<!-- Servicio técnico: el proceso de la reparación con la barra de vida de 4 segmentos -->
+<section class="ja-contenedor seccion" aria-labelledby="t-reparar">
+  <div class="reparar ja-panel">
+    <div class="reparar__texto">
+      <span class="reparar__icono"><ja-icono nombre="handyman" /></span>
+      <h2 id="t-reparar" class="ja-titular-m">¿Pantalla rota o mando con drift?</h2>
+      <p class="ja-cuerpo-l ja-t2">
+        Pide la reparación desde la app con una foto del problema. La sigues paso a paso hasta que
+        esté lista para recoger.
+      </p>
+      <ol class="proceso">
+        @for (paso of pasos; track paso; let i = $index) {
+          <li>
+            <ja-vida [llenos]="i + 1" [total]="4" [etiqueta]="estados[paso].texto" />
+            <span class="proceso__paso"
+              ><ja-icono [nombre]="estados[paso].icono" />{{ estados[paso].texto }}</span
+            >
+          </li>
+        }
+      </ol>
+    </div>
+    <div class="reparar__lista">
+      <h3 class="ja-titulo">Precios orientativos</h3>
+      @if (servicios.hasValue()) {
+        <ul class="servicios">
+          @for (s of reparaciones(); track s.id) {
+            <li>
+              <span class="servicios__linea"><ja-icono [nombre]="lineas[s.linea].icono" /></span>
+              <span class="servicios__nombre">{{ s.nombre }}</span>
+              <span class="ja-precio-s">{{
+                s.precioOrientativo !== null
+                  ? 'desde ' + precio(s.precioOrientativo)
+                  : 'a presupuesto'
+              }}</span>
+            </li>
+          }
+        </ul>
+        <a class="ver-todo" routerLink="/tienda" fragment="servicios"
+          >Todos los servicios <ja-icono nombre="arrow_forward"
+        /></a>
+      } @else if (servicios.error()) {
+        <p class="ja-t2">No se han podido cargar los servicios.</p>
+      } @else {
+        <span class="ja-esqueleto" style="height: 200px"></span>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- La tienda física -->
+<section class="ja-contenedor seccion" aria-labelledby="t-tienda">
+  <div class="tienda">
+    <div class="tienda__foto ja-muesca--destacada">
+      <ja-imagen [src]="fotoTienda()?.imagen" [alt]="fotoTienda()?.descripcion ?? 'La tienda'" />
+    </div>
+    <div class="tienda__datos">
+      <h2 id="t-tienda" class="ja-titular-m">Ven a vernos</h2>
+      @if (tienda.hasValue()) {
+        <p class="ja-cuerpo-l">
+          <strong>{{ tienda.value().nombre }}</strong
+          ><br />{{ tienda.value().direccion }}
+        </p>
+      }
+      <ja-mapa
+        [marcas]="marcaTienda()"
+        [rueda]="false"
+        [zoom]="16"
+        etiqueta="Mapa con la ubicación de la tienda"
+      />
+      <a class="ver-todo" routerLink="/tienda"
+        >Galería, servicios e historia <ja-icono nombre="arrow_forward"
+      /></a>
+    </div>
+  </div>
+</section>
+
+<!-- La app Almi Companion (las dos APK, ADR-024) -->
+<section id="app" class="ja-contenedor seccion" aria-labelledby="t-app">
+  <div class="app ja-panel">
+    <ja-logo [conTexto]="false" class="app__logo" />
+    <div class="app__texto">
+      <h2 id="t-app" class="ja-titular-m">Almi Companion en tu móvil</h2>
+      <p class="ja-cuerpo-l ja-t2">
+        La app de JuegAlmi para Android. Lo que no se puede hacer desde la web, se hace desde ella:
+      </p>
+      <ul class="app__lista">
+        <li>
+          <ja-icono nombre="shopping_cart" />Comprar y alquilar, con recogida en tienda o entrega a
+          domicilio
+        </li>
+        <li><ja-icono nombre="build" />Pedir reparaciones con foto y seguir su estado</li>
+        <li><ja-icono nombre="receipt_long" />Consultar tus pedidos y alquileres</li>
+        <li><ja-icono nombre="mic" />Buscar con la voz</li>
+      </ul>
+      @if (apkUrl) {
+        <a class="ja-boton ja-boton--secundario" [href]="apkUrl" download>
+          <ja-icono nombre="download" /> Descargar la APK
+        </a>
+      } @else {
+        <p class="ja-etiqueta app__nota"><ja-icono nombre="android" />Disponible para Android.</p>
+      }
+    </div>
+  </div>
+</section>
