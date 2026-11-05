@@ -335,10 +335,15 @@
         <li style="--n: 2"><ja-icono nombre="receipt_long" />Consultar tus pedidos y alquileres</li>
         <li style="--n: 3"><ja-icono nombre="mic" />Buscar con la voz</li>
       </ul>
-      @if (apkUrl) {
-        <a class="ja-boton ja-boton--secundario" [href]="apkUrl" download>
-          <ja-icono nombre="download" /> Descargar la APK
-        </a>
+      @if (apkUrl && apkIonicUrl) {
+        <div class="app__descargas">
+          <a class="ja-boton ja-boton--secundario" [href]="apkUrl" download>
+            <ja-icono nombre="download" /> APK nativa
+          </a>
+          <a class="ja-boton ja-boton--secundario" [href]="apkIonicUrl" download>
+            <ja-icono nombre="download" /> APK Ionic
+          </a>
+        </div>
       } @else {
         <p class="ja-etiqueta app__nota"><ja-icono nombre="android" />Disponible para Android.</p>
       }

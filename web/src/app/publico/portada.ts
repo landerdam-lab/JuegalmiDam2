@@ -40,6 +40,7 @@ export class Portada {
   private readonly tiendas = inject(Tiendas);
 
   protected readonly apkUrl = environment.apkUrl;
+  protected readonly apkIonicUrl = environment.apkIonicUrl;
   protected readonly precio = precio;
   protected readonly lineas = LINEAS;
 

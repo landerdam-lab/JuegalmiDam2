@@ -3,5 +3,6 @@
 // Solo responde con el laboratorio de AWS Academy encendido.
 export const environment = {
   apiUrl: 'https://symfony.3-208-228-110.sslip.io/api',
-  apkUrl: null as string | null,
+  apkUrl: '/descargas/AlmiCompanion-android.apk' as string | null,
+  apkIonicUrl: '/descargas/AlmiCompanion-ionic.apk' as string | null,
 };
