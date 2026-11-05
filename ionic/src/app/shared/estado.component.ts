@@ -18,6 +18,8 @@ import { Icono } from './icono.component';
       gap: var(--ja-espacio-3);
       padding: var(--ja-espacio-8) var(--ja-espacio-4);
       text-align: center;
+      min-height: 60vh;
+      justify-content: center;
     }
     .baldosa {
       width: 96px;
@@ -25,8 +27,8 @@ import { Icono } from './icono.component';
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--ja-superficie-2);
-      color: var(--ja-marca);
+      background: var(--ja-primario);
+      color: var(--ja-sobre-primario);
       --tam: var(--ja-espacio-10);
     }
     .baldosa.error {

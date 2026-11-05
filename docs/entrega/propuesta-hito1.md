@@ -68,7 +68,7 @@ Modelo v6, con 19 tablas y sin redundancia (ADR-023, ADR-032 y ADR-034):
 
 **Diagramas:** `docs/datos/er-juegalmi.png` y `docs/datos/relacional-juegalmi.png` · paso a tablas: `docs/datos/paso-a-tablas.md`.
 
-**[GRUPO]** Comprobar que los diagramas exportados están al día: al añadir la entrega a domicilio (ADR-038) quedó pendiente regenerar el PNG y el SVG.
+Los diagramas exportados están al día: el PNG y el SVG se regeneraron el 2026-11-05 e incluyen la entrega a domicilio (ADR-038).
 
 ## 6. Funcionalidades por rol
 

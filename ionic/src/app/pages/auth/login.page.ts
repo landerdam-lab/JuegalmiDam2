@@ -30,7 +30,7 @@ import { Logo } from '../../shared/logo.component';
       display: flex;
       flex-direction: column;
       gap: var(--ja-espacio-8);
-      padding: var(--ja-espacio-8) var(--ja-espacio-4);
+      padding: var(--ja-espacio-12) var(--ja-espacio-4) var(--ja-espacio-6);
       max-width: 480px;
       margin-inline: auto;
     }
@@ -87,7 +87,9 @@ import { Logo } from '../../shared/logo.component';
                 autocomplete="email"
                 name="email"
                 [(ngModel)]="email"
-              />
+              >
+                <ja-icono slot="start" nombre="mail" />
+              </ion-input>
               @if (errorEmail()) {
                 <div class="ja-error-t">{{ errorEmail() }}</div>
               }
@@ -103,6 +105,7 @@ import { Logo } from '../../shared/logo.component';
                 name="password"
                 [(ngModel)]="password"
               >
+                <ja-icono slot="start" nombre="lock" />
                 <ion-input-password-toggle slot="end" color="medium" />
               </ion-input>
               @if (errorPassword()) {

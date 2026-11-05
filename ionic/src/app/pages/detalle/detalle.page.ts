@@ -1,7 +1,7 @@
 import type { OnInit } from '@angular/core';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonButton, IonChip, IonContent, IonFooter, IonModal } from '@ionic/angular';
+import { IonButton, IonChip, IonContent, IonModal } from '@ionic/angular';
 
 import type { ApiError } from '../../core/api-error';
 import { AvisosService } from '../../core/avisos.service';
@@ -11,24 +11,50 @@ import { decimal, dentroDe, precio } from '../../core/formato';
 import type { Producto, TipoProducto } from '../../core/modelos';
 import { Barra } from '../../shared/barra.component';
 import { Estado } from '../../shared/estado.component';
+import { Icono } from '../../shared/icono.component';
 import { Imagen } from '../../shared/imagen.component';
 import { estadoStock, Pastilla } from '../../shared/pastilla.component';
 import { Vida } from '../../shared/vida.component';
 
 /** PT-06, PT-08 y PT-10 Ficha de producto, con la hoja de alquiler PT-15. Solo se alquilan videojuegos (ADR-029). */
 @Component({
-  imports: [IonContent, IonFooter, IonButton, IonChip, IonModal, Barra, Estado, Imagen, Pastilla, Vida],
+  imports: [IonContent, IonButton, IonChip, IonModal, Barra, Estado, Icono, Imagen, Pastilla, Vida],
   styles: `
-    .portada {
-      border-radius: var(--ja-radio-l);
-      --proporcion: 4 / 3;
-      --ajuste: contain;
-    }
-    .fila {
+    .cabeza {
       display: flex;
-      justify-content: space-between;
-      gap: var(--ja-espacio-3);
-      font: var(--ja-tipo-cuerpo);
+      gap: var(--ja-espacio-4);
+      align-items: flex-start;
+    }
+    .portada {
+      flex: none;
+      width: 120px;
+      border-radius: var(--ja-radio-m);
+      --proporcion: 3 / 4;
+    }
+    .cabeza .datos {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--ja-espacio-2);
+    }
+    .alquiler {
+      background: var(--ja-alquiler-suave);
+      border-color: var(--ja-alquiler);
+      color: var(--ja-alquiler);
+    }
+    .alquiler .titulo {
+      display: flex;
+      align-items: center;
+      gap: var(--ja-espacio-2);
+    }
+    .rejilla {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--ja-espacio-4);
+    }
+    .marca {
+      color: var(--ja-marca);
     }
     .botones {
       display: flex;
@@ -62,32 +88,27 @@ import { Vida } from '../../shared/vida.component';
     }
   `,
   template: `
-    <ja-barra [titulo]="producto()?.nombre ?? ''" atras="/inicio" />
+    <ja-barra atras="/inicio" />
     <ion-content>
       @if (producto(); as p) {
         <div class="ja-pagina ja-columna">
-          <ja-imagen class="portada ja-muesca--destacada" [src]="p.imagen" [alt]="'Imagen de ' + p.nombre" />
-          <div>
-            <h1 class="ja-titular-l ja-sin-margen">{{ p.nombre }}</h1>
-            <div class="ja-cuerpo ja-t2">{{ p.marca?.nombre }}</div>
-          </div>
-          <div class="ja-entre">
-            <span class="ja-precio">{{ formato(p.precio) }}</span>
-            <ja-pastilla [estado]="stock().estado" [texto]="stock().texto" />
+          <div class="cabeza">
+            <ja-imagen class="portada ja-muesca" [src]="p.imagen" [alt]="'Imagen de ' + p.nombre" />
+            <div class="datos">
+              <h1 class="ja-titular-m ja-sin-margen">{{ p.nombre }}</h1>
+              <div class="ja-etiqueta marca">{{ subtitulo() }}</div>
+              <ja-pastilla [estado]="stock().estado" [texto]="textoStock()" />
+            </div>
           </div>
 
           @if (p.tipo === 'videojuego') {
-            <div class="ja-caja ja-muesca">
+            <div class="ja-caja ja-muesca alquiler">
               <div class="ja-entre">
-                <span class="ja-subtitulo">Alquiler</span>
-                <span class="ja-chip-alquiler">{{ formato(p.precioAlquiler) }}/día</span>
+                <span class="ja-subtitulo titulo"><ja-icono nombre="event" />Alquiler</span>
+                <span class="ja-precio">{{ formato(p.precioAlquiler) }}<span class="ja-etiqueta-s">/día</span></span>
               </div>
               @if (p.copiasDisponibles) {
-                <ja-vida
-                  [llenos]="p.copiasDisponibles"
-                  [total]="p.copiasAlquiler ?? p.copiasDisponibles"
-                  color="var(--ja-alquiler)"
-                />
+                <ja-vida [llenos]="segmentosAlquiler()" [total]="5" color="var(--ja-alquiler)" />
                 <div class="ja-etiqueta-s ja-t2">
                   {{ p.copiasDisponibles }} de {{ p.copiasAlquiler }} copias disponibles
                 </div>
@@ -97,21 +118,38 @@ import { Vida } from '../../shared/vida.component';
             </div>
           }
 
+          <div class="botones">
+            <ion-button color="primary" [disabled]="p.stock <= 0" (click)="comprar(p)"
+              >Comprar · {{ formato(p.precio) }}</ion-button
+            >
+            @if (p.tipo === 'videojuego') {
+              <ion-button
+                fill="outline"
+                color="tertiary"
+                [disabled]="!p.copiasDisponibles"
+                (click)="hojaAbierta.set(true)"
+                ><ja-icono slot="start" nombre="swap_horiz" />Alquilar</ion-button
+              >
+            }
+          </div>
+
           @if (p.descripcion) {
-            <div>
+            <div class="ja-caja ja-muesca">
               <div class="ja-titulo">Descripción</div>
-              <p class="ja-cuerpo ja-t2">{{ p.descripcion }}</p>
+              <p class="ja-cuerpo ja-t2 ja-sin-margen">{{ p.descripcion }}</p>
             </div>
           }
 
           <div class="ja-caja ja-muesca">
             <div class="ja-titulo">Detalles</div>
-            @for (f of filas(); track f[0]) {
-              <div class="fila">
-                <span class="ja-t2">{{ f[0] }}</span
-                ><span>{{ f[1] }}</span>
-              </div>
-            }
+            <div class="rejilla">
+              @for (f of filas(); track f[0]) {
+                <div>
+                  <div class="ja-cuerpo ja-t2">{{ f[0] }}</div>
+                  <div class="ja-subtitulo">{{ f[1] }}</div>
+                </div>
+              }
+            </div>
           </div>
         </div>
       } @else if (error()) {
@@ -149,26 +187,6 @@ import { Vida } from '../../shared/vida.component';
         </ng-template>
       </ion-modal>
     </ion-content>
-    @if (producto(); as p) {
-      <ion-footer class="ion-no-border">
-        <div class="ja-pie">
-          <div class="botones ja-columna">
-            <ion-button color="primary" [disabled]="p.stock <= 0" (click)="comprar(p)"
-              >Comprar · {{ formato(p.precio) }}</ion-button
-            >
-            @if (p.tipo === 'videojuego') {
-              <ion-button
-                fill="outline"
-                color="tertiary"
-                [disabled]="!p.copiasDisponibles"
-                (click)="hojaAbierta.set(true)"
-                >Alquilar</ion-button
-              >
-            }
-          </div>
-        </div>
-      </ion-footer>
-    }
   `,
 })
 export class DetallePage implements OnInit {
@@ -188,6 +206,20 @@ export class DetallePage implements OnInit {
   readonly formato = precio;
 
   readonly stock = computed(() => estadoStock(this.producto()?.stock ?? 0));
+  readonly textoStock = computed(() => {
+    const unidades = this.producto()?.stock ?? 0;
+    return unidades > 0 ? `${this.stock().texto} · ${unidades} uds.` : this.stock().texto;
+  });
+  readonly subtitulo = computed(() => {
+    const p = this.producto();
+    return [p?.marca?.nombre, p?.plataforma?.nombre].filter(Boolean).join(' · ');
+  });
+  /** La barra de alquiler siempre tiene 5 segmentos, como en la nativa. */
+  readonly segmentosAlquiler = computed(() => {
+    const p = this.producto();
+    const total = p?.copiasAlquiler || 1;
+    return Math.ceil(((p?.copiasDisponibles ?? 0) / total) * 5);
+  });
   readonly fechaFin = computed(() => dentroDe(this.dias()));
   readonly filas = computed<[string, string][]>(() => {
     const p = this.producto();

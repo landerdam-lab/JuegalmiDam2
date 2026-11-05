@@ -79,6 +79,20 @@ import { Icono } from '../../shared/icono.component';
     .salir {
       --color: var(--ja-error);
     }
+    .datos {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-3);
+    }
+    .inicial {
+      --tam: var(--ja-espacio-12);
+    }
+    .chip-cliente {
+      padding: calc(var(--ja-espacio-1) / 2) var(--ja-espacio-2);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-marca-suave);
+      color: var(--ja-marca);
+    }
   `,
   template: `
     <ja-barra titulo="Perfil" />
@@ -90,19 +104,20 @@ import { Icono } from '../../shared/icono.component';
               @if (u.foto) {
                 <img [src]="u.foto" alt="Tu foto" />
               } @else {
-                <span class="inicial">{{ u.nombre.charAt(0).toUpperCase() }}</span>
+                <span class="inicial"><ja-icono nombre="person" /></span>
               }
               <ion-button
                 fill="solid"
-                color="secondary"
+                color="primary"
                 aria-label="Cambiar la foto con la cámara"
                 (click)="cambiarFoto()"
                 ><ja-icono nombre="photo_camera"
               /></ion-button>
             </div>
-            <div class="ja-titulo">{{ u.nombre }} {{ u.apellidos }}</div>
+            <div class="ja-titular-m">{{ u.nombre }} {{ u.apellidos }}</div>
+            <span class="ja-etiqueta-s chip-cliente">Cliente</span>
           </div>
-          <div class="ja-caja ja-muesca">
+          <div class="datos">
             <div class="ja-titulo">Datos personales</div>
             <ion-input class="ja-campo" fill="solid" labelPlacement="floating" label="Nombre" [(ngModel)]="nombre" />
             @if (errores()['nombre']) {
@@ -125,7 +140,9 @@ import { Icono } from '../../shared/icono.component';
               label="Teléfono"
               type="tel"
               [(ngModel)]="telefono"
-            />
+            >
+              <ja-icono slot="start" nombre="call" />
+            </ion-input>
             @if (errores()['telefono']) {
               <div class="ja-error-t">{{ errores()['telefono'] }}</div>
             }
@@ -135,21 +152,24 @@ import { Icono } from '../../shared/icono.component';
               labelPlacement="floating"
               label="Correo electrónico"
               [value]="u.email"
-              [readonly]="true"
+              [disabled]="true"
               helperText="No se puede cambiar desde la app"
-            />
+            >
+              <ja-icono slot="end" nombre="lock" />
+            </ion-input>
             <ion-input
               class="ja-campo"
               fill="solid"
               labelPlacement="floating"
               label="DNI o NIE"
               [value]="u.dni"
-              [readonly]="true"
-              helperText="No se puede cambiar desde la app"
-            />
+              [disabled]="true"
+            >
+              <ja-icono slot="end" nombre="lock" />
+            </ion-input>
           </div>
         }
-        <div class="ja-caja ja-muesca">
+        <div class="datos">
           <div class="ja-titulo">Preferencias de la aplicación</div>
           <div class="ja-etiqueta">Tema visual</div>
           <ion-segment [value]="preferencias.tema()" (ionChange)="cambiarTema($any($event).detail.value)">
