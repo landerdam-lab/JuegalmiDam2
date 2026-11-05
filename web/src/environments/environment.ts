@@ -5,6 +5,7 @@
 // La API tiene que permitir el origen de la web en CORS_ALLOW_ORIGIN (localhost:4200 ya lo está).
 export const environment = {
   apiUrl: 'http://192.168.2.75:8001/api',
-  // Enlace a la APK de Almi Companion. Mientras sea null, la portada no muestra el botón de descarga.
-  apkUrl: null as string | null,
+  // Enlaces a las dos APK de Almi Companion (web/public/descargas). Si son null, la portada no muestra el botón.
+  apkUrl: '/descargas/AlmiCompanion-android.apk' as string | null,
+  apkIonicUrl: '/descargas/AlmiCompanion-ionic.apk' as string | null,
 };
