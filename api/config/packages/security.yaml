@@ -17,6 +17,11 @@ security:
         dev:
             pattern: ^/(_profiler(/|$)|(_wdt|assets|build)/)
             security: false
+        # Login y registro no llevan token: se ignora el que llegue. Las apps guardan el token aunque
+        # caduque y lo envían en todas las peticiones; sin esto, nadie podría volver a entrar.
+        acceso:
+            pattern: ^/api/(login|registro)$
+            security: false
         api:
             pattern: ^/api/
             stateless: true
@@ -32,7 +37,6 @@ security:
     # Solo se aplica la PRIMERA regla que coincide. Los permisos finos (rol y "solo lo suyo")
     # se comprueban en cada controlador.
     access_control:
-        - { path: ^/api/(login|registro)$, roles: PUBLIC_ACCESS }
         # ADR-028: catálogo y tienda en solo lectura, sin token, para la web pública.
         # Las apps mandan el token igualmente (y así se registra su ubicación).
         - { path: ^/api/(productos|videojuegos|moviles|consolas|marcas|plataformas|generos|departamentos|servicios|tiendas|fotos-tienda)(/|$), methods: [GET], roles: PUBLIC_ACCESS }

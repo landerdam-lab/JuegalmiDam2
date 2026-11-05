@@ -41,6 +41,42 @@ final class AutenticacionTest extends ApiTestCase
         self::assertSame(401, $this->cliente->getResponse()->getStatusCode());
     }
 
+    /**
+     * Las apps guardan el token aunque caduque y lo envían en todas las peticiones. Login y registro
+     * no lo necesitan: la API lo ignora, o nadie podría volver a entrar con su sesión caducada.
+     */
+    public function testLoginYRegistroIgnoranUnTokenAntiguo(): void
+    {
+        $antiguo = ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => 'Bearer caducado'];
+
+        $this->cliente->request('POST', '/api/login', [], [], $antiguo,
+            json_encode(['email' => 'cliente1@juegalmi.test', 'password' => 'demo1234']));
+        self::assertSame(200, $this->cliente->getResponse()->getStatusCode());
+
+        $this->cliente->request('POST', '/api/login', [], [], $antiguo,
+            json_encode(['email' => 'cliente1@juegalmi.test', 'password' => 'mala']));
+        $json = json_decode((string) $this->cliente->getResponse()->getContent(), true);
+        self::assertSame(401, $this->cliente->getResponse()->getStatusCode());
+        self::assertSame('CREDENCIALES_INCORRECTAS', $json['error']['codigo']);
+
+        $this->cliente->request('POST', '/api/registro', [], [], $antiguo, json_encode([
+            'nombre' => 'Ane', 'apellidos' => 'Prueba', 'email' => 'token.antiguo@juegalmi.test',
+            'password' => 'demo1234', 'telefono' => '600000997', 'dni' => '11111111H',
+        ]));
+        self::assertSame(201, $this->cliente->getResponse()->getStatusCode());
+    }
+
+    /** Ignorar el token solo vale para login y registro: el resto sigue exigiendo uno válido. */
+    public function testElRestoDeRutasSigueRechazandoUnTokenFalso(): void
+    {
+        $falso = ['HTTP_AUTHORIZATION' => 'Bearer caducado'];
+
+        foreach ([['GET', '/api/me'], ['GET', '/api/pedidos'], ['GET', '/api/videojuegos'], ['POST', '/api/logout']] as [$metodo, $ruta]) {
+            $this->cliente->request($metodo, $ruta, [], [], $falso);
+            self::assertSame(401, $this->cliente->getResponse()->getStatusCode(), $metodo.' '.$ruta);
+        }
+    }
+
     public function testLogoutInvalidaElToken(): void
     {
         $this->cliente->request('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'],
