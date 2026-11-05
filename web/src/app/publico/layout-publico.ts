@@ -28,6 +28,37 @@ import { PiePublico } from './pie-publico';
       background: var(--ja-fondo);
       border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
     }
+    /* Progreso de lectura como barra de vida: 10 segmentos que se encienden a saltos al bajar.
+       CSS nativo ligado al scroll (sin JavaScript); donde no hay soporte, no se muestra. */
+    .progreso {
+      display: none;
+    }
+    @supports (animation-timeline: scroll()) {
+      .progreso {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc(var(--ja-borde-fino) * -1);
+        display: flex;
+        gap: var(--ja-espacio-1);
+        height: var(--ja-borde-foco);
+        pointer-events: none;
+      }
+      .progreso span {
+        flex: 1;
+        border-radius: var(--ja-radio-segmento);
+        background: var(--ja-marca);
+        opacity: 0;
+        animation: encender-segmento linear both;
+        animation-timeline: scroll(root block);
+        animation-range: calc(var(--n) * 10% + 8%) calc(var(--n) * 10% + 9%);
+      }
+    }
+    @keyframes encender-segmento {
+      to {
+        opacity: 1;
+      }
+    }
     .barra {
       display: flex;
       align-items: center;
@@ -153,6 +184,11 @@ import { PiePublico } from './pie-publico';
           <ja-icono [nombre]="menuAbierto() ? 'close' : 'menu'" />
         </button>
       </div>
+      <div class="progreso" aria-hidden="true">
+        @for (n of segmentos; track n) {
+          <span [style.--n]="n"></span>
+        }
+      </div>
     </header>
     <main id="contenido" tabindex="-1"><router-outlet /></main>
     <ja-pie-publico />
@@ -162,6 +198,8 @@ export class LayoutPublico {
   protected readonly sesion = inject(Sesion);
   protected readonly temas = inject(Temas);
   protected readonly menuAbierto = signal(false);
+  /** Los 10 segmentos de la barra de progreso de lectura. */
+  protected readonly segmentos = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   constructor() {
     // Al navegar se cierra el menú del móvil

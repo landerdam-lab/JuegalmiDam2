@@ -22,14 +22,17 @@ interface Cartucho {
 }
 
 /**
- * PW-01 Portada (publicidad, RF-18). La idea visual: las tres líneas de negocio son tres «cartuchos»
- * con la muesca del sistema (cartucho, tarjeta SD y SIM comparten esa silueta, DESIGN.md §1),
- * que se «insertan» al cargar la página. Todo lo que se ve sale de la API (A-29).
+ * PW-01 Portada (publicidad, RF-18): «Inserta el cartucho». Hero con el mostrador y un cartucho en
+ * primer plano; las tres líneas de negocio como cartuchos (cartucho, tarjeta SD y SIM comparten la
+ * muesca, DESIGN.md §1) que encajan al bajar; el taller como escena oscura con la barra de vida
+ * ligada al scroll; la fachada y la app. Los datos salen de la API (A-29); las imágenes de
+ * public/portada son solo ambientación. Toda la animación es CSS (portada.scss): este archivo
+ * no tiene lógica de movimiento.
  */
 @Component({
   selector: 'ja-portada',
   imports: [RouterLink, EstadoVista, Icono, Imagen, Logo, Mapa, TarjetaProducto, Vida],
-  styleUrl: './portada.scss',
+  styleUrls: ['./portada.scss', './portada-movimiento.scss'],
   templateUrl: './portada.html',
 })
 export class Portada {
@@ -112,6 +115,16 @@ export class Portada {
     'entregada',
   ];
   protected readonly estados = ESTADOS_REPARACION;
+
+  /** Qué pasa en cada paso (el flujo real: la API asigna el técnico y el presupuesto va en la reparación). */
+  protected readonly textosPaso: Record<EstadoReparacion, string> = {
+    recibida:
+      'La pides desde la app con una foto del problema y le llega a un técnico de Consolas o de Telefonía.',
+    en_reparacion: 'El técnico la revisa, te pone el presupuesto y se pone manos a la obra.',
+    lista: 'En la app ves que ya está arreglada y lista para pasar a recogerla.',
+    entregada: 'La recoges en la tienda y queda guardada en tu historial de reparaciones.',
+    cancelada: '',
+  };
 
   protected readonly marcaTienda = computed(() =>
     this.tienda.hasValue()
