@@ -809,6 +809,12 @@
     color: var(--ja-marca);
   }
 }
+.app__descargas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ja-espacio-2);
+}
+
 .app__nota {
   display: inline-flex;
   align-items: center;
