@@ -14,11 +14,13 @@ import {
 
 import { AgitarService } from '../../core/agitar.service';
 import type { ApiError } from '../../core/api-error';
-import { fechaHora, precio, referenciaPedido } from '../../core/formato';
-import type { EstadoPedido, Pedido } from '../../core/modelos';
+import { fechaHora, metodoPago, precio, referenciaPedido } from '../../core/formato';
+import type { EstadoPedido, Pedido, ProductoCorto } from '../../core/modelos';
 import { PedidosService } from '../../core/pedidos.service';
 import { Barra } from '../../shared/barra.component';
 import { Estado } from '../../shared/estado.component';
+import { Icono } from '../../shared/icono.component';
+import { Imagen } from '../../shared/imagen.component';
 import { Pastilla } from '../../shared/pastilla.component';
 import { Vida } from '../../shared/vida.component';
 
@@ -37,6 +39,8 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
     IonInfiniteScrollContent,
     Barra,
     Estado,
+    Icono,
+    Imagen,
     Pastilla,
     Vida,
   ],
@@ -52,6 +56,30 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
     }
     .lista {
       padding: 0 var(--ja-espacio-4) var(--ja-espacio-4);
+    }
+    .contador {
+      padding: 0 0 var(--ja-espacio-3);
+    }
+    .codigo {
+      padding: calc(var(--ja-espacio-1) / 2) var(--ja-espacio-2);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-superficie-2);
+    }
+    .miniaturas {
+      display: flex;
+      gap: var(--ja-espacio-2);
+    }
+    .miniaturas ja-imagen {
+      width: calc(var(--ja-espacio-12) + var(--ja-espacio-2));
+      border-radius: var(--ja-radio-s);
+    }
+    .fecha {
+      flex: 1;
+    }
+    .pago {
+      padding: var(--ja-espacio-1) var(--ja-espacio-2);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-superficie-2);
     }
   `,
   template: `
@@ -81,21 +109,29 @@ const PASOS: Record<EstadoPedido, number> = { pendiente: 1, preparado: 2, entreg
             texto="Cuando compres o alquiles algo, aparecerá aquí."
           />
         } @else {
+          <div class="contador ja-contador">{{ total() }} {{ total() === 1 ? 'pedido' : 'pedidos' }}</div>
           <div class="ja-lista">
             @for (p of pedidos(); track p.id) {
               <ion-card class="ja-tarjeta" [routerLink]="['/pedidos', p.id]">
                 <div class="interior">
-                  <div class="ja-entre">
-                    <span class="ja-codigo">{{ ref(p.id) }}</span>
-                    <ja-pastilla [estado]="'pedido-' + p.estado" />
+                  <div class="ja-fila">
+                    <span class="ja-codigo codigo">{{ ref(p.id) }}</span>
+                    <span class="ja-cuerpo ja-t2 fecha">{{ fecha(p.fecha) }}</span>
+                    <ja-icono nombre="chevron_right" />
                   </div>
-                  <div class="ja-etiqueta-s ja-t2">{{ fecha(p.fecha) }} · {{ articulos(p) }} art.</div>
-                  <ja-vida [llenos]="pasos[p.estado]" [total]="3" />
                   <div class="ja-entre">
-                    <span class="ja-etiqueta-s ja-t2">{{
-                      p.entrega === 'domicilio' ? 'Envío a domicilio' : 'Recoger en tienda'
-                    }}</span>
-                    <span class="ja-precio-s">{{ formato(p.total) }}</span>
+                    <ja-pastilla [estado]="'pedido-' + p.estado" />
+                    <span class="ja-codigo ja-t2">{{ pasos[p.estado] }} / 3</span>
+                  </div>
+                  <ja-vida [llenos]="pasos[p.estado]" [total]="3" />
+                  <div class="miniaturas">
+                    @for (m of miniaturas(p); track $index) {
+                      <ja-imagen [src]="m.imagen" [alt]="m.nombre" />
+                    }
+                  </div>
+                  <div class="ja-entre">
+                    <span class="ja-etiqueta pago">{{ pago(p.metodoPago) }}</span>
+                    <span class="ja-precio">{{ formato(p.total) }}</span>
                   </div>
                 </div>
               </ion-card>
@@ -126,12 +162,14 @@ export class PedidosPage implements OnInit {
   readonly formato = precio;
   readonly ref = referenciaPedido;
   readonly fecha = fechaHora;
+  readonly pago = metodoPago;
 
   readonly estado = signal<string | null>(null);
   readonly pedidos = signal<Pedido[]>([]);
   readonly cargando = signal(true);
   readonly error = signal('');
   readonly hayMas = signal(false);
+  readonly total = signal(0);
   private pagina = 1;
 
   ngOnInit(): void {
@@ -147,8 +185,9 @@ export class PedidosPage implements OnInit {
     this.cargar(1);
   }
 
-  articulos(p: Pedido): number {
-    return p.alquileres.length + p.compras.reduce((n, c) => n + c.cantidad, 0);
+  /** Hasta cuatro imágenes de lo que lleva el pedido. */
+  miniaturas(p: Pedido): ProductoCorto[] {
+    return [...p.compras.map((c) => c.producto), ...p.alquileres.map((a) => a.videojuego)].slice(0, 4);
   }
 
   filtrar(valor: string | null): void {
@@ -165,6 +204,7 @@ export class PedidosPage implements OnInit {
         this.pagina = pagina;
         this.pedidos.set(pagina === 1 ? r.items : [...this.pedidos(), ...r.items]);
         this.hayMas.set(r.page * r.limit < r.total);
+        this.total.set(r.total);
         this.cargando.set(false);
         fin?.();
       },

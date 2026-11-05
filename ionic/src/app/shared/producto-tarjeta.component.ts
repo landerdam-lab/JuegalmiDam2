@@ -19,12 +19,13 @@ import { estadoStock, Pastilla } from './pastilla.component';
     }
     .interior {
       display: flex;
-      gap: var(--ja-espacio-3);
-      padding: var(--ja-espacio-3);
+      gap: var(--ja-espacio-4);
+      padding: var(--ja-espacio-4);
     }
     ja-imagen {
       flex: none;
-      width: calc(var(--ja-espacio-16) * 1.5);
+      width: 88px;
+      --proporcion: 3 / 4;
       border-radius: var(--ja-radio-m);
     }
     .datos {
@@ -36,8 +37,7 @@ import { estadoStock, Pastilla } from './pastilla.component';
       align-items: flex-start;
     }
     .nombre {
-      font: var(--ja-tipo-subtitulo);
-      font-family: var(--ja-fuente-titulos);
+      font: var(--ja-tipo-titulo);
       color: var(--ja-texto);
       display: block;
       width: 100%;
@@ -65,9 +65,9 @@ import { estadoStock, Pastilla } from './pastilla.component';
         <ja-imagen [src]="producto().imagen" [alt]="'Imagen de ' + producto().nombre" />
         <div class="datos">
           <span class="nombre">{{ producto().nombre }}</span>
-          <span class="ja-etiqueta-s ja-t2">{{ detalle() }}</span>
+          <span class="ja-cuerpo ja-t2">{{ detalle() }}</span>
           <div class="precios">
-            <span class="ja-precio-s ja-t1">{{ precioTexto() }}</span>
+            <span class="ja-precio">{{ precioTexto() }}</span>
             @if (producto().tipo === 'videojuego' && producto().alquilable) {
               <span class="ja-chip-alquiler">Alquiler {{ alquiler() }}/día</span>
             }

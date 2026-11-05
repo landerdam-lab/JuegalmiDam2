@@ -14,7 +14,8 @@ import { Component, input } from '@angular/core';
       width: auto;
     }
     .texto {
-      font: var(--ja-tipo-titulo);
+      font: var(--ja-tipo-titular-m);
+      letter-spacing: var(--ja-tipo-titular-m-espaciado);
       color: var(--ja-texto);
     }
     .almi {
@@ -25,7 +26,8 @@ import { Component, input } from '@angular/core';
       --alto: 96px;
     }
     :host(.grande) .texto {
-      font: var(--ja-tipo-titular-l);
+      font: var(--ja-tipo-display);
+      letter-spacing: var(--ja-tipo-display-espaciado);
     }
   `,
   template: `

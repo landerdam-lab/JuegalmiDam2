@@ -75,8 +75,12 @@ const ORDENES: { valor: Orden; texto: string }[] = [
     .buscador {
       display: flex;
       align-items: center;
-      gap: var(--ja-espacio-2);
-      padding: var(--ja-espacio-2) var(--ja-espacio-4) 0;
+      gap: var(--ja-espacio-1);
+      margin: 0 var(--ja-espacio-4) var(--ja-espacio-2);
+      padding-right: var(--ja-espacio-1);
+      background: var(--ja-superficie-2);
+      border: var(--ja-borde-fino) solid var(--ja-borde);
+      border-radius: var(--ja-radio-completo);
       overflow: hidden;
       max-height: var(--ja-espacio-16);
       transition:
@@ -86,12 +90,13 @@ const ORDENES: { valor: Orden; texto: string }[] = [
     .buscador.oculto {
       max-height: 0;
       opacity: 0;
-      padding-top: 0;
+      margin-bottom: 0;
+      border-width: 0;
     }
     ion-searchbar {
       padding: 0;
-      --background: var(--ja-superficie-2);
-      --border-radius: var(--ja-radio-l);
+      --background: transparent;
+      --border-radius: var(--ja-radio-completo);
       --box-shadow: none;
     }
     .micro {
@@ -116,6 +121,9 @@ const ORDENES: { valor: Orden; texto: string }[] = [
       flex-direction: column;
       gap: var(--ja-espacio-3);
     }
+    .contador {
+      padding: 0 var(--ja-espacio-4) var(--ja-espacio-2);
+    }
     .carrusel {
       display: flex;
       gap: var(--ja-espacio-3);
@@ -124,30 +132,52 @@ const ORDENES: { valor: Orden; texto: string }[] = [
     }
     .mini {
       flex: none;
-      width: 128px;
+      width: 160px;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: var(--ja-espacio-1);
     }
     .mini ja-imagen {
-      border-radius: var(--ja-radio-m);
+      --proporcion: 4 / 3;
+    }
+    .mini .datos {
+      padding: var(--ja-espacio-3);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--ja-espacio-1);
     }
     .mini .nombre {
-      font: var(--ja-tipo-etiqueta);
-      white-space: nowrap;
+      font: var(--ja-tipo-subtitulo);
+      color: var(--ja-texto);
+      min-height: 2lh;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
     .reparamos {
-      background: var(--ja-marca-suave);
       padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-3);
+    }
+    .reparamos ion-button {
+      margin: 0;
+    }
+    .reparamos .fila {
       display: flex;
       gap: var(--ja-espacio-3);
       align-items: center;
-      cursor: pointer;
+    }
+    .reparamos .circulo {
+      flex: none;
+      width: var(--ja-espacio-12);
+      height: var(--ja-espacio-12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-marca-suave);
       color: var(--ja-marca);
-      margin: 0;
     }
   `,
   template: `
@@ -210,29 +240,48 @@ const ORDENES: { valor: Orden; texto: string }[] = [
           >Ordenar: {{ textoOrden() }}<ja-icono nombre="expand_more"
         /></ion-chip>
       </div>
+      @if (!cargando() && !error()) {
+        <div class="contador ja-contador">
+          {{ total() }} {{ total() === 1 ? 'producto encontrado' : 'productos encontrados' }}
+        </div>
+      }
 
       @if (mostrarCabecera()) {
         <div class="seccion">
           @if (tipo() === 'videojuego' && paraAlquilar().length) {
-            <div class="ja-titulo">Para alquilar</div>
+            <div class="ja-entre">
+              <div class="ja-titular-m">Para alquilar</div>
+              <ion-button fill="clear" color="secondary" (click)="cambiar({ soloAlquilables: true })"
+                >Ver todo<ja-icono slot="end" nombre="arrow_forward"
+              /></ion-button>
+            </div>
             <div class="carrusel">
               @for (p of paraAlquilar(); track p.id) {
-                <div class="mini" [routerLink]="['/producto', p.tipo, p.id]">
-                  <ja-imagen [src]="p.imagen" [alt]="p.nombre" />
-                  <div class="nombre">{{ p.nombre }}</div>
-                  <span class="ja-chip-alquiler">{{ precioAlquiler(p) }}/día</span>
-                </div>
+                <ion-card class="mini ja-tarjeta" [routerLink]="['/producto', p.tipo, p.id]">
+                  <ja-imagen [src]="p.imagen" [alt]="'Imagen de ' + p.nombre" />
+                  <div class="datos">
+                    <div class="nombre">{{ p.nombre }}</div>
+                    <div class="ja-etiqueta-s ja-t2">{{ p.marca?.nombre }} · {{ p.plataforma?.nombre }}</div>
+                    <div class="ja-precio-s">{{ formatoPrecio(p.precio) }}</div>
+                    <span class="ja-chip-alquiler">Alquiler {{ precioAlquiler(p) }}/día</span>
+                  </div>
+                </ion-card>
               }
             </div>
           }
-          <ion-card class="reparamos ja-tarjeta" routerLink="/reparaciones/nueva">
-            <ja-icono nombre="build" />
-            <div>
-              <div class="ja-subtitulo">Reparamos tu dispositivo</div>
-              <div class="ja-etiqueta-s">¿Pantalla rota o mando con drift? Pide presupuesto sin compromiso.</div>
+          <ion-card class="reparamos ja-tarjeta">
+            <div class="fila">
+              <div class="circulo"><ja-icono nombre="build" /></div>
+              <div>
+                <div class="ja-titulo">Reparamos tu dispositivo</div>
+                <div class="ja-cuerpo ja-t2">¿Pantalla rota o mando con drift? Pide presupuesto sin compromiso.</div>
+              </div>
             </div>
+            <ion-button fill="outline" color="secondary" routerLink="/reparaciones/nueva"
+              >Solicitar reparación</ion-button
+            >
           </ion-card>
-          <div class="ja-titulo">Todo el catálogo</div>
+          <div class="ja-titular-m">Todo el catálogo</div>
         </div>
       }
 
@@ -292,6 +341,8 @@ export class InicioPage implements OnInit {
   readonly cargando = signal(true);
   readonly error = signal('');
   readonly hayMas = signal(false);
+  readonly total = signal(0);
+  readonly formatoPrecio = precio;
   readonly buscadorOculto = signal(false);
 
   private readonly plataformas = signal<Referencia[]>([]);
@@ -353,6 +404,7 @@ export class InicioPage implements OnInit {
         this.pagina = pagina;
         this.productos.set(pagina === 1 ? r.items : [...this.productos(), ...r.items]);
         this.hayMas.set(r.page * POR_PAGINA < r.total);
+        this.total.set(r.total);
         this.cargando.set(false);
         alTerminar?.();
       },

@@ -30,6 +30,10 @@
   font-display: swap;
 }
 
+// Misma forma de la fuente variable que en Android, que no ajusta el tamaño óptico
+body {
+  font-optical-sizing: none;
+}
 :root {
   --ion-font-family: var(--ja-fuente-texto);
   --ion-background-color: var(--ja-fondo);
@@ -143,6 +147,26 @@ ion-chip.activo {
   --color: var(--ja-marca);
   font-weight: 600;
 }
+// Como el chip de filtro de Android: el seleccionado lleva una marca
+ion-chip.activo::before {
+  content: '✓';
+  margin-inline-end: var(--ja-espacio-1);
+}
+// Botones planos como en Android, y diálogos con botones legibles (no amarillo sobre blanco)
+ion-button {
+  --box-shadow: none;
+  --border-width: var(--ja-borde-fino);
+}
+ion-searchbar .searchbar-input.searchbar-input {
+  padding-inline-end: var(--ja-espacio-2);
+}
+ion-alert .alert-wrapper .alert-button:not(.alert-button-role-destructive) {
+  color: var(--ja-marca);
+}
+.ja-contador {
+  font: var(--ja-tipo-etiqueta);
+  color: var(--ja-texto-2);
+}
 ion-segment-button {
   --color-checked: var(--ja-marca);
   --indicator-color: var(--ja-marca);
@@ -150,9 +174,11 @@ ion-segment-button {
   letter-spacing: normal;
   min-width: auto;
 }
-ion-input.ja-campo,
-ion-textarea.ja-campo {
+// Doble clase: el fill="solid" de Ionic pone su propio fondo con más especificidad
+ion-input.ja-campo.ja-campo,
+ion-textarea.ja-campo.ja-campo {
   --background: var(--ja-superficie-2);
+  --border-radius: var(--ja-radio-m) var(--ja-radio-m) 0 0;
   --border-color: var(--ja-borde-campo);
   --highlight-color-focused: var(--ja-marca);
   --color: var(--ja-texto);
@@ -181,4 +207,8 @@ ion-textarea.ja-campo {
 .ja-boton-ancho {
   width: 100%;
   margin: 0;
+}
+// Como el aviso de la nativa: la acción sin mayúsculas
+ion-toast::part(button) {
+  text-transform: none;
 }
