@@ -163,6 +163,8 @@ Android: `sp` (respeta el tamaño de letra del sistema) y `TextAppearance.JuegAl
 
 Se respeta *reducir movimiento* (`prefers-reduced-motion` y la escala de animación de Android): se quitan los rebotes y los desplazamientos, y se mantienen los cambios de opacidad.
 
+**Portada de la web (PW-01, v1.1.0).** Movimiento ligado al scroll con CSS nativo (`animation-timeline`), sin librerías: las piezas entran de arriba abajo y encajan, el progreso va a saltos (barra de vida de 10 segmentos bajo la cabecera y la de 4 del taller) y solo se animan `transform` y `opacity`. Va dentro de `@supports` (donde no hay soporte la página se ve quieta y completa) y se apaga con *reducir movimiento*. La clase `.ja-escena-oscura` aplica la paleta oscura a una sola sección (la del taller). El rebote de `curva.insertar` se usa también para el cartucho del hero.
+
 Todas las animaciones son de transformación u opacidad (las aplica la GPU). Nada anima `width`, `height` ni sombras.
 
 ---
@@ -276,3 +278,4 @@ Las imágenes de `screens/` son la **referencia del aprobado v1.0.0**: no se reg
 | Versión | Fecha | Quién | Cambio |
 |---|---|---|---|
 | 1.0.0 | 2026-10-28 | Oier (con Claude Code + Stitch) | Versión aprobada por el grupo (ADR-022) |
+| 1.1.0 | 2026-11-05 | Oier (con Claude Code) | Ámbito `.ja-escena-oscura` en el generador (paleta oscura en una sola sección) y movimiento de scroll de la portada de la web (§7) |

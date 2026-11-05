@@ -1,8 +1,25 @@
-<!-- PW-01 Portada. Un solo botón amarillo en la pantalla: «Ver el catálogo». -->
-<section class="hero">
-  <div class="ja-contenedor hero__rejilla">
+<!--
+  PW-01 Portada: «Inserta el cartucho». Una sola historia de arriba abajo:
+  hero → las 3 líneas → alquiler → escaparate → taller (escena oscura) → la tienda → la app.
+  Un solo botón amarillo en la pantalla: «Ver el catálogo». Las animaciones de scroll están en
+  portada.scss (CSS nativo, sin JavaScript) y se apagan con «reducir movimiento».
+-->
+
+<!-- ── 1. Hero ── -->
+<section class="hero" aria-labelledby="t-hero">
+  <div class="ja-contenedor hero__contenedor">
     <div class="hero__texto">
-      <h1 class="hero__titular">Compra, alquila y repara en tu tienda de barrio</h1>
+      <!-- Cada palabra sale de su propia máscara al cargar (portada.scss → .p) -->
+      <h1 id="t-hero" class="hero__titular">
+        <span class="p" style="--i: 0"><span>Compra,</span></span
+        >&ngsp; <span class="p" style="--i: 1"><span class="hero__alquila">alquila</span></span
+        >&ngsp; <span class="p" style="--i: 2"><span>y</span></span
+        >&ngsp; <span class="p" style="--i: 3"><span>repara</span></span
+        >&ngsp; <span class="p" style="--i: 4"><span>en</span></span
+        >&ngsp; <span class="p" style="--i: 5"><span>tu</span></span
+        >&ngsp;
+        <span class="p p--resaltado" style="--i: 6"><span>tienda de barrio</span></span>
+      </h1>
       <p class="hero__entrada">
         @if (tienda.hasValue()) {
           {{ tienda.value().nombre }}, en {{ tienda.value().direccion }}:
@@ -19,45 +36,105 @@
         </a>
       </div>
     </div>
+  </div>
 
-    <!-- Los tres cartuchos: cada línea de negocio con la foto de uno de sus productos -->
-    <ul class="cartuchos" aria-label="Líneas de negocio">
-      @for (c of cartuchos; track c.tipo; let i = $index) {
-        <li class="cartucho" [style.--orden]="i">
-          <a class="cartucho__cuerpo" routerLink="/catalogo" [queryParams]="{ tipo: c.tipo }">
-            <div class="cartucho__etiqueta">
-              <ja-imagen
-                [src]="portadas()[c.tipo]?.imagen"
-                [alt]="portadas()[c.tipo]?.nombre ?? c.titulo"
-                [prioridad]="true"
-              />
-            </div>
-            <div class="cartucho__datos">
-              <span class="cartucho__icono"><ja-icono [nombre]="c.icono" /></span>
-              <h2 class="cartucho__titulo">{{ c.titulo }}</h2>
-              <p class="cartucho__texto">{{ c.texto }}</p>
-              <span class="cartucho__total">
-                @if (totales()[c.tipo] !== null) {
-                  {{ totales()[c.tipo] }} en catálogo
-                } @else {
-                  &nbsp;
-                }
-              </span>
-            </div>
-            <!-- Los 4 contactos del cartucho, como en el logo del sistema -->
-            <span class="cartucho__contactos" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          </a>
-        </li>
-      }
-    </ul>
+  <!-- La escena: el mostrador (fondo), la sombra y el cartucho (primer plano). Decorativa. -->
+  <div class="hero__escena" aria-hidden="true">
+    <div class="hero__foto ja-recorte">
+      <img
+        srcset="portada/hero-mostrador-720.webp 720w, portada/hero-mostrador-1156.webp 1156w"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        src="portada/hero-mostrador-1156.webp"
+        width="1156"
+        height="1024"
+        alt=""
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+    <div class="hero__capa-sombra">
+      <img class="hero__sombra" src="portada/hero-sombra.webp" width="640" height="200" alt="" />
+    </div>
+    <div class="hero__capa-cartucho">
+      <img
+        class="hero__cartucho"
+        srcset="portada/hero-cartucho-360.webp 360w, portada/hero-cartucho-560.webp 560w"
+        sizes="(min-width: 1024px) 16vw, 34vw"
+        src="portada/hero-cartucho-560.webp"
+        width="560"
+        height="688"
+        alt=""
+        decoding="async"
+      />
+    </div>
   </div>
 </section>
 
-<section class="ja-contenedor seccion" aria-labelledby="t-alquiler">
-  <div class="seccion__cabecera">
+<!-- ── 2. Las tres líneas de negocio: tres «cartuchos» que encajan al bajar ── -->
+<section class="ja-contenedor escena lineas" aria-labelledby="t-lineas">
+  <header class="escena__cabecera lineas__cabecera">
+    <p class="escena__antetitulo">
+      <ja-icono nombre="sports_esports" /><ja-icono nombre="sd_card" /><ja-icono
+        nombre="sim_card"
+      />
+      Cartucho · tarjeta SD · SIM
+    </p>
+    <h2 id="t-lineas" class="escena__titular">Tres líneas, una misma muesca</h2>
+    <p class="escena__entrada">
+      Videojuegos, consolas y telefonía comparten la esquina cortada. Elige la tuya y entra al
+      catálogo.
+    </p>
+  </header>
+
+  <ul class="cartuchos" aria-label="Líneas de negocio">
+    @for (c of cartuchos; track c.tipo; let i = $index) {
+      <li class="cartucho" [style.--orden]="i">
+        <a
+          class="cartucho__cuerpo ja-recorte"
+          routerLink="/catalogo"
+          [queryParams]="{ tipo: c.tipo }"
+        >
+          <div class="cartucho__etiqueta ja-recorte">
+            <ja-imagen
+              [src]="portadas()[c.tipo]?.imagen"
+              [alt]="portadas()[c.tipo]?.nombre ?? c.titulo"
+            />
+          </div>
+          <div class="cartucho__datos">
+            <span class="cartucho__icono"><ja-icono [nombre]="c.icono" /></span>
+            <h3 class="cartucho__titulo">{{ c.titulo }}</h3>
+            <p class="cartucho__texto">{{ c.texto }}</p>
+            <span class="cartucho__total">
+              @if (totales()[c.tipo] !== null) {
+                {{ totales()[c.tipo] }} en catálogo
+              } @else {
+                &nbsp;
+              }
+            </span>
+          </div>
+          <!-- Los 4 contactos del cartucho: se encienden a saltos cuando encaja -->
+          <span class="cartucho__contactos" aria-hidden="true">
+            @for (k of [0, 1, 2, 3]; track k) {
+              <i [style.--c]="k"></i>
+            }
+          </span>
+        </a>
+      </li>
+    }
+  </ul>
+</section>
+
+<!-- ── 3. Para alquilar este finde ── -->
+<section class="ja-contenedor escena" aria-labelledby="t-alquiler">
+  <div class="escena__cabecera escena__cabecera--fila">
     <div>
-      <h2 id="t-alquiler" class="ja-titular-m">Para alquilar este finde</h2>
-      <p class="ja-t2">Juegos con copias libres ahora mismo. Se alquilan por días desde la app.</p>
+      <p class="escena__antetitulo escena__antetitulo--alquiler">
+        <ja-icono nombre="event" /> Alquiler por días
+      </p>
+      <h2 id="t-alquiler" class="escena__titular">Para alquilar este finde</h2>
+      <p class="escena__entrada">
+        Juegos con copias libres ahora mismo. Se alquilan por días desde la app.
+      </p>
     </div>
     <a
       class="ver-todo"
@@ -69,8 +146,8 @@
   </div>
   @if (juegos.hasValue()) {
     <div class="rejilla">
-      @for (p of juegos.value().items; track p.id) {
-        <ja-tarjeta-producto [producto]="p" />
+      @for (p of juegos.value().items; track p.id; let i = $index) {
+        <ja-tarjeta-producto [producto]="p" [style.--i]="i" />
       }
     </div>
   } @else if (juegos.error()) {
@@ -88,87 +165,142 @@
   }
 </section>
 
+<!-- ── 4. Escaparate: consolas y telefonía, con la cabecera fija a la izquierda ── -->
 @if (dispositivos().length) {
-  <section class="ja-contenedor seccion" aria-labelledby="t-dispositivos">
-    <div class="seccion__cabecera">
-      <div>
-        <h2 id="t-dispositivos" class="ja-titular-m">Consolas y telefonía</h2>
-        <p class="ja-t2">Lo último en consolas, móviles y tablets.</p>
+  <section class="ja-contenedor escena vitrina" aria-labelledby="t-dispositivos">
+    <div class="escena__cabecera vitrina__cabecera">
+      <p class="escena__antetitulo">
+        <ja-icono nombre="videogame_asset" /><ja-icono nombre="smartphone" /> Escaparate
+      </p>
+      <h2 id="t-dispositivos" class="escena__titular">Consolas y telefonía</h2>
+      <p class="escena__entrada">Lo último en consolas, móviles y tablets.</p>
+      <div class="vitrina__enlaces">
+        <a class="ver-todo" routerLink="/catalogo" [queryParams]="{ tipo: 'consola' }">
+          Ver consolas <ja-icono nombre="arrow_forward" />
+        </a>
+        <a class="ver-todo" routerLink="/catalogo" [queryParams]="{ tipo: 'movil' }">
+          Ver móviles y tablets <ja-icono nombre="arrow_forward" />
+        </a>
       </div>
-      <a class="ver-todo" routerLink="/catalogo" [queryParams]="{ tipo: 'consola' }">
-        Ver todo <ja-icono nombre="arrow_forward" />
-      </a>
     </div>
-    <div class="rejilla">
-      @for (p of dispositivos(); track p.id) {
-        <ja-tarjeta-producto [producto]="p" />
+    <div class="rejilla vitrina__rejilla">
+      @for (p of dispositivos(); track p.id; let i = $index) {
+        <ja-tarjeta-producto [producto]="p" [style.--i]="i % 2" />
       }
     </div>
   </section>
 }
 
-<!-- Servicio técnico: el proceso de la reparación con la barra de vida de 4 segmentos -->
-<section class="ja-contenedor seccion" aria-labelledby="t-reparar">
-  <div class="reparar ja-panel">
-    <div class="reparar__texto">
-      <span class="reparar__icono"><ja-icono nombre="handyman" /></span>
-      <h2 id="t-reparar" class="ja-titular-m">¿Pantalla rota o mando con drift?</h2>
-      <p class="ja-cuerpo-l ja-t2">
-        Pide la reparación desde la app con una foto del problema. La sigues paso a paso hasta que
-        esté lista para recoger.
-      </p>
-      <ol class="proceso">
+<!-- ── 5. El taller: escena oscura. En escritorio la foto y la barra de vida se quedan fijas
+     mientras pasan los 4 pasos; cada paso enciende un segmento (ADR-015) ── -->
+<section class="taller ja-escena-oscura" aria-labelledby="t-reparar">
+  <div class="ja-contenedor taller__rejilla">
+    <div class="taller__fijo" aria-hidden="true">
+      <div class="taller__foto ja-recorte">
+        <img
+          srcset="portada/servicio-banco-640.webp 640w, portada/servicio-banco-1024.webp 1024w"
+          sizes="(min-width: 900px) 40vw, 100vw"
+          src="portada/servicio-banco-1024.webp"
+          width="1024"
+          height="1536"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="taller__progreso">
+        <div class="ja-vida taller__vida">
+          @for (paso of pasos; track paso; let i = $index) {
+            <span [style.--n]="i"></span>
+          }
+        </div>
+        <div class="taller__estados">
+          @for (paso of pasos; track paso; let i = $index) {
+            <span class="ja-estado ja-estado--reparacion-{{ paso }}" [style.--n]="i">
+              <ja-icono [nombre]="estados[paso].icono" />{{ estados[paso].texto }}
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="taller__contenido">
+      <header class="escena__cabecera">
+        <p class="escena__antetitulo"><ja-icono nombre="handyman" /> Servicio técnico</p>
+        <h2 id="t-reparar" class="escena__titular taller__titular">
+          ¿Pantalla rota o mando con drift?
+        </h2>
+        <p class="escena__entrada">
+          Pide la reparación desde la app con una foto del problema y síguela paso a paso hasta que
+          esté lista para recoger.
+        </p>
+      </header>
+
+      <ol class="pasos">
         @for (paso of pasos; track paso; let i = $index) {
-          <li>
-            <ja-vida [llenos]="i + 1" [total]="4" [etiqueta]="estados[paso].texto" />
-            <span class="proceso__paso"
-              ><ja-icono [nombre]="estados[paso].icono" />{{ estados[paso].texto }}</span
-            >
+          <li class="paso" [style.--n]="i">
+            <span class="paso__numero">0{{ i + 1 }}</span>
+            <div class="paso__texto">
+              <h3 class="paso__titulo">
+                <ja-icono [nombre]="estados[paso].icono" />{{ estados[paso].texto }}
+              </h3>
+              <p>{{ textosPaso[paso] }}</p>
+              <ja-vida
+                class="paso__vida"
+                [llenos]="i + 1"
+                [total]="4"
+                [etiqueta]="'Paso ' + (i + 1) + ' de 4: ' + estados[paso].texto"
+              />
+            </div>
           </li>
         }
       </ol>
-    </div>
-    <div class="reparar__lista">
-      <h3 class="ja-titulo">Precios orientativos</h3>
-      @if (servicios.hasValue()) {
-        <ul class="servicios">
-          @for (s of reparaciones(); track s.id) {
-            <li>
-              <span class="servicios__linea"><ja-icono [nombre]="lineas[s.linea].icono" /></span>
-              <span class="servicios__nombre">{{ s.nombre }}</span>
-              <span class="ja-precio-s">{{
-                s.precioOrientativo !== null
-                  ? 'desde ' + precio(s.precioOrientativo)
-                  : 'a presupuesto'
-              }}</span>
-            </li>
-          }
-        </ul>
-        <a class="ver-todo" routerLink="/tienda" fragment="servicios"
-          >Todos los servicios <ja-icono nombre="arrow_forward"
-        /></a>
-      } @else if (servicios.error()) {
-        <p class="ja-t2">No se han podido cargar los servicios.</p>
-      } @else {
-        <span class="ja-esqueleto" style="height: 200px"></span>
-      }
+
+      <div class="precios ja-recorte">
+        <h3 class="precios__titulo">Precios orientativos</h3>
+        @if (servicios.hasValue()) {
+          <ul class="servicios">
+            @for (s of reparaciones(); track s.id) {
+              <li>
+                <span class="servicios__linea"><ja-icono [nombre]="lineas[s.linea].icono" /></span>
+                <span class="servicios__nombre">{{ s.nombre }}</span>
+                <span class="ja-precio-s">{{
+                  s.precioOrientativo !== null
+                    ? 'desde ' + precio(s.precioOrientativo)
+                    : 'a presupuesto'
+                }}</span>
+              </li>
+            }
+          </ul>
+          <a class="ver-todo" routerLink="/tienda" fragment="servicios"
+            >Todos los servicios <ja-icono nombre="arrow_forward"
+          /></a>
+        } @else if (servicios.error()) {
+          <p class="ja-t2">No se han podido cargar los servicios.</p>
+        } @else {
+          <span class="ja-esqueleto esqueleto-precios"></span>
+        }
+      </div>
     </div>
   </div>
 </section>
 
-<!-- La tienda física -->
-<section class="ja-contenedor seccion" aria-labelledby="t-tienda">
-  <div class="tienda">
-    <div class="tienda__foto ja-muesca--destacada">
+<!-- ── 6. La tienda física: la fachada (foto de la API) a lo ancho y la ficha encima ── -->
+<section class="ja-contenedor escena tienda" aria-labelledby="t-tienda">
+  <div class="escena__cabecera">
+    <p class="escena__antetitulo"><ja-icono nombre="storefront" /> La tienda</p>
+    <h2 id="t-tienda" class="escena__titular">Ven a vernos</h2>
+  </div>
+  <div class="tienda__escena">
+    <figure class="tienda__foto ja-recorte">
       <ja-imagen [src]="fotoTienda()?.imagen" [alt]="fotoTienda()?.descripcion ?? 'La tienda'" />
-    </div>
-    <div class="tienda__datos">
-      <h2 id="t-tienda" class="ja-titular-m">Ven a vernos</h2>
+    </figure>
+    <div class="tienda__ficha ja-panel">
       @if (tienda.hasValue()) {
-        <p class="ja-cuerpo-l">
-          <strong>{{ tienda.value().nombre }}</strong
-          ><br />{{ tienda.value().direccion }}
-        </p>
+        <p class="tienda__nombre">{{ tienda.value().nombre }}</p>
+        <p class="ja-t2">{{ tienda.value().direccion }}</p>
+      } @else {
+        <span class="ja-esqueleto esqueleto-direccion"></span>
       }
       <ja-mapa
         [marcas]="marcaTienda()"
@@ -183,23 +315,25 @@
   </div>
 </section>
 
-<!-- La app Almi Companion (las dos APK, ADR-024) -->
-<section id="app" class="ja-contenedor seccion" aria-labelledby="t-app">
-  <div class="app ja-panel">
-    <ja-logo [conTexto]="false" class="app__logo" />
+<!-- ── 7. La app Almi Companion (las dos APK, ADR-024): el cierre ── -->
+<section id="app" class="ja-contenedor escena" aria-labelledby="t-app">
+  <div class="app ja-recorte">
     <div class="app__texto">
-      <h2 id="t-app" class="ja-titular-m">Almi Companion en tu móvil</h2>
-      <p class="ja-cuerpo-l ja-t2">
+      <ja-logo [conTexto]="false" class="app__logo" />
+      <h2 id="t-app" class="escena__titular">Almi Companion en tu móvil</h2>
+      <p class="escena__entrada">
         La app de JuegAlmi para Android. Lo que no se puede hacer desde la web, se hace desde ella:
       </p>
       <ul class="app__lista">
-        <li>
+        <li style="--n: 0">
           <ja-icono nombre="shopping_cart" />Comprar y alquilar, con recogida en tienda o entrega a
           domicilio
         </li>
-        <li><ja-icono nombre="build" />Pedir reparaciones con foto y seguir su estado</li>
-        <li><ja-icono nombre="receipt_long" />Consultar tus pedidos y alquileres</li>
-        <li><ja-icono nombre="mic" />Buscar con la voz</li>
+        <li style="--n: 1">
+          <ja-icono nombre="build" />Pedir reparaciones con foto y seguir su estado
+        </li>
+        <li style="--n: 2"><ja-icono nombre="receipt_long" />Consultar tus pedidos y alquileres</li>
+        <li style="--n: 3"><ja-icono nombre="mic" />Buscar con la voz</li>
       </ul>
       @if (apkUrl) {
         <a class="ja-boton ja-boton--secundario" [href]="apkUrl" download>
@@ -208,6 +342,17 @@
       } @else {
         <p class="ja-etiqueta app__nota"><ja-icono nombre="android" />Disponible para Android.</p>
       }
+    </div>
+    <!-- Captura real de la pantalla Inicio de la app (PT-04) dentro de un marco de móvil -->
+    <div class="app__movil">
+      <img
+        src="portada/app-inicio-720.webp"
+        width="720"
+        height="1599"
+        alt="Pantalla de inicio de la app Almi Companion con los juegos para alquilar y el catálogo"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   </div>
 </section>
