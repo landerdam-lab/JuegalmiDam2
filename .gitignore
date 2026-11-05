@@ -31,6 +31,8 @@ android/.idea/
 android/*.iml
 android/captures/
 *.apk
+# Excepción: las dos APK que se descargan desde la web
+!web/public/descargas/*.apk
 *.aab
 *.jks
 *.keystore

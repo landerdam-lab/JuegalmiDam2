@@ -92,7 +92,7 @@ Si encuentras una contradicción, **no elijas tú**: díselo al usuario y añád
 - Ramas: `main` (estable, **solo por PR**) · `api` · `android` · `ionic` · `web` · `docs`. Opcional: ramas de tarea `area-descripcion` (p. ej. `api-login-token`). ⚠️ **Nunca `area/descripcion`**: Git no permite que convivan la rama `api` y `api/algo`.
 - **No hagas commit, push ni PR si el usuario no lo pide.** Nunca push directo a `main`. Nunca `--force` sobre ramas compartidas.
 - Commits en **español**, cortos y descriptivos, con los IDs de requisito cuando los haya: `Añade login con token (RT-04)`.
-- **Nunca se suben:** `.env.local`, credenciales, tokens, `vendor/`, `node_modules/`, `build/`, `*.apk`, `*.jks`, `local.properties`, `CLAUDE.local.md`.
+- **Nunca se suben:** `.env.local`, credenciales, tokens, `vendor/`, `node_modules/`, `build/`, `*.apk` (salvo las dos de `web/public/descargas/`, que se descargan desde la web), `*.jks`, `local.properties`, `CLAUDE.local.md`.
 - Cada uno trabaja en **su carpeta**. Si la tarea obliga a tocar el área de otra persona, avísalo.
 - Las **migraciones de Doctrine** solo las genera quien lleva la API, y nunca se edita una que ya está en `main`.
 
