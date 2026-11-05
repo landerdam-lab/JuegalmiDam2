@@ -1,40 +1,119 @@
-// PW-01 Portada. Todo con tokens --ja-*; los únicos valores propios son los puntos de corte.
+// PW-01 Portada · «Inserta el cartucho».
+// Todo con tokens --ja-*; los únicos números propios son los puntos de corte (720, 900 y 1024 px)
+// y las proporciones de la composición (porcentajes).
+//
+// MOVIMIENTO (DESIGN.md §7). Tres reglas:
+//  1. Todo entra de ARRIBA ABAJO y encaja, como un cartucho (no el típico «aparecer subiendo»).
+//  2. El progreso va A SALTOS: la barra de vida se enciende segmento a segmento.
+//  3. Solo se animan transform y opacity: las aplica la GPU (CPU mínima, requisito del enunciado).
+// Las animaciones de scroll son CSS nativo (animation-timeline: view() / scroll()): 0 KB de
+// JavaScript y sin escuchar el evento scroll. Van dentro de @supports (Firefox aún no las trae:
+// allí la página se ve completa y quieta) y de prefers-reduced-motion: no-preference.
 
 :host {
   display: block;
+  // Alto de la barra superior fija: lo que queda tapado arriba al fijar columnas con sticky
+  --arriba: calc(var(--ja-tamano-barra-superior) + var(--ja-espacio-8));
 }
 
-// ── Hero ──
+// ════════════════════════════════════════════
+// 1. HERO
+// ════════════════════════════════════════════
 .hero {
-  padding: var(--ja-espacio-12) 0 var(--ja-espacio-16);
-  background: var(--ja-fondo);
-  border-bottom: var(--ja-borde-fino) solid var(--ja-borde);
-}
-.hero__rejilla {
-  display: grid;
-  gap: var(--ja-espacio-12);
-  align-items: center;
+  position: relative;
+  overflow: clip;
+  padding-block: var(--ja-espacio-10) var(--ja-espacio-12);
+  // Línea de tiempo con nombre: las capas del hero se mueven según cuánto ha salido el hero
+  view-timeline: --hero block;
+
   @media (min-width: 1024px) {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    display: grid;
+    align-items: center;
+    min-height: min(
+      calc(100svh - var(--ja-tamano-barra-superior)),
+      calc(var(--ja-espacio-16) * 14)
+    );
+    padding-block: var(--ja-espacio-16);
   }
 }
+
+.hero__contenedor {
+  position: relative;
+  z-index: 2;
+}
+
+.hero__texto {
+  @media (min-width: 1024px) {
+    max-width: min(30rem, 40vw);
+  }
+}
+
 .hero__titular {
-  font: var(--ja-tipo-display);
+  font-family: var(--ja-fuente-titulos);
+  font-weight: 800;
+  font-size: clamp(var(--ja-espacio-10), 4.4vw, calc(var(--ja-espacio-16) * 1.15));
+  line-height: 1;
   letter-spacing: var(--ja-tipo-display-espaciado);
-  max-width: 14ch;
-  // En pantallas grandes el titular crece (sin pasar del tamaño display × 1,6)
-  @media (min-width: 720px) {
-    font-size: calc(var(--ja-espacio-12) + var(--ja-espacio-2));
-    line-height: 1.02;
-  }
-  @media (min-width: 1200px) {
-    font-size: calc(var(--ja-espacio-16));
-  }
   text-wrap: balance;
 }
+
+// Cada palabra va en su máscara: el texto interior baja desde arriba al cargar
+.p {
+  display: inline-block;
+  overflow: clip;
+  // Hueco para los rasgos que bajan (p, y) sin cambiar el interlineado
+  padding-block: 0.06em 0.12em;
+  margin-block: -0.06em -0.12em;
+  vertical-align: top;
+
+  > span {
+    display: inline-block;
+    animation: palabra var(--ja-duracion-enfasis) var(--ja-curva-entrada) both;
+    animation-delay: calc(var(--i) * var(--ja-duracion-escalonado) + var(--ja-duracion-rapida));
+  }
+}
+@keyframes palabra {
+  from {
+    transform: translateY(-110%);
+  }
+}
+
+.hero__alquila {
+  color: var(--ja-alquiler);
+}
+
+// «tienda de barrio» sobre una etiqueta amarilla con muesca: la etiqueta de un cartucho
+.p--resaltado {
+  position: relative;
+  padding-inline: 0.14em 0.3em;
+  margin-inline-start: -0.02em;
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0.1em 0 0.02em;
+    z-index: -1;
+    background: var(--ja-primario);
+    border-radius: var(--ja-radio-s);
+    clip-path: polygon(0 0, calc(100% - 0.32em) 0, 100% 0.32em, 100% 100%, 0 100%);
+    transform-origin: left center;
+    animation: etiqueta var(--ja-duracion-enfasis) var(--ja-curva-estandar) both;
+    animation-delay: calc(7 * var(--ja-duracion-escalonado) + var(--ja-duracion-base));
+  }
+  > span {
+    color: var(--ja-sobre-primario);
+  }
+}
+@keyframes etiqueta {
+  from {
+    transform: scaleX(0);
+  }
+}
+
 .hero__entrada {
-  margin-top: var(--ja-espacio-5);
-  max-width: 46ch;
+  margin-top: var(--ja-espacio-6);
+  max-width: 44ch;
   font: var(--ja-tipo-cuerpo-l);
   color: var(--ja-texto-2);
   text-wrap: pretty;
@@ -45,39 +124,237 @@
   gap: var(--ja-espacio-3);
   margin-top: var(--ja-espacio-8);
 }
+.hero__entrada,
+.hero__acciones {
+  animation: bajar var(--ja-duracion-enfasis) var(--ja-curva-entrada) both;
+  animation-delay: calc(5 * var(--ja-duracion-escalonado) + var(--ja-duracion-base));
+}
+.hero__acciones {
+  animation-delay: calc(7 * var(--ja-duracion-escalonado) + var(--ja-duracion-base));
+}
+@keyframes bajar {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ja-espacio-3) * -1));
+  }
+}
 
-// ── Los tres cartuchos ──
+// ── La escena: foto del mostrador + sombra + cartucho en primer plano ──
+.hero__escena {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  margin-top: var(--ja-espacio-10);
+  margin-inline-start: var(--ja-espacio-4);
+
+  // En escritorio la escena ocupa la mitad derecha y se sale por el borde de la ventana
+  @media (min-width: 1024px) {
+    position: absolute;
+    inset-block: var(--ja-espacio-8);
+    right: 0;
+    width: 50vw;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+}
+
+.hero__foto {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  background: var(--ja-superficie-2); // placeholder mientras carga
+  border-radius: var(--ja-radio-xl) 0 0 var(--ja-radio-xl);
+  // La muesca a lo grande: la escena entera es un cartucho
+  --corte: var(--ja-espacio-16); // con .ja-recorte (styles.scss)
+  animation: aparecer var(--ja-duracion-enfasis) var(--ja-curva-estandar) both;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 20% 60%;
+  }
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+// Capas que se mueven con el scroll (en escritorio y móvil, con distinta amplitud)
+.hero__capa-cartucho,
+.hero__capa-sombra {
+  position: absolute;
+  z-index: 1;
+}
+.hero__capa-cartucho {
+  left: -4%;
+  top: 8%;
+  width: 34%;
+  @media (min-width: 1024px) {
+    left: -6%;
+    top: 16%;
+    width: 30%;
+  }
+}
+.hero__capa-sombra {
+  left: 0;
+  top: 74%;
+  width: 34%;
+  @media (min-width: 1024px) {
+    left: 2%;
+    top: 58%;
+    width: 30%;
+  }
+}
+.hero__cartucho,
+.hero__sombra {
+  width: 100%;
+  height: auto;
+}
+
+// Al cargar, el cartucho cae y encaja (el único rebote de la portada: curva «insertar»)
+.hero__cartucho {
+  rotate: -8deg;
+  animation: insertar-cartucho var(--ja-duracion-enfasis) var(--ja-curva-insertar) both;
+  animation-delay: calc(var(--ja-duracion-base) + var(--ja-duracion-rapida));
+}
+@keyframes insertar-cartucho {
+  from {
+    opacity: 0;
+    transform: translateY(-40%) rotate(-10deg);
+  }
+}
+.hero__sombra {
+  animation: sombra-entra var(--ja-duracion-enfasis) var(--ja-curva-entrada) both;
+  animation-delay: calc(var(--ja-duracion-base) + var(--ja-duracion-rapida));
+}
+@keyframes sombra-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+// ════════════════════════════════════════════
+// Piezas comunes de las escenas
+// ════════════════════════════════════════════
+.escena {
+  margin-top: calc(var(--ja-espacio-16) * 2);
+  @media (max-width: 719px) {
+    margin-top: calc(var(--ja-espacio-16) + var(--ja-espacio-8));
+  }
+}
+.escena__cabecera {
+  display: grid;
+  gap: var(--ja-espacio-3);
+  margin-bottom: var(--ja-espacio-8);
+}
+.escena__cabecera--fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ja-espacio-4);
+  > div {
+    display: grid;
+    gap: var(--ja-espacio-3);
+  }
+}
+.escena__antetitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-2);
+  font: var(--ja-tipo-etiqueta);
+  letter-spacing: 0.04em;
+  color: var(--ja-marca);
+  --tam: var(--ja-tamano-icono-s);
+}
+.escena__antetitulo--alquiler {
+  color: var(--ja-alquiler);
+}
+.escena__titular {
+  font-family: var(--ja-fuente-titulos);
+  font-weight: 800;
+  font-size: clamp(var(--ja-espacio-8), 3.6vw, var(--ja-espacio-12));
+  line-height: 1.05;
+  letter-spacing: var(--ja-tipo-display-espaciado);
+  text-wrap: balance;
+}
+.escena__entrada {
+  max-width: 52ch;
+  font: var(--ja-tipo-cuerpo-l);
+  color: var(--ja-texto-2);
+  text-wrap: pretty;
+}
+
+.ver-todo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ja-espacio-1);
+  min-height: var(--ja-tamano-tactil-min);
+  color: var(--ja-marca);
+  font: var(--ja-tipo-etiqueta);
+  text-decoration: none;
+  --tam: var(--ja-tamano-icono-s);
+  ja-icono {
+    transition: transform var(--ja-duracion-rapida) var(--ja-curva-estandar);
+  }
+  &:hover ja-icono {
+    transform: translateX(var(--ja-espacio-1));
+  }
+}
+
+.rejilla {
+  display: grid;
+  gap: var(--ja-espacio-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--ja-espacio-5);
+  }
+}
+.esqueleto-tarjeta {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--ja-radio-l);
+}
+
+// ════════════════════════════════════════════
+// 2. LAS TRES LÍNEAS (cartuchos)
+// ════════════════════════════════════════════
+.lineas {
+  margin-top: var(--ja-espacio-16);
+}
+.lineas__cabecera {
+  justify-items: center;
+  text-align: center;
+  .escena__entrada {
+    margin-inline: auto;
+  }
+}
+
 .cartuchos {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ja-espacio-3);
+  gap: var(--ja-espacio-6);
   margin: 0;
   padding: 0;
   list-style: none;
-  @media (min-width: 720px) {
-    gap: var(--ja-espacio-5);
-  }
-  @media (max-width: 560px) {
-    grid-template-columns: 1fr;
-  }
-}
 
-.cartucho {
-  // Entrada orquestada: los cartuchos bajan y «encajan» uno detrás de otro (curva insertar)
-  animation: insertar var(--ja-duracion-enfasis) var(--ja-curva-insertar) both;
-  animation-delay: calc(var(--orden) * var(--ja-duracion-escalonado) + var(--ja-duracion-base));
-  // El del centro va un poco más alto: las tres piezas no quedan alineadas como una rejilla de tarjetas
-  &:nth-child(2) {
-    @media (min-width: 561px) {
-      margin-top: calc(var(--ja-espacio-8) * -1);
+  // Móvil: fila con desplazamiento lateral nativo (sin apilar tres tarjetas enormes)
+  @media (max-width: 719px) {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    gap: var(--ja-espacio-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: calc(var(--ja-espacio-4) * -1);
+    padding: var(--ja-espacio-2) var(--ja-espacio-4) var(--ja-espacio-4);
+    scroll-padding-inline: var(--ja-espacio-4);
+    > li {
+      scroll-snap-align: start;
     }
-  }
-}
-
-@keyframes insertar {
-  from {
-    opacity: 0;
-    transform: translateY(calc(var(--ja-espacio-12) * -1));
   }
 }
 
@@ -86,24 +363,18 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: var(--ja-espacio-3) var(--ja-espacio-3) var(--ja-espacio-8);
+  padding: var(--ja-espacio-3) var(--ja-espacio-3) var(--ja-espacio-10);
   border-radius: var(--ja-radio-l);
   background: var(--ja-superficie);
   border: var(--ja-borde-grueso) solid var(--ja-borde);
   color: inherit;
   text-decoration: none;
-  // La muesca grande: el corte que comparten cartucho, tarjeta SD y SIM
-  clip-path: polygon(
-    0 0,
-    calc(100% - var(--ja-espacio-10)) 0,
-    100% var(--ja-espacio-10),
-    100% 100%,
-    0 100%
-  );
+  --corte: var(--ja-espacio-10); // con .ja-recorte (styles.scss)
   transition:
-    transform var(--ja-duracion-base) var(--ja-curva-insertar),
+    transform var(--ja-duracion-base) var(--ja-curva-estandar),
     border-color var(--ja-duracion-rapida) var(--ja-curva-estandar);
 
+  // Al pasar por encima, el cartucho «entra» en la ranura
   &:hover {
     transform: translateY(var(--ja-espacio-1));
     border-color: var(--ja-marca);
@@ -116,23 +387,15 @@
   }
 }
 
-// La «etiqueta» del cartucho: la foto del producto con su propia muesca
 .cartucho__etiqueta {
   border-radius: var(--ja-radio-m);
   overflow: hidden;
-  clip-path: polygon(
-    0 0,
-    calc(100% - var(--ja-espacio-8)) 0,
-    100% var(--ja-espacio-8),
-    100% 100%,
-    0 100%
-  );
+  --corte: var(--ja-espacio-8); // con .ja-recorte (styles.scss)
   ja-imagen {
     --proporcion: 4 / 5;
-  }
-  @media (max-width: 560px) {
-    ja-imagen {
-      --proporcion: 16 / 9;
+    // En la fila deslizable del móvil, más apaisada: la tarjeta no ocupa toda la pantalla
+    @media (max-width: 719px) {
+      --proporcion: 4 / 3;
     }
   }
 }
@@ -168,127 +431,254 @@
   color: var(--ja-marca);
 }
 
-// Los contactos dorados del borde inferior de un cartucho
+// Los contactos dorados del borde inferior. Encendidos (::after amarillo) solo con la animación
 .cartucho__contactos {
   position: absolute;
   left: var(--ja-espacio-6);
   right: var(--ja-espacio-6);
-  bottom: var(--ja-espacio-3);
+  bottom: var(--ja-espacio-4);
   display: flex;
   gap: var(--ja-espacio-2);
   i {
+    position: relative;
     flex: 1;
     height: var(--ja-espacio-2);
     border-radius: var(--ja-radio-segmento);
     background: var(--ja-superficie-3);
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--ja-primario);
+      opacity: 0;
+    }
   }
 }
 
-// ── Secciones ──
-.seccion {
-  margin-top: var(--ja-espacio-16);
-}
-.seccion__cabecera {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--ja-espacio-3);
-  margin-bottom: var(--ja-espacio-6);
-  h2 {
-    letter-spacing: var(--ja-tipo-titular-m-espaciado);
-  }
-  p {
-    margin-top: var(--ja-espacio-1);
-  }
-}
-.ver-todo {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ja-espacio-1);
-  min-height: var(--ja-tamano-tactil-min);
-  color: var(--ja-marca);
-  font: var(--ja-tipo-etiqueta);
-  text-decoration: none;
-  --tam: var(--ja-tamano-icono-s);
-  ja-icono {
-    transition: transform var(--ja-duracion-rapida) var(--ja-curva-estandar);
-  }
-  &:hover ja-icono {
-    transform: translateX(var(--ja-espacio-1));
-  }
-}
-
-.rejilla {
-  display: grid;
-  gap: var(--ja-espacio-4);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+// ════════════════════════════════════════════
+// 4. ESCAPARATE (consolas y telefonía)
+// ════════════════════════════════════════════
+.vitrina {
   @media (min-width: 900px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--ja-espacio-12);
+    align-items: start;
   }
 }
-.esqueleto-tarjeta {
-  aspect-ratio: 3 / 4;
-  border-radius: var(--ja-radio-l);
+.vitrina__cabecera {
+  @media (min-width: 900px) {
+    // La cabecera se queda fija mientras pasan las tarjetas (sticky: lo hace el navegador)
+    position: sticky;
+    top: var(--arriba);
+    margin-bottom: 0;
+  }
+}
+.vitrina__enlaces {
+  display: grid;
+  justify-items: start;
+}
+.vitrina__rejilla {
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    // La segunda columna va más baja: las tarjetas no forman una rejilla rígida
+    > :nth-child(even) {
+      margin-top: var(--ja-espacio-16);
+    }
+  }
 }
 
-// ── Reparaciones ──
-.reparar {
+// ════════════════════════════════════════════
+// 5. EL TALLER (escena oscura: .ja-escena-oscura aplica la paleta oscura de tokens.json)
+// ════════════════════════════════════════════
+.taller {
+  position: relative;
+  isolation: isolate;
+  margin-top: calc(var(--ja-espacio-16) * 2);
+  padding-block: calc(var(--ja-espacio-16) * 1.5);
+  color: var(--ja-texto);
+  color-scheme: dark;
+  // Los 4 pasos publican su línea de tiempo aquí para que la columna fija pueda usarlas
+  timeline-scope: --paso-0, --paso-1, --paso-2, --paso-3;
+
+  // El fondo es una capa aparte con la muesca: al entrar se «enciende» abriéndose a lo ancho
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ja-fondo);
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--ja-espacio-16)) 0,
+      100% var(--ja-espacio-16),
+      100% 100%,
+      0 100%
+    );
+  }
+}
+// En modo oscuro la página ya es oscura: la escena sube un nivel de superficie para distinguirse
+:host-context(.ion-palette-dark) .taller::before {
+  background: var(--ja-superficie);
+}
+
+.taller__rejilla {
   display: grid;
   gap: var(--ja-espacio-10);
-  padding: var(--ja-espacio-8) var(--ja-espacio-6);
   @media (min-width: 900px) {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    padding: var(--ja-espacio-12);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--ja-espacio-16);
+    align-items: start;
   }
 }
-.reparar__texto {
+
+.taller__fijo {
   display: grid;
-  gap: var(--ja-espacio-4);
-  align-content: start;
-  p {
-    max-width: 52ch;
+  gap: var(--ja-espacio-5);
+  @media (min-width: 900px) {
+    position: sticky;
+    top: var(--arriba);
   }
 }
-.reparar__icono {
-  display: grid;
-  place-items: center;
-  width: var(--ja-espacio-12);
-  height: var(--ja-espacio-12);
-  border-radius: var(--ja-radio-completo);
-  background: var(--ja-marca-suave);
-  color: var(--ja-marca);
+.taller__foto {
+  overflow: clip;
+  aspect-ratio: 4 / 3;
+  background: var(--ja-superficie-2);
+  border-radius: var(--ja-radio-l);
+  --corte: var(--ja-muesca-destacada); // con .ja-recorte (styles.scss)
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 70%;
+  }
+  @media (min-width: 900px) {
+    max-height: calc(100svh - var(--arriba) - var(--ja-espacio-16) * 2);
+    aspect-ratio: auto;
+    height: calc((100svh - var(--arriba)) * 0.72);
+  }
 }
-.proceso {
+
+// Barra de vida fija (solo escritorio) + la pastilla del estado actual
+.taller__progreso {
+  display: none;
+  @media (min-width: 900px) {
+    display: grid;
+    gap: var(--ja-espacio-3);
+  }
+}
+.taller__vida > span {
+  position: relative;
+  background: var(--ja-superficie-3);
+  // Segmento encendido: capa amarilla encima (se anima su opacidad)
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--ja-primario);
+  }
+}
+.taller__estados {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--ja-espacio-3);
-  margin: var(--ja-espacio-4) 0 0;
+  > span {
+    grid-area: 1 / 1;
+    justify-self: start;
+    // Sin animación de scroll se ve el último estado (el proceso completo)
+    opacity: 0;
+    &:last-child {
+      opacity: 1;
+    }
+  }
+}
+
+.taller__contenido {
+  display: grid;
+  gap: var(--ja-espacio-10);
+}
+.taller__titular {
+  max-width: 14ch;
+}
+
+.pasos {
+  display: grid;
+  margin: 0;
   padding: 0;
   list-style: none;
-  @media (max-width: 560px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.paso {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--ja-espacio-5);
+  padding-block: var(--ja-espacio-8);
+  border-top: var(--ja-borde-fino) solid var(--ja-borde);
+  // Cada paso publica su línea de tiempo (--paso-0 … --paso-3) para la barra fija
+  &:nth-child(1) {
+    view-timeline-name: --paso-0;
   }
-  li {
-    display: grid;
-    gap: var(--ja-espacio-2);
+  &:nth-child(2) {
+    view-timeline-name: --paso-1;
   }
-  ja-vida {
-    --ancho: 0;
+  &:nth-child(3) {
+    view-timeline-name: --paso-2;
+  }
+  &:nth-child(4) {
+    view-timeline-name: --paso-3;
+  }
+
+  @media (min-width: 900px) {
+    // Cada paso ocupa media pantalla: el tiempo justo para leerlo mientras la barra se llena
+    min-height: 52svh;
+    align-content: center;
   }
 }
-.proceso__paso {
+.paso__numero {
+  font: var(--ja-tipo-precio);
+  font-size: var(--ja-espacio-8);
+  line-height: 1;
+  color: var(--ja-primario);
+  font-variant-numeric: tabular-nums;
+}
+.paso__texto {
+  display: grid;
+  gap: var(--ja-espacio-2);
+  align-content: start;
+  p {
+    max-width: 44ch;
+    font: var(--ja-tipo-cuerpo-l);
+    color: var(--ja-texto-2);
+  }
+}
+.paso__titulo {
   display: flex;
   align-items: center;
-  gap: var(--ja-espacio-1);
-  font: var(--ja-tipo-etiqueta-s);
-  color: var(--ja-texto-2);
-  --tam: var(--ja-espacio-4);
+  gap: var(--ja-espacio-2);
+  font: var(--ja-tipo-titular-m);
+  letter-spacing: var(--ja-tipo-titular-m-espaciado);
+  --tam: var(--ja-tamano-icono-s);
 }
-.reparar__lista {
+.paso__vida {
+  --ancho: 0;
+  max-width: calc(var(--ja-espacio-16) * 3);
+  margin-top: var(--ja-espacio-2);
+  // En escritorio el progreso lo cuenta la barra fija de la izquierda
+  @media (min-width: 900px) {
+    display: none;
+  }
+}
+
+.precios {
   display: grid;
   gap: var(--ja-espacio-3);
-  align-content: start;
+  padding: var(--ja-espacio-6);
+  border: var(--ja-borde-fino) solid var(--ja-borde);
+  border-radius: var(--ja-radio-l);
+  background: var(--ja-superficie);
+  --corte: var(--ja-muesca-tarjeta); // con .ja-recorte (styles.scss)
+}
+.precios__titulo {
+  font: var(--ja-tipo-titulo);
 }
 .servicios {
   margin: 0;
@@ -304,59 +694,103 @@
   }
 }
 .servicios__linea {
+  display: inline-flex;
   color: var(--ja-texto-3);
   --tam: var(--ja-tamano-icono-s);
-  display: inline-flex;
 }
 .servicios__nombre {
   font: var(--ja-tipo-cuerpo);
 }
+.esqueleto-precios {
+  height: calc(var(--ja-espacio-16) * 3);
+}
 
-// ── Tienda ──
-.tienda {
+// ════════════════════════════════════════════
+// 6. LA TIENDA
+// ════════════════════════════════════════════
+.tienda__escena {
   display: grid;
-  gap: var(--ja-espacio-6);
+  gap: var(--ja-espacio-4);
   @media (min-width: 900px) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: stretch;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0;
   }
 }
 .tienda__foto {
-  overflow: hidden;
+  margin: 0;
+  overflow: clip;
+  border-radius: var(--ja-radio-xl);
+  --corte: var(--ja-espacio-16); // con .ja-recorte (styles.scss)
   ja-imagen {
-    --proporcion: 4 / 3;
-    height: 100%;
+    --proporcion: 3 / 2;
+  }
+  @media (min-width: 900px) {
+    grid-column: 1 / 11;
+    grid-row: 1;
+    ja-imagen {
+      --proporcion: 16 / 9;
+    }
   }
 }
-.tienda__datos {
+.tienda__ficha {
   display: grid;
-  gap: var(--ja-espacio-4);
-  align-content: start;
+  gap: var(--ja-espacio-3);
+  padding: var(--ja-espacio-6);
   ja-mapa {
-    --alto: 260px;
+    --alto: 220px;
+    margin-top: var(--ja-espacio-2);
+  }
+  @media (min-width: 900px) {
+    grid-column: 8 / 13;
+    grid-row: 1;
+    align-self: end;
+    z-index: 1;
+    margin-bottom: calc(var(--ja-espacio-16) * -1);
+    box-shadow: var(--ja-elevacion-3);
+  }
+}
+.tienda__nombre {
+  font: var(--ja-tipo-titular-m);
+  letter-spacing: var(--ja-tipo-titular-m-espaciado);
+}
+.esqueleto-direccion {
+  height: var(--ja-espacio-12);
+}
+.tienda {
+  @media (min-width: 900px) {
+    padding-bottom: var(--ja-espacio-16);
   }
 }
 
-// ── La app ──
+// ════════════════════════════════════════════
+// 7. LA APP (cierre)
+// ════════════════════════════════════════════
 .app {
+  position: relative;
   display: grid;
-  gap: var(--ja-espacio-6);
-  padding: var(--ja-espacio-8) var(--ja-espacio-6);
+  gap: var(--ja-espacio-8);
+  overflow: clip;
+  padding: var(--ja-espacio-8) var(--ja-espacio-6) 0;
+  border-radius: var(--ja-radio-xl);
   background: var(--ja-marca-suave);
-  border-color: transparent;
-  @media (min-width: 720px) {
-    grid-template-columns: auto 1fr;
-    padding: var(--ja-espacio-12);
+  --corte: var(--ja-espacio-16); // con .ja-recorte (styles.scss)
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+    padding: var(--ja-espacio-16) var(--ja-espacio-16) 0;
   }
-}
-.app__logo {
-  --alto: 120px;
-  align-self: start;
 }
 .app__texto {
   display: grid;
   gap: var(--ja-espacio-4);
   justify-items: start;
+  padding-bottom: var(--ja-espacio-8);
+  @media (min-width: 900px) {
+    padding-bottom: var(--ja-espacio-16);
+  }
+}
+.app__logo {
+  --alto: var(--ja-espacio-16);
 }
 .app__lista {
   display: grid;
@@ -371,6 +805,7 @@
     font: var(--ja-tipo-cuerpo-l);
   }
   ja-icono {
+    flex: none;
     color: var(--ja-marca);
   }
 }
@@ -379,4 +814,39 @@
   align-items: center;
   gap: var(--ja-espacio-2);
   color: var(--ja-marca);
+}
+
+// El móvil: marco de tinta con la captura real; se corta por abajo, como si saliera del bolsillo
+.app__movil {
+  justify-self: center;
+  width: min(calc(var(--ja-espacio-16) * 4.6), 76%);
+  aspect-ratio: 9 / 16;
+  overflow: clip;
+  border: var(--ja-espacio-2) solid var(--ja-sobre-primario);
+  border-bottom: 0;
+  border-radius: calc(var(--ja-radio-xl) * 1.6) calc(var(--ja-radio-xl) * 1.6) 0 0;
+  background: var(--ja-sobre-primario);
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--ja-radio-xl) var(--ja-radio-xl) 0 0;
+  }
+  @media (min-width: 900px) {
+    width: 100%;
+    max-width: calc(var(--ja-espacio-16) * 5);
+    align-self: end;
+  }
+}
+
+// Reducir movimiento: sin entradas al cargar (el texto se ve al momento) y sin desplazamientos
+@media (prefers-reduced-motion: reduce) {
+  .p > span,
+  .p--resaltado::before,
+  .hero__entrada,
+  .hero__acciones,
+  .hero__foto,
+  .hero__cartucho,
+  .hero__sombra {
+    animation: none;
+  }
 }

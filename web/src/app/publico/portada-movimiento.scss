@@ -1,0 +1,239 @@
+// PW-01 Portada · movimiento ligado al scroll (separado de portada.scss para leerlo de una vez).
+// CSS nativo: animation-timeline con view() (la posición del elemento en pantalla) o con una
+// línea de tiempo con nombre (--hero, --paso-N). Sin JavaScript y sin escuchar el evento scroll.
+
+// ════════════════════════════════════════════
+// MOVIMIENTO LIGADO AL SCROLL
+// ════════════════════════════════════════════
+// Recordatorio: `animation-timeline` va SIEMPRE después del atajo `animation` (el atajo lo reinicia).
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    // ── 1. Hero: al salir, el fondo se acerca despacio y el cartucho se levanta más rápido
+    //       (dos velocidades = profundidad). La sombra se encoge porque el cartucho se aleja.
+    .hero__foto img {
+      animation: hero-foto linear both;
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 100%;
+    }
+    .hero__capa-cartucho {
+      animation: hero-cartucho linear both;
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 100%;
+    }
+    .hero__capa-sombra {
+      animation: hero-sombra linear both;
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 80%;
+    }
+    .hero__contenedor {
+      animation: hero-texto linear both;
+      animation-timeline: --hero;
+      animation-range: exit 20% exit 100%;
+    }
+
+    // ── 2. Los cartuchos bajan uno detrás de otro y encajan; después se encienden sus contactos
+    .cartucho {
+      animation: encajar var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry calc(10% + var(--orden) * 18%) cover calc(38% + var(--orden) * 6%);
+    }
+    .cartucho__contactos i::after {
+      animation: encender linear both;
+      animation-timeline: view();
+      animation-range: cover calc(42% + var(--c) * 3%) cover calc(43% + var(--c) * 3%);
+    }
+
+    // ── 3 y 4. Tarjetas de producto: caen escalonadas al entrar
+    .rejilla > * {
+      animation: caer var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry calc(5% + var(--i, 0) * 15%) cover calc(28% + var(--i, 0) * 4%);
+    }
+
+    // ── 5. El taller: la pantalla se enciende abriéndose a lo ancho…
+    .taller::before {
+      animation: abrir var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+    .taller__foto img {
+      animation: foto-taller linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    // …y cada paso que llega al centro de la pantalla enciende su segmento (a saltos)
+    .taller__vida > span::after {
+      animation: encender linear both;
+      animation-range: cover 45% cover 47%;
+    }
+    .taller__vida > span:nth-child(1)::after {
+      animation-timeline: --paso-0;
+    }
+    .taller__vida > span:nth-child(2)::after {
+      animation-timeline: --paso-1;
+    }
+    .taller__vida > span:nth-child(3)::after {
+      animation-timeline: --paso-2;
+    }
+    .taller__vida > span:nth-child(4)::after {
+      animation-timeline: --paso-3;
+    }
+
+    // La pastilla del estado cambia con el paso que se está leyendo
+    .taller__estados > span {
+      animation: estado linear both;
+      // Mismo punto que su segmento (cover 45 %): la pastilla y la barra cambian a la vez
+      animation-range: cover 40% cover 80%;
+    }
+    .taller__estados > span:nth-child(1) {
+      animation-name: estado-primero;
+      animation-timeline: --paso-0;
+    }
+    .taller__estados > span:nth-child(2) {
+      animation-timeline: --paso-1;
+    }
+    .taller__estados > span:nth-child(3) {
+      animation-timeline: --paso-2;
+    }
+    .taller__estados > span:nth-child(4) {
+      animation-name: estado-ultimo;
+      animation-timeline: --paso-3;
+    }
+
+    // Los pasos entran desde arriba
+    .paso__texto,
+    .paso__numero {
+      animation: caer var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 40%;
+    }
+
+    // ── 6. La tienda: la cámara «se asienta» (la foto llega un poco más grande y se ajusta)
+    .tienda__foto {
+      animation: asentar var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+    .tienda__foto ja-imagen {
+      animation: asentar-dentro linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 60%;
+    }
+    .tienda__ficha {
+      animation: caer var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 45%;
+    }
+
+    // ── 7. La app: el móvil sube a su sitio y la lista se enciende línea a línea
+    .app__movil {
+      animation: subir-movil var(--ja-curva-entrada) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+    .app__lista li {
+      animation: encender linear both;
+      animation-timeline: view();
+      animation-range: entry calc(40% + var(--n) * 12%) entry calc(50% + var(--n) * 12%);
+    }
+  }
+}
+
+// Fotogramas de las animaciones de scroll (fuera de @supports: si no hay soporte no se usan)
+@keyframes hero-foto {
+  to {
+    transform: scale(1.1) translateY(4%);
+  }
+}
+@keyframes hero-cartucho {
+  to {
+    transform: translateY(-55%) rotate(-10deg);
+  }
+}
+@keyframes hero-sombra {
+  to {
+    opacity: 0.2;
+    transform: scale(0.55);
+  }
+}
+@keyframes hero-texto {
+  to {
+    opacity: 0;
+    transform: translateY(-12%);
+  }
+}
+@keyframes encajar {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ja-espacio-16) * -1.5));
+  }
+}
+@keyframes encender {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes caer {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ja-espacio-10) * -1));
+  }
+}
+@keyframes abrir {
+  from {
+    transform: scale(0.9, 0.96);
+  }
+}
+@keyframes foto-taller {
+  from {
+    transform: scale(1.15);
+  }
+}
+@keyframes estado {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+}
+// El primero ya se ve antes de su tramo y el último se queda al final
+@keyframes estado-primero {
+  0%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes estado-ultimo {
+  0% {
+    opacity: 0;
+  }
+  15%,
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes asentar {
+  from {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+}
+@keyframes asentar-dentro {
+  from {
+    transform: scale(1.2);
+  }
+}
+@keyframes subir-movil {
+  from {
+    transform: translateY(30%) rotate(4deg);
+  }
+}
