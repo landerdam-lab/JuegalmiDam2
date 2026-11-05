@@ -124,7 +124,8 @@ function variablesScss() {
     '// (prefers-color-scheme) o la preferencia de Perfil. NO importes los palettes/dark.*.css de Ionic:',
     '// esta paleta oscura sustituye a la suya. Selector con :root para ganar en especificidad.',
     '// En oscuro no hay sombras: la elevación se marca con superficies más claras.',
-    ':root.ion-palette-dark {', bloqueIonic('dark'),
+    '// .ja-escena-oscura aplica la misma paleta oscura solo a una sección (la web la usa en la portada).',
+    ':root.ion-palette-dark,', '.ja-escena-oscura {', bloqueIonic('dark'),
     ...['1', '2', '3', 'muesca'].map((n) => `  --ja-elevacion-${n}: none;`), '}', '');
   return l.join('\n');
 }

@@ -1,5 +1,5 @@
 // GENERADO desde design/tokens.json con npm run tokens:build. No editar a mano.
-// Sistema «Cartucho» v1.0.0 (aprobado (ADR-022))
+// Sistema «Cartucho» v1.1.0 (aprobado (ADR-022))
 
 // Fuentes: se cargan en src/index.html (Google Fonts) o desde assets/fonts.
 :root {
@@ -225,7 +225,9 @@
 // (prefers-color-scheme) o la preferencia de Perfil. NO importes los palettes/dark.*.css de Ionic:
 // esta paleta oscura sustituye a la suya. Selector con :root para ganar en especificidad.
 // En oscuro no hay sombras: la elevación se marca con superficies más claras.
-:root.ion-palette-dark {
+// .ja-escena-oscura aplica la misma paleta oscura solo a una sección (la web la usa en la portada).
+:root.ion-palette-dark,
+.ja-escena-oscura {
   --ion-color-primary: #FFC629;
   --ion-color-primary-rgb: 255, 198, 41;
   --ion-color-primary-contrast: #1C1530;
