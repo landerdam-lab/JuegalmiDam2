@@ -14,6 +14,9 @@ import { Imagen } from '../../shared/imagen.component';
 @Component({
   imports: [IonContent, IonModal, IonButton, Barra, Estado, Icono, Imagen],
   styles: `
+    .conteo {
+      padding: 0 var(--ja-espacio-4) var(--ja-espacio-3);
+    }
     .rejilla {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -57,13 +60,14 @@ import { Imagen } from '../../shared/imagen.component';
     }
   `,
   template: `
-    <ja-barra titulo="Galería" atras="/tienda" />
+    <ja-barra titulo="Galería" atras="/tienda" [sinAcciones]="true" />
     <ion-content>
       @if (cargando()) {
         <div class="ja-pagina"><ja-estado tipo="cargando" /></div>
       } @else if (error()) {
         <ja-estado tipo="error" titulo="No hemos podido cargar la tienda" [texto]="error()" (reintentar)="cargar()" />
       } @else {
+        <div class="ja-contador conteo">{{ fotos().length }} {{ fotos().length === 1 ? 'foto' : 'fotos' }}</div>
         <div class="rejilla">
           @for (f of fotos(); track f.id) {
             <ja-imagen class="baldosa" [src]="f.imagen" [alt]="f.descripcion ?? ''" (click)="abierta.set(f)" />

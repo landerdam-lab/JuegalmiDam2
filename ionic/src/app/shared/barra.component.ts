@@ -43,8 +43,10 @@ import { Logo } from './logo.component';
     }
     ion-badge {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: calc(-1 * var(--ja-espacio-1));
+      right: calc(-1 * var(--ja-espacio-1));
+      min-width: var(--ja-espacio-4);
+      padding: 0 var(--ja-espacio-1);
       --background: var(--ja-primario);
       --color: var(--ja-sobre-primario);
       font: var(--ja-tipo-etiqueta-s);
@@ -54,8 +56,11 @@ import { Logo } from './logo.component';
       box-shadow: none;
     }
     ion-toolbar {
-      --border-width: 0 0 var(--ja-borde-fino) 0;
-      --border-color: var(--ja-borde);
+      --border-width: 0;
+    }
+    .titulo-pagina {
+      background: var(--ja-fondo);
+      padding: 0 var(--ja-espacio-4) var(--ja-espacio-2);
     }
   `,
   template: `
@@ -68,10 +73,10 @@ import { Logo } from './logo.component';
             <ion-menu-button aria-label="Abrir el menú"><ja-icono nombre="menu" /></ion-menu-button>
           }
         </ion-buttons>
-        @if (titulo()) {
-          <ion-title>{{ titulo() }}</ion-title>
-        } @else {
+        @if (!atras()) {
           <ion-title><ja-logo /></ion-title>
+        } @else if (titulo()) {
+          <ion-title>{{ titulo() }}</ion-title>
         }
         <ion-buttons slot="end">
           @if (!sinAcciones()) {
@@ -85,6 +90,9 @@ import { Logo } from './logo.component';
           }
         </ion-buttons>
       </ion-toolbar>
+      @if (!atras() && titulo()) {
+        <h1 class="titulo-pagina ja-titular-m ja-sin-margen">{{ titulo() }}</h1>
+      }
     </ion-header>
   `,
 })

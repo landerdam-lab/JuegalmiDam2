@@ -2,21 +2,12 @@ import type { OnInit } from '@angular/core';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import {
-  IonButton,
-  IonCard,
-  IonChip,
-  IonContent,
-  IonFab,
-  IonFabButton,
-  IonRefresher,
-  IonRefresherContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonChip, IonContent, IonFab, IonRefresher, IonRefresherContent } from '@ionic/angular';
 
 import { AgitarService } from '../../core/agitar.service';
 import type { ApiError } from '../../core/api-error';
 import { AvisosService } from '../../core/avisos.service';
-import { fecha, precio, referenciaReparacion } from '../../core/formato';
+import { fecha, fechaHora, precio, referenciaReparacion } from '../../core/formato';
 import type { EstadoReparacion, Reparacion } from '../../core/modelos';
 import { ReparacionesService } from '../../core/reparaciones.service';
 import { Barra } from '../../shared/barra.component';
@@ -37,7 +28,6 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
     IonChip,
     IonButton,
     IonFab,
-    IonFabButton,
     IonRefresher,
     IonRefresherContent,
     Barra,
@@ -56,9 +46,34 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
     .lista {
       padding: 0 var(--ja-espacio-4) var(--ja-espacio-16);
     }
+    .contador {
+      padding: 0 0 var(--ja-espacio-3);
+    }
     ion-card ion-button {
       margin: 0;
-      align-self: flex-start;
+      align-self: flex-end;
+    }
+    .departamento {
+      padding: calc(var(--ja-espacio-1) / 2) var(--ja-espacio-2);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-marca-suave);
+      color: var(--ja-marca);
+    }
+    .pasos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--ja-espacio-1);
+      text-align: center;
+    }
+    .presupuesto {
+      padding: var(--ja-espacio-2) var(--ja-espacio-3);
+      border: var(--ja-borde-fino) solid var(--ja-borde-campo);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-superficie-2);
+    }
+    .nueva {
+      --border-radius: var(--ja-radio-l);
+      margin: 0;
     }
   `,
   template: `
@@ -88,24 +103,34 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
             texto="¿Pantalla rota o mando con drift? Pide una reparación con el botón amarillo."
           />
         } @else {
+          <div class="contador ja-contador">
+            {{ visibles().length }} {{ visibles().length === 1 ? 'reparación' : 'reparaciones' }}
+          </div>
           <div class="ja-lista">
             @for (r of visibles(); track r.id) {
               <ion-card class="ja-tarjeta">
                 <div class="interior">
                   <div class="ja-entre">
-                    <span class="ja-codigo">{{ ref(r.id) }}</span>
+                    <span class="ja-etiqueta-s departamento">{{ r.departamento?.nombre }}</span>
                     <ja-pastilla [estado]="'reparacion-' + r.estado" />
                   </div>
-                  <div class="ja-subtitulo">{{ r.dispositivo }}</div>
-                  <div class="ja-etiqueta-s ja-t2">{{ r.departamento?.nombre }} · {{ r.problema }}</div>
-                  <ja-vida [llenos]="pasos[r.estado]" [total]="4" />
                   <div class="ja-entre">
-                    <span class="ja-etiqueta-s ja-t2"
-                      >Entrada: {{ dia(r.fechaEntrada) }}
-                      @if (r.fechaSalida) {
-                        · Salida: {{ dia(r.fechaSalida) }}
-                      }
-                    </span>
+                    <span class="ja-titulo">{{ r.dispositivo }}</span>
+                    <span class="ja-codigo ja-marca-t">{{ ref(r.id) }}</span>
+                  </div>
+                  <div class="ja-cuerpo ja-t2">{{ r.problema }}</div>
+                  <div class="ja-codigo ja-t2">
+                    Entrada: {{ diaHora(r.fechaEntrada) }}
+                    @if (r.fechaSalida) {
+                      · Salida: {{ dia(r.fechaSalida) }}
+                    }
+                  </div>
+                  <ja-vida [llenos]="pasos[r.estado]" [total]="4" />
+                  <div class="pasos ja-etiqueta-s ja-t2">
+                    <span>Recibida</span><span>En reparación</span><span>Lista</span><span>Entregada</span>
+                  </div>
+                  <div class="ja-entre presupuesto">
+                    <span class="ja-etiqueta-s ja-t2">Presupuesto</span>
                     <span class="ja-precio-s">{{ r.presupuesto !== null ? formato(r.presupuesto) : 'Pendiente' }}</span>
                   </div>
                   @if (r.estado === 'recibida' || r.estado === 'en_reparacion') {
@@ -118,9 +143,9 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
         }
       </div>
       <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button color="primary" aria-label="Nueva reparación" routerLink="/reparaciones/nueva"
-          ><ja-icono nombre="add"
-        /></ion-fab-button>
+        <ion-button class="nueva" color="primary" routerLink="/reparaciones/nueva"
+          ><ja-icono slot="start" nombre="build" />Nueva reparación</ion-button
+        >
       </ion-fab>
     </ion-content>
   `,
@@ -141,6 +166,7 @@ export class ReparacionesPage implements OnInit {
   readonly formato = precio;
   readonly ref = referenciaReparacion;
   readonly dia = fecha;
+  readonly diaHora = fechaHora;
 
   readonly filtro = signal('todas');
   readonly reparaciones = signal<Reparacion[]>([]);

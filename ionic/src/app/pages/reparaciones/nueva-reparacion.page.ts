@@ -67,7 +67,7 @@ import { Vida } from '../../shared/vida.component';
     }
   `,
   template: `
-    <ja-barra titulo="Nueva reparación" atras="/reparaciones" />
+    <ja-barra titulo="Nueva reparación" atras="/reparaciones" [sinAcciones]="true" />
     <ion-content>
       <div class="ja-pagina ja-columna">
         <div>
@@ -75,12 +75,13 @@ import { Vida } from '../../shared/vida.component';
           <ja-vida [llenos]="paso()" [total]="5" />
         </div>
         <div class="paso">
-          <div class="ja-subtitulo">1 · Departamento</div>
+          <div class="ja-titulo">1 · Departamento</div>
           <div class="departamentos">
             @for (d of departamentos(); track d.id) {
               <ion-card class="ja-tarjeta" [class.elegido]="departamento() === d.id" (click)="departamento.set(d.id)">
-                <ja-icono [nombre]="d.nombre === 'Consolas' ? 'sports_esports' : 'smartphone'" />
-                <span class="ja-etiqueta">{{
+                <ja-icono class="ja-marca-t" [nombre]="d.nombre === 'Consolas' ? 'sports_esports' : 'phone_android'" />
+                <span class="ja-titulo">{{ d.nombre }}</span>
+                <span class="ja-etiqueta-s ja-t2">{{
                   d.nombre === 'Consolas' ? 'Consolas y mandos' : 'Móviles y tablets'
                 }}</span>
               </ion-card>
@@ -91,7 +92,7 @@ import { Vida } from '../../shared/vida.component';
           }
         </div>
         <div class="paso">
-          <div class="ja-subtitulo">2 · Dispositivo</div>
+          <div class="ja-titulo">2 · Dispositivo</div>
           <ion-input
             class="ja-campo"
             fill="solid"
@@ -99,13 +100,15 @@ import { Vida } from '../../shared/vida.component';
             label="Dispositivo a reparar"
             [(ngModel)]="dispositivo"
             (ionInput)="tocado.set(tocado() + 1)"
-          />
+          >
+            <ja-icono slot="start" nombre="phone_android" />
+          </ion-input>
           @if (errores()['dispositivo']) {
             <div class="ja-error-t">{{ errores()['dispositivo'] }}</div>
           }
         </div>
         <div class="paso">
-          <div class="ja-subtitulo">3 · ¿Qué le pasa?</div>
+          <div class="ja-titulo">3 · ¿Qué le pasa?</div>
           <ion-textarea
             class="ja-campo"
             fill="solid"
@@ -123,7 +126,7 @@ import { Vida } from '../../shared/vida.component';
           }
         </div>
         <div class="paso">
-          <div class="ja-subtitulo">4 · Foto del problema</div>
+          <div class="ja-titulo">4 · Foto del problema</div>
           @if (vistaFoto()) {
             <img class="foto" [src]="vistaFoto()" alt="Foto del problema" />
             <div class="ja-etiqueta-s ja-t2">Foto lista. Se enviará con la solicitud</div>
@@ -135,7 +138,7 @@ import { Vida } from '../../shared/vida.component';
           >
         </div>
         <div class="paso">
-          <div class="ja-subtitulo">5 · Ubicación</div>
+          <div class="ja-titulo">5 · Ubicación</div>
           <div class="ja-entre">
             <span class="ja-etiqueta-s ja-t2">Se guardará con la solicitud</span>
             @switch (ubicacion.estado()) {

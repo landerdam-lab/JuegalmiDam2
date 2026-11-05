@@ -9,6 +9,7 @@ import type { Servicio } from '../../core/modelos';
 import { TiendaService } from '../../core/tienda.service';
 import { Barra } from '../../shared/barra.component';
 import { Estado } from '../../shared/estado.component';
+import { Icono } from '../../shared/icono.component';
 
 /** PT-25 Servicios: tres pestañas según servicio.linea (ADR-030). */
 @Component({
@@ -22,6 +23,7 @@ import { Estado } from '../../shared/estado.component';
     IonSegmentButton,
     IonLabel,
     Barra,
+    Icono,
     Estado,
   ],
   styles: `
@@ -32,12 +34,13 @@ import { Estado } from '../../shared/estado.component';
       gap: var(--ja-espacio-1);
     }
     .ja-precio-s {
-      flex: none;
+      align-self: flex-end;
       white-space: nowrap;
+      color: var(--ja-marca);
     }
   `,
   template: `
-    <ja-barra titulo="Servicios" atras="/tienda" />
+    <ja-barra titulo="Servicios" atras="/tienda" [sinAcciones]="true" />
     <ion-content>
       <ion-segment [value]="linea()" (ionChange)="cambiar($any($event).detail.value)">
         <ion-segment-button value="videojuegos"><ion-label>Videojuegos</ion-label></ion-segment-button>
@@ -57,17 +60,18 @@ import { Estado } from '../../shared/estado.component';
             texto="Pregunta en la tienda: te ayudamos igualmente."
           />
         } @else {
+          <div class="ja-contador">
+            {{ servicios().length }} {{ servicios().length === 1 ? 'servicio' : 'servicios' }}
+          </div>
           <div class="ja-lista">
             @for (s of servicios(); track s.id) {
               <ion-card class="ja-tarjeta">
                 <div class="interior">
-                  <div class="ja-entre">
-                    <span class="ja-subtitulo">{{ s.nombre }}</span>
-                    <span class="ja-precio-s">{{
-                      s.precioOrientativo !== null ? 'desde ' + formato(s.precioOrientativo) : 'Consultar'
-                    }}</span>
-                  </div>
-                  <div class="ja-etiqueta-s ja-t2">{{ s.descripcion }}</div>
+                  <div class="ja-titulo">{{ s.nombre }}</div>
+                  <div class="ja-cuerpo ja-t2">{{ s.descripcion }}</div>
+                  <span class="ja-precio-s">{{
+                    s.precioOrientativo !== null ? 'desde ' + formato(s.precioOrientativo) : 'Consultar'
+                  }}</span>
                 </div>
               </ion-card>
             }
@@ -79,8 +83,8 @@ import { Estado } from '../../shared/estado.component';
       <div class="ja-pie">
         <div class="ja-columna">
           <ion-button class="ja-boton-ancho" color="primary" routerLink="/reparaciones/nueva"
-            >Solicitar reparación</ion-button
-          >
+            >Solicitar reparación<ja-icono slot="end" nombre="arrow_forward"
+          /></ion-button>
         </div>
       </div>
     </ion-footer>
