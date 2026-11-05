@@ -8,12 +8,21 @@ import type { Tienda } from '../../core/modelos';
 import { TiendaService } from '../../core/tienda.service';
 import { Barra } from '../../shared/barra.component';
 import { Estado } from '../../shared/estado.component';
+import { Icono } from '../../shared/icono.component';
 import { Imagen } from '../../shared/imagen.component';
 
 /** PT-28 Historia: foto de cabecera, tarjeta superpuesta con muesca y la cita con barra amarilla. */
 @Component({
-  imports: [RouterLink, IonContent, IonButton, Barra, Estado, Imagen],
+  imports: [RouterLink, IonContent, IonButton, Barra, Estado, Icono, Imagen],
   styles: `
+    .botones {
+      display: flex;
+      gap: var(--ja-espacio-2);
+    }
+    .botones ion-button {
+      flex: 1;
+      margin: 0;
+    }
     .portada {
       --proporcion: 16 / 9;
     }
@@ -32,7 +41,7 @@ import { Imagen } from '../../shared/imagen.component';
     }
   `,
   template: `
-    <ja-barra titulo="Historia" atras="/tienda" />
+    <ja-barra titulo="Historia" atras="/tienda" [sinAcciones]="true" />
     <ion-content>
       @if (tienda(); as t) {
         <ja-imagen class="portada" [src]="portada()" [alt]="t.nombre" />
@@ -40,8 +49,12 @@ import { Imagen } from '../../shared/imagen.component';
           <div class="ja-codigo ja-marca-t">NUESTRA HISTORIA</div>
           <h1 class="ja-titular-m ja-sin-margen">{{ t.nombre }}</h1>
           <div class="cita ja-cuerpo-l">«Aquí se juega, se alquila y se arregla.»</div>
-          <p class="ja-cuerpo">{{ t.historia }}</p>
-          <ion-button fill="outline" color="secondary" routerLink="/tienda/galeria">Ver galería</ion-button>
+          <p class="ja-cuerpo ja-sin-margen">{{ t.historia }}</p>
+          <div class="ja-fila ja-etiqueta-s ja-t2"><ja-icono nombre="location_on" />{{ t.direccion }}</div>
+          <div class="botones">
+            <ion-button fill="outline" color="secondary" routerLink="/tienda/galeria">Ver galería</ion-button>
+            <ion-button fill="outline" color="secondary" routerLink="/tienda/ubicacion">Cómo llegar</ion-button>
+          </div>
         </div>
       } @else if (error()) {
         <ja-estado tipo="error" titulo="No hemos podido cargar la tienda" [texto]="error()" (reintentar)="cargar()" />

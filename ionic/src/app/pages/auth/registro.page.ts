@@ -9,6 +9,7 @@ import { AuthService } from '../../core/auth.service';
 import { AvisosService } from '../../core/avisos.service';
 import { dniValido, emailValido, PASSWORD_MINIMA, telefonoValido } from '../../core/validacion';
 import { Barra } from '../../shared/barra.component';
+import { Icono } from '../../shared/icono.component';
 import { Vida } from '../../shared/vida.component';
 
 /** PT-03 Registro: siempre crea un cliente. Valida antes de enviar y muestra en su campo los errores 422 de la API. */
@@ -23,6 +24,7 @@ import { Vida } from '../../shared/vida.component';
     IonButton,
     IonSpinner,
     Barra,
+    Icono,
     Vida,
   ],
   template: `
@@ -44,6 +46,7 @@ import { Vida } from '../../shared/vida.component';
                 [(ngModel)]="datos.password"
                 (ionInput)="longitud.set(datos.password.length)"
               >
+                <ja-icono slot="start" nombre="lock" />
                 <ion-input-password-toggle slot="end" color="medium" />
               </ion-input>
               <ja-vida [llenos]="fuerza()" [total]="4" [color]="colorFuerza()" />
@@ -56,7 +59,9 @@ import { Vida } from '../../shared/vida.component';
                 [type]="c.tipo"
                 [name]="c.clave"
                 [(ngModel)]="datos[c.clave]"
-              />
+              >
+                <ja-icono slot="start" [nombre]="iconos[c.clave]" />
+              </ion-input>
             }
             @if (errores()[c.clave]) {
               <div class="ja-error-t">{{ errores()[c.clave] }}</div>
@@ -94,6 +99,14 @@ export class RegistroPage {
   private readonly avisos = inject(AvisosService);
   private readonly router = inject(Router);
 
+  readonly iconos: Record<keyof DatosRegistro, string> = {
+    nombre: 'person',
+    apellidos: 'person',
+    email: 'mail',
+    password: 'lock',
+    telefono: 'call',
+    dni: 'badge',
+  };
   readonly campos: { clave: keyof DatosRegistro; etiqueta: string; tipo: 'text' | 'email' | 'tel' | 'password' }[] = [
     { clave: 'nombre', etiqueta: 'Nombre', tipo: 'text' },
     { clave: 'apellidos', etiqueta: 'Apellidos', tipo: 'text' },

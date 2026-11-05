@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { IonButton, IonCard, IonContent, IonFooter, IonRadio, IonRadioGroup } from '@ionic/angular';
+import { IonButton, IonCard, IonContent, IonFooter, IonChip } from '@ionic/angular';
 
 import { AvisosService } from '../../core/avisos.service';
 import type { LineaCarrito } from '../../core/carrito.service';
@@ -14,29 +13,32 @@ import { Imagen } from '../../shared/imagen.component';
 
 /** PT-11 Carrito: líneas con cantidad, método de pago y resumen. Los precios finales los confirma la API. */
 @Component({
-  imports: [
-    FormsModule,
-    RouterLink,
-    IonContent,
-    IonFooter,
-    IonCard,
-    IonButton,
-    IonRadioGroup,
-    IonRadio,
-    Barra,
-    Estado,
-    Icono,
-    Imagen,
-  ],
+  imports: [RouterLink, IonContent, IonFooter, IonCard, IonButton, IonChip, Barra, Estado, Icono, Imagen],
   styles: `
+    .aviso {
+      display: flex;
+      gap: var(--ja-espacio-3);
+      align-items: center;
+      padding: var(--ja-espacio-4);
+      background: var(--ja-info-suave);
+    }
+    .aviso ja-icono {
+      flex: none;
+      color: var(--ja-marca);
+    }
+    .interior {
+      padding: var(--ja-espacio-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ja-espacio-2);
+    }
     .linea {
       display: flex;
       gap: var(--ja-espacio-3);
-      padding: var(--ja-espacio-3);
     }
     ja-imagen {
       flex: none;
-      width: 72px;
+      width: calc(var(--ja-espacio-12) + var(--ja-espacio-2));
       border-radius: var(--ja-radio-s);
     }
     .datos {
@@ -44,12 +46,19 @@ import { Imagen } from '../../shared/imagen.component';
       min-width: 0;
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       gap: var(--ja-espacio-1);
+    }
+    .compra {
+      padding: 0 var(--ja-espacio-2);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-marca-suave);
+      color: var(--ja-marca);
     }
     .pasos {
       display: inline-flex;
       align-items: center;
-      gap: var(--ja-espacio-2);
+      gap: var(--ja-espacio-3);
     }
     .pasos ion-button {
       margin: 0;
@@ -57,13 +66,21 @@ import { Imagen } from '../../shared/imagen.component';
       --padding-end: var(--ja-espacio-1);
       min-height: auto;
     }
-    ion-radio {
-      display: block;
-      padding: var(--ja-espacio-2) 0;
+    .metodos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ja-espacio-2);
+    }
+    .metodos ion-chip {
+      margin: 0;
+    }
+    .gratis {
+      font: var(--ja-tipo-codigo);
+      color: var(--ja-exito);
     }
   `,
   template: `
-    <ja-barra titulo="Tu carrito" />
+    <ja-barra [titulo]="carrito.lineas().length ? 'Tu carrito' : ''" />
     <ion-content>
       @if (!carrito.lineas().length) {
         <ja-estado
@@ -78,14 +95,31 @@ import { Imagen } from '../../shared/imagen.component';
         </ja-estado>
       } @else {
         <div class="ja-pagina ja-columna">
+          <div class="ja-contador">{{ unidades() }} {{ unidades() === 1 ? 'artículo' : 'artículos' }}</div>
+          <div class="aviso ja-muesca ja-cuerpo">
+            <ja-icono nombre="storefront" />
+            En el siguiente paso eliges si lo recoges en la tienda o te lo enviamos a casa. Las dos opciones son gratis.
+          </div>
           @for (l of carrito.lineas(); track l.producto.id + l.tipo) {
             <ion-card class="ja-tarjeta">
-              <div class="linea">
-                <ja-imagen [src]="l.producto.imagen" [alt]="l.producto.nombre" />
-                <div class="datos">
-                  <div class="ja-subtitulo">{{ l.producto.nombre }}</div>
+              <div class="interior">
+                <div class="linea">
+                  <ja-imagen [src]="l.producto.imagen" [alt]="l.producto.nombre" />
+                  <div class="datos">
+                    <div class="ja-titulo">{{ l.producto.nombre }}</div>
+                    @if (l.tipo === 'compra') {
+                      <span class="ja-etiqueta-s compra">Compra</span>
+                      <span class="ja-codigo ja-t2">{{ formato(l.producto.precio) }}/ud.</span>
+                    } @else {
+                      <span class="ja-chip-alquiler">Alquiler · {{ l.dias }} días, hasta {{ hasta(l.dias) }}</span>
+                    }
+                  </div>
+                  <ion-button fill="clear" color="medium" aria-label="Quitar del carrito" (click)="quitar(l)"
+                    ><ja-icono nombre="delete"
+                  /></ion-button>
+                </div>
+                <div class="ja-entre">
                   @if (l.tipo === 'compra') {
-                    <div class="ja-etiqueta-s ja-t2">Compra · {{ formato(l.producto.precio) }}/ud.</div>
                     <div class="pasos">
                       <ion-button
                         fill="clear"
@@ -106,41 +140,31 @@ import { Imagen } from '../../shared/imagen.component';
                       /></ion-button>
                     </div>
                   } @else {
-                    <span class="ja-chip-alquiler">Alquiler · {{ l.dias }} días, hasta {{ hasta(l.dias) }}</span>
+                    <span></span>
                   }
-                </div>
-                <div class="ja-fila" style="flex-direction:column;align-items:flex-end">
-                  <ion-button fill="clear" color="medium" aria-label="Quitar del carrito" (click)="quitar(l)"
-                    ><ja-icono nombre="delete"
-                  /></ion-button>
                   <span class="ja-precio-s">{{ formato(sub(l)) }}</span>
                 </div>
               </div>
             </ion-card>
           }
 
-          <div class="ja-caja ja-muesca">
-            <div class="ja-titulo">Método de pago</div>
-            <ion-radio-group [(ngModel)]="metodo">
-              @for (m of metodos; track m.valor) {
-                <ion-radio color="secondary" [value]="m.valor" labelPlacement="end" justify="start">{{
-                  m.texto
-                }}</ion-radio>
-              }
-            </ion-radio-group>
+          <div class="ja-titular-m">Método de pago</div>
+          <div class="metodos">
+            @for (m of metodos; track m.valor) {
+              <ion-chip [class.activo]="metodo === m.valor" (click)="metodo = m.valor">{{ m.texto }}</ion-chip>
+            }
           </div>
 
           <div class="ja-caja ja-muesca">
             <div class="ja-titulo">Resumen del pedido</div>
-            <div class="ja-ticket-fila"><span class="ja-t2">Entrega (tienda o domicilio)</span><span>Gratis</span></div>
+            <div class="ja-ticket-fila">
+              <span class="ja-t2">Entrega (tienda o domicilio)</span><span class="gratis">Gratis</span>
+            </div>
             <div class="ja-separador"></div>
             <div class="ja-ticket-fila">
               <span class="ja-subtitulo">Total</span><span class="ja-precio">{{ formato(carrito.total()) }}</span>
             </div>
             <div class="ja-etiqueta-s ja-t2">El precio final lo confirma la tienda al hacer el pedido.</div>
-          </div>
-          <div class="ja-etiqueta-s ja-t2">
-            En el siguiente paso eliges si lo recoges en la tienda o te lo enviamos a casa. Las dos opciones son gratis.
           </div>
         </div>
       }
@@ -150,8 +174,8 @@ import { Imagen } from '../../shared/imagen.component';
         <div class="ja-pie">
           <div class="ja-columna">
             <ion-button class="ja-boton-ancho" color="primary" (click)="continuar()"
-              >Continuar · {{ formato(carrito.total()) }}</ion-button
-            >
+              >Continuar · {{ formato(carrito.total()) }}<ja-icono slot="end" nombre="arrow_forward"
+            /></ion-button>
           </div>
         </div>
       </ion-footer>
@@ -166,6 +190,9 @@ export class CarritoPage {
   readonly formato = precio;
   readonly sub = subtotal;
   readonly hasta = dentroDe;
+  readonly unidades = computed(() =>
+    this.carrito.lineas().reduce((n, l) => n + (l.tipo === 'compra' ? l.cantidad : 1), 0),
+  );
   metodo = 'tarjeta';
   readonly metodos = [
     { valor: 'tarjeta', texto: 'Tarjeta' },

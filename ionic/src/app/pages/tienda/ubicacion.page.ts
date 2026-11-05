@@ -41,18 +41,27 @@ export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: 
       padding: var(--ja-espacio-4);
       display: flex;
       flex-direction: column;
-      gap: var(--ja-espacio-1);
+      gap: var(--ja-espacio-2);
+    }
+    .chip {
+      padding: calc(var(--ja-espacio-1) / 2) var(--ja-espacio-2);
+      border-radius: var(--ja-radio-completo);
+      background: var(--ja-superficie-2);
+    }
+    .chip.marca {
+      background: var(--ja-marca-suave);
+      color: var(--ja-marca);
     }
   `,
   template: `
-    <ja-barra titulo="Ubicación" atras="/tienda" />
+    <ja-barra titulo="Ubicación" atras="/tienda" [sinAcciones]="true" />
     <ion-content [scrollY]="false">
       @if (tienda(); as t) {
         <div class="todo">
           <ja-mapa #mapa [marcas]="marcas()" />
           <div class="datos ja-columna">
             <div class="ja-entre">
-              <div class="ja-titulo">{{ t.nombre }}</div>
+              <div class="ja-titular-m">{{ t.nombre }}</div>
               <ion-button
                 fill="clear"
                 color="secondary"
@@ -61,10 +70,13 @@ export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: 
                 ><ja-icono nombre="my_location"
               /></ion-button>
             </div>
-            <div class="ja-cuerpo ja-t2">{{ t.direccion }}</div>
-            @if (distancia()) {
-              <div class="ja-etiqueta ja-marca-t">{{ distancia() }}</div>
-            }
+            <div class="ja-fila ja-cuerpo"><ja-icono class="ja-marca-t" nombre="location_on" />{{ t.direccion }}</div>
+            <div class="ja-fila">
+              @if (distancia()) {
+                <span class="ja-etiqueta-s chip marca">{{ distancia() }}</span>
+              }
+              <span class="ja-codigo chip">{{ t.latitud }}, {{ t.longitud }}</span>
+            </div>
           </div>
         </div>
       } @else if (error()) {
