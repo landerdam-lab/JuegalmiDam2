@@ -1,12 +1,12 @@
 -- =====================================================================
--- JuegAlmi · base de datos completa (esquema v6) · MariaDB 11.4
--- 19 tablas + 10 triggers. Probado en MariaDB 11.4.13 (2026-10-29).
--- Fuente: bóveda 04-Datos/Diseno fisico MariaDB.md (ADR-034). Si cambia el modelo, se regenera desde allí.
+-- JuegAlmi · base de datos completa (esquema v7) · MariaDB 11.4
+-- 21 tablas + 10 triggers. Probado en MariaDB 11.4.13 (2026-11-06).
+-- Fuente: bóveda 04-Datos/Diseno fisico MariaDB.md (ADR-034, ADR-042). Si cambia el modelo, se regenera desde allí.
 -- En Adminer: "Orden SQL" (pegar y Ejecutar) o "Importar" este archivo.
 -- Se puede ejecutar dos veces sin error (IF NOT EXISTS / OR REPLACE).
 -- =====================================================================
 
--- JuegAlmi · esquema v6 · MariaDB 11.4
+-- JuegAlmi · esquema v7 · MariaDB 11.4
 CREATE DATABASE IF NOT EXISTS almi_companion CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE almi_companion;
 
@@ -286,6 +286,37 @@ CREATE TABLE IF NOT EXISTS reparacion (
   CONSTRAINT chk_reparacion_fechas CHECK (fecha_salida >= fecha_entrada),
   CONSTRAINT chk_reparacion_presupuesto CHECK (presupuesto >= 0),
   INDEX idx_reparacion_tecnico_estado (tecnico_id, estado)
+) ENGINE=InnoDB;
+
+-- 5) Proveedores (ADR-042) -----------------------------------------------------
+-- A quién compra la tienda la mercancía (no es la marca, que la fabrica) y a qué precio.
+CREATE TABLE IF NOT EXISTS proveedor (
+  id        INT NOT NULL AUTO_INCREMENT,
+  nombre    VARCHAR(100) NOT NULL,
+  cif       CHAR(9) NOT NULL,                        -- letra + 7 cifras + control
+  telefono  VARCHAR(20) NOT NULL,
+  email     VARCHAR(180) NOT NULL,
+  direccion VARCHAR(255) NULL,
+  CONSTRAINT pk_proveedor PRIMARY KEY (id),
+  CONSTRAINT uq_proveedor_cif UNIQUE (cif),
+  CONSTRAINT chk_proveedor_cif CHECK (cif REGEXP '^[A-Z][0-9]{7}[0-9A-J]$')
+) ENGINE=InnoDB;
+
+-- N:M producto-proveedor con el precio de coste. id + UNIQUE de la pareja, como compra y alquiler.
+-- Borrar el producto borra sus filas; un proveedor que sirve productos no se puede borrar.
+CREATE TABLE IF NOT EXISTS producto_proveedor (
+  id           INT NOT NULL AUTO_INCREMENT,
+  producto_id  INT NOT NULL,
+  proveedor_id INT NOT NULL,
+  precio_coste DECIMAL(10,2) NOT NULL,                -- lo que le cuesta a la tienda una unidad
+  CONSTRAINT pk_producto_proveedor PRIMARY KEY (id),
+  CONSTRAINT uq_producto_proveedor UNIQUE (producto_id, proveedor_id),
+  CONSTRAINT fk_producto_proveedor_producto FOREIGN KEY (producto_id)
+    REFERENCES producto (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT fk_producto_proveedor_proveedor FOREIGN KEY (proveedor_id)
+    REFERENCES proveedor (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT chk_producto_proveedor_precio_coste CHECK (precio_coste >= 0),
+  INDEX idx_producto_proveedor_proveedor (proveedor_id)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

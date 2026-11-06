@@ -381,6 +381,11 @@
     </label>
   </form>
 
+  <!-- ADR-042: solo al editar (un producto nuevo aún no tiene id). Se guarda al momento. -->
+  @if (editando(); as p) {
+    <ja-proveedores-producto [productoId]="p.id" [precioVenta]="p.precio" />
+  }
+
   <div pie>
     <button type="button" class="ja-boton ja-boton--texto" (click)="cerrarHoja()">Cancelar</button>
     <button

@@ -61,6 +61,7 @@ export class LayoutAdmin {
         enlaces: [
           { ruta: '/admin/productos', texto: 'Productos', icono: 'inventory_2' },
           { ruta: '/admin/catalogos', texto: 'Marcas, plataformas y servicios', icono: 'category' },
+          { ruta: '/admin/proveedores', texto: 'Proveedores', icono: 'local_shipping' },
         ],
       },
       {
