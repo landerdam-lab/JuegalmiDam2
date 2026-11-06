@@ -13,6 +13,8 @@ use App\Entity\Movil;
 use App\Entity\Pedido;
 use App\Entity\Plataforma;
 use App\Entity\Producto;
+use App\Entity\ProductoProveedor;
+use App\Entity\Proveedor;
 use App\Entity\RegistroUbicacion;
 use App\Entity\Reparacion;
 use App\Entity\Servicio;
@@ -140,6 +142,44 @@ final class Presentador
     public function marca(?Marca $m): ?array
     {
         return $m ? ['id' => $m->getId(), 'nombre' => $m->getNombre()] : null;
+    }
+
+    // Proveedores (solo admin, ADR-042) -------------------------------------------
+
+    /** @return array<string, mixed> */
+    public function proveedor(Proveedor $p, ?int $numProductos = null): array
+    {
+        $json = [
+            'id' => $p->getId(),
+            'nombre' => $p->getNombre(),
+            'cif' => $p->getCif(),
+            'telefono' => $p->getTelefono(),
+            'email' => $p->getEmail(),
+            'direccion' => $p->getDireccion(),
+        ];
+        if ($numProductos !== null) {
+            $json['numProductos'] = $numProductos;
+        }
+
+        return $json;
+    }
+
+    /**
+     * Una fila de producto_proveedor. Desde el producto interesa el proveedor, y al revés.
+     *
+     * @return array<string, mixed>
+     */
+    public function productoProveedor(ProductoProveedor $pp, bool $conProducto): array
+    {
+        $proveedor = $pp->getProveedor();
+
+        return [
+            'id' => $pp->getId(),
+            $conProducto ? 'producto' : 'proveedor' => $conProducto
+                ? $this->productoCorto($pp->getProducto()) + ['precio' => (float) $pp->getProducto()->getPrecio()]
+                : ['id' => $proveedor->getId(), 'nombre' => $proveedor->getNombre()],
+            'precioCoste' => (float) $pp->getPrecioCoste(),
+        ];
     }
 
     /** @return array{id: int|null, nombre: string|null} */

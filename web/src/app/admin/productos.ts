@@ -28,6 +28,7 @@ import { Pastilla } from '../shared/pastilla';
 import { SubirImagen } from '../shared/subir-imagen';
 import { Vida } from '../shared/vida';
 import { estaEnUso, mensajeError } from './errores';
+import { ProveedoresProducto } from './proveedores-producto';
 
 const POR_PAGINA = 15;
 const TIPOS_VALIDOS: TipoProducto[] = ['videojuego', 'movil', 'consola'];
@@ -92,6 +93,7 @@ const VACIO: ModeloProducto = {
     Imagen,
     Paginador,
     Pastilla,
+    ProveedoresProducto,
     SubirImagen,
     Vida,
   ],

@@ -67,6 +67,12 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/catalogos').then((m) => m.Catalogos),
       },
       {
+        path: 'proveedores',
+        title: 'Proveedores' + marca,
+        canActivate: [adminGuard],
+        loadComponent: () => import('./admin/proveedores').then((m) => m.ProveedoresAdmin),
+      },
+      {
         path: 'clientes',
         title: 'Clientes' + marca,
         canActivate: [adminGuard],

@@ -31,3 +31,5 @@ INSERT INTO pedido (id,fecha,estado,metodo_pago,cliente_id) VALUES (1,UTC_TIMEST
 INSERT INTO compra (id,pedido_id,producto_id,cantidad,precio_unitario) VALUES (1,1,2,1,899);
 INSERT INTO alquiler (id,pedido_id,videojuego_id,precio_dia,fecha_fin,fecha_devolucion) VALUES (2,1,1,2.50,CURDATE()+INTERVAL 7 DAY,NULL),(3,2,4,3.00,CURDATE()+INTERVAL 3 DAY,CURDATE());
 INSERT INTO reparacion (id,dispositivo,problema,fecha_entrada,cliente_id,tecnico_id) VALUES (1,'iPhone 13','Pantalla rota',UTC_TIMESTAMP(),1,3);
+INSERT INTO proveedor (id,nombre,cif,telefono,email,direccion) VALUES (1,'Distribuciones Gamer Norte S.L.','B95123456','944100200','pedidos@gamernorte.test',NULL),(2,'Telecom Suministros Bizkaia S.L.','B48987654','944300500','ventas@telecombizkaia.test',NULL),(3,'Proveedor sin productos S.L.','B20111222','943400600','info@sinproductos.test',NULL);
+INSERT INTO producto_proveedor (producto_id,proveedor_id,precio_coste) VALUES (1,1,48.99),(4,1,55.99),(2,2,719.20),(3,1,679.15),(1,2,47.50);
