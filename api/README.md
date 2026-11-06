@@ -13,7 +13,7 @@ composer install
 #    DATABASE_URL="mysql://USUARIO:CONTRASEÑA@127.0.0.1:3306/almi_companion?serverVersion=11.4.0-MariaDB&charset=utf8mb4"
 #    APP_SECRET=<cadena aleatoria>
 php bin/console doctrine:database:create --if-not-exists   # BBDD almi_companion
-php bin/console doctrine:migrations:migrate      # esquema v6: 19 tablas + 35 CHECK + 10 triggers
+php bin/console doctrine:migrations:migrate      # esquema v7: 21 tablas + 41 CHECK + 10 triggers
 php bin/console doctrine:fixtures:load           # datos de ejemplo (borra lo que haya)
 symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/api
 ```
@@ -29,7 +29,7 @@ Usan otra BBDD, `almi_companion_test`, configurada en `api/.env.test.local` (mis
 Doctrine añade `_test` al nombre). Las migraciones y los datos de ejemplo se cargan solos.
 
 ```bash
-php bin/phpunit          # 45 pruebas: login, catálogo, pedidos (con envío a domicilio), alquileres, reparaciones y permisos
+php bin/phpunit          # 51 pruebas: login, catálogo, pedidos (con envío a domicilio), alquileres, reparaciones, proveedores y permisos
 ```
 
 ### Otros comandos
@@ -70,6 +70,11 @@ reparaciones en los 5 estados y una marca sin productos (Nokia) que se puede bor
   Sin token no se envía el stock exacto, solo `disponible` (y `alquilable` en los videojuegos).
 - Listados largos paginados: `?page=1&limit=20` → `{items, page, limit, total}`.
   Los catálogos cortos (marcas, plataformas, departamentos, servicios, tiendas) devuelven una lista.
+- **Proveedores (ADR-042), solo admin** (también la lectura: el precio de coste es interno, y el JSON de
+  `/api/productos` no cambia): CRUD en `/api/proveedores` (`{nombre, cif, telefono, email, direccion?}`; borrar
+  uno que sirve productos da 409 `EN_USO`) · `GET /api/productos/{id}/proveedores` · `PUT
+  /api/productos/{id}/proveedores/{proveedorId}` `{precioCoste}` lo añade (201) o le cambia el precio (200) ·
+  `DELETE` de esa misma ruta lo quita.
 - Imágenes: primero `POST /api/imagenes` (multipart: `imagen` + `carpeta`) → `{ruta, url}`; después se
   manda esa `url` (o la `ruta`) en el JSON del recurso. En la BBDD se guarda la ruta (ADR-019).
 
@@ -96,7 +101,7 @@ src/
 ├── Controller/Api/   Controladores finos: leen la petición, comprueban permisos y llaman a un Service
 ├── Service/          Lógica de negocio: PedidoService (stock, copias, estados), ReparacionService,
 │                     UsuarioService, SesionService (login), Presentador (entidad → JSON), Imagenes…
-├── Entity/           19 entidades = 19 tablas (herencia JOINED en Producto y Usuario)
+├── Entity/           21 entidades = 21 tablas (herencia JOINED en Producto y Usuario)
 ├── Enum/             Enumerados con los mismos valores que los CHECK de la BBDD
 ├── Repository/       Consultas (listados con filtros, copias ocupadas, técnico con menos carga…)
 ├── Security/         TokenHandler (valida el Bearer) y respuestas 401/403 en JSON

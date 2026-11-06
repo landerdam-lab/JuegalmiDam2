@@ -12,7 +12,7 @@ Bóveda: `12-Web/Web - vision general.md` · pantallas `PW-xx` en `08-Diseno-UI/
 ```bash
 npm install
 npm start            # ng serve → http://localhost:4200
-npm test             # 17 pruebas unitarias (Vitest)
+npm test             # 20 pruebas unitarias (Vitest)
 npm run build        # versión de producción en dist/almi-companion-web/browser
 ```
 
@@ -39,6 +39,7 @@ npm run build        # versión de producción en dist/almi-companion-web/browse
 | PW-16 | `/admin/reparaciones` | admin y técnico | Tarjetas con la barra de vida de 4 pasos; estado, presupuesto y técnico (solo el admin reasigna) |
 | PW-17 | `/admin/tienda` | admin | Datos e historia; la ubicación se elige pulsando en el mapa; galería (subir, describir, quitar) |
 | PW-18 | `/admin/ubicaciones` | admin | Registro de ubicaciones (RF-11) en mapa y tabla, por cliente y fechas |
+| PW-19 | `/admin/proveedores` | admin | Proveedores (ADR-042): alta, edición, borrado y sus productos con coste y margen. En la ficha de cada producto (PW-11), sus proveedores y su precio de coste |
 | — | `/admin/perfil` | admin y técnico | Datos propios y contraseña (`PUT /me`) |
 
 ## Cómo está hecho (para defenderlo)
@@ -56,7 +57,7 @@ src/
     ├── shared/    Componentes reutilizables: icono, imagen con placeholder, mapa, barra de vida,
     │              pastilla de estado, estados vacío/error/carga, paginador, hoja lateral, diálogos
     ├── publico/   PW-01 a PW-04
-    └── admin/     PW-05 y PW-10 a PW-18
+    └── admin/     PW-05 y PW-10 a PW-19
 ```
 
 - **Capas** (regla 7): pantalla → servicio de `core/` → `Api` → `HttpClient`. El **interceptor** pone `Authorization: Bearer <token>` y, ante un **401**, cierra la sesión y lleva al acceso.

@@ -1,0 +1,218 @@
+<!-- PW-19 Proveedores (ADR-042) -->
+<header class="ja-admin-cabecera">
+  <div>
+    <h1>Proveedores</h1>
+    <p>
+      Empresas a las que la tienda compra la mercancía. No son las marcas: la marca fabrica el
+      producto y el proveedor se lo vende a la tienda. Qué productos sirve cada uno y a qué precio
+      se cambia en la ficha de cada producto.
+    </p>
+  </div>
+  <button type="button" class="ja-boton" (click)="nuevo()">
+    <ja-icono nombre="add" />Nuevo proveedor
+  </button>
+</header>
+
+@if (lista.hasValue()) {
+  @if (lista.value().length) {
+    <div class="ja-tabla-caja">
+      <table class="ja-tabla">
+        <caption class="ja-oculto">
+          Proveedores
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Proveedor</th>
+            <th scope="col">Contacto</th>
+            <th scope="col" class="num">Productos</th>
+            <th scope="col"><span class="ja-oculto">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of lista.value(); track p.id) {
+            <tr>
+              <td>
+                <div class="fuerte">{{ p.nombre }}</div>
+                <div class="ja-etiqueta-s ja-t2">CIF {{ p.cif }}</div>
+              </td>
+              <td>
+                <div>{{ p.email }}</div>
+                <div class="ja-etiqueta-s ja-t2">{{ p.telefono }}</div>
+              </td>
+              <td class="num">{{ p.numProductos ?? 0 }}</td>
+              <td class="acciones">
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="'Ver los productos de ' + p.nombre"
+                  title="Ver sus productos"
+                  (click)="verProductos(p)"
+                >
+                  <ja-icono nombre="inventory_2" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono"
+                  [attr.aria-label]="'Editar ' + p.nombre"
+                  (click)="editar(p)"
+                >
+                  <ja-icono nombre="edit" />
+                </button>
+                <button
+                  type="button"
+                  class="ja-boton-icono ja-boton-icono--peligro"
+                  [attr.aria-label]="'Borrar ' + p.nombre"
+                  (click)="borrar(p)"
+                >
+                  <ja-icono nombre="delete" />
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <ja-estado-vista
+      tipo="vacio"
+      icono="local_shipping"
+      titulo="Todavía no hay proveedores"
+      texto="Da de alta el primero con el botón «Nuevo proveedor»."
+    />
+  }
+} @else if (lista.error()) {
+  <ja-estado-vista tipo="error" (reintentar)="lista.reload()" />
+} @else {
+  <ja-estado-vista tipo="cargando" />
+}
+
+<!-- Alta / edición -->
+<ja-hoja
+  [abierta]="hojaAbierta()"
+  [titulo]="editando() ? 'Editar proveedor' : 'Nuevo proveedor'"
+  (cerrar)="hojaAbierta.set(false)"
+>
+  <form id="form-proveedor" class="ja-form" [formRoot]="formulario">
+    @if (error()) {
+      <p class="ja-aviso-linea" role="alert"><ja-icono nombre="error" />{{ error() }}</p>
+    }
+    <div class="ja-campo">
+      <label for="pr-nombre">Nombre de la empresa</label>
+      <input id="pr-nombre" autocomplete="off" [formField]="formulario.nombre" />
+      <ja-error-campo [campo]="formulario.nombre" />
+    </div>
+    <div class="ja-form-fila">
+      <div class="ja-campo">
+        <label for="pr-cif">CIF</label>
+        <input
+          id="pr-cif"
+          autocomplete="off"
+          placeholder="B12345678"
+          [formField]="formulario.cif"
+        />
+        <ja-error-campo [campo]="formulario.cif" />
+      </div>
+      <div class="ja-campo">
+        <label for="pr-telefono">Teléfono</label>
+        <input id="pr-telefono" type="tel" autocomplete="off" [formField]="formulario.telefono" />
+        <ja-error-campo [campo]="formulario.telefono" />
+      </div>
+    </div>
+    <div class="ja-campo">
+      <label for="pr-email">Email de pedidos</label>
+      <input id="pr-email" type="email" autocomplete="off" [formField]="formulario.email" />
+      <ja-error-campo [campo]="formulario.email" />
+    </div>
+    <div class="ja-campo">
+      <label for="pr-direccion">Dirección (opcional)</label>
+      <input id="pr-direccion" autocomplete="off" [formField]="formulario.direccion" />
+    </div>
+  </form>
+  <div pie>
+    <button type="button" class="ja-boton ja-boton--texto" (click)="hojaAbierta.set(false)">
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      form="form-proveedor"
+      class="ja-boton"
+      [disabled]="formulario().submitting()"
+    >
+      <ja-icono nombre="check" />{{ editando() ? 'Guardar cambios' : 'Dar de alta' }}
+    </button>
+  </div>
+</ja-hoja>
+
+<!-- Productos que sirve un proveedor -->
+<ja-hoja
+  [abierta]="fichaAbierta()"
+  [titulo]="ficha()?.nombre ?? 'Proveedor'"
+  (cerrar)="fichaAbierta.set(false)"
+>
+  @if (ficha(); as f) {
+    <p class="ja-etiqueta-s ja-t2">
+      CIF {{ f.cif }} · {{ f.telefono }} · {{ f.email }}
+      @if (f.direccion) {
+        · {{ f.direccion }}
+      }
+    </p>
+    @if (f.productos.length) {
+      <div class="ja-tabla-caja">
+        <table class="ja-tabla">
+          <caption class="ja-oculto">
+            Productos de
+            {{
+              f.nombre
+            }}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col" class="num">Coste</th>
+              <th scope="col" class="num">Margen</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (fila of f.productos; track fila.id) {
+              <tr>
+                <td>
+                  <a
+                    class="ja-celda-producto"
+                    routerLink="/admin/productos"
+                    [queryParams]="{ tipo: fila.producto.tipo, editar: fila.producto.id }"
+                  >
+                    <ja-imagen
+                      class="ja-miniatura"
+                      [src]="fila.producto.imagen"
+                      [alt]="fila.producto.nombre"
+                    />
+                    <span>
+                      <span class="fuerte">{{ fila.producto.nombre }}</span>
+                      <span class="ja-etiqueta-s ja-t2 venta"
+                        >Venta {{ precio(fila.producto.precio) }}</span
+                      >
+                    </span>
+                  </a>
+                </td>
+                <td class="num">{{ precio(fila.precioCoste) }}</td>
+                <td class="num">{{ margen(fila.producto.precio, fila.precioCoste) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <ja-estado-vista
+        tipo="vacio"
+        icono="inventory_2"
+        titulo="No sirve ningún producto"
+        texto="Asígnaselo desde la ficha de un producto, en Productos."
+      />
+    }
+  }
+  <div pie>
+    <button type="button" class="ja-boton ja-boton--texto" (click)="fichaAbierta.set(false)">
+      Cerrar
+    </button>
+  </div>
+</ja-hoja>

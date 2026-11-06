@@ -12,6 +12,8 @@ use App\Entity\Marca;
 use App\Entity\Movil;
 use App\Entity\Pedido;
 use App\Entity\Plataforma;
+use App\Entity\ProductoProveedor;
+use App\Entity\Proveedor;
 use App\Entity\Reparacion;
 use App\Entity\Servicio;
 use App\Entity\Tienda;
@@ -191,6 +193,43 @@ final class AppFixtures extends Fixture
                 sprintf('Consola %s con %d GB de almacenamiento.', $nombre, $gb));
             $con[$clave]->setActivo($activo);
             $om->persist($con[$clave]);
+        }
+
+        // 3b) Proveedores y precio de coste (ADR-042). Empresas y CIF inventados -----------------------
+        $prov = [];
+        $proveedores = [
+            // clave => [nombre, CIF, teléfono, email, dirección]
+            'juegos' => ['Distribuciones Gamer Norte S.L.', 'B95123456', '944100200', 'pedidos@gamernorte.test', 'Polígono Ugaldeguren III, 48170 Zamudio (Bizkaia)'],
+            'iberia' => ['Consolas y Accesorios Iberia S.A.', 'A28765432', '913200400', 'compras@consolasiberia.test', 'Calle de la Electrónica 12, 28914 Leganés (Madrid)'],
+            'tele' => ['Telecom Suministros Bizkaia S.L.', 'B48987654', '944300500', 'ventas@telecombizkaia.test', 'Avenida Zugazarte 40, 48930 Getxo (Bizkaia)'],
+            // Sin productos: sirve para probar que un proveedor sin productos sí se puede borrar
+            'retro' => ['Retro Import S.L.', 'B20111222', '943400600', 'info@retroimport.test', null],
+        ];
+        foreach ($proveedores as $clave => [$nombre, $cif, $telefono, $email, $direccion]) {
+            $om->persist($prov[$clave] = (new Proveedor())->setNombre($nombre)->setCif($cif)
+                ->setTelefono($telefono)->setEmail($email)->setDireccion($direccion));
+        }
+        // Precio de coste = un % del precio de venta. Algunos productos tienen dos proveedores (N:M)
+        // con precios distintos: así se ve para qué sirve la relación.
+        $coste = function ($producto, string $clave, float $porcentaje) use ($om, $prov): void {
+            $om->persist((new ProductoProveedor($producto, $prov[$clave]))
+                ->setPrecioCoste(number_format(round((float) $producto->getPrecio() * $porcentaje, 2), 2, '.', '')));
+        };
+        foreach ($v as $clave => $juego) {
+            $coste($juego, 'juegos', 0.70);
+            if (in_array($clave, ['fc26', 'mario', 'zelda', 'pokemon', 'codbo7'], true)) {
+                $coste($juego, 'iberia', 0.68); // los más vendidos, también a Iberia y algo más baratos
+            }
+        }
+        foreach ($mv as $clave => $movil) {
+            $coste($movil, 'tele', 0.80);
+            if (str_starts_with($clave, 'iphone')) {
+                $coste($movil, 'iberia', 0.82);
+            }
+        }
+        foreach ($con as $consola) {
+            $coste($consola, 'iberia', 0.82);
+            $coste($consola, 'juegos', 0.85);
         }
 
         // 4) Tienda y galería -------------------------------------------------------------------

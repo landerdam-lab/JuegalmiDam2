@@ -41,8 +41,8 @@ JuegAlmi es una tienda ficticia que vende y alquila videojuegos, vende y repara 
 
 ## 5. Base de datos
 
-- **19 tablas**, modelo v6, sin redundancia. Herencia `usuario` → `cliente` / `trabajador` y `producto` → `videojuego` / `movil` / `consola`.
-- **Diagramas:** `docs/datos/er-juegalmi.png` y `docs/datos/relacional-juegalmi.png`, regenerados el 2026-11-05 desde el `.drawio`.
+- **21 tablas**, modelo v7, sin redundancia. Herencia `usuario` → `cliente` / `trabajador` y `producto` → `videojuego` / `movil` / `consola`. Tres relaciones N:M con atributos: `compra`, `alquiler` y `producto_proveedor` (precio de coste por proveedor, ADR-042).
+- **Diagramas:** `docs/datos/er-juegalmi.png` y `docs/datos/relacional-juegalmi.png`, regenerados el 2026-11-06 desde el `.drawio`.
 - **Coincidencia con el E-R:** comprobado el 2026-11-05 que todas las columnas de la base de datos de AWS aparecen en el modelo relacional del diagrama.
 - **Integridad:** claves externas, UNIQUE, CHECK y 10 triggers, cargados con migraciones. Doctrine no genera los CHECK ni los triggers, por eso van a mano (A-09). Nunca se usa `doctrine:schema:update`.
 - **Copias:** cada día a las 09:00 a un bucket S3 privado y cifrado, y luego a Glacier. Restauración probada el 2026-10-29. Guía: `docs/infraestructura/copias-de-seguridad.md`.
@@ -76,7 +76,7 @@ Mismas pantallas (`PT-xx`) y mismos datos que la nativa. La «Factory» del enun
 
 ## 9. Web
 
-**Pública:** portada, catálogo, ficha, la tienda y descarga de las dos APK. **Backoffice:** el admin gestiona productos, clientes, trabajadores, pedidos, reparaciones y tienda; el técnico solo ve las reparaciones de su departamento. Guía: `web/README.md`.
+**Pública:** portada, catálogo, ficha, la tienda y descarga de las dos APK. **Backoffice:** el admin gestiona productos, proveedores (con el precio de coste y el margen de cada producto), clientes, trabajadores, pedidos, reparaciones y tienda; el técnico solo ve las reparaciones de su departamento. Guía: `web/README.md`.
 
 ## 10. Generar e instalar las APK
 
@@ -113,12 +113,12 @@ Por cable: `adb install -r AlmiCompanion-android.apk`.
 
 ## 11. Pruebas
 
-| Dónde | Herramienta | Resultado (2026-11-05) |
+| Dónde | Herramienta | Resultado (2026-11-05; API y web, 2026-11-06) |
 |---|---|---|
-| API | PHPUnit, con la base de datos real | 45 en verde |
+| API | PHPUnit, con la base de datos real | 51 en verde |
 | Android | JUnit | 23 en verde |
 | Ionic | Vitest y ESLint | 9 en verde, lint sin errores |
-| Web | Vitest | 17 en verde |
+| Web | Vitest | 20 en verde |
 | Las dos apps | Emulador (Android 17) contra AWS | Login, catálogo, ficha, carrito y navegación |
 | Las dos apps | Móvil real (Android 16) | Registro e inicio de sesión contra AWS |
 
