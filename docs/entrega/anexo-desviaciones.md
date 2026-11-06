@@ -14,6 +14,7 @@
 | 2026-10-30 | Marca **Almi Companion** en apps y web; el cliente sigue siendo JuegAlmi (ADR-036) | Decisión del grupo | Hay que aclararlo en la presentación (A-35) |
 | 2026-10-30 | Además de recoger en tienda, **envío gratis a domicilio** con mapa (ADR-038) | Pedido por Lander | Cuatro columnas nuevas en `pedido` |
 | 2026-11-04 | La **dirección de entrega se marca en el mapa**, que parte de la ubicación actual (ADR-040) | Pedido por Lander | Endpoint `GET /api/direcciones`; la API usa Nominatim, un servicio externo |
+| 2026-11-06 | **Proveedores**: tablas `proveedor` y `producto_proveedor` (N:M con el precio de coste), modelo v7 con 21 tablas (ADR-042) | Pedido por Lander: los productos tenían marca (quién lo fabrica), pero no a quién se compran | Solo API y web (pantalla PW-19 y bloque en la ficha del producto). Las apps no cambian: son para clientes (ADR-024) |
 | 2026-10-29 | La base de datos es **MariaDB 11.4**, no MySQL (ADR-011) | Compatible con MySQL y ya probada en la infraestructura | **Falta que lo confirme el profesor** (P-33) |
 | 2026-10-29 | El **HTTPS lo pone el proxy** (Nginx Proxy Manager) delante de Symfony, no Symfony (ADR-010) | Certificado único y API en una subred privada | La rúbrica dice «integrado en Symfony»: **falta que lo confirme el profesor** (P-33) |
 | 2026-11-04 | Las **imágenes** (`/uploads/...`) se sirven sin token | La web pública las necesita, igual que el catálogo (ADR-028) | No consta como consultado con el profesor: conviene preguntarlo |

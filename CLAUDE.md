@@ -48,12 +48,12 @@ Al empezar **cada** sesión o tarea, lee en este orden:
   - `api/`: **API REST en Symfony + MariaDB + Doctrine**, con **tokens** y **HTTPS**
   - `android/`: **app Android nativa, solo para clientes** (Volley + Retrofit, Glide, RecyclerView/CardView, Tabs + Navigation Drawer) **+ sección "La tienda"** estilo Google Play (Servicios en pestañas, Ubicación, Galería, Historia)
   - `ionic/`: **app híbrida Ionic + Angular, solo para clientes**, compilada como **APK de Android**, **con el mismo diseño** que la nativa
-  - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, clientes, trabajadores, pedidos, reparaciones, tienda) para el admin, y las reparaciones de su departamento para los técnicos (ADR-032). Bóveda: `12-Web/`
+  - `web/`: **web en Angular**: parte pública (publicidad, catálogo, la tienda) + **backoffice** con **toda la gestión administrativa** (productos, proveedores, clientes, trabajadores, pedidos, reparaciones, tienda) para el admin, y las reparaciones de su departamento para los técnicos (ADR-032). Bóveda: `12-Web/`
   - `docs/`: documentación. Índice en `docs/README.md`
 - ⚠️ **Las APK no tienen ninguna gestión administrativa** (profesorado, 2026-10-28 → ADR-024): todo lo de admin va en la web.
 - **Innegociable:** geolocalizar al usuario, datos de ejemplo precargados, carga rápida y asíncrona, placeholder en las imágenes, CPU mínima.
 - **Hitos:** Hito 1 (propuesta) en la semana 5 · Hito 2 (entrega + presentación de ≤ 15 min + 5 de preguntas) en la semana 11.
-- **Modelo de datos:** 19 tablas, sin redundancia (v6, ADR-023, ADR-032 y ADR-034; SQL probado en MariaDB 11.4; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador`. El pedido tiene `compra` (N:M con `producto`) y `alquiler` (N:M con `videojuego`).
+- **Modelo de datos:** 21 tablas, sin redundancia (v7, ADR-023, ADR-032, ADR-034 y ADR-042; SQL probado en MariaDB 11.4; ver `04-Datos/` en la bóveda). Herencia JOINED `producto` → `videojuego` / `movil` / `consola` · `usuario` → `cliente` / `trabajador`. El pedido tiene `compra` (N:M con `producto`) y `alquiler` (N:M con `videojuego`). Los proveedores, `producto_proveedor` (N:M con `producto`, con el precio de coste; solo admin).
 
 ---
 
@@ -160,7 +160,7 @@ Mantener la bóveda al día **es parte de la tarea**. Antes de cerrar, propón (
 ```bash
 # API (api/) · BBDD almi_companion · conexión en api/.env.local (no se sube)
 composer install
-php bin/console doctrine:migrations:migrate   # esquema v6 + CHECK + triggers (nunca schema:update)
+php bin/console doctrine:migrations:migrate   # esquema v7 + CHECK + triggers (nunca schema:update)
 php bin/console doctrine:fixtures:load        # datos de ejemplo (usuarios *@juegalmi.test, contraseña demo1234)
 php bin/phpunit                               # pruebas (BBDD almi_companion_test, en api/.env.test.local)
 symfony server:start -d --allow-all-ip --port=8001   # https://127.0.0.1:8001/api

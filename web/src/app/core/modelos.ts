@@ -188,3 +188,33 @@ export interface ImagenSubida {
   ruta: string;
   url: string;
 }
+
+// Proveedores (ADR-042): solo el admin. El precio de coste no sale nunca en el catálogo.
+export interface Proveedor {
+  id: number;
+  nombre: string;
+  cif: string;
+  telefono: string;
+  email: string;
+  direccion: string | null;
+  /** Cuántos productos sirve (en la lista y en la ficha). */
+  numProductos?: number;
+}
+
+/** Un proveedor de un producto, con lo que le cuesta a la tienda (GET /productos/{id}/proveedores). */
+export interface ProveedorDeProducto {
+  id: number;
+  proveedor: Referencia;
+  precioCoste: number;
+}
+
+/** Un producto de un proveedor (GET /proveedores/{id}). */
+export interface ProductoDeProveedor {
+  id: number;
+  producto: ProductoCorto & { precio: number };
+  precioCoste: number;
+}
+
+export interface ProveedorConProductos extends Proveedor {
+  productos: ProductoDeProveedor[];
+}
