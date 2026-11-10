@@ -189,6 +189,7 @@
     <!-- PT-17 / PT-18 Reparaciones -->
     <string name="reparacion_nueva_titulo">Nueva reparación</string>
     <string name="reparacion_progreso">PASO %1$d DE %2$d</string>
+    <string name="reparacion_foto_de">Foto de %1$s</string>
     <string name="reparacion_paso_departamento">1 · Departamento</string>
     <string name="reparacion_paso_dispositivo">2 · Dispositivo</string>
     <string name="reparacion_paso_problema">3 · ¿Qué le pasa?</string>
