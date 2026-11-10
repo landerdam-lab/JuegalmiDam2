@@ -368,6 +368,7 @@ export class InicioPage implements OnInit {
     void this.agitar.iniciar();
     this.agitar.agitado$.pipe(takeUntilDestroyed(this.destruir)).subscribe(() => {
       if (this.router.url.startsWith('/inicio')) {
+        this.agitar.avisar();
         this.cargar(1);
       }
     });

@@ -241,6 +241,7 @@
     <string name="tema_claro">Claro</string>
     <string name="tema_oscuro">Oscuro</string>
     <string name="perfil_agitar">Agitar el móvil para refrescar las listas</string>
+    <string name="agitar_actualizando">Actualizando…</string>
     <string name="perfil_guardar">Guardar cambios</string>
     <string name="perfil_guardado">Cambios guardados</string>
     <string name="perfil_foto_guardada">Foto actualizada</string>

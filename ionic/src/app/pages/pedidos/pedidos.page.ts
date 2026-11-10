@@ -175,6 +175,7 @@ export class PedidosPage implements OnInit {
   ngOnInit(): void {
     this.agitar.agitado$.pipe(takeUntilDestroyed(this.destruir)).subscribe(() => {
       if (this.router.url.startsWith('/pedidos')) {
+        this.agitar.avisar();
         this.cargar(1);
       }
     });

@@ -52,7 +52,7 @@ public abstract class ListaBaseFragment extends Fragment {
         progreso = vista.findViewById(R.id.progreso);
         estado = new EstadoVista(vista);
         // Agitar el móvil recarga la lista (RF-15). Solo mientras la pantalla está visible
-        AgitarDetector.vincular(getViewLifecycleOwner(), requireContext(), this::recargarAgitando);
+        AgitarDetector.vincular(getViewLifecycleOwner(), vista, this::recargarAgitando);
     }
 
     protected void titulo(int texto) {
