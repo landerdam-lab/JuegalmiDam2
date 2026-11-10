@@ -122,8 +122,9 @@ public class PerfilFragment extends Fragment {
     private void guardar() {
         String telefono = leer(tilTelefono);
         tilNombre.setError(leer(tilNombre).isEmpty() ? getString(R.string.error_obligatorio) : null);
+        tilApellidos.setError(leer(tilApellidos).isEmpty() ? getString(R.string.error_obligatorio) : null);
         tilTelefono.setError(Validacion.telefono(telefono) ? null : getString(R.string.error_telefono));
-        if (tilNombre.getError() != null || tilTelefono.getError() != null) return;
+        if (tilNombre.getError() != null || tilApellidos.getError() != null || tilTelefono.getError() != null) return;
 
         Peticiones.Perfil cambios = new Peticiones.Perfil();
         cambios.nombre = leer(tilNombre);
@@ -170,6 +171,7 @@ public class PerfilFragment extends Fragment {
                 cargando(false);
                 if (error.campo("telefono") != null) tilTelefono.setError(error.campo("telefono"));
                 if (error.campo("nombre") != null) tilNombre.setError(error.campo("nombre"));
+                if (error.campo("apellidos") != null) tilApellidos.setError(error.campo("apellidos"));
                 Snackbar.make(requireView(), error.mensaje, Snackbar.LENGTH_LONG).show();
             }
         });
