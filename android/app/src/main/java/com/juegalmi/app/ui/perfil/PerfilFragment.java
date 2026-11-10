@@ -13,7 +13,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.BundleCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -47,14 +48,30 @@ public class PerfilFragment extends Fragment {
     private com.google.android.material.imageview.ShapeableImageView avatar;
     private Button btnGuardar;
     private View progreso;
+    private static final String ESTADO_FOTO_PENDIENTE = "fotoPendiente";
     private Uri fotoPendiente;
 
     private final ActivityResultLauncher<Uri> camara = registerForActivityResult(
             new ActivityResultContracts.TakePicture(), hecha -> {
-                if (hecha) {
+                if (hecha && fotoPendiente != null) {
                     subirFoto(fotoPendiente);
                 }
             });
+
+    /** Si Android cierra la app mientras está abierta la cámara, al volver hay que saber dónde se guardó la foto. */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            fotoPendiente = BundleCompat.getParcelable(savedInstanceState, ESTADO_FOTO_PENDIENTE, Uri.class);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle estado) {
+        super.onSaveInstanceState(estado);
+        estado.putParcelable(ESTADO_FOTO_PENDIENTE, fotoPendiente);
+    }
 
     @Nullable
     @Override
