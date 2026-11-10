@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.juegalmi.app.R;
+import com.juegalmi.app.data.Carrito;
 import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.Callback;
 import com.juegalmi.app.data.api.RetrofitClient;
@@ -53,6 +54,7 @@ public class AuthRepository {
                             return;
                         }
                         sesion.guardar(r.token, r.expira, r.usuario);
+                        Carrito.get(context).deUsuario(r.usuario.id);
                         callback.onExito(r.usuario);
                     }
 
