@@ -46,7 +46,7 @@ public final class OrdenVoz {
         }
         if (tiene(f, "carrito", "cesta")) return orden(Accion.CARRITO);
         if (tiene(f, "mis pedidos", "pedidos", "mi pedido")) return orden(Accion.PEDIDOS);
-        if (tiene(f, "alquiler", "alquilado")) return orden(Accion.ALQUILERES);
+        if (tiene(f, "alquiler", "alquileres", "alquilado")) return orden(Accion.ALQUILERES);
         if (tiene(f, "reparacion", "reparaciones")) return orden(Accion.REPARACIONES);
         if (tiene(f, "perfil", "mi cuenta", "mis datos")) return orden(Accion.PERFIL);
         if (tiene(f, "como llegar", "llevame", "ubicacion", "mapa", "donde esta")) return orden(Accion.UBICACION);
