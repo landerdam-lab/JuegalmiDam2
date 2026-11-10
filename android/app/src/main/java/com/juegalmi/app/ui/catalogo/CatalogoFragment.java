@@ -141,7 +141,7 @@ public class CatalogoFragment extends Fragment {
 
         prepararChips(vista.findViewById(R.id.chips));
         // Agitar el móvil recarga el catálogo (RF-15, sensor). Solo mientras se ve la pestaña
-        AgitarDetector.vincular(getViewLifecycleOwner(), requireContext(), () -> cargar(1));
+        AgitarDetector.vincular(getViewLifecycleOwner(), vista, () -> cargar(1));
 
         // El buscador de Inicio: al cambiar el texto se recarga desde la página 1
         BusquedaViewModel busqueda = new ViewModelProvider(requireParentFragment()).get(BusquedaViewModel.class);

@@ -180,6 +180,7 @@ export class ReparacionesPage implements OnInit {
   ngOnInit(): void {
     this.agitar.agitado$.pipe(takeUntilDestroyed(this.destruir)).subscribe(() => {
       if (this.router.url.startsWith('/reparaciones')) {
+        this.agitar.avisar();
         this.cargar();
       }
     });

@@ -26,5 +26,7 @@ describe('fechas y sensores', () => {
   it('solo un golpe fuerte cuenta como agitar', () => {
     expect(esAgitacion(0, 0, 9.81)).toBe(false);
     expect(esAgitacion(20, 15, 9)).toBe(true);
+    expect(esAgitacion(12, 10, 9.81)).toBe(false); // ~1,9 g: un movimiento normal no refresca
+    expect(esAgitacion(15, 10, 9.81)).toBe(true); // ~2,1 g: una sacudida sí
   });
 });
