@@ -28,6 +28,8 @@ import com.juegalmi.app.ui.comun.Pastilla;
 import com.juegalmi.app.util.Fechas;
 import com.juegalmi.app.util.Formato;
 
+import java.util.Objects;
+
 /**
  * PT-16 Mis alquileres: pestañas Activos / Retrasados / Devueltos (GET /api/alquileres?estado=).
  * Cada tarjeta lleva la cuenta atrás y una barra de 5 que se vacía según pasan los días.
@@ -100,7 +102,7 @@ public class AlquileresFragment extends ListaBaseFragment {
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Alquiler a, @NonNull Alquiler b) {
-                    return a.estado.equals(b.estado);
+                    return a.estado.equals(b.estado) && Objects.equals(a.fechaDevolucion, b.fechaDevolucion);
                 }
             });
         }

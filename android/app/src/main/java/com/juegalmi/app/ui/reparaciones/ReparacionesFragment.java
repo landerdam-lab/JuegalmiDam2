@@ -30,7 +30,8 @@ import com.juegalmi.app.util.Fechas;
 import com.juegalmi.app.util.Formato;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * PT-18 Mis reparaciones: tarjetas con estado y barra de vida de 4 (recibida → en reparación → lista → entregada),
@@ -146,7 +147,9 @@ public class ReparacionesFragment extends ListaBaseFragment {
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Reparacion a, @NonNull Reparacion b) {
-                    return a.estado.equals(b.estado);
+                    // Todo lo que pinta la tarjeta y puede cambiar: el técnico pone el presupuesto sin cambiar el estado
+                    return a.estado.equals(b.estado) && Objects.equals(a.presupuesto, b.presupuesto)
+                            && Objects.equals(a.fechaSalida, b.fechaSalida);
                 }
             });
         }
