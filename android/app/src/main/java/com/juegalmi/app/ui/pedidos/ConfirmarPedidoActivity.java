@@ -95,6 +95,7 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
 
         entrega = new EntregaVista(findViewById(R.id.cajaEntrega), this);
         entrega.elegir();
+        entrega.restaurar(savedInstanceState);
 
         tvUbicacion = findViewById(R.id.tvUbicacion);
         btnPermiso = findViewById(R.id.btnPermiso);
@@ -176,6 +177,13 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
 
     String textoMetodo(String metodo) {
         return MetodosPago.texto(this, metodo);
+    }
+
+    /** Al girar el móvil la pantalla se crea de nuevo: se guarda la entrega elegida (tienda o domicilio y su punto). */
+    @Override
+    protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle estado) {
+        super.onSaveInstanceState(estado);
+        entrega.guardar(estado);
     }
 
     @Override

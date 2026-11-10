@@ -1,6 +1,7 @@
 package com.juegalmi.app.ui.pedidos;
 
-import android.content.Context;
+import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -40,6 +41,12 @@ import java.util.Locale;
  * - ver (PT-14 Detalle de pedido): muestra cómo se entrega y el mapa de la tienda o de la casa.
  */
 public class EntregaVista {
+
+    private static final String ESTADO_DOMICILIO = "entrega.domicilio";
+    private static final String ESTADO_TOCADO = "entrega.tocado";
+    private static final String ESTADO_BUSCADA = "entrega.buscada";
+    private static final String ESTADO_LATITUD = "entrega.latitud";
+    private static final String ESTADO_LONGITUD = "entrega.longitud";
 
     private final Context context;
     private final View raiz;
@@ -259,6 +266,33 @@ public class EntregaVista {
             return null;
         }
         return Peticiones.Entrega.aDomicilio(direccion, casa.getLatitude(), casa.getLongitude());
+    }
+
+    /** Para onSaveInstanceState de la pantalla: al girar el móvil no se pierde la entrega elegida. */
+    public void guardar(Bundle estado) {
+        estado.putBoolean(ESTADO_DOMICILIO, domicilio);
+        estado.putBoolean(ESTADO_TOCADO, tocado);
+        estado.putString(ESTADO_BUSCADA, buscada);
+        if (casa != null) {
+            estado.putDouble(ESTADO_LATITUD, casa.getLatitude());
+            estado.putDouble(ESTADO_LONGITUD, casa.getLongitude());
+        }
+    }
+
+    /** Después de elegir(): recupera lo guardado (null la primera vez que se abre la pantalla). */
+    public void restaurar(@Nullable Bundle estado) {
+        if (estado == null) {
+            return;
+        }
+        tocado = estado.getBoolean(ESTADO_TOCADO);
+        buscada = estado.getString(ESTADO_BUSCADA, "");
+        if (estado.containsKey(ESTADO_LATITUD)) {
+            casa = new GeoPoint(estado.getDouble(ESTADO_LATITUD), estado.getDouble(ESTADO_LONGITUD));
+        }
+        if (estado.getBoolean(ESTADO_DOMICILIO)) {
+            // Marcar el botón avisa al listener de elegir(): pone domicilio = true y repinta con el punto guardado
+            ((MaterialButtonToggleGroup) raiz.findViewById(R.id.grupoEntrega)).check(R.id.opDomicilio);
+        }
     }
 
     /** Errores 422 de la API sobre la entrega, en su sitio. */
