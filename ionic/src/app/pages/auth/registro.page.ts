@@ -135,7 +135,7 @@ export class RegistroPage {
     if (!emailValido(d.email.trim())) e['email'] = 'Escribe un correo válido, por ejemplo laura@correo.es';
     if (d.password.length < PASSWORD_MINIMA) e['password'] = 'La contraseña debe tener al menos 8 caracteres';
     if (!telefonoValido(d.telefono.trim())) e['telefono'] = 'Escribe 9 cifras, por ejemplo 612345678';
-    if (!dniValido(d.dni.trim())) e['dni'] = 'Escribe tu DNI (12345678Z) o NIE (X1234567L)';
+    if (!dniValido(d.dni.trim())) e['dni'] = 'Escribe tu DNI (12345678Z) o NIE (X1234567L) y revisa la letra';
     this.errores.set(e);
     if (Object.keys(e).length) {
       return;

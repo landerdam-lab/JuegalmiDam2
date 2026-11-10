@@ -13,6 +13,8 @@ describe('validaciones de formulario', () => {
     expect(dniValido('12345678Z')).toBe(true);
     expect(dniValido('X1234567L')).toBe(true);
     expect(dniValido('1234567Z')).toBe(false);
+    expect(dniValido('12345678A')).toBe(false); // la letra no es la que toca (sería la Z)
+    expect(dniValido('X1234567Z')).toBe(false); // NIE con la letra mal (sería la L)
   });
 });
 
