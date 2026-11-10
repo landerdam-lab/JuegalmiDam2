@@ -6,6 +6,7 @@ import {
   FormField,
   FormRoot,
   minLength,
+  pattern,
   required,
 } from '@angular/forms/signals';
 import { Router } from '@angular/router';
@@ -125,6 +126,10 @@ export class Trabajadores {
       required(c.email, { message: 'Escribe el email de trabajo.' });
       email(c.email, { message: 'Ese email no es válido: revisa que tenga @ y dominio.' });
       required(c.telefono, { message: 'Escribe un teléfono de contacto.' });
+      // La misma regla que la API (Usuario.telefono): así el error sale antes de enviar
+      pattern(c.telefono, /^\+?[0-9 ]{9,20}$/, {
+        message: 'Escribe entre 9 y 20 cifras; puede empezar por + y llevar espacios.',
+      });
       applyWhen(
         c,
         ({ valueOf }) => valueOf(c.puesto) === 'tecnico',
