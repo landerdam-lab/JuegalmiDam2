@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -149,7 +151,7 @@ public class ReparacionesFragment extends ListaBaseFragment {
                 public boolean areContentsTheSame(@NonNull Reparacion a, @NonNull Reparacion b) {
                     // Todo lo que pinta la tarjeta y puede cambiar: el técnico pone el presupuesto sin cambiar el estado
                     return a.estado.equals(b.estado) && Objects.equals(a.presupuesto, b.presupuesto)
-                            && Objects.equals(a.fechaSalida, b.fechaSalida);
+                            && Objects.equals(a.fechaSalida, b.fechaSalida) && Objects.equals(a.foto, b.foto);
                 }
             });
         }
@@ -170,6 +172,18 @@ public class ReparacionesFragment extends ListaBaseFragment {
             t.dispositivo.setText(r.dispositivo);
             t.referencia.setText(r.referencia());
             t.problema.setText(r.problema);
+            // La foto que el cliente hizo con la cámara: con Glide, en segundo plano y con placeholder
+            t.foto.setVisibility(r.foto == null ? View.GONE : View.VISIBLE);
+            if (r.foto == null) {
+                Glide.with(t.foto).clear(t.foto); // la tarjeta se reutiliza: fuera la foto de otra reparación
+            } else {
+                t.foto.setContentDescription(c.getString(R.string.reparacion_foto_de, r.dispositivo));
+                Glide.with(t.foto).load(r.foto)
+                        .placeholder(R.drawable.placeholder_imagen)
+                        .error(R.drawable.placeholder_error)
+                        .centerCrop()
+                        .into(t.foto);
+            }
             t.fecha.setText(r.fechaSalida != null
                     ? c.getString(R.string.reparacion_salida, Fechas.fechaHora(r.fechaSalida))
                     : c.getString(R.string.reparacion_entrada, Fechas.fechaHora(r.fechaEntrada)));
@@ -189,6 +203,7 @@ public class ReparacionesFragment extends ListaBaseFragment {
             final TextView dispositivo;
             final TextView referencia;
             final TextView problema;
+            final ImageView foto;
             final TextView fecha;
             final BarraVida barra;
             final TextView presupuesto;
@@ -202,6 +217,7 @@ public class ReparacionesFragment extends ListaBaseFragment {
                 dispositivo = v.findViewById(R.id.tvDispositivo);
                 referencia = v.findViewById(R.id.tvReferencia);
                 problema = v.findViewById(R.id.tvProblema);
+                foto = v.findViewById(R.id.ivFoto);
                 fecha = v.findViewById(R.id.tvFecha);
                 barra = v.findViewById(R.id.barra);
                 presupuesto = v.findViewById(R.id.tvPresupuesto);

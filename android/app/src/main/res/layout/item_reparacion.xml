@@ -50,14 +50,27 @@
                 android:textColor="@color/ja_marca" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvProblema"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
-            android:textColor="@color/ja_texto_2" />
+        <!-- La foto que hizo el cliente con la cámara al pedir la reparación (RF-14), si la hay, junto a la avería -->
+        <LinearLayout
+            style="@style/JuegAlmi.FilaIcono"
+            android:layout_marginTop="@dimen/ja_espacio_1">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivFoto"
+                style="@style/JuegAlmi.MiniaturaCuadrada"
+                android:layout_marginEnd="@dimen/ja_espacio_3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvProblema"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.JuegAlmi.Cuerpo"
+                android:textColor="@color/ja_texto_2" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvFecha"
