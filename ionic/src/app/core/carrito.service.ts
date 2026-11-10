@@ -3,6 +3,7 @@ import { Injectable, computed, signal } from '@angular/core';
 import type { LineaPeticion, Producto } from './modelos';
 
 const CLAVE = 'carrito';
+const CLAVE_DUENO = 'carrito_dueno';
 
 export interface LineaCarrito {
   tipo: 'compra' | 'alquiler';
@@ -67,6 +68,17 @@ export class CarritoService {
 
   vaciar(): void {
     this.guardar([]);
+  }
+
+  /**
+   * Al iniciar sesión: el carrito es de un cliente. Si el guardado era de otro (su sesión caducó sin
+   * cerrarla, así que no se vació), se vacía para que nadie herede el carrito de otra persona.
+   */
+  deUsuario(usuarioId: number): void {
+    if (localStorage.getItem(CLAVE_DUENO) !== String(usuarioId)) {
+      this.vaciar();
+    }
+    localStorage.setItem(CLAVE_DUENO, String(usuarioId));
   }
 
   paraLaApi(): LineaPeticion[] {

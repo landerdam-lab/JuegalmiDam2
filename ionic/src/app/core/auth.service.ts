@@ -33,6 +33,7 @@ export class AuthService {
       switchMap((r) => {
         this.sesion.guardar(r.token, r.expira, r.usuario);
         if (r.usuario.tipo === 'cliente') {
+          this.carrito.deUsuario(r.usuario.id);
           return of(r.usuario);
         }
         this.logout();
