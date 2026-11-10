@@ -4,6 +4,7 @@ import { Avisos } from '../core/avisos';
 import { precio } from '../core/formato';
 import type { ProveedorDeProducto } from '../core/modelos';
 import { Proveedores } from '../core/proveedores';
+import { Dialogos } from '../shared/dialogos';
 import { Icono } from '../shared/icono';
 import { mensajeError } from './errores';
 
@@ -142,6 +143,7 @@ import { mensajeError } from './errores';
 export class ProveedoresProducto {
   private readonly proveedores = inject(Proveedores);
   private readonly avisos = inject(Avisos);
+  private readonly dialogos = inject(Dialogos);
 
   readonly productoId = input.required<number>();
   readonly precioVenta = input.required<number>();
@@ -208,6 +210,16 @@ export class ProveedoresProducto {
   }
 
   protected async quitar(f: ProveedorDeProducto): Promise<void> {
+    // Se guarda al momento: como el resto de borrados del backoffice, pide confirmación
+    const si = await this.dialogos.confirmar({
+      titulo: `¿Quitar a ${f.proveedor.nombre} de este producto?`,
+      texto: 'Se pierde su precio de coste. El proveedor no se borra: puedes volver a añadirlo.',
+      aceptar: 'Quitar proveedor',
+      peligro: true,
+    });
+    if (!si) {
+      return;
+    }
     try {
       await this.proveedores.quitar(this.productoId(), f.proveedor.id);
       this.avisos.exito(`${f.proveedor.nombre} ya no sirve este producto.`);
