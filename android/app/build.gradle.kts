@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.core.splashscreen)
     implementation(libs.recyclerview)
     implementation(libs.viewpager2)
+    implementation(libs.swiperefreshlayout)
     implementation(libs.volley)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -62,6 +63,7 @@ public class CatalogoFragment extends Fragment {
     /** Valores de videojuego.pegi (los mismos que el CHECK de la BBDD) */
     private static final int[] PEGI = {3, 7, 12, 16, 18};
     private CircularProgressIndicator progreso;
+    private SwipeRefreshLayout refresco;
     private TextView tvResultados;
     private EstadoVista estado;
 
@@ -91,6 +93,11 @@ public class CatalogoFragment extends Fragment {
         filtro.tipo = requireArguments().getString(ARG_TIPO, Producto.VIDEOJUEGO);
 
         progreso = vista.findViewById(R.id.progreso);
+        // Tirar de la lista hacia abajo recarga el catálogo (como el ion-refresher de Ionic)
+        refresco = vista.findViewById(R.id.refresco);
+        refresco.setColorSchemeResources(R.color.ja_marca);
+        refresco.setProgressBackgroundColorSchemeResource(R.color.ja_superficie);
+        refresco.setOnRefreshListener(() -> cargar(1));
         tvResultados = vista.findViewById(R.id.tvResultados);
         estado = new EstadoVista(vista);
 
@@ -309,7 +316,7 @@ public class CatalogoFragment extends Fragment {
             // Al buscar o filtrar, solo la lista de resultados
             cabecera.mostrar((filtro.texto == null || filtro.texto.isEmpty()) && !filtro.hayFiltros());
         }
-        if (numero == 1) {
+        if (numero == 1 && !refresco.isRefreshing()) {
             progreso.setVisibility(View.VISIBLE);
         }
 
@@ -318,6 +325,7 @@ public class CatalogoFragment extends Fragment {
             public void onExito(Pagina<Producto> resultado) {
                 cargando = false;
                 progreso.setVisibility(View.GONE);
+                refresco.setRefreshing(false);
                 pagina = numero;
                 total = resultado.total;
                 tvResultados.setText(getResources().getQuantityString(R.plurals.catalogo_encontrados,
@@ -336,6 +344,7 @@ public class CatalogoFragment extends Fragment {
             public void onError(ApiError error) {
                 cargando = false;
                 progreso.setVisibility(View.GONE);
+                refresco.setRefreshing(false);
                 if (numero == 1) {
                     adaptador.submitList(null);
                     tvResultados.setText(null);

@@ -12,6 +12,7 @@ constraintlayout = "2.2.2"
 coreSplashscreen = "1.2.0"
 recyclerview = "1.4.0"
 viewpager2 = "1.1.0"
+swiperefreshlayout = "1.2.0"
 volley = "1.2.1"
 retrofit = "3.0.0"
 glide = "5.0.9"
@@ -34,6 +35,8 @@ core-splashscreen = { group = "androidx.core", name = "core-splashscreen", versi
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 # Pestañas deslizables (TabLayout + ViewPager2)
 viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
+# «Tirar para refrescar» en el catálogo y en las listas, como el ion-refresher de Ionic
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 # HTTP asíncrono: lecturas y login (obligatoria en el enunciado)
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 # 2.ª librería HTTP: escrituras (registro, pedidos, reparaciones). Gson convierte el JSON en objetos
