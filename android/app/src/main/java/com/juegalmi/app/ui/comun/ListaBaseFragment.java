@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -31,6 +32,7 @@ public abstract class ListaBaseFragment extends Fragment {
     protected TextView tvResultados;
     protected EstadoVista estado;
     private View progreso;
+    private SwipeRefreshLayout refresco;
 
     /** Carga (o recarga) los datos de la API. */
     protected abstract void cargar();
@@ -51,6 +53,11 @@ public abstract class ListaBaseFragment extends Fragment {
         tvResultados = vista.findViewById(R.id.tvResultados);
         progreso = vista.findViewById(R.id.progreso);
         estado = new EstadoVista(vista);
+        // Tirar de la lista hacia abajo la recarga (como el ion-refresher de Ionic)
+        refresco = vista.findViewById(R.id.refresco);
+        refresco.setColorSchemeResources(R.color.ja_marca);
+        refresco.setProgressBackgroundColorSchemeResource(R.color.ja_superficie);
+        refresco.setOnRefreshListener(this::cargar);
         // Agitar el móvil recarga la lista (RF-15). Solo mientras la pantalla está visible
         AgitarDetector.vincular(getViewLifecycleOwner(), vista, this::recargarAgitando);
     }
@@ -84,11 +91,13 @@ public abstract class ListaBaseFragment extends Fragment {
 
     protected void cargando() {
         estado.ocultar();
-        progreso.setVisibility(View.VISIBLE);
+        // Al tirar de la lista ya gira el indicador de arriba: no hace falta también el del centro
+        progreso.setVisibility(refresco.isRefreshing() ? View.GONE : View.VISIBLE);
     }
 
     protected void listo(int cuantos, int vacioTitulo, int vacioTexto) {
         progreso.setVisibility(View.GONE);
+        refresco.setRefreshing(false);
         if (cuantos == 0) {
             estado.vacio(vacioTitulo, vacioTexto);
         } else {
@@ -98,6 +107,7 @@ public abstract class ListaBaseFragment extends Fragment {
 
     protected void error(int titulo, ApiError error) {
         progreso.setVisibility(View.GONE);
+        refresco.setRefreshing(false);
         estado.error(titulo, error, this::cargar);
     }
 

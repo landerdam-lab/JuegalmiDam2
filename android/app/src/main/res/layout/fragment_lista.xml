@@ -58,13 +58,20 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lista"
+            <!-- Tirar hacia abajo recarga la lista (igual que el ion-refresher de Ionic) -->
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refresco"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingHorizontal="@dimen/ja_espacio_4"
-                android:paddingBottom="@dimen/lista_hueco_fab" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lista"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="@dimen/ja_espacio_4"
+                    android:paddingBottom="@dimen/lista_hueco_fab" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progreso"
