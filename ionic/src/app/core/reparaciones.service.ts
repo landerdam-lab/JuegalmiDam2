@@ -16,7 +16,8 @@ export class ReparacionesService {
   private readonly api = inject(ApiService);
 
   listar(pagina: number): Observable<Pagina<Reparacion>> {
-    return this.api.get<Pagina<Reparacion>>('reparaciones', { page: pagina, limit: 20 });
+    // 50, como en Android: los filtros (todas, activas, finalizadas) se aplican en la app sobre esta página
+    return this.api.get<Pagina<Reparacion>>('reparaciones', { page: pagina, limit: 50 });
   }
 
   departamentos(): Observable<Referencia[]> {
