@@ -200,12 +200,16 @@ export class NuevaReparacionPage implements OnInit {
   readonly tocado = signal(0);
   private foto: Blob | null = null;
 
+  /** Barra de 5: departamento, dispositivo, avería, foto y ubicación. Cuenta los pasos hechos, igual que en Android. */
   readonly paso = computed(() => {
     this.tocado();
-    if (!this.departamento()) return 1;
-    if (!this.dispositivo.trim()) return 2;
-    if (!this.problema.trim()) return 3;
-    return this.vistaFoto() ? 5 : 4;
+    return [
+      this.departamento(),
+      this.dispositivo.trim(),
+      this.problema.trim(),
+      this.vistaFoto(),
+      this.ubicacion.punto(),
+    ].filter(Boolean).length;
   });
 
   ngOnInit(): void {
