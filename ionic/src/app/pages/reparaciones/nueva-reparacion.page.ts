@@ -98,6 +98,7 @@ import { Vida } from '../../shared/vida.component';
             fill="solid"
             labelPlacement="floating"
             label="Dispositivo a reparar"
+            [maxlength]="100"
             [(ngModel)]="dispositivo"
             (ionInput)="tocado.set(tocado() + 1)"
           >
