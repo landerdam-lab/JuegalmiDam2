@@ -38,7 +38,7 @@
     <string name="error_obligatorio">Este campo es obligatorio</string>
     <string name="error_password_corta">La contraseña debe tener al menos 8 caracteres</string>
     <string name="error_telefono">Escribe 9 cifras, por ejemplo 612345678</string>
-    <string name="error_dni">Escribe tu DNI (12345678Z) o NIE (X1234567L)</string>
+    <string name="error_dni">Escribe tu DNI (12345678Z) o NIE (X1234567L) y revisa la letra</string>
     <string name="volver">Volver</string>
 
     <!-- Navegación (Drawer) -->
