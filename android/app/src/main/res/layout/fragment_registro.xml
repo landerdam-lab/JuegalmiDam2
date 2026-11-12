@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- PT-03 Registro · diseño design/screens/03-registro-*.png -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/raiz"
@@ -167,7 +166,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón principal fijo abajo (DESIGN.md §8) -->
     <FrameLayout
         android:id="@+id/pie"
         android:layout_width="match_parent"

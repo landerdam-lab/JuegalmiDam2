@@ -10,7 +10,6 @@ import { Estado } from '../../shared/estado.component';
 import { Icono } from '../../shared/icono.component';
 import { Imagen } from '../../shared/imagen.component';
 
-/** PT-27 Galería: rejilla de 3 columnas y visor a pantalla completa. */
 @Component({
   imports: [IonContent, IonModal, IonButton, Barra, Estado, Icono, Imagen],
   styles: `

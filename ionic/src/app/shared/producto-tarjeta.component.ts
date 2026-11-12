@@ -8,7 +8,6 @@ import type { Producto } from '../core/modelos';
 import { Imagen } from './imagen.component';
 import { estadoStock, Pastilla } from './pastilla.component';
 
-/** Tarjeta de producto del catálogo (TP), con la muesca del sistema Cartucho. Igual que ProductoAdapter en Android. */
 @Component({
   selector: 'ja-producto-tarjeta',
   imports: [IonCard, RouterLink, Imagen, Pastilla],

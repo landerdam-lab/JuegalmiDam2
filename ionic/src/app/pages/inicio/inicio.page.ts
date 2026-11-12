@@ -39,11 +39,6 @@ const ORDENES: { valor: Orden; texto: string }[] = [
   { valor: 'precio_desc', texto: 'Precio: de mayor a menor' },
 ];
 
-/**
- * PT-04 Inicio + catálogos PT-05, PT-07 y PT-09: buscador con micro y pestañas por tipo.
- * Filtros (los aplica la API): videojuegos → solo alquilables, plataforma, género y PEGI; móviles → formato;
- * todos → marca y orden. A-39: el buscador se esconde al bajar por la lista y vuelve al subir.
- */
 @Component({
   imports: [
     RouterLink,
@@ -320,13 +315,11 @@ export class InicioPage implements OnInit {
   private readonly router = inject(Router);
   readonly voz = inject(VozService);
 
-  /** Los pone el control por voz: /inicio?q=zelda o /inicio?pestana=movil. */
   readonly q = input<string>();
   readonly pestana = input<TipoProducto>();
 
   readonly tipo = signal<TipoProducto>('videojuego');
   readonly texto = signal('');
-  // Cada pestaña recuerda sus filtros, como cada página del ViewPager en Android
   private readonly filtros = signal<Record<TipoProducto, Filtro>>({
     videojuego: { tipo: 'videojuego', orden: 'nombre' },
     movil: { tipo: 'movil', orden: 'nombre' },
@@ -360,7 +353,6 @@ export class InicioPage implements OnInit {
 
   ngOnInit(): void {
     this.cargar(1);
-    // Sin opciones el chip no ofrece nada; el resto del catálogo sigue funcionando
     this.catalogo.plataformas().subscribe({ next: (l) => this.plataformas.set(l), error: () => undefined });
     this.catalogo.marcas().subscribe({ next: (l) => this.marcas.set(l), error: () => undefined });
     this.catalogo.generos().subscribe({ next: (l) => (this.generos = l), error: () => undefined });
@@ -374,7 +366,6 @@ export class InicioPage implements OnInit {
     });
   }
 
-  /** Órdenes de voz que llegan con la página ya abierta (Ionic la mantiene viva en la pila). */
   ionViewWillEnter(): void {
     const q = this.q();
     if (q !== undefined && q !== this.texto()) {
@@ -448,7 +439,6 @@ export class InicioPage implements OnInit {
     this.cargar(this.pagina + 1, () => void (e.target as HTMLIonInfiniteScrollElement).complete());
   }
 
-  /** A-39: se esconde al bajar y reaparece al subir. El margen evita parpadeos con movimientos pequeños. */
   alDesplazar(y: number): void {
     if (Math.abs(y - this.scrollAnterior) > 12) {
       this.buscadorOculto.set(y > this.scrollAnterior && y > 80);
@@ -479,7 +469,6 @@ export class InicioPage implements OnInit {
   }
 
   elegirPegi(): void {
-    // Los valores del CHECK de videojuego.pegi
     void this.elegir(
       'PEGI',
       'Todos',

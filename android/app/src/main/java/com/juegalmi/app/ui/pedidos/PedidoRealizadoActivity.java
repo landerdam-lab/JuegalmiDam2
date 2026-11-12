@@ -19,7 +19,6 @@ import com.juegalmi.app.util.Bordes;
 import com.juegalmi.app.util.Fechas;
 import com.juegalmi.app.util.Formato;
 
-/** PT-12b Pedido realizado: confirma el pedido con un «ticket» y animación «insertar» (RF-13). */
 public class PedidoRealizadoActivity extends AppCompatActivity {
 
     public static final String EXTRA_PEDIDO = "pedido";
@@ -47,7 +46,6 @@ public class PedidoRealizadoActivity extends AppCompatActivity {
                 getString(pedido.aDomicilio() ? R.string.entrega_domicilio : R.string.entrega_tienda), null);
         FilaResumen.anadir(ticket, getString(R.string.ticket_total), "", Formato.precio(pedido.total), null);
 
-        // Animación «insertar»: la baldosa entra desde abajo con un rebote corto, como un cartucho (DESIGN.md §7)
         View exito = findViewById(R.id.ivExito);
         exito.setTranslationY(getResources().getDimension(R.dimen.ja_espacio_6));
         exito.setAlpha(0f);

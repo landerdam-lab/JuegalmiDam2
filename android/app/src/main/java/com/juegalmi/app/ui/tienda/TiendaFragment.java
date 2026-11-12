@@ -24,10 +24,6 @@ import com.juegalmi.app.data.model.Tienda;
 import com.juegalmi.app.data.repository.TiendaRepository;
 import com.juegalmi.app.ui.comun.EstadoVista;
 
-/**
- * PT-24 La tienda (RF-08): portada y las 4 opciones que pide el enunciado (Servicios, Ubicación, Galería, Historia).
- * Se pide la tienda una vez (GET /api/tiendas) y se pasa a cada pantalla en el Intent, para no repetir la petición.
- */
 public class TiendaFragment extends Fragment {
 
     public static final String EXTRA_TIENDA = "tienda";

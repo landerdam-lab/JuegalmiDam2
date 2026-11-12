@@ -13,7 +13,6 @@ import { Icono } from '../../shared/icono.component';
 import type { MarcaMapa } from '../../shared/mapa.component';
 import { Mapa } from '../../shared/mapa.component';
 
-/** Distancia en metros entre dos puntos (fórmula de Haversine). */
 export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const rad = (g: number) => (g * Math.PI) / 180;
   const a =
@@ -22,7 +21,6 @@ export function distanciaMetros(lat1: number, lon1: number, lat2: number, lon2: 
   return 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** PT-26 Ubicación: mapa interactivo con la tienda y el usuario, distancia y «Cómo llegar». */
 @Component({
   imports: [IonContent, IonFooter, IonButton, Barra, Estado, Icono, Mapa],
   styles: `
@@ -140,7 +138,6 @@ export class UbicacionPage implements OnInit {
       .subscribe({ next: (t) => this.tienda.set(t), error: (e: ApiError) => this.error.set(e.mensaje) });
   }
 
-  /** Abre la app de mapas del móvil con la dirección de la tienda. */
   comoLlegar(): void {
     const t = this.tienda();
     if (t) {

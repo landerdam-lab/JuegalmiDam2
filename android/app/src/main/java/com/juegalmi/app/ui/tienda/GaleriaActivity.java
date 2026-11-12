@@ -21,11 +21,6 @@ import com.juegalmi.app.util.Bordes;
 
 import java.util.List;
 
-/**
- * PT-27 Galería (RF-08): fotos de la tienda en una cuadrícula (GridLayoutManager) y visor a pantalla completa
- * al tocar una. Columnas: 3 en el móvil y hasta 6 en pantallas anchas (res/values-wNNNdp/adaptativo.xml).
- * Glide pone el placeholder y solo descarga el tamaño de la baldosa.
- */
 public class GaleriaActivity extends TiendaBaseActivity {
 
     @Override
@@ -49,7 +44,6 @@ public class GaleriaActivity extends TiendaBaseActivity {
         lista.setAdapter(new Adaptador(t.fotos));
     }
 
-    /** Visor a pantalla completa con la descripción de la foto. */
     private void ver(Tienda.Foto foto) {
         Dialog visor = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         View v = LayoutInflater.from(this).inflate(R.layout.visor_foto, null);

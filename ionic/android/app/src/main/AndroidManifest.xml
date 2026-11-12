@@ -35,10 +35,7 @@
         </provider>
     </application>
 
-    <!-- Permissions -->
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- GPS (ADR-014), cámara (reparación y perfil) y voz (PT-29): se piden al usarlos -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -46,7 +43,6 @@
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
-    <!-- Android 11+: sin esto la app no «ve» el reconocedor de voz ni la cámara del sistema -->
     <queries>
         <intent><action android:name="android.speech.RecognitionService" /></intent>
         <intent><action android:name="android.media.action.IMAGE_CAPTURE" /></intent>

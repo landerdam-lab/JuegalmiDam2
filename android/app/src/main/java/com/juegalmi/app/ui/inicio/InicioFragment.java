@@ -22,12 +22,6 @@ import com.juegalmi.app.R;
 import com.juegalmi.app.data.model.Producto;
 import com.juegalmi.app.ui.catalogo.CatalogoFragment;
 
-
-/**
- * PT-04 Inicio: buscador + pestañas (TabLayout + ViewPager2, RT-08).
- * Cada pestaña es un CatalogoFragment de un tipo de producto.
- * El micro abre el control por voz de la app (RF-15, PT-29): ver MainActivity.escucharVoz() y util/OrdenVoz.
- */
 public class InicioFragment extends Fragment {
 
     private static final String[] TIPOS = {Producto.VIDEOJUEGO, Producto.MOVIL, Producto.CONSOLA};
@@ -41,7 +35,6 @@ public class InicioFragment extends Fragment {
     private static final String ARG_PESTANA = "pestana";
     private ViewPager2 paginas;
 
-    /** Inicio abierto desde una orden de voz: con un texto buscado y/o una pestaña (0, 1, 2). */
     public static InicioFragment nuevo(@Nullable String busqueda, int pestana) {
         InicioFragment f = new InicioFragment();
         Bundle b = new Bundle();
@@ -60,7 +53,6 @@ public class InicioFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View vista, @Nullable Bundle savedInstanceState) {
-        // El ViewModel pertenece a este fragment: sus pestañas (hijas) obtienen el mismo
         busqueda = new ViewModelProvider(this).get(BusquedaViewModel.class);
 
         etBuscar = vista.findViewById(R.id.etBuscar);
@@ -72,7 +64,6 @@ public class InicioFragment extends Fragment {
             }
             return false;
         });
-        // El micro hace lo mismo que el de la barra superior: control por voz de toda la app (MainActivity)
         vista.findViewById(R.id.btnVoz).setOnClickListener(v -> ((MainActivity) requireActivity()).escucharVoz());
 
         paginas = vista.findViewById(R.id.paginas);
@@ -100,7 +91,6 @@ public class InicioFragment extends Fragment {
         }
     }
 
-    /** Busca en el catálogo (lo usa también la voz): escribe el texto en el buscador y recarga las pestañas. */
     public void buscar(String texto) {
         etBuscar.setText(texto);
         busqueda.buscar(texto);

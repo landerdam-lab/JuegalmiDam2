@@ -2,16 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Ubicación aproximada (wifi/red móvil) y precisa (GPS): cabeceras X-Latitud / X-Longitud (ADR-014) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- Android 17: conectar con una API en la red local (emulador o VM del aula). Se pide solo si
-         la URL de la API es local (util/RedLocal). Con la API en AWS no hace falta -->
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 
-    <!-- El tema de la app es el splash (PT-01, con el logo de Almi Companion): MainActivity pasa a Theme.JuegAlmi al arrancar.
-         networkSecurityConfig: solo HTTPS; el HTTP de desarrollo se permite únicamente en debug -->
-    <!-- JuegAlmiApp: aplica el tema elegido y configura OSMDroid antes de abrir ninguna pantalla -->
     <application
         android:name=".JuegAlmiApp"
         android:allowBackup="true"
@@ -23,7 +17,6 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlmiCompanion.Splash">
-        <!-- singleTop: «Ver carrito» desde la ficha reutiliza esta pantalla en vez de abrir otra -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -35,20 +28,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Login (PT-02) y Registro (PT-03). adjustResize: el teclado no tapa los campos -->
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false"
             android:theme="@style/Theme.JuegAlmi"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Ficha de producto (PT-06, PT-08, PT-10) -->
         <activity
             android:name=".ui.detalle.DetalleProductoActivity"
             android:exported="false"
             android:theme="@style/Theme.JuegAlmi" />
 
-        <!-- Pedido: confirmar (PT-12), realizado (PT-12b) y detalle (PT-14) -->
         <activity
             android:name=".ui.pedidos.ConfirmarPedidoActivity"
             android:exported="false"
@@ -62,14 +52,12 @@
             android:exported="false"
             android:theme="@style/Theme.JuegAlmi" />
 
-        <!-- Solicitar reparación (PT-17) -->
         <activity
             android:name=".ui.reparaciones.NuevaReparacionActivity"
             android:exported="false"
             android:theme="@style/Theme.JuegAlmi"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- La tienda: Servicios (PT-25), Ubicación (PT-26), Galería (PT-27) e Historia (PT-28) -->
         <activity
             android:name=".ui.tienda.ServiciosActivity"
             android:exported="false"
@@ -87,14 +75,11 @@
             android:exported="false"
             android:theme="@style/Theme.JuegAlmi" />
 
-        <!-- Reduce las fotos de la cámara en un PROCESO APARTE (":fotos"): ejemplo de varios procesos
-             (PSP, ADR-039). No se exporta: solo lo puede arrancar esta app -->
         <service
             android:name=".data.FotoService"
             android:exported="false"
             android:process=":fotos" />
 
-        <!-- Comparte con la app de cámara el fichero donde guardar la foto (util/Camara) -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fotos"

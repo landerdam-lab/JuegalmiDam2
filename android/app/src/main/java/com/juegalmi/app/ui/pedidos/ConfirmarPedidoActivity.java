@@ -36,11 +36,6 @@ import com.juegalmi.app.util.UbicacionHelper;
 
 import java.util.Locale;
 
-/**
- * PT-12 Confirmar pedido: resumen del carrito, entrega (tienda o domicilio con mapa, ADR-038), ubicación
- * y POST /api/pedidos (Retrofit).
- * Sin ubicación no se puede confirmar (P-28 → la API respondería 422): se pide el permiso y se explica por qué.
- */
 public class ConfirmarPedidoActivity extends AppCompatActivity {
 
     public static final String EXTRA_METODO = "metodo";
@@ -59,7 +54,6 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
             new ActivityResultContracts.RequestPermission(), concedido -> {
                 if (concedido) {
                     ubicacion.actualizar();
-                    // La ubicación llega de forma asíncrona: se vuelve a mirar en un momento
                     principal.postDelayed(this::pintarUbicacion, 1500);
                 }
                 pintarUbicacion();
@@ -158,7 +152,6 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
                 }
                 cargando(false);
                 entrega.errores(error);
-                // 409 STOCK_INSUFICIENTE / SIN_COPIAS: el mensaje de la API dice qué producto falla
                 new MaterialAlertDialogBuilder(ConfirmarPedidoActivity.this, R.style.ThemeOverlay_JuegAlmi_Dialogo)
                         .setTitle(error.status == 409 ? R.string.confirmar_error_stock : R.string.confirmar_error)
                         .setMessage(error.campos.isEmpty() ? error.mensaje
@@ -179,7 +172,6 @@ public class ConfirmarPedidoActivity extends AppCompatActivity {
         return MetodosPago.texto(this, metodo);
     }
 
-    /** Al girar el móvil la pantalla se crea de nuevo: se guarda la entrega elegida (tienda o domicilio y su punto). */
     @Override
     protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle estado) {
         super.onSaveInstanceState(estado);

@@ -7,8 +7,6 @@ import { Subject } from 'rxjs';
 import { AvisosService } from './avisos.service';
 import { PreferenciasService } from './preferencias.service';
 
-/** Más de 2 g, y como mucho un refresco cada 1,5 s: los mismos valores que AgitarDetector en Android.
- *  Con 2,5 g había que agitar muy fuerte en un móvil real; andar o guardar el móvil no llega a 2 g. */
 const GRAVEDAD = 9.81;
 const UMBRAL_G = 2;
 const PAUSA_MS = 1500;
@@ -17,7 +15,6 @@ export function esAgitacion(x: number, y: number, z: number): boolean {
   return Math.sqrt(x * x + y * y + z * z) / GRAVEDAD > UMBRAL_G;
 }
 
-/** «Agitar para refrescar» con el acelerómetro (rúbrica Móviles 5). Las listas se suscriben a agitado$. */
 @Injectable({ providedIn: 'root' })
 export class AgitarService implements OnDestroy {
   private readonly preferencias = inject(PreferenciasService);
@@ -42,7 +39,6 @@ export class AgitarService implements OnDestroy {
     });
   }
 
-  /** Lo llama la pantalla que se refresca: si los datos no cambian, el usuario sabe que ha funcionado (como el Snackbar de Android). */
   avisar(): void {
     void this.avisos.mensaje('Actualizando…');
   }

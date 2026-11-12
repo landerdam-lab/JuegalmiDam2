@@ -2,10 +2,6 @@ import { Component, effect, input, signal } from '@angular/core';
 
 import { Icono } from './icono.component';
 
-/**
- * Imagen con placeholder (requisito innegociable): mientras carga se ve el icono «image»
- * sobre superficie-2 y, si falla, «broken_image». loading=lazy: solo se descarga al acercarse a la pantalla.
- */
 @Component({
   selector: 'ja-imagen',
   imports: [Icono],
@@ -59,7 +55,6 @@ export class Imagen {
   readonly estado = signal<'cargando' | 'lista' | 'error'>('cargando');
 
   constructor() {
-    // Al reutilizar la tarjeta con otra imagen vuelve a verse el placeholder
     effect(() => this.estado.set(this.src() ? 'cargando' : 'error'));
   }
 }

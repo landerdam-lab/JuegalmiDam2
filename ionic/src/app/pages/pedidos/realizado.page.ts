@@ -10,7 +10,6 @@ import { Barra } from '../../shared/barra.component';
 import { Icono } from '../../shared/icono.component';
 import { Vida } from '../../shared/vida.component';
 
-/** PT-12b ¡Pedido realizado!: el ticket del pedido recién creado. */
 @Component({
   imports: [RouterLink, IonContent, IonButton, Barra, Icono, Vida],
   styles: `

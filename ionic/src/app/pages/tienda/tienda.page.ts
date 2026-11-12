@@ -11,7 +11,6 @@ import { Estado } from '../../shared/estado.component';
 import { Icono } from '../../shared/icono.component';
 import { Imagen } from '../../shared/imagen.component';
 
-/** PT-24 La tienda: portada y las cuatro secciones, estilo Google Play. */
 @Component({
   imports: [RouterLink, IonContent, IonCard, Barra, Estado, Icono, Imagen],
   styles: `

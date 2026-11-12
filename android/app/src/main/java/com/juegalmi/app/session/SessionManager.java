@@ -10,12 +10,6 @@ import com.juegalmi.app.data.model.Usuario;
 
 import java.time.OffsetDateTime;
 
-/**
- * Guarda la sesión en SharedPreferences: el token de la API, cuándo caduca y el usuario.
- *
- * Es el ÚNICO sitio que conoce el token: las peticiones lo piden aquí (CabecerasApi)
- * y al cerrar sesión o recibir un 401 se borra todo de golpe con cerrar().
- */
 public final class SessionManager {
 
     private static final String PREFS = "sesion";
@@ -39,7 +33,6 @@ public final class SessionManager {
         return instancia;
     }
 
-    /** Tras el login: expira llega de la API en ISO 8601 (2026-10-30T12:00:00+01:00). */
     public void guardar(String token, String expira, Usuario usuario) {
         prefs.edit()
                 .putString(CLAVE_TOKEN, token)
@@ -48,7 +41,6 @@ public final class SessionManager {
                 .apply();
     }
 
-    /** Tras GET /api/me o PUT /api/me: el token sigue siendo el mismo. */
     public void actualizarUsuario(Usuario usuario) {
         prefs.edit().putString(CLAVE_USUARIO, gson.toJson(usuario)).apply();
     }
@@ -64,7 +56,6 @@ public final class SessionManager {
         return json == null ? null : gson.fromJson(json, Usuario.class);
     }
 
-    /** Hay sesión si hay token y aún no ha caducado (el token dura 2 h, ADR-035). */
     public boolean haySesion() {
         String token = getToken();
         String expira = prefs.getString(CLAVE_EXPIRA, null);
