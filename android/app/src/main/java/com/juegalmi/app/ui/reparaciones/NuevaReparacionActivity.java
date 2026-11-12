@@ -44,10 +44,6 @@ import com.juegalmi.app.util.UbicacionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PT-17 Solicitar reparación: departamento, dispositivo, problema, foto con la cámara (RF-14) y ubicación (RF-11).
- * Primero sube la foto (POST /api/imagenes) y luego crea la reparación (POST /api/reparaciones), las dos con Retrofit.
- */
 public class NuevaReparacionActivity extends AppCompatActivity {
 
     private static final int PASOS = 5;
@@ -60,7 +56,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
     private final List<MaterialCardView> tarjetas = new ArrayList<>();
     private final List<Referencia> departamentos = new ArrayList<>();
     private Referencia elegido;
-    /** Id del departamento elegido antes de girar; se vuelve a marcar cuando llegan los departamentos. */
     private int departamentoGuardado = -1;
     private Uri fotoPendiente;
     private Uri foto;
@@ -69,7 +64,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
     private com.google.android.material.button.MaterialButton btnEnviar;
     private View progreso;
 
-    /** La app de cámara devuelve true si se hizo la foto y se guardó en la Uri que le dimos. */
     private final ActivityResultLauncher<Uri> camara = registerForActivityResult(
             new ActivityResultContracts.TakePicture(), hecha -> {
                 if (hecha) {
@@ -86,10 +80,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tvFoto)).setText(R.string.reparacion_foto_lista);
     }
 
-    /**
-     * Lo que se perdería al girar el móvil, o si Android cierra la app mientras está abierta la cámara:
-     * el departamento elegido, la foto hecha y la Uri donde la cámara va a guardar la siguiente.
-     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle estado) {
         super.onSaveInstanceState(estado);
@@ -122,7 +112,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         btnEnviar = findViewById(R.id.btnEnviar);
         progreso = findViewById(R.id.progreso);
 
-        // Al girar el móvil la pantalla se crea de nuevo: se recupera lo que no es texto (el texto lo guarda Android)
         if (savedInstanceState != null) {
             departamentoGuardado = savedInstanceState.getInt(ESTADO_DEPARTAMENTO, -1);
             fotoPendiente = BundleCompat.getParcelable(savedInstanceState, ESTADO_FOTO_PENDIENTE, Uri.class);
@@ -193,7 +182,7 @@ public class NuevaReparacionActivity extends AppCompatActivity {
                     tarjetas.add(tarjeta);
                     contenedor.addView(tarjeta);
                     if (d.id == departamentoGuardado) {
-                        elegir(d, tarjeta); // el que estaba elegido antes de girar
+                        elegir(d, tarjeta);
                     }
                 }
             }
@@ -206,7 +195,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         });
     }
 
-    /** Tarjeta elegida: borde grueso violeta y fondo marca-suave (DESIGN.md §9, selección). */
     private void elegir(Referencia d, MaterialCardView tarjeta) {
         elegido = d;
         for (MaterialCardView t : tarjetas) {
@@ -231,7 +219,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         pintarPasos();
     }
 
-    /** Barra de 5: departamento, dispositivo, problema, foto y ubicación. */
     private void pintarPasos() {
         int hechos = 0;
         if (elegido != null) hechos++;
@@ -266,7 +253,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
             crear(null);
             return;
         }
-        // 1.º la foto (se reduce y comprime en segundo plano) y 2.º la reparación con su URL
         new ImagenRepository(this).subir(foto, ImagenRepository.REPARACIONES, new Callback<String>() {
             @Override
             public void onExito(String url) {

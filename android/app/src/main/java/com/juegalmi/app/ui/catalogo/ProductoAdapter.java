@@ -20,12 +20,7 @@ import com.juegalmi.app.util.Formato;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adaptador propio del RecyclerView del catálogo (RT-06): convierte cada Producto en una tarjeta item_producto.
- *
- * Es un ListAdapter: al recibir una lista nueva, DiffUtil calcula EN SEGUNDO PLANO qué tarjetas han cambiado
- * y solo redibuja esas (menos CPU que notifyDataSetChanged).
- */
+
 public class ProductoAdapter extends ListAdapter<Producto, ProductoAdapter.Tarjeta> {
 
     public interface AlPulsar {
@@ -50,7 +45,6 @@ public class ProductoAdapter extends ListAdapter<Producto, ProductoAdapter.Tarje
         this.alPulsar = alPulsar;
     }
 
-    /** Añade una página al final (scroll infinito). */
     public void anadir(List<Producto> nuevos) {
         List<Producto> todos = new ArrayList<>(getCurrentList());
         todos.addAll(nuevos);
@@ -80,12 +74,10 @@ public class ProductoAdapter extends ListAdapter<Producto, ProductoAdapter.Tarje
             t.alquiler.setVisibility(View.GONE);
         }
 
-        // Agotado: el contenido al 60 % (DESIGN.md §9). Va en el contenido y no en la tarjeta entera
-        // porque el RecyclerView anima la opacidad de la tarjeta al insertarla y la dejaría al 100 %
+
         t.contenido.setAlpha(p.stock <= 0 ? 0.6f : 1f);
 
-        // Glide descarga y escala la imagen en segundo plano, la guarda en caché y muestra
-        // un placeholder mientras tanto (requisito innegociable) y otro si falla
+
         t.imagen.setContentDescription(t.itemView.getContext().getString(R.string.imagen_producto, p.nombre));
         Glide.with(t.imagen)
                 .load(p.imagen)
@@ -97,7 +89,7 @@ public class ProductoAdapter extends ListAdapter<Producto, ProductoAdapter.Tarje
         t.itemView.setOnClickListener(v -> alPulsar.abrir(p, t.imagen));
     }
 
-    /** «Nintendo · Switch · PEGI 12» (videojuego) o «Samsung · Tablet» / «Sony · PS5». */
+
     static String subtitulo(View v, Producto p) {
         List<String> partes = new ArrayList<>();
         if (p.marca != null) {

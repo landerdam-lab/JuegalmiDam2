@@ -10,11 +10,6 @@ interface DatosSesion {
   usuario: Usuario;
 }
 
-/**
- * Guarda la sesión en Local Storage: el token, cuándo caduca y el usuario.
- * Es el ÚNICO sitio que conoce el token: el interceptor se lo pide aquí, y al cerrar sesión
- * o recibir un 401 se borra todo de golpe con cerrar().
- */
 @Injectable({ providedIn: 'root' })
 export class SesionService {
   private readonly datos = signal<DatosSesion | null>(this.leer());
@@ -25,7 +20,6 @@ export class SesionService {
     return this.datos()?.token ?? null;
   }
 
-  /** Hay sesión si hay token y aún no ha caducado (el token dura 2 h, ADR-035). */
   haySesion(): boolean {
     const d = this.datos();
     return !!d && new Date(d.expira).getTime() > Date.now();

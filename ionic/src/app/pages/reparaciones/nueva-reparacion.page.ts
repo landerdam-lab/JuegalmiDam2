@@ -18,7 +18,6 @@ import { Barra } from '../../shared/barra.component';
 import { Icono } from '../../shared/icono.component';
 import { Vida } from '../../shared/vida.component';
 
-/** PT-17 Solicitar reparación: departamento, dispositivo, avería, foto con la cámara y ubicación. */
 @Component({
   imports: [
     FormsModule,
@@ -200,7 +199,6 @@ export class NuevaReparacionPage implements OnInit {
   readonly tocado = signal(0);
   private foto: Blob | null = null;
 
-  /** Barra de 5: departamento, dispositivo, avería, foto y ubicación. Cuenta los pasos hechos, igual que en Android. */
   readonly paso = computed(() => {
     this.tocado();
     return [
@@ -238,14 +236,12 @@ export class NuevaReparacionPage implements OnInit {
     if (!departamentoId || Object.keys(e).length) {
       return;
     }
-    // La API la exige: se comprueba antes de subir la foto, para no dejarla huérfana en el servidor
     if (!this.ubicacion.punto()) {
       void this.avisos.mensaje('Activa la ubicación para continuar');
       void this.ubicacion.actualizar();
       return;
     }
     this.enviando.set(true);
-    // Primero la foto y luego la solicitud con su URL (ADR-019)
     const subida: Observable<string | undefined> = this.foto
       ? this.imagenes.subir(this.foto, 'reparaciones')
       : of(undefined);
@@ -272,7 +268,6 @@ export class NuevaReparacionPage implements OnInit {
         error: (err: ApiError) => {
           this.enviando.set(false);
           this.errores.set(err.campos);
-          // También como aviso: algunos campos, como la ubicación, no tienen dónde mostrar su error
           void this.avisos.mensaje(Object.values(err.campos)[0] ?? err.mensaje);
         },
       });

@@ -34,10 +34,6 @@ import com.juegalmi.app.util.Formato;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PT-25 Servicios: pestañas (TabLayout + ViewPager2) con los servicios de cada línea de negocio
- * (servicio.linea ∈ videojuegos, consolas, telefonia; ADR-030). Lo pide el enunciado: «Servicios en pestañas».
- */
 public class ServiciosActivity extends AppCompatActivity {
 
     private static final String[] LINEAS = {"videojuegos", "consolas", "telefonia"};
@@ -73,7 +69,6 @@ public class ServiciosActivity extends AppCompatActivity {
                 startActivity(new Intent(this, NuevaReparacionActivity.class)));
     }
 
-    /** Una pestaña: la lista de servicios de una línea (GET /api/servicios?linea=). */
     public static class PestanaServicios extends Fragment {
 
         private static final String ARG_LINEA = "linea";

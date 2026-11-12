@@ -19,13 +19,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-/**
- * Cliente de Volley (librería obligatoria del enunciado). Se usa para las LECTURAS y el login.
- *
- * Por qué no bloquea la interfaz: Volley tiene sus propios hilos de red. La petición se hace en ellos,
- * el JSON se convierte en objetos (Gson) también en ellos, en parseNetworkResponse, y solo el
- * resultado final vuelve al hilo principal (Callback).
- */
+
 public final class VolleyClient {
 
     private static VolleyClient instancia;
@@ -38,7 +32,6 @@ public final class VolleyClient {
     private VolleyClient(Context context) {
         this.context = context.getApplicationContext();
         this.cola = Volley.newRequestQueue(this.context);
-        // La URL base está en un solo sitio: res/values/api.xml
         this.urlBase = this.context.getString(R.string.api_url_base);
     }
 
@@ -49,21 +42,15 @@ public final class VolleyClient {
         return instancia;
     }
 
-    /** GET de la API. Ruta sin barra inicial: "videojuegos?page=1". */
     public <T> void get(String ruta, Type tipo, Object etiqueta, Callback<T> callback) {
         enviar(Request.Method.GET, ruta, null, tipo, true, etiqueta, callback);
     }
 
-    /**
-     * POST con cuerpo JSON.
-     * @param cerrarSiNoAutorizado false en el login, donde un 401 significa «contraseña incorrecta»
-     */
     public <T> void post(String ruta, @Nullable Object cuerpo, Type tipo, boolean cerrarSiNoAutorizado,
                          Object etiqueta, Callback<T> callback) {
         enviar(Request.Method.POST, ruta, cuerpo, tipo, cerrarSiNoAutorizado, etiqueta, callback);
     }
 
-    /** Petición cuya respuesta no interesa (p. ej. POST /api/logout). */
     public void enviarSinRespuesta(int metodo, String ruta, Object etiqueta) {
         enviar(metodo, ruta, null, Object.class, false, etiqueta, new Callback<Object>() {
             @Override
@@ -76,7 +63,6 @@ public final class VolleyClient {
         });
     }
 
-    /** Cancela las peticiones de una pantalla (se llama al destruir su vista). */
     public void cancelar(Object etiqueta) {
         cola.cancelAll(etiqueta);
     }
@@ -97,13 +83,11 @@ public final class VolleyClient {
                     String cuerpoError = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                     callback.onError(ApiError.desdeRespuesta(context, status, cuerpoError));
                 });
-        // 10 s y un reintento: suficiente en la red del aula sin dejar al usuario esperando
         peticion.setRetryPolicy(new DefaultRetryPolicy(10_000, 1, 1f));
         peticion.setTag(etiqueta);
         cola.add(peticion);
     }
 
-    /** Petición de Volley que envía y recibe JSON y lo convierte con Gson en un hilo de red. */
     private final class PeticionGson<T> extends Request<T> {
         @Nullable private final String cuerpo;
         private final Type tipo;
@@ -116,7 +100,6 @@ public final class VolleyClient {
             this.cuerpo = cuerpo;
             this.tipo = tipo;
             this.listener = listener;
-            // Se leen al crear la petición: si después se cierra la sesión (logout), esta aún lleva su token
             this.cabeceras = CabecerasApi.crear(context);
         }
 
@@ -135,7 +118,6 @@ public final class VolleyClient {
             return cuerpo == null ? null : cuerpo.getBytes(StandardCharsets.UTF_8);
         }
 
-        /** Se ejecuta en un hilo de Volley, no en el principal. */
         @Override
         protected Response<T> parseNetworkResponse(NetworkResponse respuesta) {
             try {

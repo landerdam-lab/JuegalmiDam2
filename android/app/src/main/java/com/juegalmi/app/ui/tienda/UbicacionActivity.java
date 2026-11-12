@@ -26,11 +26,6 @@ import org.osmdroid.views.overlay.Marker;
 
 import java.util.Locale;
 
-/**
- * PT-26 Ubicación de la tienda (RF-08): mapa de OpenStreetMap con OSMDroid (sin clave de API, ADR-037),
- * marcador de la tienda, la posición del cliente si dio permiso, la distancia y «Cómo llegar».
- * OSMDroid descarga las teselas en sus propios hilos y las guarda en caché.
- */
 public class UbicacionActivity extends TiendaBaseActivity {
 
     private static final double ZOOM = 16.0;
@@ -77,7 +72,6 @@ public class UbicacionActivity extends TiendaBaseActivity {
         ((TextView) findViewById(R.id.tvCoordenadas)).setText(
                 String.format(Locale.ROOT, "%.4f, %.4f", t.latitud, t.longitud));
 
-        // Si el cliente dio permiso de ubicación: su punto en el mapa y la distancia a la tienda
         UbicacionHelper yo = UbicacionHelper.get(this);
         if (yo.hayUbicacion()) {
             GeoPoint mio = new GeoPoint(yo.getLatitud(), yo.getLongitud());
@@ -98,7 +92,6 @@ public class UbicacionActivity extends TiendaBaseActivity {
         }
         mapa.invalidate();
 
-        // «Cómo llegar»: la app de mapas del móvil con la ruta hasta la tienda (Intent geo: estándar de Android)
         findViewById(R.id.btnComoLlegar).setOnClickListener(v -> {
             Uri destino = Uri.parse(String.format(Locale.ROOT, "geo:0,0?q=%f,%f(%s)",
                     t.latitud, t.longitud, Uri.encode(t.nombre)));
@@ -110,7 +103,6 @@ public class UbicacionActivity extends TiendaBaseActivity {
         });
     }
 
-    // OSMDroid necesita saber cuándo la pantalla está activa para pausar las descargas
     @Override
     protected void onResume() {
         super.onResume();

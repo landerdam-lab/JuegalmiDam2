@@ -10,7 +10,6 @@
 @import '@ionic/angular/css/flex-utils.css';
 @import '@ionic/angular/css/palettes/dark.class.css';
 
-// Fuentes incluidas en la app, las mismas que en Android (funcionan sin red)
 @font-face {
   font-family: 'Bricolage Grotesque';
   src: url('/assets/fonts/bricolage_grotesque.ttf') format('truetype');
@@ -30,7 +29,6 @@
   font-display: swap;
 }
 
-// Misma forma de la fuente variable que en Android, que no ajusta el tamaño óptico
 body {
   font-optical-sizing: none;
 }
@@ -42,7 +40,6 @@ body {
   --ion-toolbar-color: var(--ja-texto);
 }
 
-// ── Estructura común ──
 .ja-pagina {
   display: flex;
   flex-direction: column;
@@ -80,7 +77,6 @@ body {
 .ja-centrado {
   text-align: center;
 }
-// Listas: 1 columna en el móvil y hasta 4 en pantallas grandes (igual que res/values-w600dp… en Android)
 .ja-lista {
   display: grid;
   gap: var(--ja-espacio-3);
@@ -101,7 +97,6 @@ body {
     --columnas: 4;
   }
 }
-// Formularios y detalles: columna centrada al girar o en tablet
 .ja-columna {
   width: 100%;
   max-width: 640px;
@@ -147,12 +142,10 @@ ion-chip.activo {
   --color: var(--ja-marca);
   font-weight: 600;
 }
-// Como el chip de filtro de Android: el seleccionado lleva una marca
 ion-chip.activo::before {
   content: '✓';
   margin-inline-end: var(--ja-espacio-1);
 }
-// Botones planos como en Android, y diálogos con botones legibles (no amarillo sobre blanco)
 ion-button {
   --box-shadow: none;
   --border-width: var(--ja-borde-fino);
@@ -174,7 +167,6 @@ ion-segment-button {
   letter-spacing: normal;
   min-width: auto;
 }
-// Doble clase: el fill="solid" de Ionic pone su propio fondo con más especificidad
 ion-input.ja-campo.ja-campo,
 ion-textarea.ja-campo.ja-campo {
   --background: var(--ja-superficie-2);
@@ -208,7 +200,6 @@ ion-textarea.ja-campo.ja-campo {
   width: 100%;
   margin: 0;
 }
-// Como el aviso de la nativa: la acción sin mayúsculas
 ion-toast::part(button) {
   text-transform: none;
 }

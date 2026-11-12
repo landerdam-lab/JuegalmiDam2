@@ -11,7 +11,6 @@ import { Estado } from '../../shared/estado.component';
 import { Icono } from '../../shared/icono.component';
 import { Imagen } from '../../shared/imagen.component';
 
-/** PT-11 Carrito: líneas con cantidad, método de pago y resumen. Los precios finales los confirma la API. */
 @Component({
   imports: [RouterLink, IonContent, IonFooter, IonCard, IonButton, IonChip, Barra, Estado, Icono, Imagen],
   styles: `

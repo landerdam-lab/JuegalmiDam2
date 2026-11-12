@@ -1,4 +1,3 @@
-/** Interpreta una frase dicha en voz alta. Función pura y con pruebas: lo mismo que OrdenVoz en Android. */
 export type Accion =
   | 'inicio'
   | 'carrito'
@@ -24,7 +23,6 @@ export interface OrdenVoz {
 
 const BUSCAR = /^(?:busca|buscar|buscame|encuentra)\s+(?:el |la |los |las |un |una )?(.+)$/;
 
-// El orden importa: lo más concreto primero («nueva reparacion» antes que «reparacion»)
 const REGLAS: [Accion, string[]][] = [
   ['nueva_reparacion', ['nueva reparacion', 'pedir reparacion', 'solicitar reparacion', 'reparar', 'arreglar']],
   ['carrito', ['carrito', 'cesta']],
@@ -57,7 +55,6 @@ export function interpretar(frase: string): OrdenVoz {
   const f = normalizar(frase);
   const busqueda = BUSCAR.exec(f);
   if (busqueda) {
-    // «busca …» siempre es una búsqueda, aunque el juego se llame como una sección
     return { accion: 'buscar', texto: busqueda[1].trim() };
   }
   const rodeada = ` ${f} `;

@@ -21,11 +21,7 @@ import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.VolleyClient;
 import com.juegalmi.app.util.AgitarDetector;
 
-/**
- * Lo común de Mis pedidos, Mis alquileres y Mis reparaciones (layout fragment_lista):
- * estados de carga / vacío / error, chips de filtro, «agitar para refrescar» y cancelar las peticiones al salir.
- * Cada pantalla solo dice qué carga (cargar) y qué adaptador usa.
- */
+
 public abstract class ListaBaseFragment extends Fragment {
 
     protected RecyclerView lista;
@@ -34,7 +30,6 @@ public abstract class ListaBaseFragment extends Fragment {
     private View progreso;
     private SwipeRefreshLayout refresco;
 
-    /** Carga (o recarga) los datos de la API. */
     protected abstract void cargar();
 
     @Nullable
@@ -47,18 +42,15 @@ public abstract class ListaBaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View vista, @Nullable Bundle savedInstanceState) {
         lista = vista.findViewById(R.id.lista);
-        // 1 columna en el móvil y 2-4 en pantallas anchas (res/values-wNNNdp/adaptativo.xml)
         lista.setLayoutManager(new GridLayoutManager(requireContext(),
                 getResources().getInteger(R.integer.columnas_lista)));
         tvResultados = vista.findViewById(R.id.tvResultados);
         progreso = vista.findViewById(R.id.progreso);
         estado = new EstadoVista(vista);
-        // Tirar de la lista hacia abajo la recarga (como el ion-refresher de Ionic)
         refresco = vista.findViewById(R.id.refresco);
         refresco.setColorSchemeResources(R.color.ja_marca);
         refresco.setProgressBackgroundColorSchemeResource(R.color.ja_superficie);
         refresco.setOnRefreshListener(this::cargar);
-        // Agitar el móvil recarga la lista (RF-15). Solo mientras la pantalla está visible
         AgitarDetector.vincular(getViewLifecycleOwner(), vista, this::recargarAgitando);
     }
 
@@ -66,7 +58,6 @@ public abstract class ListaBaseFragment extends Fragment {
         ((TextView) requireView().findViewById(R.id.tvTitulo)).setText(texto);
     }
 
-    /** Añade chips de filtro de selección única. El primero queda marcado. */
     protected void chips(int[] textos, java.util.function.IntConsumer alElegir) {
         requireView().findViewById(R.id.scrollChips).setVisibility(View.VISIBLE);
         ChipGroup grupo = requireView().findViewById(R.id.chips);
@@ -91,7 +82,6 @@ public abstract class ListaBaseFragment extends Fragment {
 
     protected void cargando() {
         estado.ocultar();
-        // Al tirar de la lista ya gira el indicador de arriba: no hace falta también el del centro
         progreso.setVisibility(refresco.isRefreshing() ? View.GONE : View.VISIBLE);
     }
 
@@ -111,7 +101,6 @@ public abstract class ListaBaseFragment extends Fragment {
         estado.error(titulo, error, this::cargar);
     }
 
-    /** Las tarjetas se sacuden 2° al agitar (DESIGN.md §7) y se recarga. */
     private void recargarAgitando() {
         lista.animate().rotation(2f).setDuration(60).withEndAction(() ->
                 lista.animate().rotation(-2f).setDuration(60).withEndAction(() ->

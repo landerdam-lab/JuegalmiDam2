@@ -11,7 +11,6 @@ import { Estado } from '../../shared/estado.component';
 import { Icono } from '../../shared/icono.component';
 import { Imagen } from '../../shared/imagen.component';
 
-/** PT-28 Historia: foto de cabecera, tarjeta superpuesta con muesca y la cita con barra amarilla. */
 @Component({
   imports: [RouterLink, IonContent, IonButton, Barra, Estado, Icono, Imagen],
   styles: `

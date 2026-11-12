@@ -28,10 +28,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/** PT-03 Registro: crea un cliente con POST /api/registro (Retrofit) y vuelve al login. */
 public class RegistroFragment extends Fragment {
 
-    /** Campo del JSON → su TextInputLayout, para pintar los errores 422 de la API en su sitio. */
     private final Map<String, TextInputLayout> campos = new HashMap<>();
     private Button btnCrear;
     private CircularProgressIndicator progreso;
@@ -96,10 +94,9 @@ public class RegistroFragment extends Fragment {
             @Override
             public void onError(ApiError error) {
                 if (!isAdded()) {
-                    return; // Retrofit no se cancela solo: si ya no estamos en pantalla, no se pinta nada
+                    return;
                 }
                 cargando(false);
-                // 422 (campos) o 409 (EMAIL_REPETIDO / DNI_REPETIDO): el error va debajo de su campo
                 boolean pintado = false;
                 for (Map.Entry<String, String> e : error.campos.entrySet()) {
                     TextInputLayout til = campos.get(e.getKey());

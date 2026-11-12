@@ -16,10 +16,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
-/**
- * Endpoints que se llaman con Retrofit: las ESCRITURAS (registro, pedidos, reparaciones, perfil e imágenes).
- * Retrofit genera la implementación a partir de las anotaciones. Contrato: 05-API/Endpoints.md.
- */
+
 public interface JuegAlmiService {
 
     @POST("registro")
@@ -31,7 +28,6 @@ public interface JuegAlmiService {
     @POST("pedidos")
     Call<Pedido> crearPedido(@Body Peticiones.NuevoPedido pedido);
 
-    /** El cliente solo puede pasar su pedido a «cancelado» si está «pendiente». */
     @PUT("pedidos/{id}")
     Call<Pedido> cambiarEstadoPedido(@Path("id") int id, @Body Peticiones.CambioEstado estado);
 
@@ -41,7 +37,6 @@ public interface JuegAlmiService {
     @PUT("reparaciones/{id}")
     Call<Reparacion> cambiarEstadoReparacion(@Path("id") int id, @Body Peticiones.CambioEstado estado);
 
-    /** Subida de una foto (multipart): imagen = el fichero, carpeta = usuarios | reparaciones. */
     @Multipart
     @POST("imagenes")
     Call<Peticiones.ImagenSubida> subirImagen(@Part MultipartBody.Part imagen, @Part("carpeta") RequestBody carpeta);

@@ -20,7 +20,6 @@ import { Vida } from '../../shared/vida.component';
 const PASOS: Record<EstadoReparacion, number> = { recibida: 1, en_reparacion: 2, lista: 3, entregada: 4, cancelada: 0 };
 const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
 
-/** PT-18 Mis reparaciones. El cliente puede cancelar mientras esté recibida o en reparación. */
 @Component({
   imports: [
     RouterLink,

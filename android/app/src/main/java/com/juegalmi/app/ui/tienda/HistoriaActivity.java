@@ -14,7 +14,6 @@ import com.juegalmi.app.R;
 import com.juegalmi.app.data.model.Tienda;
 import com.juegalmi.app.util.Bordes;
 
-/** PT-28 Historia (RF-08): foto de cabecera que se pliega al desplazar y el texto tienda.historia. */
 public class HistoriaActivity extends TiendaBaseActivity {
 
     @Override
