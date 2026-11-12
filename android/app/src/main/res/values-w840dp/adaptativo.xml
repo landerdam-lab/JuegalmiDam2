@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Ventana de 840 dp o más (móvil girado, tablet en vertical). Ver values/adaptativo.xml -->
 <resources>
     <integer name="columnas_lista">3</integer>
     <integer name="columnas_galeria">5</integer>

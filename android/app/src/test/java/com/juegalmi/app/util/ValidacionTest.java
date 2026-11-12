@@ -32,6 +32,8 @@ public class ValidacionTest {
         assertFalse(Validacion.dni("123456789"));    // sin letra
         assertFalse(Validacion.dni("A1234567L"));    // el NIE solo empieza por X, Y o Z
         assertFalse(Validacion.dni("12345678 Z"));   // con espacio
+        assertFalse(Validacion.dni("12345678A"));    // la letra no es la que toca (sería la Z)
+        assertFalse(Validacion.dni("X1234567Z"));    // NIE con la letra mal (sería la L)
     }
 
     @Test

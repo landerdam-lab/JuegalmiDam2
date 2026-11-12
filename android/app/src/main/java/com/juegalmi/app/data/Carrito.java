@@ -28,6 +28,7 @@ public final class Carrito {
 
     private static final String PREFS = "carrito";
     private static final String CLAVE = "lineas";
+    private static final String CLAVE_DUENO = "dueno";
     private static Carrito instancia;
 
     private final SharedPreferences prefs;
@@ -129,6 +130,17 @@ public final class Carrito {
 
     public void vaciar() {
         guardar(new ArrayList<>());
+    }
+
+    /**
+     * Al iniciar sesión: el carrito es de un cliente. Si el guardado era de otro (su sesión caducó sin
+     * cerrarla, así que no se vació), se vacía para que nadie herede el carrito de otra persona.
+     */
+    public void deUsuario(int usuarioId) {
+        if (prefs.getInt(CLAVE_DUENO, -1) != usuarioId) {
+            vaciar();
+        }
+        prefs.edit().putInt(CLAVE_DUENO, usuarioId).apply();
     }
 
     /** Unidades en el carrito (la insignia de la barra superior). */

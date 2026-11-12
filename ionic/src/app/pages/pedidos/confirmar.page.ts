@@ -15,7 +15,6 @@ import { Vida } from '../../shared/vida.component';
 
 import { EntregaCaja } from './entrega.component';
 
-/** PT-12 Confirmar pedido: revisar, elegir la entrega y pagar. La API comprueba stock, copias y precios. */
 @Component({
   imports: [FormsModule, IonContent, IonFooter, IonButton, IonCheckbox, IonSpinner, Barra, Icono, Vida, EntregaCaja],
   template: `
@@ -156,7 +155,6 @@ export class ConfirmarPage {
       error: (e: ApiError) => {
         this.enviando.set(false);
         this.entrega.errores(e);
-        // 409 STOCK_INSUFICIENTE o SIN_COPIAS: el mensaje de la API dice qué producto
         void this.avisos.informar(
           e.status === 409 ? 'Falta stock o copias' : 'No se ha podido hacer el pedido',
           e.mensaje,

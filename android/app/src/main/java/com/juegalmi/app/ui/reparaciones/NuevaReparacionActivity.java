@@ -17,7 +17,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.os.BundleCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -42,19 +44,19 @@ import com.juegalmi.app.util.UbicacionHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PT-17 Solicitar reparación: departamento, dispositivo, problema, foto con la cámara (RF-14) y ubicación (RF-11).
- * Primero sube la foto (POST /api/imagenes) y luego crea la reparación (POST /api/reparaciones), las dos con Retrofit.
- */
 public class NuevaReparacionActivity extends AppCompatActivity {
 
     private static final int PASOS = 5;
+    private static final String ESTADO_DEPARTAMENTO = "departamento";
+    private static final String ESTADO_FOTO = "foto";
+    private static final String ESTADO_FOTO_PENDIENTE = "fotoPendiente";
 
     private ReparacionRepository repositorio;
     private UbicacionHelper ubicacion;
     private final List<MaterialCardView> tarjetas = new ArrayList<>();
     private final List<Referencia> departamentos = new ArrayList<>();
     private Referencia elegido;
+    private int departamentoGuardado = -1;
     private Uri fotoPendiente;
     private Uri foto;
     private TextInputLayout tilDispositivo;
@@ -62,18 +64,29 @@ public class NuevaReparacionActivity extends AppCompatActivity {
     private com.google.android.material.button.MaterialButton btnEnviar;
     private View progreso;
 
-    /** La app de cámara devuelve true si se hizo la foto y se guardó en la Uri que le dimos. */
     private final ActivityResultLauncher<Uri> camara = registerForActivityResult(
             new ActivityResultContracts.TakePicture(), hecha -> {
                 if (hecha) {
-                    foto = fotoPendiente;
-                    ImageView iv = findViewById(R.id.ivFoto);
-                    iv.setVisibility(View.VISIBLE);
-                    Glide.with(this).load(foto).centerCrop().into(iv);
-                    ((TextView) findViewById(R.id.tvFoto)).setText(R.string.reparacion_foto_lista);
+                    mostrarFoto(fotoPendiente);
                     pintarPasos();
                 }
             });
+
+    private void mostrarFoto(Uri uri) {
+        foto = uri;
+        ImageView iv = findViewById(R.id.ivFoto);
+        iv.setVisibility(View.VISIBLE);
+        Glide.with(this).load(foto).centerCrop().into(iv);
+        ((TextView) findViewById(R.id.tvFoto)).setText(R.string.reparacion_foto_lista);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle estado) {
+        super.onSaveInstanceState(estado);
+        estado.putInt(ESTADO_DEPARTAMENTO, elegido != null ? elegido.id : departamentoGuardado);
+        estado.putParcelable(ESTADO_FOTO, foto);
+        estado.putParcelable(ESTADO_FOTO_PENDIENTE, fotoPendiente);
+    }
 
     private final ActivityResultLauncher<String> permisoUbicacion = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(), concedido -> {
@@ -98,6 +111,15 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         tilProblema = findViewById(R.id.tilProblema);
         btnEnviar = findViewById(R.id.btnEnviar);
         progreso = findViewById(R.id.progreso);
+
+        if (savedInstanceState != null) {
+            departamentoGuardado = savedInstanceState.getInt(ESTADO_DEPARTAMENTO, -1);
+            fotoPendiente = BundleCompat.getParcelable(savedInstanceState, ESTADO_FOTO_PENDIENTE, Uri.class);
+            Uri guardada = BundleCompat.getParcelable(savedInstanceState, ESTADO_FOTO, Uri.class);
+            if (guardada != null) {
+                mostrarFoto(guardada);
+            }
+        }
 
         TextWatcher alEscribir = new TextWatcher() {
             @Override
@@ -141,6 +163,7 @@ public class NuevaReparacionActivity extends AppCompatActivity {
                 departamentos.addAll(lista);
                 LinearLayout contenedor = findViewById(R.id.departamentos);
                 contenedor.removeAllViews();
+                tarjetas.clear();
                 int hueco = getResources().getDimensionPixelSize(R.dimen.ja_espacio_3);
                 for (int i = 0; i < lista.size(); i++) {
                     Referencia d = lista.get(i);
@@ -158,6 +181,9 @@ public class NuevaReparacionActivity extends AppCompatActivity {
                     tarjeta.setOnClickListener(v -> elegir(d, tarjeta));
                     tarjetas.add(tarjeta);
                     contenedor.addView(tarjeta);
+                    if (d.id == departamentoGuardado) {
+                        elegir(d, tarjeta);
+                    }
                 }
             }
 
@@ -169,7 +195,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         });
     }
 
-    /** Tarjeta elegida: borde grueso violeta y fondo marca-suave (DESIGN.md §9, selección). */
     private void elegir(Referencia d, MaterialCardView tarjeta) {
         elegido = d;
         for (MaterialCardView t : tarjetas) {
@@ -194,7 +219,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
         pintarPasos();
     }
 
-    /** Barra de 5: departamento, dispositivo, problema, foto y ubicación. */
     private void pintarPasos() {
         int hechos = 0;
         if (elegido != null) hechos++;
@@ -229,7 +253,6 @@ public class NuevaReparacionActivity extends AppCompatActivity {
             crear(null);
             return;
         }
-        // 1.º la foto (se reduce y comprime en segundo plano) y 2.º la reparación con su URL
         new ImagenRepository(this).subir(foto, ImagenRepository.REPARACIONES, new Callback<String>() {
             @Override
             public void onExito(String url) {

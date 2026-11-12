@@ -104,6 +104,10 @@ export class Clientes {
       required(c.email, { message: 'Escribe el email.' });
       email(c.email, { message: 'Ese email no es válido: revisa que tenga @ y dominio.' });
       required(c.telefono, { message: 'Escribe un teléfono de contacto.' });
+      // La misma regla que la API (Usuario.telefono): así el error sale antes de enviar
+      pattern(c.telefono, /^\+?[0-9 ]{9,20}$/, {
+        message: 'Escribe entre 9 y 20 cifras; puede empezar por + y llevar espacios.',
+      });
       required(c.dni, { message: 'Escribe el DNI o NIE.' });
       pattern(c.dni, /^[0-9XYZxyz][0-9]{7}[A-Za-z]$/, {
         message: 'El DNI son 8 números y una letra (12345678Z).',

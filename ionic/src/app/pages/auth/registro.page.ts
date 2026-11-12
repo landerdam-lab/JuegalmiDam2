@@ -12,7 +12,6 @@ import { Barra } from '../../shared/barra.component';
 import { Icono } from '../../shared/icono.component';
 import { Vida } from '../../shared/vida.component';
 
-/** PT-03 Registro: siempre crea un cliente. Valida antes de enviar y muestra en su campo los errores 422 de la API. */
 @Component({
   imports: [
     FormsModule,
@@ -119,7 +118,6 @@ export class RegistroPage {
   readonly errores = signal<Record<string, string>>({});
   readonly enviando = signal(false);
 
-  // Barra de vida de la contraseña: 4 segmentos a partir de la longitud mínima
   readonly longitud = signal(0);
   readonly fuerza = computed(() => Math.min(4, Math.floor(this.longitud() / (PASSWORD_MINIMA / 2))));
   readonly colorFuerza = computed(() =>
@@ -135,7 +133,7 @@ export class RegistroPage {
     if (!emailValido(d.email.trim())) e['email'] = 'Escribe un correo válido, por ejemplo laura@correo.es';
     if (d.password.length < PASSWORD_MINIMA) e['password'] = 'La contraseña debe tener al menos 8 caracteres';
     if (!telefonoValido(d.telefono.trim())) e['telefono'] = 'Escribe 9 cifras, por ejemplo 612345678';
-    if (!dniValido(d.dni.trim())) e['dni'] = 'Escribe tu DNI (12345678Z) o NIE (X1234567L)';
+    if (!dniValido(d.dni.trim())) e['dni'] = 'Escribe tu DNI (12345678Z) o NIE (X1234567L) y revisa la letra';
     this.errores.set(e);
     if (Object.keys(e).length) {
       return;

@@ -11,7 +11,6 @@ import { Barra } from '../../shared/barra.component';
 import { Estado } from '../../shared/estado.component';
 import { Icono } from '../../shared/icono.component';
 
-/** PT-25 Servicios: tres pestañas según servicio.linea (ADR-030). */
 @Component({
   imports: [
     RouterLink,

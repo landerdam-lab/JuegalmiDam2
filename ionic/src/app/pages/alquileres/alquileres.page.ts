@@ -146,6 +146,7 @@ export class AlquileresPage implements OnInit {
   ngOnInit(): void {
     this.agitar.agitado$.pipe(takeUntilDestroyed(this.destruir)).subscribe(() => {
       if (this.router.url.startsWith('/alquileres')) {
+        this.agitar.avisar();
         this.cargar(1);
       }
     });

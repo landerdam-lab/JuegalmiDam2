@@ -19,14 +19,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-/**
- * Sube una foto de la cámara a POST /api/imagenes y devuelve su URL (ADR-019: en la BBDD solo va la ruta).
- *
- * Antes de subirla hay que reducirla a 1280 px y comprimirla en JPEG. Eso lo hace FotoService en OTRO
- * PROCESO (ejemplo de varios procesos, ADR-039), con su propio hilo; el resultado vuelve a este proceso, en
- * el hilo principal, por un ResultReceiver. Después Retrofit sube el fichero en su hilo de red (enqueue).
- * AsyncTask no se usa porque está obsoleta (A-12).
- */
+
 public class ImagenRepository {
 
     public static final String USUARIOS = "usuarios";
@@ -52,7 +45,6 @@ public class ImagenRepository {
         });
     }
 
-    /** OkHttp lee el fichero al enviarlo, en su hilo de red: aquí no se lee nada en el hilo principal. */
     private void enviar(File jpeg, String carpeta, Callback<String> callback) {
         RequestBody cuerpo = RequestBody.create(jpeg, MediaType.parse("image/jpeg"));
         MultipartBody.Part parte = MultipartBody.Part.createFormData("imagen", "foto.jpg", cuerpo);
@@ -73,9 +65,7 @@ public class ImagenRepository {
         });
     }
 
-    /** La copia reducida ya no hace falta: no se deja basura en la caché. */
     private static void borrar(File jpeg) {
-        //noinspection ResultOfMethodCallIgnored
         jpeg.delete();
     }
 }

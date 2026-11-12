@@ -13,13 +13,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
-/**
- * Guarda la última ubicación del móvil para mandarla en las cabeceras X-Latitud / X-Longitud (ADR-014).
- *
- * Usa el FusedLocationProviderClient de Google Play Services: decide solo si usa GPS, wifi o red móvil
- * y trabaja en segundo plano. Precisión «equilibrada» (≈100 m): basta para saber desde dónde se hace
- * la operación y gasta mucha menos batería que el GPS a máxima precisión (CPU mínima).
- */
 public final class UbicacionHelper {
 
     private static UbicacionHelper instancia;
@@ -62,12 +55,7 @@ public final class UbicacionHelper {
         actualizar(null);
     }
 
-    /**
-     * Pide la ubicación actual (asíncrono). Si no hay permiso no hace nada: la app sigue funcionando.
-     *
-     * @param listo se ejecuta en el hilo principal cuando llega la ubicación actual
-     */
-    @SuppressLint("MissingPermission") // comprobado con tienePermiso()
+    @SuppressLint("MissingPermission")
     public void actualizar(@Nullable Runnable listo) {
         if (!tienePermiso()) {
             return;
@@ -79,7 +67,6 @@ public final class UbicacionHelper {
                         listo.run();
                     }
                 });
-        // Mientras llega la actual, la última conocida sirve para las primeras peticiones
         cliente.getLastLocation().addOnSuccessListener(ubicacion -> {
             if (!hayUbicacion()) {
                 guardar(ubicacion);

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Ventana de 600 dp o más (tablet pequeña en vertical). Ver values/adaptativo.xml -->
 <resources>
     <integer name="columnas_lista">2</integer>
     <integer name="columnas_galeria">4</integer>

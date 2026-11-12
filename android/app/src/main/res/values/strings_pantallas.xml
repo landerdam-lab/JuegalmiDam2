@@ -189,6 +189,7 @@
     <!-- PT-17 / PT-18 Reparaciones -->
     <string name="reparacion_nueva_titulo">Nueva reparación</string>
     <string name="reparacion_progreso">PASO %1$d DE %2$d</string>
+    <string name="reparacion_foto_de">Foto de %1$s</string>
     <string name="reparacion_paso_departamento">1 · Departamento</string>
     <string name="reparacion_paso_dispositivo">2 · Dispositivo</string>
     <string name="reparacion_paso_problema">3 · ¿Qué le pasa?</string>
@@ -241,6 +242,7 @@
     <string name="tema_claro">Claro</string>
     <string name="tema_oscuro">Oscuro</string>
     <string name="perfil_agitar">Agitar el móvil para refrescar las listas</string>
+    <string name="agitar_actualizando">Actualizando…</string>
     <string name="perfil_guardar">Guardar cambios</string>
     <string name="perfil_guardado">Cambios guardados</string>
     <string name="perfil_foto_guardada">Foto actualizada</string>

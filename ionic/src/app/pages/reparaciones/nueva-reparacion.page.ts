@@ -18,7 +18,6 @@ import { Barra } from '../../shared/barra.component';
 import { Icono } from '../../shared/icono.component';
 import { Vida } from '../../shared/vida.component';
 
-/** PT-17 Solicitar reparación: departamento, dispositivo, avería, foto con la cámara y ubicación. */
 @Component({
   imports: [
     FormsModule,
@@ -98,6 +97,7 @@ import { Vida } from '../../shared/vida.component';
             fill="solid"
             labelPlacement="floating"
             label="Dispositivo a reparar"
+            [maxlength]="100"
             [(ngModel)]="dispositivo"
             (ionInput)="tocado.set(tocado() + 1)"
           >
@@ -201,10 +201,13 @@ export class NuevaReparacionPage implements OnInit {
 
   readonly paso = computed(() => {
     this.tocado();
-    if (!this.departamento()) return 1;
-    if (!this.dispositivo.trim()) return 2;
-    if (!this.problema.trim()) return 3;
-    return this.vistaFoto() ? 5 : 4;
+    return [
+      this.departamento(),
+      this.dispositivo.trim(),
+      this.problema.trim(),
+      this.vistaFoto(),
+      this.ubicacion.punto(),
+    ].filter(Boolean).length;
   });
 
   ngOnInit(): void {
@@ -233,14 +236,12 @@ export class NuevaReparacionPage implements OnInit {
     if (!departamentoId || Object.keys(e).length) {
       return;
     }
-    // La API la exige: se comprueba antes de subir la foto, para no dejarla huérfana en el servidor
     if (!this.ubicacion.punto()) {
       void this.avisos.mensaje('Activa la ubicación para continuar');
       void this.ubicacion.actualizar();
       return;
     }
     this.enviando.set(true);
-    // Primero la foto y luego la solicitud con su URL (ADR-019)
     const subida: Observable<string | undefined> = this.foto
       ? this.imagenes.subir(this.foto, 'reparaciones')
       : of(undefined);
@@ -267,7 +268,6 @@ export class NuevaReparacionPage implements OnInit {
         error: (err: ApiError) => {
           this.enviando.set(false);
           this.errores.set(err.campos);
-          // También como aviso: algunos campos, como la ubicación, no tienen dónde mostrar su error
           void this.avisos.mensaje(Object.values(err.campos)[0] ?? err.mensaje);
         },
       });

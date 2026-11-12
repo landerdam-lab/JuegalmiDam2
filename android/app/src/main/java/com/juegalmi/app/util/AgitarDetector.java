@@ -6,47 +6,45 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-/**
- * «Agitar para refrescar» (RF-15, sensor además de GPS y cámara): escucha el acelerómetro y, si el móvil
- * se agita fuerte, llama a alAgitar.
- *
- * Se engancha al ciclo de vida de la pantalla: el sensor SOLO está activo mientras la pantalla se ve
- * (onResume → onPause). Así no gasta batería en segundo plano (CPU mínima).
- */
+import com.google.android.material.snackbar.Snackbar;
+import com.juegalmi.app.R;
+
+
 public class AgitarDetector implements SensorEventListener, DefaultLifecycleObserver {
 
-    /** Fuerza (en «g») a partir de la cual se considera una sacudida. 1 g = el móvil quieto. */
-    private static final float UMBRAL_G = 2.5f;
-    /** Tiempo mínimo entre dos refrescos, para que una sacudida no recargue tres veces. */
+
+    private static final float UMBRAL_G = 2.0f;
     private static final long PAUSA_MS = 1500;
 
     private final Context context;
+    private final View vista;
     private final Runnable alAgitar;
     private final SensorManager sensores;
     private long ultima = 0;
 
-    private AgitarDetector(Context context, Runnable alAgitar) {
+    private AgitarDetector(View vista, Runnable alAgitar) {
+        Context context = vista.getContext();
         this.context = context.getApplicationContext();
+        this.vista = vista;
         this.alAgitar = alAgitar;
         this.sensores = context.getSystemService(SensorManager.class);
     }
 
-    /** Uso: AgitarDetector.vincular(getViewLifecycleOwner(), requireContext(), this::recargar); */
-    public static void vincular(LifecycleOwner pantalla, Context context, Runnable alAgitar) {
-        pantalla.getLifecycle().addObserver(new AgitarDetector(context, alAgitar));
+    public static void vincular(LifecycleOwner pantalla, View vista, Runnable alAgitar) {
+        pantalla.getLifecycle().addObserver(new AgitarDetector(vista, alAgitar));
     }
 
     @Override
     public void onResume(@NonNull LifecycleOwner owner) {
         Sensor acelerometro = sensores == null ? null : sensores.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (acelerometro != null && Preferencias.agitar(context)) {
-            // SENSOR_DELAY_UI (~60 ms) basta para notar una sacudida y gasta menos que GAME o FASTEST
-            sensores.registerListener(this, acelerometro, SensorManager.SENSOR_DELAY_UI);
+            sensores.registerListener(this, acelerometro, SensorManager.SENSOR_DELAY_GAME);
         }
     }
 
@@ -66,12 +64,12 @@ public class AgitarDetector implements SensorEventListener, DefaultLifecycleObse
         long ahora = SystemClock.elapsedRealtime();
         if (fuerza > UMBRAL_G && ahora - ultima > PAUSA_MS) {
             ultima = ahora;
+            Snackbar.make(vista, R.string.agitar_actualizando, Snackbar.LENGTH_SHORT).show();
             alAgitar.run();
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int precision) {
-        // No hace falta
     }
 }

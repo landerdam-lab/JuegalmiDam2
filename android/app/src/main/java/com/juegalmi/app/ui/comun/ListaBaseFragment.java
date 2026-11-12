@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -20,19 +21,15 @@ import com.juegalmi.app.data.api.ApiError;
 import com.juegalmi.app.data.api.VolleyClient;
 import com.juegalmi.app.util.AgitarDetector;
 
-/**
- * Lo común de Mis pedidos, Mis alquileres y Mis reparaciones (layout fragment_lista):
- * estados de carga / vacío / error, chips de filtro, «agitar para refrescar» y cancelar las peticiones al salir.
- * Cada pantalla solo dice qué carga (cargar) y qué adaptador usa.
- */
+
 public abstract class ListaBaseFragment extends Fragment {
 
     protected RecyclerView lista;
     protected TextView tvResultados;
     protected EstadoVista estado;
     private View progreso;
+    private SwipeRefreshLayout refresco;
 
-    /** Carga (o recarga) los datos de la API. */
     protected abstract void cargar();
 
     @Nullable
@@ -45,21 +42,22 @@ public abstract class ListaBaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View vista, @Nullable Bundle savedInstanceState) {
         lista = vista.findViewById(R.id.lista);
-        // 1 columna en el móvil y 2-4 en pantallas anchas (res/values-wNNNdp/adaptativo.xml)
         lista.setLayoutManager(new GridLayoutManager(requireContext(),
                 getResources().getInteger(R.integer.columnas_lista)));
         tvResultados = vista.findViewById(R.id.tvResultados);
         progreso = vista.findViewById(R.id.progreso);
         estado = new EstadoVista(vista);
-        // Agitar el móvil recarga la lista (RF-15). Solo mientras la pantalla está visible
-        AgitarDetector.vincular(getViewLifecycleOwner(), requireContext(), this::recargarAgitando);
+        refresco = vista.findViewById(R.id.refresco);
+        refresco.setColorSchemeResources(R.color.ja_marca);
+        refresco.setProgressBackgroundColorSchemeResource(R.color.ja_superficie);
+        refresco.setOnRefreshListener(this::cargar);
+        AgitarDetector.vincular(getViewLifecycleOwner(), vista, this::recargarAgitando);
     }
 
     protected void titulo(int texto) {
         ((TextView) requireView().findViewById(R.id.tvTitulo)).setText(texto);
     }
 
-    /** Añade chips de filtro de selección única. El primero queda marcado. */
     protected void chips(int[] textos, java.util.function.IntConsumer alElegir) {
         requireView().findViewById(R.id.scrollChips).setVisibility(View.VISIBLE);
         ChipGroup grupo = requireView().findViewById(R.id.chips);
@@ -84,11 +82,12 @@ public abstract class ListaBaseFragment extends Fragment {
 
     protected void cargando() {
         estado.ocultar();
-        progreso.setVisibility(View.VISIBLE);
+        progreso.setVisibility(refresco.isRefreshing() ? View.GONE : View.VISIBLE);
     }
 
     protected void listo(int cuantos, int vacioTitulo, int vacioTexto) {
         progreso.setVisibility(View.GONE);
+        refresco.setRefreshing(false);
         if (cuantos == 0) {
             estado.vacio(vacioTitulo, vacioTexto);
         } else {
@@ -98,10 +97,10 @@ public abstract class ListaBaseFragment extends Fragment {
 
     protected void error(int titulo, ApiError error) {
         progreso.setVisibility(View.GONE);
+        refresco.setRefreshing(false);
         estado.error(titulo, error, this::cargar);
     }
 
-    /** Las tarjetas se sacuden 2° al agitar (DESIGN.md §7) y se recarga. */
     private void recargarAgitando() {
         lista.animate().rotation(2f).setDuration(60).withEndAction(() ->
                 lista.animate().rotation(-2f).setDuration(60).withEndAction(() ->

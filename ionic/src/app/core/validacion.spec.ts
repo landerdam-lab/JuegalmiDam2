@@ -13,6 +13,8 @@ describe('validaciones de formulario', () => {
     expect(dniValido('12345678Z')).toBe(true);
     expect(dniValido('X1234567L')).toBe(true);
     expect(dniValido('1234567Z')).toBe(false);
+    expect(dniValido('12345678A')).toBe(false); // la letra no es la que toca (sería la Z)
+    expect(dniValido('X1234567Z')).toBe(false); // NIE con la letra mal (sería la L)
   });
 });
 
@@ -26,5 +28,7 @@ describe('fechas y sensores', () => {
   it('solo un golpe fuerte cuenta como agitar', () => {
     expect(esAgitacion(0, 0, 9.81)).toBe(false);
     expect(esAgitacion(20, 15, 9)).toBe(true);
+    expect(esAgitacion(12, 10, 9.81)).toBe(false); // ~1,9 g: un movimiento normal no refresca
+    expect(esAgitacion(15, 10, 9.81)).toBe(true); // ~2,1 g: una sacudida sí
   });
 });

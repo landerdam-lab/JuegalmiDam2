@@ -18,6 +18,7 @@ public class OrdenVozTest {
         es(OrdenVoz.Accion.CARRITO, "Abre el carrito");
         es(OrdenVoz.Accion.PEDIDOS, "mis pedidos");
         es(OrdenVoz.Accion.ALQUILERES, "¿Qué tengo alquilado?");
+        es(OrdenVoz.Accion.ALQUILERES, "mis alquileres"); // se comparan palabras enteras: hace falta el plural
         es(OrdenVoz.Accion.REPARACIONES, "Mis reparaciones");
         es(OrdenVoz.Accion.NUEVA_REPARACION, "Quiero arreglar el mando");
         es(OrdenVoz.Accion.PERFIL, "mi perfil");

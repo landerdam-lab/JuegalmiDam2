@@ -6,7 +6,6 @@ import type { Pagina, Producto, Referencia, TipoProducto } from './modelos';
 
 export type Orden = 'nombre' | 'precio_asc' | 'precio_desc';
 
-/** Lo que el usuario ha elegido en el catálogo. Todos los filtros los aplica la API. */
 export interface Filtro {
   tipo: TipoProducto;
   texto?: string;

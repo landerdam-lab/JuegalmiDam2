@@ -13,13 +13,13 @@ import { ReparacionesService } from '../../core/reparaciones.service';
 import { Barra } from '../../shared/barra.component';
 import { Estado } from '../../shared/estado.component';
 import { Icono } from '../../shared/icono.component';
+import { Imagen } from '../../shared/imagen.component';
 import { Pastilla } from '../../shared/pastilla.component';
 import { Vida } from '../../shared/vida.component';
 
 const PASOS: Record<EstadoReparacion, number> = { recibida: 1, en_reparacion: 2, lista: 3, entregada: 4, cancelada: 0 };
 const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
 
-/** PT-18 Mis reparaciones. El cliente puede cancelar mientras esté recibida o en reparación. */
 @Component({
   imports: [
     RouterLink,
@@ -33,6 +33,7 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
     Barra,
     Estado,
     Icono,
+    Imagen,
     Pastilla,
     Vida,
   ],
@@ -58,6 +59,20 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
       border-radius: var(--ja-radio-completo);
       background: var(--ja-marca-suave);
       color: var(--ja-marca);
+    }
+    /* La foto que hizo el cliente con la cámara, del tamaño de las miniaturas de los pedidos */
+    .averia {
+      display: flex;
+      align-items: center;
+      gap: var(--ja-espacio-3);
+    }
+    .averia ja-imagen {
+      flex: none;
+      width: calc(var(--ja-espacio-12) + var(--ja-espacio-2));
+      border-radius: var(--ja-radio-s);
+    }
+    .averia .ja-cuerpo {
+      flex: 1;
     }
     .pasos {
       display: grid;
@@ -118,7 +133,12 @@ const ACTIVAS: EstadoReparacion[] = ['recibida', 'en_reparacion', 'lista'];
                     <span class="ja-titulo">{{ r.dispositivo }}</span>
                     <span class="ja-codigo ja-marca-t">{{ ref(r.id) }}</span>
                   </div>
-                  <div class="ja-cuerpo ja-t2">{{ r.problema }}</div>
+                  <div class="averia">
+                    @if (r.foto) {
+                      <ja-imagen [src]="r.foto" [alt]="'Foto de ' + r.dispositivo" />
+                    }
+                    <div class="ja-cuerpo ja-t2">{{ r.problema }}</div>
+                  </div>
                   <div class="ja-codigo ja-t2">
                     Entrada: {{ diaHora(r.fechaEntrada) }}
                     @if (r.fechaSalida) {
@@ -180,6 +200,7 @@ export class ReparacionesPage implements OnInit {
   ngOnInit(): void {
     this.agitar.agitado$.pipe(takeUntilDestroyed(this.destruir)).subscribe(() => {
       if (this.router.url.startsWith('/reparaciones')) {
+        this.agitar.avisar();
         this.cargar();
       }
     });

@@ -13,7 +13,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.BundleCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -47,14 +48,30 @@ public class PerfilFragment extends Fragment {
     private com.google.android.material.imageview.ShapeableImageView avatar;
     private Button btnGuardar;
     private View progreso;
+    private static final String ESTADO_FOTO_PENDIENTE = "fotoPendiente";
     private Uri fotoPendiente;
 
     private final ActivityResultLauncher<Uri> camara = registerForActivityResult(
             new ActivityResultContracts.TakePicture(), hecha -> {
-                if (hecha) {
+                if (hecha && fotoPendiente != null) {
                     subirFoto(fotoPendiente);
                 }
             });
+
+    /** Si Android cierra la app mientras está abierta la cámara, al volver hay que saber dónde se guardó la foto. */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            fotoPendiente = BundleCompat.getParcelable(savedInstanceState, ESTADO_FOTO_PENDIENTE, Uri.class);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle estado) {
+        super.onSaveInstanceState(estado);
+        estado.putParcelable(ESTADO_FOTO_PENDIENTE, fotoPendiente);
+    }
 
     @Nullable
     @Override
@@ -122,8 +139,9 @@ public class PerfilFragment extends Fragment {
     private void guardar() {
         String telefono = leer(tilTelefono);
         tilNombre.setError(leer(tilNombre).isEmpty() ? getString(R.string.error_obligatorio) : null);
+        tilApellidos.setError(leer(tilApellidos).isEmpty() ? getString(R.string.error_obligatorio) : null);
         tilTelefono.setError(Validacion.telefono(telefono) ? null : getString(R.string.error_telefono));
-        if (tilNombre.getError() != null || tilTelefono.getError() != null) return;
+        if (tilNombre.getError() != null || tilApellidos.getError() != null || tilTelefono.getError() != null) return;
 
         Peticiones.Perfil cambios = new Peticiones.Perfil();
         cambios.nombre = leer(tilNombre);
@@ -170,6 +188,7 @@ public class PerfilFragment extends Fragment {
                 cargando(false);
                 if (error.campo("telefono") != null) tilTelefono.setError(error.campo("telefono"));
                 if (error.campo("nombre") != null) tilNombre.setError(error.campo("nombre"));
+                if (error.campo("apellidos") != null) tilApellidos.setError(error.campo("apellidos"));
                 Snackbar.make(requireView(), error.mensaje, Snackbar.LENGTH_LONG).show();
             }
         });
